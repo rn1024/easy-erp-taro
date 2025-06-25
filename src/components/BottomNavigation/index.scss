@@ -31,10 +31,10 @@
       min-width: 0;
       padding: 8rpx 4rpx;
       cursor: pointer;
-      transition: all 0.2s ease;
 
+      // 移除抖动动画
       &:active {
-        transform: scale(0.95);
+        opacity: 0.7;
       }
 
       // 标准tab样式
@@ -50,39 +50,37 @@
             width: 44rpx;
             height: 44rpx;
             border-radius: 8rpx;
-            transition: all 0.2s ease;
           }
 
-                  .tab-badge {
-          position: absolute;
-          top: -8rpx;
-          right: -8rpx;
-          transform: scale(0.9);
-          z-index: 2;
+          .tab-badge {
+            position: absolute;
+            top: -8rpx;
+            right: -8rpx;
+            transform: scale(0.9);
+            z-index: 2;
 
-          :global(.nut-badge) {
-            background-color: #ff4757;
-            color: #fff;
-            font-size: 18rpx;
-            line-height: 1;
-            padding: 4rpx 8rpx;
-            border-radius: 12rpx;
-            min-width: 24rpx;
-            height: 24rpx;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            box-shadow: 0 2rpx 4rpx rgba(255, 71, 87, 0.3);
-            border: 2rpx solid #fff;
+            :global(.nut-badge) {
+              background-color: #ff4757;
+              color: #fff;
+              font-size: 18rpx;
+              line-height: 1;
+              padding: 4rpx 8rpx;
+              border-radius: 12rpx;
+              min-width: 24rpx;
+              height: 24rpx;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-weight: 600;
+              box-shadow: 0 2rpx 4rpx rgba(255, 71, 87, 0.3);
+              border: 2rpx solid #fff;
+            }
           }
-        }
         }
 
         .tab-label {
           font-size: 20rpx;
           color: #666;
-          transition: color 0.2s ease;
           text-align: center;
           line-height: 1.2;
           white-space: nowrap;
@@ -111,11 +109,9 @@
             background: linear-gradient(135deg, #07c160 0%, #06ad56 100%);
             border-radius: 28rpx;
             box-shadow: 0 4rpx 12rpx rgba(7, 193, 96, 0.3);
-            transition: all 0.2s ease;
 
             &:active {
-              transform: scale(0.9);
-              box-shadow: 0 2rpx 8rpx rgba(7, 193, 96, 0.2);
+              opacity: 0.8;
             }
           }
         }
@@ -129,25 +125,6 @@
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-        }
-
-        .special-bg {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -60%);
-          width: 60rpx;
-          height: 60rpx;
-          background: linear-gradient(135deg, #07c160 0%, #06ad56 100%);
-          border-radius: 30rpx;
-          opacity: 0.1;
-          z-index: -1;
-          transition: all 0.2s ease;
-        }
-
-        &:active .special-bg {
-          opacity: 0.2;
-          transform: translate(-50%, -60%) scale(1.1);
         }
       }
     }
@@ -214,12 +191,6 @@
           .tab-label {
             font-size: 18rpx;
           }
-
-          .special-bg {
-            width: 56rpx;
-            height: 56rpx;
-            border-radius: 28rpx;
-          }
         }
       }
     }
@@ -256,12 +227,6 @@
 
           .tab-label {
             font-size: 22rpx;
-          }
-
-          .special-bg {
-            width: 64rpx;
-            height: 64rpx;
-            border-radius: 32rpx;
           }
         }
       }
@@ -383,39 +348,6 @@
   }
 }
 
-// 活跃状态动画
-.tab-item.active:not(.special) {
-  .tab-icon {
-    animation: tabActive 0.3s ease;
-  }
-}
-
-@keyframes tabActive {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-// 特殊按钮点击动画
-.tab-item.special .tab-icon:active {
-  animation: specialActive 0.2s ease;
-}
-
-@keyframes specialActive {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0.9);
-  }
-}
-
 // 脉搏动画（用于重要通知）
 @keyframes pulse {
   0% {
@@ -438,25 +370,6 @@
 
 // 无障碍访问优化
 @media (prefers-reduced-motion: reduce) {
-  .bottom-navigation {
-    .tab-item {
-      transition: none;
-    }
-
-    .tab-icon,
-    .special-bg {
-      transition: none;
-    }
-  }
-
-  .tab-item.active:not(.special) .tab-icon {
-    animation: none;
-  }
-
-  .tab-item.special .tab-icon:active {
-    animation: none;
-  }
-
   .tab-badge :global(.nut-badge.high-activity) {
     animation: none;
   }
