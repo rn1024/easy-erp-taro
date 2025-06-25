@@ -7,7 +7,7 @@ import {
   WorkflowOverview,
   QuickActions
 } from '../../components'
-import { Plus, CheckNormal } from '@nutui/icons-react-taro'
+import { Plus, CheckNormal, User, Clock, Setting } from '@nutui/icons-react-taro'
 import { getMockData } from '../../data/mockData'
 import tabBarManager from '../../utils/tabBarManager'
 import './index.scss'
@@ -41,6 +41,20 @@ const HomePage: React.FC = () => {
         break
       case 'pending_approval':
         Taro.switchTab({ url: '/pages/tasks/index' })
+        break
+      case 'data_reports':
+        Taro.showToast({
+          title: '数据报告功能开发中',
+          icon: 'none',
+          duration: 2000
+        })
+        break
+      case 'workflow_settings':
+        Taro.showToast({
+          title: '流程设置功能开发中',
+          icon: 'none',
+          duration: 2000
+        })
         break
       case 'messages':
         Taro.switchTab({ url: '/pages/messages/index' })
@@ -95,20 +109,36 @@ const HomePage: React.FC = () => {
             {
               id: 'team_tasks',
               title: '团队任务',
-              icon: <CheckNormal size="24" />,
+              icon: <User size="24" />,
               color: '#576b95',
               bgColor: '#e8f0fe',
-              count: 12,
+              count: 15,
               description: '查看团队所有任务'
             },
             {
               id: 'pending_approval',
               title: '待我审批',
-              icon: <CheckNormal size="24" />,
+              icon: <Clock size="24" />,
               color: '#ff8f00',
               bgColor: '#fff2e8',
-              count: 5,
+              count: 3,
               description: '需要我审批的任务'
+            },
+            {
+              id: 'data_reports',
+              title: '数据报告',
+              icon: <CheckNormal size="24" />,
+              color: '#6f42c1',
+              bgColor: '#f3f0ff',
+              description: '查看工作流统计数据'
+            },
+            {
+              id: 'workflow_settings',
+              title: '流程设置',
+              icon: <Setting size="24" />,
+              color: '#6c757d',
+              bgColor: '#f8f9fa',
+              description: '管理工作流程设置'
             }
           ]}
           columns={2}
