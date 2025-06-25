@@ -30,7 +30,7 @@ const DetailedStats: React.FC<DetailedStatsProps> = ({
 }) => {
   return (
     <View className={cn('detailed-stats', className)}>
-      <Text className="detail-title">详细统计</Text>
+      <View className="detail-title">详细统计</View>
 
       <View className="detail-items">
         {/* 活跃用户 */}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text } from '@tarojs/components'
 import { Badge } from '@nutui/nutui-react-taro'
-import { Plus, User, Clock, CheckNormal, Message } from '@nutui/icons-react-taro'
+import { Plus, User, Clock, CheckNormal } from '@nutui/icons-react-taro'
 import { cn } from '../../utils/cn'
 import './index.scss'
 
@@ -51,8 +51,8 @@ const QuickActions: React.FC<QuickActionsProps> = ({
       id: 'create_workflow',
       title: '创建流程',
       icon: <Plus size="24" />,
-      color: '#fff',
-      bgColor: 'linear-gradient(135deg, #576b95 0%, #4a5d87 100%)',
+      color: '#576b95',
+      bgColor: '#e8f0fe',
       description: '快速创建新的工作流程'
     },
     {
@@ -61,16 +61,16 @@ const QuickActions: React.FC<QuickActionsProps> = ({
       icon: <CheckNormal size="24" />,
       color: '#07c160',
       bgColor: '#e8f7ee',
-      count: 12,
+      count: 8,
       description: '查看分配给我的任务'
     },
     {
       id: 'team_tasks',
       title: '团队任务',
       icon: <User size="24" />,
-      color: '#576b95',
-      bgColor: '#e8f0fe',
-      count: 28,
+      color: '#8b5cf6',
+      bgColor: '#f3f0ff',
+      count: 15,
       description: '查看团队所有任务'
     },
     {
@@ -79,26 +79,24 @@ const QuickActions: React.FC<QuickActionsProps> = ({
       icon: <Clock size="24" />,
       color: '#ff8f00',
       bgColor: '#fff2e8',
-      count: 5,
+      count: 3,
       description: '需要我审批的任务'
     },
     {
-      id: 'completed_tasks',
-      title: '已完成',
-      icon: <CheckNormal size="24" />,
-      color: '#07c160',
-      bgColor: '#e8f7ee',
-      count: 45,
-      description: '已完成的任务'
+      id: 'data_report',
+      title: '数据报告',
+      icon: <Plus size="24" />,
+      color: '#576b95',
+      bgColor: '#e8f0fe',
+      description: '查看工作流统计数据'
     },
     {
-      id: 'messages',
-      title: '消息通知',
-      icon: <Message size="24" />,
-      color: '#ff4757',
-      bgColor: '#ffedef',
-      count: 3,
-      description: '查看最新消息'
+      id: 'workflow_settings',
+      title: '流程设置',
+      icon: <User size="24" />,
+      color: '#666',
+      bgColor: '#f5f5f5',
+      description: '管理工作流程设置'
     }
   ]
 
@@ -183,10 +181,7 @@ const QuickActions: React.FC<QuickActionsProps> = ({
               )}
             </View>
 
-            {/* 特殊效果 - 渐变背景的操作项 */}
-            {action.id === 'create_workflow' && (
-              <View className="special-effect" />
-            )}
+
           </View>
         ))}
       </View>
