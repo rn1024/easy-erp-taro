@@ -9,10 +9,6 @@ import tabBarManager from '../../utils/tabBarManager'
 import './index.scss'
 
 interface BottomNavigationProps {
-  /** 当前激活的标签 */
-  activeTab?: string
-  /** 标签切换回调函数 */
-  onTabChange?: (tab: string) => void
   /** 消息数量 */
   messageCount?: number
   /** 是否显示 */
@@ -62,21 +58,51 @@ const TAB_CONFIG = [
 
 /**
  * 微信小程序增强底部导航组件
+ * 自主管理导航逻辑，无需外部传入回调函数
  * 集成微信小程序API，支持振动反馈、徽章显示、页面预加载等功能
  */
 const BottomNavigation: React.FC<BottomNavigationProps> = ({
-  activeTab = 'home',
-  onTabChange,
   messageCount = 0,
   visible = true
 }) => {
   const { screenInfo } = useMobile()
   const isIphoneX = useIsIphoneX()
 
-  const [currentTab, setCurrentTab] = useState(activeTab)
+  const [currentTab, setCurrentTab] = useState('home')
   const [currentMessageCount, setCurrentMessageCount] = useState(messageCount)
 
+  // 获取当前页面对应的Tab
+  const getCurrentTabFromRoute = () => {
+    try {
+      const pages = Taro.getCurrentPages()
+      if (pages.length === 0) return 'home'
+
+      const currentPage = pages[pages.length - 1]
+      const currentRoute = currentPage.route
+
+      // 查找对应的Tab
+      const tab = TAB_CONFIG.find(t =>
+        currentRoute === t.pagePath.substring(1) // 移除开头的 '/'
+      )
+
+      return tab ? tab.id : 'home'
+    } catch (error) {
+      console.warn('获取当前页面Tab失败:', error)
+      return 'home'
+    }
+  }
+
   useEffect(() => {
+    // 初始化时设置当前Tab
+    const currentTabId = getCurrentTabFromRoute()
+    setCurrentTab(currentTabId)
+
+    // 更新TabBar管理器状态
+    const tab = TAB_CONFIG.find(t => t.id === currentTabId)
+    if (tab) {
+      tabBarManager.setActiveTab(tab.index)
+    }
+
     // 监听TabBar管理器的状态变化
     const handleActiveChange = (index: number) => {
       const tab = TAB_CONFIG.find(t => t.index === index)
@@ -100,14 +126,10 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
   }, [])
 
   useEffect(() => {
-    setCurrentTab(activeTab)
-  }, [activeTab])
-
-  useEffect(() => {
     setCurrentMessageCount(messageCount)
   }, [messageCount])
 
-  // 处理Tab点击
+  // 处理Tab点击 - 完全自主的导航逻辑
   const handleTabClick = async (tab: typeof TAB_CONFIG[0]) => {
     // 如果点击的是当前激活的Tab，不做处理
     if (currentTab === tab.id) return
@@ -141,9 +163,6 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
 
       // 更新本地状态
       setCurrentTab(tab.id)
-
-      // 调用外部回调
-      onTabChange?.(tab.id)
 
     } catch (error) {
       console.error('Tab切换失败:', error)

@@ -110,26 +110,6 @@ const CreatePage: React.FC = () => {
     }, 2000)
   }
 
-  // 处理底部导航切换
-  const handleTabChange = (tab: string) => {
-    switch (tab) {
-      case 'home':
-        Taro.navigateBack()
-        break
-      case 'tasks':
-        Taro.redirectTo({ url: '/pages/tasks/index' })
-        break
-      case 'messages':
-        Taro.switchTab({ url: '/pages/messages/index' })
-        break
-      case 'profile':
-        Taro.switchTab({ url: '/pages/profile/index' })
-        break
-      default:
-        break
-    }
-  }
-
   // 渲染模板选择步骤
   const renderTemplateSelection = () => (
     <View className="template-selection">
@@ -307,8 +287,6 @@ const CreatePage: React.FC = () => {
       className="create-page"
       footer={
         <BottomNavigation
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
           messageCount={3}
         />
       }

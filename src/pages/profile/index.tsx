@@ -107,25 +107,7 @@ const ProfilePage: React.FC = () => {
     })
   }
 
-  // 处理底部导航切换
-  const handleTabChange = (tab: string) => {
-    switch (tab) {
-      case 'home':
-        Taro.navigateBack()
-        break
-      case 'tasks':
-        Taro.redirectTo({ url: '/pages/tasks/index' })
-        break
-      case 'create':
-        Taro.switchTab({ url: '/pages/create/index' })
-        break
-      case 'messages':
-        Taro.redirectTo({ url: '/pages/messages/index' })
-        break
-      default:
-        break
-    }
-  }
+
 
   return (
     <MobileLayout
@@ -133,8 +115,6 @@ const ProfilePage: React.FC = () => {
       className="profile-page"
       footer={
         <BottomNavigation
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
           messageCount={3}
         />
       }

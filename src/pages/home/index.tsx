@@ -21,17 +21,9 @@ const HomePage: React.FC = () => {
     // 初始化TabBar管理器
     tabBarManager.init()
 
-    // 设置当前页面为首页
-    tabBarManager.setActiveTab(0)
-
     // 模拟设置消息数量
     tabBarManager.setMessageCount(3)
   }, [])
-
-  // 处理Tab切换
-  const handleTabChange = (tab: string) => {
-    console.log('Tab切换到:', tab)
-  }
 
   // 处理快速操作点击
   const handleQuickActionClick = (actionId: string) => {
@@ -42,16 +34,16 @@ const HomePage: React.FC = () => {
         Taro.switchTab({ url: '/pages/create/index' })
         break
       case 'my_tasks':
-        tabBarManager.switchTab(1, '/pages/tasks/index')
+        Taro.switchTab({ url: '/pages/tasks/index' })
         break
       case 'team_tasks':
-        tabBarManager.switchTab(1, '/pages/tasks/index')
+        Taro.switchTab({ url: '/pages/tasks/index' })
         break
       case 'pending_approval':
-        tabBarManager.switchTab(1, '/pages/tasks/index')
+        Taro.switchTab({ url: '/pages/tasks/index' })
         break
       case 'messages':
-        tabBarManager.switchTab(3, '/pages/messages/index')
+        Taro.switchTab({ url: '/pages/messages/index' })
         break
       default:
         break
@@ -64,8 +56,6 @@ const HomePage: React.FC = () => {
       className="home-page"
       footer={
         <BottomNavigation
-          activeTab="home"
-          onTabChange={handleTabChange}
           messageCount={3}
         />
       }

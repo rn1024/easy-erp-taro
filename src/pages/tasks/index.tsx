@@ -12,7 +12,6 @@ import type { Task } from '../../components'
 import './index.scss'
 
 const TasksPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('tasks')
   const [searchQuery, setSearchQuery] = useState('')
   const [activeFilters, setActiveFilters] = useState(0)
 
@@ -50,29 +49,6 @@ const TasksPage: React.FC = () => {
     })
   }
 
-  // 处理底部导航切换
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab)
-
-    // 所有tabBar页面都使用switchTab进行跳转
-    switch (tab) {
-      case 'home':
-        Taro.switchTab({ url: '/pages/home/index' })
-        break
-      case 'create':
-        Taro.switchTab({ url: '/pages/create/index' })
-        break
-      case 'messages':
-        Taro.switchTab({ url: '/pages/messages/index' })
-        break
-      case 'profile':
-        Taro.switchTab({ url: '/pages/profile/index' })
-        break
-      default:
-        break
-    }
-  }
-
   return (
     <MobileLayout
       enableSafeArea
@@ -86,8 +62,6 @@ const TasksPage: React.FC = () => {
       }
       footer={
         <BottomNavigation
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
           messageCount={3}
         />
       }

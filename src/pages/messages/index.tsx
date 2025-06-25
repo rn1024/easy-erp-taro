@@ -145,25 +145,7 @@ const MessagesPage: React.FC = () => {
     })
   }
 
-  // 处理底部导航切换
-  const handleTabChange = (tab: string) => {
-    switch (tab) {
-      case 'home':
-        Taro.navigateBack()
-        break
-      case 'tasks':
-        Taro.redirectTo({ url: '/pages/tasks/index' })
-        break
-      case 'create':
-        Taro.switchTab({ url: '/pages/create/index' })
-        break
-      case 'profile':
-        Taro.switchTab({ url: '/pages/profile/index' })
-        break
-      default:
-        break
-    }
-  }
+
 
   return (
     <MobileLayout
@@ -171,8 +153,6 @@ const MessagesPage: React.FC = () => {
       className="messages-page"
       footer={
         <BottomNavigation
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
           messageCount={unreadCount}
         />
       }
