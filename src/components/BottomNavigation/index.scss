@@ -1,0 +1,293 @@
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #fff;
+  border-top: 1rpx solid #e8e8e8;
+
+  .nav-content {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    height: 98rpx;
+    padding: 8rpx 0;
+    background-color: #fff;
+
+    .tab-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      min-width: 0;
+      padding: 8rpx 4rpx;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:active {
+        transform: scale(0.95);
+      }
+
+      // 标准tab样式
+      &:not(.special) {
+        .tab-icon-container {
+          position: relative;
+          margin-bottom: 4rpx;
+
+          .tab-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44rpx;
+            height: 44rpx;
+            border-radius: 8rpx;
+            transition: all 0.2s ease;
+          }
+
+          .tab-badge {
+            position: absolute;
+            top: -4rpx;
+            right: -4rpx;
+            transform: scale(0.8);
+
+            :global(.nut-badge) {
+              background-color: #ff4757;
+              color: #fff;
+              font-size: 20rpx;
+              line-height: 1;
+              padding: 4rpx 6rpx;
+              border-radius: 10rpx;
+              min-width: 20rpx;
+              height: 20rpx;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+          }
+        }
+
+        .tab-label {
+          font-size: 20rpx;
+          color: #666;
+          transition: color 0.2s ease;
+          text-align: center;
+          line-height: 1.2;
+
+          &.active {
+            color: #07c160;
+            font-weight: 500;
+          }
+        }
+      }
+
+      // 特殊tab样式 (创建按钮)
+      &.special {
+        .tab-icon-container {
+          position: relative;
+          margin-bottom: 4rpx;
+
+          .tab-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 56rpx;
+            height: 56rpx;
+            background: linear-gradient(135deg, #07c160 0%, #06ad56 100%);
+            border-radius: 28rpx;
+            box-shadow: 0 4rpx 12rpx rgba(7, 193, 96, 0.3);
+            transition: all 0.2s ease;
+
+            &:active {
+              transform: scale(0.9);
+              box-shadow: 0 2rpx 8rpx rgba(7, 193, 96, 0.2);
+            }
+          }
+        }
+
+        .tab-label {
+          font-size: 20rpx;
+          color: #333;
+          font-weight: 500;
+          text-align: center;
+          line-height: 1.2;
+        }
+
+        .special-bg {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -60%);
+          width: 60rpx;
+          height: 60rpx;
+          background: linear-gradient(135deg, #07c160 0%, #06ad56 100%);
+          border-radius: 30rpx;
+          opacity: 0.1;
+          z-index: -1;
+          transition: all 0.2s ease;
+        }
+
+        &:active .special-bg {
+          opacity: 0.2;
+          transform: translate(-50%, -60%) scale(1.1);
+        }
+      }
+    }
+  }
+}
+
+// 小屏幕适配
+@media screen and (max-width: 350px) {
+  .bottom-navigation {
+    .nav-content {
+      height: 88rpx;
+      padding: 6rpx 0;
+
+      .tab-item {
+        padding: 6rpx 2rpx;
+
+        &:not(.special) {
+          .tab-icon-container .tab-icon {
+            width: 40rpx;
+            height: 40rpx;
+          }
+
+          .tab-label {
+            font-size: 18rpx;
+          }
+        }
+
+        &.special {
+          .tab-icon-container .tab-icon {
+            width: 52rpx;
+            height: 52rpx;
+            border-radius: 26rpx;
+          }
+
+          .tab-label {
+            font-size: 18rpx;
+          }
+
+          .special-bg {
+            width: 56rpx;
+            height: 56rpx;
+            border-radius: 28rpx;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 大屏幕适配
+@media screen and (min-width: 414px) {
+  .bottom-navigation {
+    .nav-content {
+      height: 110rpx;
+      padding: 10rpx 0;
+
+      .tab-item {
+        padding: 10rpx 6rpx;
+
+        &:not(.special) {
+          .tab-icon-container .tab-icon {
+            width: 48rpx;
+            height: 48rpx;
+          }
+
+          .tab-label {
+            font-size: 22rpx;
+          }
+        }
+
+        &.special {
+          .tab-icon-container .tab-icon {
+            width: 60rpx;
+            height: 60rpx;
+            border-radius: 30rpx;
+          }
+
+          .tab-label {
+            font-size: 22rpx;
+          }
+
+          .special-bg {
+            width: 64rpx;
+            height: 64rpx;
+            border-radius: 32rpx;
+          }
+        }
+      }
+    }
+  }
+}
+
+// iPhone X系列底部安全区域适配
+.bottom-navigation[style*="padding-bottom"] {
+  .nav-content {
+    margin-bottom: 0;
+  }
+}
+
+// 深色模式支持 (预留)
+@media (prefers-color-scheme: dark) {
+  .bottom-navigation {
+    background-color: #1f1f1f;
+    border-top-color: #333;
+
+    .nav-content {
+      background-color: #1f1f1f;
+
+      .tab-item {
+        &:not(.special) {
+          .tab-label {
+            color: #999;
+
+            &.active {
+              color: #07c160;
+            }
+          }
+        }
+
+        &.special .tab-label {
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+// 活跃状态动画
+.tab-item.active:not(.special) {
+  .tab-icon {
+    animation: tabActive 0.3s ease;
+  }
+}
+
+@keyframes tabActive {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// 特殊按钮点击动画
+.tab-item.special .tab-icon:active {
+  animation: specialActive 0.2s ease;
+}
+
+@keyframes specialActive {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.9);
+  }
+}

@@ -1,0 +1,658 @@
+.workflow-status {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 32rpx;
+
+  // 工作流头部
+  .workflow-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32rpx;
+    padding-bottom: 16rpx;
+    border-bottom: 1rpx solid #f0f0f0;
+
+    .workflow-title {
+      font-size: 32rpx;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .workflow-progress-text {
+      font-size: 24rpx;
+      color: #576b95;
+      font-weight: 500;
+    }
+  }
+
+  // 步骤容器
+  .workflow-steps {
+    position: relative;
+  }
+
+  // 水平布局
+  &.horizontal {
+    .workflow-steps {
+      display: flex;
+      align-items: flex-start;
+      gap: 16rpx;
+      overflow-x: auto;
+      padding: 16rpx 0;
+
+      .workflow-step {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 120rpx;
+        flex-shrink: 0;
+
+        .step-icon-container {
+          position: relative;
+          margin-bottom: 16rpx;
+
+          .step-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48rpx;
+            height: 48rpx;
+            border-radius: 50%;
+            border: 2rpx solid #e8e8e8;
+            background-color: #fff;
+            transition: all 0.3s ease;
+
+            .pending-dot {
+              width: 12rpx;
+              height: 12rpx;
+              border-radius: 50%;
+              background-color: #e8e8e8;
+            }
+          }
+
+          .step-number {
+            position: absolute;
+            bottom: -8rpx;
+            right: -8rpx;
+            font-size: 18rpx;
+            color: #999;
+            background-color: #f5f5f5;
+            width: 24rpx;
+            height: 24rpx;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+          }
+        }
+
+        .step-content {
+          text-align: center;
+
+          .step-name {
+            font-size: 24rpx;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 8rpx;
+            line-height: 1.3;
+          }
+
+          .step-status-info {
+            .status-text {
+              font-size: 20rpx;
+              line-height: 1.2;
+
+              &.completed {
+                color: #07c160;
+              }
+
+              &.current {
+                color: #576b95;
+                font-weight: 600;
+              }
+
+              &.pending {
+                color: #999;
+              }
+
+              &.rejected {
+                color: #ff4757;
+              }
+            }
+          }
+
+          .step-details {
+            margin-top: 8rpx;
+
+            .step-description,
+            .step-assignee {
+              font-size: 18rpx;
+              color: #666;
+              line-height: 1.3;
+              margin-bottom: 4rpx;
+            }
+          }
+        }
+
+        // 水平连接线
+        .step-connector-horizontal {
+          position: absolute;
+          top: 24rpx;
+          right: -16rpx;
+          width: 16rpx;
+          height: 2rpx;
+          background-color: #e8e8e8;
+          z-index: -1;
+        }
+
+        // 状态样式
+        &.completed {
+          .step-icon {
+            background-color: #e8f7ee;
+            border-color: #07c160;
+          }
+
+          .step-connector-horizontal {
+            background-color: #07c160;
+          }
+
+          .step-number {
+            background-color: #07c160;
+            color: #fff;
+          }
+        }
+
+        &.current {
+          .step-icon {
+            background-color: #e8f0fe;
+            border-color: #576b95;
+            animation: pulse-ring 2s infinite;
+          }
+
+          .step-number {
+            background-color: #576b95;
+            color: #fff;
+          }
+        }
+
+        &.rejected {
+          .step-icon {
+            background-color: #ffedef;
+            border-color: #ff4757;
+          }
+
+          .step-number {
+            background-color: #ff4757;
+            color: #fff;
+          }
+        }
+
+        &.clickable {
+          cursor: pointer;
+
+          &:hover {
+            .step-icon {
+              transform: scale(1.1);
+            }
+          }
+
+          &:active {
+            .step-icon {
+              transform: scale(0.95);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // 垂直布局
+  &.vertical {
+    .workflow-steps {
+      .workflow-step {
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 40rpx;
+        padding-left: 64rpx;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .step-icon-container {
+          position: absolute;
+          left: 0;
+          top: 0;
+
+          .step-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48rpx;
+            height: 48rpx;
+            border-radius: 50%;
+            border: 2rpx solid #e8e8e8;
+            background-color: #fff;
+            transition: all 0.3s ease;
+
+            .pending-dot {
+              width: 12rpx;
+              height: 12rpx;
+              border-radius: 50%;
+              background-color: #e8e8e8;
+            }
+          }
+
+          .step-number {
+            position: absolute;
+            bottom: -4rpx;
+            right: -4rpx;
+            font-size: 16rpx;
+            color: #999;
+            background-color: #f5f5f5;
+            width: 20rpx;
+            height: 20rpx;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+          }
+        }
+
+        .step-content {
+          flex: 1;
+          padding-top: 8rpx;
+
+          .step-main {
+            margin-bottom: 12rpx;
+
+            .step-name {
+              font-size: 28rpx;
+              color: #333;
+              font-weight: 600;
+              margin-bottom: 8rpx;
+              line-height: 1.3;
+            }
+
+            .step-status-info {
+              .status-text {
+                font-size: 22rpx;
+                line-height: 1.2;
+
+                &.completed {
+                  color: #07c160;
+                }
+
+                &.current {
+                  color: #576b95;
+                  font-weight: 600;
+                }
+
+                &.pending {
+                  color: #999;
+                }
+
+                &.rejected {
+                  color: #ff4757;
+                }
+              }
+            }
+          }
+
+          .step-details {
+            .step-description {
+              font-size: 24rpx;
+              color: #666;
+              line-height: 1.5;
+              margin-bottom: 8rpx;
+            }
+
+            .step-assignee {
+              font-size: 22rpx;
+              color: #999;
+              line-height: 1.3;
+            }
+          }
+        }
+
+        // 垂直连接线
+        .step-connector {
+          position: absolute;
+          left: 23rpx;
+          top: -40rpx;
+          width: 2rpx;
+          height: 40rpx;
+          background-color: #e8e8e8;
+          z-index: -1;
+        }
+
+        // 状态样式
+        &.completed {
+          .step-icon {
+            background-color: #e8f7ee;
+            border-color: #07c160;
+          }
+
+          .step-connector {
+            background-color: #07c160;
+          }
+
+          .step-number {
+            background-color: #07c160;
+            color: #fff;
+          }
+        }
+
+        &.current {
+          .step-icon {
+            background-color: #e8f0fe;
+            border-color: #576b95;
+            animation: pulse-ring 2s infinite;
+          }
+
+          .step-number {
+            background-color: #576b95;
+            color: #fff;
+          }
+
+          .step-content .step-main .step-name {
+            color: #576b95;
+          }
+        }
+
+        &.rejected {
+          .step-icon {
+            background-color: #ffedef;
+            border-color: #ff4757;
+          }
+
+          .step-number {
+            background-color: #ff4757;
+            color: #fff;
+          }
+        }
+
+        &.clickable {
+          cursor: pointer;
+
+          &:hover {
+            .step-content {
+              background-color: #f8f9fa;
+              border-radius: 12rpx;
+              padding: 16rpx;
+              margin: -8rpx -16rpx;
+            }
+          }
+
+          &:active {
+            .step-icon {
+              transform: scale(0.95);
+            }
+          }
+        }
+      }
+    }
+
+    // 总体进度条
+    .overall-progress {
+      margin-top: 32rpx;
+      padding-top: 24rpx;
+      border-top: 1rpx solid #f0f0f0;
+
+      .progress-bar {
+        width: 100%;
+        height: 8rpx;
+        background-color: #f0f0f0;
+        border-radius: 4rpx;
+        margin-bottom: 16rpx;
+        overflow: hidden;
+
+        .progress-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #07c160 0%, #06ad56 100%);
+          border-radius: 4rpx;
+          transition: width 0.6s ease;
+        }
+      }
+
+      .progress-text {
+        font-size: 24rpx;
+        color: #666;
+        text-align: center;
+      }
+    }
+  }
+}
+
+// 脉搏动画
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(87, 107, 149, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10rpx rgba(87, 107, 149, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(87, 107, 149, 0);
+  }
+}
+
+// 小屏幕适配
+@media screen and (max-width: 350px) {
+  .workflow-status {
+    padding: 24rpx;
+
+    .workflow-header {
+      margin-bottom: 24rpx;
+
+      .workflow-title {
+        font-size: 28rpx;
+      }
+
+      .workflow-progress-text {
+        font-size: 22rpx;
+      }
+    }
+
+    &.horizontal {
+      .workflow-steps {
+        gap: 12rpx;
+
+        .workflow-step {
+          min-width: 100rpx;
+
+          .step-icon-container {
+            .step-icon {
+              width: 40rpx;
+              height: 40rpx;
+            }
+
+            .step-number {
+              width: 20rpx;
+              height: 20rpx;
+              font-size: 16rpx;
+            }
+          }
+
+          .step-content {
+            .step-name {
+              font-size: 22rpx;
+            }
+
+            .step-status-info .status-text {
+              font-size: 18rpx;
+            }
+
+            .step-details {
+              .step-description,
+              .step-assignee {
+                font-size: 16rpx;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &.vertical {
+      .workflow-steps {
+        .workflow-step {
+          padding-left: 56rpx;
+          margin-bottom: 32rpx;
+
+          .step-icon-container {
+            .step-icon {
+              width: 40rpx;
+              height: 40rpx;
+            }
+
+            .step-number {
+              width: 18rpx;
+              height: 18rpx;
+              font-size: 14rpx;
+            }
+          }
+
+          .step-connector {
+            left: 19rpx;
+          }
+
+          .step-content {
+            .step-main .step-name {
+              font-size: 26rpx;
+            }
+
+            .step-details {
+              .step-description {
+                font-size: 22rpx;
+              }
+
+              .step-assignee {
+                font-size: 20rpx;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 大屏幕适配
+@media screen and (min-width: 414px) {
+  .workflow-status {
+    padding: 40rpx;
+
+    &.horizontal {
+      .workflow-steps {
+        .workflow-step {
+          min-width: 140rpx;
+
+          .step-icon-container {
+            .step-icon {
+              width: 56rpx;
+              height: 56rpx;
+            }
+          }
+
+          .step-content .step-name {
+            font-size: 26rpx;
+          }
+        }
+      }
+    }
+
+    &.vertical {
+      .workflow-steps {
+        .workflow-step {
+          padding-left: 72rpx;
+
+          .step-icon-container {
+            .step-icon {
+              width: 56rpx;
+              height: 56rpx;
+            }
+          }
+
+          .step-connector {
+            left: 27rpx;
+          }
+
+          .step-content {
+            .step-main .step-name {
+              font-size: 30rpx;
+            }
+
+            .step-details .step-description {
+              font-size: 26rpx;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 深色模式支持 (预留)
+@media (prefers-color-scheme: dark) {
+  .workflow-status {
+    background-color: #1f1f1f;
+
+    .workflow-header {
+      border-bottom-color: #333;
+
+      .workflow-title {
+        color: #fff;
+      }
+
+      .workflow-progress-text {
+        color: #8bb6f7;
+      }
+    }
+
+    .workflow-step {
+      .step-content {
+        .step-main .step-name {
+          color: #fff;
+        }
+
+        .step-details {
+          .step-description,
+          .step-assignee {
+            color: #ccc;
+          }
+        }
+      }
+
+      .step-icon {
+        background-color: #2a2a2a;
+        border-color: #444;
+      }
+
+      .step-number {
+        background-color: #444;
+        color: #ccc;
+      }
+
+      .step-connector,
+      .step-connector-horizontal {
+        background-color: #444;
+      }
+    }
+
+    .overall-progress {
+      border-top-color: #333;
+
+      .progress-bar {
+        background-color: #333;
+      }
+
+      .progress-text {
+        color: #ccc;
+      }
+    }
+  }
+}

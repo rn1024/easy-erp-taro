@@ -1,0 +1,127 @@
+.tasks-page {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+
+  .tasks-scroll {
+    height: 100%;
+    background-color: #f5f7fa;
+
+    .tasks-content {
+      padding: 16rpx 32rpx 32rpx 32rpx;
+
+      // 空状态样式
+      .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 120rpx 32rpx;
+        text-align: center;
+
+        .empty-icon {
+          font-size: 120rpx;
+          margin-bottom: 32rpx;
+          opacity: 0.6;
+        }
+
+        .empty-title {
+          font-size: 32rpx;
+          font-weight: 600;
+          color: #333;
+          margin-bottom: 16rpx;
+        }
+
+        .empty-desc {
+          font-size: 26rpx;
+          color: #666;
+          line-height: 1.5;
+        }
+      }
+
+      .bottom-spacer {
+        height: 40rpx;
+      }
+    }
+  }
+}
+
+// 小屏幕适配
+@media screen and (max-width: 350px) {
+  .tasks-page {
+    .tasks-scroll {
+      .tasks-content {
+        padding: 12rpx 24rpx 24rpx 24rpx;
+
+        .empty-state {
+          padding: 100rpx 24rpx;
+
+          .empty-icon {
+            font-size: 100rpx;
+            margin-bottom: 24rpx;
+          }
+
+          .empty-title {
+            font-size: 28rpx;
+            margin-bottom: 12rpx;
+          }
+
+          .empty-desc {
+            font-size: 24rpx;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 大屏幕适配
+@media screen and (min-width: 414px) {
+  .tasks-page {
+    .tasks-scroll {
+      .tasks-content {
+        padding: 20rpx 40rpx 40rpx 40rpx;
+
+        .empty-state {
+          padding: 140rpx 40rpx;
+
+          .empty-icon {
+            font-size: 140rpx;
+            margin-bottom: 40rpx;
+          }
+
+          .empty-title {
+            font-size: 36rpx;
+            margin-bottom: 20rpx;
+          }
+
+          .empty-desc {
+            font-size: 28rpx;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 深色模式支持 (预留)
+@media (prefers-color-scheme: dark) {
+  .tasks-page {
+    background-color: #1a1a1a;
+
+    .tasks-scroll {
+      background-color: #1a1a1a;
+
+      .tasks-content {
+        .empty-state {
+          .empty-title {
+            color: #fff;
+          }
+
+          .empty-desc {
+            color: #ccc;
+          }
+        }
+      }
+    }
+  }
+}

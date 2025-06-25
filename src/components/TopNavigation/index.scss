@@ -1,0 +1,227 @@
+.top-navigation {
+  position: relative;
+  z-index: 200;
+
+  .nav-header {
+    display: flex;
+    align-items: center;
+    height: 88rpx;
+    padding: 0 32rpx;
+    background-color: #fff;
+    border-bottom: 1rpx solid #f0f0f0;
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+
+      .back-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44rpx;
+        height: 44rpx;
+        margin-right: 16rpx;
+        cursor: pointer;
+        border-radius: 8rpx;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+
+        &:active {
+          background-color: #ebebeb;
+        }
+      }
+
+      .nav-title {
+        font-size: 32rpx;
+        font-weight: 600;
+        color: #333;
+        line-height: 1.2;
+      }
+    }
+
+    .nav-center {
+      flex: 1;
+      margin: 0 16rpx;
+
+      // 自定义SearchBar样式
+      :global(.nut-searchbar) {
+        background-color: #f8f8f8;
+        border-radius: 44rpx;
+        height: 64rpx;
+
+        .nut-searchbar__content {
+          background-color: transparent;
+          border: none;
+          box-shadow: none;
+        }
+
+        .nut-searchbar__input-inner {
+          font-size: 28rpx;
+          color: #333;
+
+          &::placeholder {
+            color: #999;
+          }
+        }
+
+        .nut-icon {
+          color: #999;
+        }
+      }
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+
+      .filter-button {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44rpx;
+        height: 44rpx;
+        cursor: pointer;
+        border-radius: 8rpx;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+
+        &:active {
+          background-color: #ebebeb;
+        }
+
+        .filter-badge {
+          position: absolute;
+          top: -2rpx;
+          right: -2rpx;
+          transform: scale(0.8);
+        }
+      }
+    }
+  }
+}
+
+// 筛选面板样式
+.filter-popup {
+  :global(.nut-popup) {
+    width: 80%;
+    max-width: 600rpx;
+    height: 100%;
+  }
+
+  .filter-panel {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+
+    .filter-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32rpx;
+      border-bottom: 1rpx solid #f0f0f0;
+
+      .filter-title {
+        font-size: 32rpx;
+        font-weight: 600;
+        color: #333;
+      }
+    }
+
+    .filter-content {
+      flex: 1;
+      padding: 32rpx;
+      overflow-y: auto;
+
+      .filter-placeholder {
+        color: #999;
+        text-align: center;
+        margin-top: 80rpx;
+        font-size: 28rpx;
+      }
+    }
+  }
+}
+
+// 响应式适配
+@media screen and (max-width: 350px) {
+  .top-navigation {
+    .nav-header {
+      height: 80rpx;
+      padding: 0 24rpx;
+
+      .nav-left .nav-title {
+        font-size: 30rpx;
+      }
+
+      .nav-center {
+        margin: 0 12rpx;
+
+        :global(.nut-searchbar) {
+          height: 60rpx;
+
+          .nut-searchbar__input-inner {
+            font-size: 26rpx;
+          }
+        }
+      }
+
+      .back-button,
+      .filter-button {
+        width: 40rpx;
+        height: 40rpx;
+      }
+    }
+  }
+}
+
+// 深色模式支持 (预留)
+@media (prefers-color-scheme: dark) {
+  .top-navigation {
+    .nav-header {
+      background-color: #1f1f1f;
+      border-bottom-color: #333;
+
+      .nav-left .nav-title {
+        color: #fff;
+      }
+
+      .nav-center :global(.nut-searchbar) {
+        background-color: #333;
+
+        .nut-searchbar__input-inner {
+          color: #fff;
+
+          &::placeholder {
+            color: #999;
+          }
+        }
+      }
+    }
+  }
+
+  .filter-panel {
+    background-color: #1f1f1f;
+
+    .filter-header {
+      border-bottom-color: #333;
+
+      .filter-title {
+        color: #fff;
+      }
+    }
+
+    .filter-content .filter-placeholder {
+      color: #999;
+    }
+  }
+}

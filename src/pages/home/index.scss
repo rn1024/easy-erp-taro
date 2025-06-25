@@ -1,0 +1,72 @@
+.home-page {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+
+  .home-scroll {
+    height: 100%;
+    background-color: #f5f7fa;
+
+    .home-overview {
+      margin-bottom: 24rpx;
+      background-color: transparent;
+      padding: 32rpx 32rpx 0 32rpx;
+    }
+
+    .home-actions {
+      margin: 0 32rpx 32rpx 32rpx;
+      background-color: transparent;
+      padding: 0;
+    }
+
+    .bottom-spacer {
+      height: 40rpx;
+    }
+  }
+}
+
+// 小屏幕适配
+@media screen and (max-width: 350px) {
+  .home-page {
+    .home-scroll {
+      .home-overview {
+        padding: 24rpx 24rpx 0 24rpx;
+      }
+
+      .home-actions {
+        margin: 0 24rpx 24rpx 24rpx;
+      }
+    }
+  }
+}
+
+// 大屏幕适配
+@media screen and (min-width: 414px) {
+  .home-page {
+    .home-scroll {
+      .home-overview {
+        padding: 40rpx 40rpx 0 40rpx;
+      }
+
+      .home-actions {
+        margin: 0 40rpx 40rpx 40rpx;
+      }
+    }
+  }
+}
+
+// 确保滚动视图占满空间
+.home-scroll {
+  flex: 1;
+  height: 100%;
+}
+
+// 深色模式支持 (预留)
+@media (prefers-color-scheme: dark) {
+  .home-page {
+    background-color: #1a1a1a;
+
+    .home-scroll {
+      background-color: #1a1a1a;
+    }
+  }
+}

@@ -1,0 +1,73 @@
+// 导入样式变量
+@import './styles/variables.scss';
+
+// 全局重置样式
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+page {
+  font-family: -apple-system-font, 'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: $text-primary;
+  background-color: $bg-secondary;
+  height: 100%;
+}
+
+// 全局滚动优化
+.taro-scroll-view {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
+
+// 通用工具类
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  @include flex-center;
+}
+
+.flex-between {
+  @include flex-between;
+}
+
+.flex-column {
+  @include flex-column;
+}
+
+.text-ellipsis {
+  @include text-ellipsis;
+}
+
+.text-ellipsis-2 {
+  @include text-ellipsis-2;
+}
+
+// 微信小程序安全区域
+.safe-area-top {
+  padding-top: $safe-area-top;
+}
+
+.safe-area-bottom {
+  padding-bottom: $safe-area-bottom;
+}
+
+// 页面容器基础样式
+.page-container {
+  @include page-container;
+}
+
+// 卡片基础样式
+.card {
+  @include card-style;
+}
+
+// 按钮重置
+.button-reset {
+  @include button-reset;
+}

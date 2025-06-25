@@ -1,0 +1,480 @@
+.workflow-overview {
+  padding: 32rpx;
+
+  // 头部标题和趋势
+  .overview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32rpx;
+
+    .overview-title {
+      font-size: 36rpx;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .trend-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8rpx;
+      padding: 8rpx 16rpx;
+      background-color: #f8f9fa;
+      border-radius: 16rpx;
+
+      .trend-icon {
+        font-size: 20rpx;
+        font-weight: bold;
+      }
+
+      .trend-text {
+        font-size: 22rpx;
+        font-weight: 500;
+      }
+    }
+  }
+
+  // 统计卡片网格
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16rpx;
+    margin-bottom: 32rpx;
+
+    .stat-card {
+      position: relative;
+      background-color: #fff;
+      border-radius: 16rpx;
+      padding: 32rpx;
+      border: 1rpx solid #f0f0f0;
+      transition: all 0.3s ease;
+      overflow: hidden;
+
+      &:hover {
+        box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+        transform: translateY(-2rpx);
+      }
+
+      .stat-icon {
+        margin-bottom: 16rpx;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+
+      .stat-content {
+        .stat-number {
+          font-size: 48rpx;
+          font-weight: 600;
+          color: #333;
+          line-height: 1.2;
+          margin-bottom: 8rpx;
+          display: block;
+        }
+
+        .stat-label {
+          font-size: 24rpx;
+          color: #666;
+          font-weight: 500;
+        }
+      }
+
+      .stat-badge {
+        position: absolute;
+        top: 16rpx;
+        right: 16rpx;
+        padding: 8rpx 12rpx;
+        border-radius: 12rpx;
+        font-size: 20rpx;
+        font-weight: 600;
+
+        &.success {
+          background-color: #e8f7ee;
+          color: #07c160;
+          border: 1rpx solid #07c160;
+        }
+
+        &.danger {
+          background-color: #ffedef;
+          color: #ff4757;
+          border: 1rpx solid #ff4757;
+          animation: pulse-warning 2s infinite;
+        }
+
+        .badge-text {
+          font-size: 20rpx;
+          font-weight: 600;
+        }
+      }
+
+      // 卡片类型样式
+      &.primary {
+        border-left: 6rpx solid #576b95;
+      }
+
+      &.success {
+        border-left: 6rpx solid #07c160;
+      }
+
+      &.warning {
+        border-left: 6rpx solid #ff8f00;
+      }
+
+      &.danger {
+        border-left: 6rpx solid #ff4757;
+      }
+    }
+  }
+
+  // 详细统计
+  .detail-stats {
+    background-color: #fff;
+    border-radius: 16rpx;
+    padding: 32rpx;
+    border: 1rpx solid #f0f0f0;
+
+    .detail-title {
+      font-size: 32rpx;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 24rpx;
+    }
+
+    .detail-items {
+      margin-bottom: 32rpx;
+
+      .detail-item {
+        display: flex;
+        align-items: center;
+        padding: 16rpx 0;
+        border-bottom: 1rpx solid #f5f5f5;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .detail-icon {
+          width: 40rpx;
+          height: 40rpx;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 16rpx;
+        }
+
+        .detail-label {
+          flex: 1;
+          font-size: 26rpx;
+          color: #666;
+        }
+
+        .detail-value {
+          font-size: 26rpx;
+          font-weight: 600;
+          color: #333;
+        }
+      }
+    }
+
+    // 总体完成进度
+    .overall-progress {
+      .progress-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16rpx;
+
+        .progress-label {
+          font-size: 26rpx;
+          font-weight: 500;
+          color: #333;
+        }
+
+        .progress-value {
+          font-size: 32rpx;
+          font-weight: 600;
+          color: #07c160;
+        }
+      }
+
+      .progress-bar {
+        // 使用NutUI Progress组件的默认样式
+        margin-top: 8rpx;
+      }
+    }
+  }
+}
+
+// 警告脉搏动画
+@keyframes pulse-warning {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+// 小屏幕适配
+@media screen and (max-width: 350px) {
+  .workflow-overview {
+    padding: 24rpx;
+
+    .overview-header {
+      margin-bottom: 24rpx;
+
+      .overview-title {
+        font-size: 32rpx;
+      }
+
+      .trend-indicator {
+        padding: 6rpx 12rpx;
+
+        .trend-icon {
+          font-size: 18rpx;
+        }
+
+        .trend-text {
+          font-size: 20rpx;
+        }
+      }
+    }
+
+    .stats-grid {
+      gap: 12rpx;
+      margin-bottom: 24rpx;
+
+      .stat-card {
+        padding: 24rpx;
+
+        .stat-content {
+          .stat-number {
+            font-size: 40rpx;
+          }
+
+          .stat-label {
+            font-size: 22rpx;
+          }
+        }
+
+        .stat-badge {
+          top: 12rpx;
+          right: 12rpx;
+          padding: 6rpx 10rpx;
+
+          .badge-text {
+            font-size: 18rpx;
+          }
+        }
+      }
+    }
+
+    .detail-stats {
+      padding: 24rpx;
+
+      .detail-title {
+        font-size: 28rpx;
+        margin-bottom: 20rpx;
+      }
+
+      .detail-items {
+        margin-bottom: 24rpx;
+
+        .detail-item {
+          padding: 12rpx 0;
+
+          .detail-icon {
+            width: 36rpx;
+            height: 36rpx;
+            margin-right: 12rpx;
+          }
+
+          .detail-label,
+          .detail-value {
+            font-size: 24rpx;
+          }
+        }
+      }
+
+      .overall-progress {
+        .progress-header {
+          margin-bottom: 12rpx;
+
+          .progress-label {
+            font-size: 24rpx;
+          }
+
+          .progress-value {
+            font-size: 28rpx;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 大屏幕适配
+@media screen and (min-width: 414px) {
+  .workflow-overview {
+    padding: 40rpx;
+
+    .overview-header {
+      margin-bottom: 40rpx;
+
+      .overview-title {
+        font-size: 40rpx;
+      }
+
+      .trend-indicator {
+        padding: 10rpx 20rpx;
+
+        .trend-icon {
+          font-size: 24rpx;
+        }
+
+        .trend-text {
+          font-size: 24rpx;
+        }
+      }
+    }
+
+    .stats-grid {
+      gap: 20rpx;
+      margin-bottom: 40rpx;
+
+      .stat-card {
+        padding: 40rpx;
+
+        .stat-content {
+          .stat-number {
+            font-size: 56rpx;
+          }
+
+          .stat-label {
+            font-size: 26rpx;
+          }
+        }
+
+        .stat-badge {
+          padding: 10rpx 16rpx;
+
+          .badge-text {
+            font-size: 22rpx;
+          }
+        }
+      }
+    }
+
+    .detail-stats {
+      padding: 40rpx;
+
+      .detail-title {
+        font-size: 36rpx;
+        margin-bottom: 32rpx;
+      }
+
+      .detail-items {
+        margin-bottom: 40rpx;
+
+        .detail-item {
+          padding: 20rpx 0;
+
+          .detail-icon {
+            width: 48rpx;
+            height: 48rpx;
+            margin-right: 20rpx;
+          }
+
+          .detail-label,
+          .detail-value {
+            font-size: 28rpx;
+          }
+        }
+      }
+
+      .overall-progress {
+        .progress-header {
+          margin-bottom: 20rpx;
+
+          .progress-label {
+            font-size: 28rpx;
+          }
+
+          .progress-value {
+            font-size: 36rpx;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 深色模式支持 (预留)
+@media (prefers-color-scheme: dark) {
+  .workflow-overview {
+    .overview-header {
+      .overview-title {
+        color: #fff;
+      }
+
+      .trend-indicator {
+        background-color: #2a2a2a;
+      }
+    }
+
+    .stats-grid .stat-card {
+      background-color: #1f1f1f;
+      border-color: #333;
+
+      .stat-content {
+        .stat-number {
+          color: #fff;
+        }
+
+        .stat-label {
+          color: #ccc;
+        }
+      }
+    }
+
+    .detail-stats {
+      background-color: #1f1f1f;
+      border-color: #333;
+
+      .detail-title {
+        color: #fff;
+      }
+
+      .detail-items .detail-item {
+        border-bottom-color: #333;
+
+        .detail-label {
+          color: #ccc;
+        }
+
+        .detail-value {
+          color: #fff;
+        }
+      }
+
+      .overall-progress {
+        .progress-header {
+          .progress-label {
+            color: #fff;
+          }
+
+          .progress-value {
+            color: #07c160;
+          }
+        }
+
+        .progress-bar {
+          // 深色模式下保持默认样式
+        }
+      }
+    }
+  }
+}
