@@ -56,20 +56,40 @@
     display: block;
   }
 
-  // 第三行：状态徽章 + 优先级
+  // 第三行：状态圆圈图标 + 状态文字 + 优先级
   .status-row {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 20rpx;
     margin-left: 28rpx; // 对齐圆点
 
-    :global(.nut-badge) {
-      font-size: 22rpx;
-      font-weight: 400;
-      padding: 6rpx 16rpx;
-      border-radius: 12rpx;
-      line-height: 1.2;
-      margin-right: 24rpx;
+    .status-section {
+      display: flex;
+      align-items: center;
+
+      .status-circle {
+        width: 20rpx;
+        height: 20rpx;
+        border-radius: 50%;
+        border: 2rpx solid;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12rpx;
+
+        .status-inner {
+          width: 8rpx;
+          height: 8rpx;
+          border-radius: 50%;
+        }
+      }
+
+      .status-text {
+        font-size: 24rpx;
+        color: #333;
+        font-weight: 400;
+      }
     }
 
     .priority-text {
@@ -78,7 +98,7 @@
     }
   }
 
-  // 第四行：责任人 + 时间
+  // 第四行：责任人头像 + 姓名 + 时间
   .assignee-row {
     display: flex;
     align-items: center;
@@ -128,10 +148,10 @@
     }
   }
 
-  // 第五行：进度条 + 查看详情
+  // 第五行：进度条 + 步骤信息 + 查看详情
   .progress-row {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     margin-left: 28rpx; // 对齐圆点
 
@@ -140,8 +160,6 @@
       margin-right: 24rpx;
 
       :global(.nut-progress) {
-        margin-bottom: 8rpx;
-
         .nut-progress-outer {
           background-color: #e8e8e8;
           height: 8rpx;
@@ -158,6 +176,7 @@
         font-size: 22rpx;
         color: #666;
         line-height: 1.2;
+        margin-top: 4rpx;
       }
     }
 
@@ -194,9 +213,20 @@
       margin-bottom: 16rpx;
       margin-left: 24rpx;
 
-      :global(.nut-badge) {
-        font-size: 20rpx;
-        padding: 4rpx 12rpx;
+      .status-section {
+        .status-circle {
+          width: 18rpx;
+          height: 18rpx;
+
+          .status-inner {
+            width: 6rpx;
+            height: 6rpx;
+          }
+        }
+
+        .status-text {
+          font-size: 22rpx;
+        }
       }
 
       .priority-text {
@@ -210,8 +240,8 @@
 
       .assignee-info {
         .assignee-avatar :global(.nut-avatar) {
-          width: 40rpx;
-          height: 40rpx;
+          width: 40rpx !important;
+          height: 40rpx !important;
           font-size: 18rpx;
         }
 
@@ -228,14 +258,8 @@
     .progress-row {
       margin-left: 24rpx;
 
-      .progress-section {
-        .task-progress {
-          width: 160rpx;
-        }
-
-        .progress-text {
-          font-size: 20rpx;
-        }
+      .progress-section .progress-text {
+        font-size: 20rpx;
       }
 
       .view-details {
@@ -264,6 +288,10 @@
     .status-row {
       margin-left: 32rpx;
 
+      .status-section .status-text {
+        font-size: 26rpx;
+      }
+
       .priority-text {
         font-size: 26rpx;
       }
@@ -274,8 +302,8 @@
 
       .assignee-info {
         .assignee-avatar :global(.nut-avatar) {
-          width: 52rpx;
-          height: 52rpx;
+          width: 52rpx !important;
+          height: 52rpx !important;
         }
 
         .assignee-name {
@@ -291,14 +319,8 @@
     .progress-row {
       margin-left: 32rpx;
 
-      .progress-section {
-        .task-progress {
-          width: 240rpx;
-        }
-
-        .progress-text {
-          font-size: 24rpx;
-        }
+      .progress-section .progress-text {
+        font-size: 24rpx;
       }
 
       .view-details {
@@ -321,8 +343,14 @@
       color: #ccc;
     }
 
-    .status-row .priority-text {
-      color: #ccc;
+    .status-row {
+      .status-section .status-text {
+        color: #fff;
+      }
+
+      .priority-text {
+        color: #ccc;
+      }
     }
 
     .assignee-row {

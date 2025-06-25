@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text } from '@tarojs/components'
-import { Badge, Avatar, Progress } from '@nutui/nutui-react-taro'
+import { Avatar, Progress } from '@nutui/nutui-react-taro'
 import { Clock, Warning } from '@nutui/icons-react-taro'
 import { cn } from '../../utils/cn'
 import './index.scss'
@@ -55,11 +55,11 @@ const TaskCard: React.FC<TaskCardProps> = ({
   // 获取状态显示信息
   const getStatusInfo = (status: TaskStatus) => {
     const statusMap = {
-      pending: { text: '待处理', color: '#ffa500', bgColor: '#fff2e8' },
-      progress: { text: '进行中', color: '#576b95', bgColor: '#e8f0fe' },
-      completed: { text: '已完成', color: '#07c160', bgColor: '#e8f7ee' },
-      rejected: { text: '已拒绝', color: '#ff4757', bgColor: '#ffedef' },
-      overdue: { text: '已逾期', color: '#ff4757', bgColor: '#ffedef' }
+      pending: { text: '待处理', color: '#ffa500' },
+      progress: { text: '进行中', color: '#576b95' },
+      completed: { text: '已完成', color: '#07c160' },
+      rejected: { text: '已拒绝', color: '#ff4757' },
+      overdue: { text: '已逾期', color: '#ff4757' }
     }
     return statusMap[status] || statusMap.pending
   }
@@ -134,24 +134,29 @@ const TaskCard: React.FC<TaskCardProps> = ({
       {/* 第二行：描述 */}
       <Text className="task-description">{task.description}</Text>
 
-      {/* 第三行：状态徽章 + 优先级 */}
+      {/* 第三行：状态圆圈图标 + 状态文字 + 优先级 */}
       <View className="status-row">
-        <Badge
-          value={statusInfo.text}
-          style={{
-            backgroundColor: statusInfo.bgColor,
-            color: statusInfo.color,
-            border: 'none'
-          }}
-        />
+        <View className="status-section">
+          <View
+            className="status-circle"
+            style={{ borderColor: statusInfo.color }}
+          >
+            <View
+              className="status-inner"
+              style={{ backgroundColor: statusInfo.color }}
+            />
+          </View>
+          <Text className="status-text">{statusInfo.text}</Text>
+        </View>
         <Text className="priority-text">优先级: {priorityInfo.text}</Text>
       </View>
 
-      {/* 第四行：责任人 + 时间 */}
+      {/* 第四行：责任人头像 + 姓名 + 时间 */}
       <View className="assignee-row">
         <View className="assignee-info">
           <Avatar
             size="24"
+            src={task.assignee.avatar}
             className="assignee-avatar"
           >
             {task.assignee.name.slice(0, 1)}
@@ -166,14 +171,14 @@ const TaskCard: React.FC<TaskCardProps> = ({
         </View>
       </View>
 
-      {/* 第五行：进度条 + 查看详情 */}
+      {/* 第五行：进度条 + 步骤信息 + 查看详情 */}
       <View className="progress-row">
         <View className="progress-section">
           <Progress
             percentage={workflowProgress}
-            strokeWidth="4"
+            strokeWidth="8"
             color="#576b95"
-            style={{ width: '120px' }}
+            style={{ width: '120px', marginBottom: '4px' }}
           />
           <Text className="progress-text">
             {task.workflow.currentStep}/{task.workflow.totalSteps} {task.workflow.stepName}
