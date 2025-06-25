@@ -52,7 +52,6 @@ const HomePage: React.FC = () => {
 
   return (
     <MobileLayout
-      enableSafeArea
       className="home-page"
       footer={
         <BottomNavigation

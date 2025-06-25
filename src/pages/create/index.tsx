@@ -283,7 +283,6 @@ const CreatePage: React.FC = () => {
 
   return (
     <MobileLayout
-      enableSafeArea
       className="create-page"
       footer={
         <BottomNavigation

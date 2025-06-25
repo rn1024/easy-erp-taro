@@ -42,8 +42,8 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
       'iphone-x': isIphoneX
     })}>
 
-      {/* 状态栏占位 */}
-      {enableSafeArea && (
+      {/* 状态栏占位 - 仅在需要时显示 */}
+      {enableSafeArea && safeAreaStyles.statusBarHeight && (
         <View
           className="status-bar-placeholder"
           style={{ height: safeAreaStyles.statusBarHeight }}

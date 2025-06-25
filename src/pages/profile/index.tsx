@@ -111,7 +111,6 @@ const ProfilePage: React.FC = () => {
 
   return (
     <MobileLayout
-      enableSafeArea
       className="profile-page"
       footer={
         <BottomNavigation

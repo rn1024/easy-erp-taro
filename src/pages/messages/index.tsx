@@ -149,7 +149,6 @@ const MessagesPage: React.FC = () => {
 
   return (
     <MobileLayout
-      enableSafeArea
       className="messages-page"
       footer={
         <BottomNavigation
