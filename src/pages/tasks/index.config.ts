@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '任务管理'
+  navigationBarTitleText: '工作流管理'
 }

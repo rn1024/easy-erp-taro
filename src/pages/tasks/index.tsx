@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, ScrollView } from '@tarojs/components'
+import { View, ScrollView, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import {
   MobileLayout,
@@ -51,7 +51,6 @@ const TasksPage: React.FC = () => {
 
   return (
     <MobileLayout
-      enableSafeArea
       hasBottomTab={true}
       className="tasks-page"
       header={
@@ -59,6 +58,9 @@ const TasksPage: React.FC = () => {
           onSearch={handleSearch}
           onFilter={handleFilter}
           activeFilters={activeFilters}
+          showSearch={true}
+          showFilter={true}
+          searchPlaceholder="搜索任务、责任人..."
         />
       }
       footer={
@@ -74,25 +76,31 @@ const TasksPage: React.FC = () => {
         showScrollbar={false}
       >
         <View className="tasks-content">
-          {filteredTasks.length > 0 ? (
-            filteredTasks.map(task => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                onTaskClick={handleTaskClick}
-              />
-            ))
-          ) : (
-            <View className="empty-state">
-              <View className="empty-icon">📝</View>
-              <View className="empty-title">暂无任务</View>
-              <View className="empty-desc">
-                {searchQuery ? '没有找到相关任务' : '还没有分配给您的任务'}
+          {/* 任务列表标题 */}
+          <View className="tasks-header">
+            <Text className="tasks-title">任务列表 ({filteredTasks.length})</Text>
+          </View>
+
+          {/* 任务列表 */}
+          <View className="tasks-list">
+            {filteredTasks.length > 0 ? (
+              filteredTasks.map(task => (
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  onTaskClick={handleTaskClick}
+                />
+              ))
+            ) : (
+              <View className="empty-state">
+                <View className="empty-icon">📝</View>
+                <View className="empty-title">暂无任务</View>
+                <View className="empty-desc">
+                  {searchQuery ? '没有找到相关任务' : '还没有分配给您的任务'}
+                </View>
               </View>
-            </View>
-          )}
-
-
+            )}
+          </View>
         </View>
       </ScrollView>
     </MobileLayout>
