@@ -1,8 +1,10 @@
 import React from 'react'
 import { View, Text } from '@tarojs/components'
-import { Progress, Tag } from '@nutui/nutui-react-taro'
-import { CheckNormal, Clock, Warning, User, ArrowUp } from '@nutui/icons-react-taro'
+import { Tag } from '@nutui/nutui-react-taro'
+import { CheckNormal, Clock, Warning, ArrowUp } from '@nutui/icons-react-taro'
 import { cn } from '../../utils/cn'
+import DetailedStats from '../DetailedStats'
+import type { DetailedStatsData } from '../DetailedStats'
 import './index.scss'
 
 // 统计数据接口
@@ -126,52 +128,14 @@ const WorkflowOverview: React.FC<WorkflowOverviewProps> = ({
       </View>
 
       {/* 详细统计 */}
-      <View className="detail-stats">
-        <Text className="detail-title">详细统计</Text>
-
-        <View className="detail-items">
-          {/* 活跃用户 */}
-          <View className="detail-item">
-            <View className="detail-icon">
-              <User size="20" color="#576b95" />
-            </View>
-            <Text className="detail-label">活跃用户</Text>
-            <Text className="detail-value">{stats.activeUsers}人</Text>
-          </View>
-
-          {/* 完成率 */}
-          <View className="detail-item">
-            <View className="detail-icon">
-              <CheckNormal size="20" color="#07c160" />
-            </View>
-            <Text className="detail-label">完成率</Text>
-            <Text className="detail-value">{stats.completionRate}%</Text>
-          </View>
-
-          {/* 平均完成时间 */}
-          <View className="detail-item">
-            <View className="detail-icon">
-              <Clock size="20" color="#ff8f00" />
-            </View>
-            <Text className="detail-label">平均完成时间</Text>
-            <Text className="detail-value">{stats.avgCompletionTime}</Text>
-          </View>
-        </View>
-
-        {/* 总体完成进度 */}
-        <View className="overall-progress">
-          <View className="progress-header">
-            <Text className="progress-label">总体完成进度</Text>
-            <Text className="progress-value">{stats.overallProgress}%</Text>
-          </View>
-          <Progress
-            percentage={stats.overallProgress}
-            strokeWidth="16"
-            color="#07c160"
-            className="progress-bar"
-          />
-        </View>
-      </View>
+      <DetailedStats
+        stats={{
+          activeUsers: stats.activeUsers,
+          completionRate: stats.completionRate,
+          avgCompletionTime: stats.avgCompletionTime,
+          overallProgress: stats.overallProgress
+        }}
+      />
     </View>
   )
 }
