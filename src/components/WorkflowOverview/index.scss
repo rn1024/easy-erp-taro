@@ -14,21 +14,11 @@
       color: #333;
     }
 
-    .trend-indicator {
-      display: flex;
-      align-items: center;
-      gap: 8rpx;
-      padding: 8rpx 16rpx;
-      background-color: #f8f9fa;
-      border-radius: 16rpx;
-
-      .trend-icon {
-        font-size: 20rpx;
-        font-weight: bold;
-      }
-
-      .trend-text {
+    .trend-tag {
+      :global(.nut-tag) {
         font-size: 22rpx;
+        padding: 8rpx 16rpx;
+        border-radius: 16rpx;
         font-weight: 500;
       }
     }
@@ -55,11 +45,36 @@
         transform: translateY(-2rpx);
       }
 
-      .stat-icon {
+      .stat-icon-wrapper {
         margin-bottom: 16rpx;
         display: flex;
         align-items: center;
         justify-content: flex-start;
+
+        .stat-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 64rpx;
+          height: 64rpx;
+          border-radius: 16rpx;
+
+          &.primary {
+            background-color: #e8f0fe;
+          }
+
+          &.success {
+            background-color: #e8f7ee;
+          }
+
+          &.warning {
+            background-color: #fff2e8;
+          }
+
+          &.danger {
+            background-color: #ffedef;
+          }
+        }
       }
 
       .stat-content {
@@ -230,15 +245,10 @@
         font-size: 32rpx;
       }
 
-      .trend-indicator {
-        padding: 6rpx 12rpx;
-
-        .trend-icon {
-          font-size: 18rpx;
-        }
-
-        .trend-text {
+      .trend-tag {
+        :global(.nut-tag) {
           font-size: 20rpx;
+          padding: 6rpx 12rpx;
         }
       }
     }
@@ -328,15 +338,10 @@
         font-size: 40rpx;
       }
 
-      .trend-indicator {
-        padding: 10rpx 20rpx;
-
-        .trend-icon {
+      .trend-tag {
+        :global(.nut-tag) {
           font-size: 24rpx;
-        }
-
-        .trend-text {
-          font-size: 24rpx;
+          padding: 10rpx 20rpx;
         }
       }
     }

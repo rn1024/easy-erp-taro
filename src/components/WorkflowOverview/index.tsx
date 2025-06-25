@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text } from '@tarojs/components'
-import { Progress } from '@nutui/nutui-react-taro'
+import { Progress, Tag } from '@nutui/nutui-react-taro'
 import { CheckNormal, Clock, Warning, User } from '@nutui/icons-react-taro'
 import { cn } from '../../utils/cn'
 import './index.scss'
@@ -45,22 +45,21 @@ const WorkflowOverview: React.FC<WorkflowOverviewProps> = ({
     if (!showTrend || !stats.trend) return null
 
     const trendConfig = {
-      up: { text: '本周趋势', color: '#07c160', icon: '↗' },
-      down: { text: '本周趋势', color: '#ff4757', icon: '↘' },
-      stable: { text: '本周趋势', color: '#576b95', icon: '→' }
+      up: { text: '本周趋势', color: 'success', textColor: '#07c160' },
+      down: { text: '本周趋势', color: 'danger', textColor: '#ff4757' },
+      stable: { text: '本周趋势', color: 'primary', textColor: '#576b95' }
     }
 
     const config = trendConfig[stats.trend]
 
     return (
-      <View className="trend-indicator">
-        <Text className="trend-icon" style={{ color: config.color }}>
-          {config.icon}
-        </Text>
-        <Text className="trend-text" style={{ color: config.color }}>
-          {config.text}
-        </Text>
-      </View>
+      <Tag
+        type={config.color as any}
+        size="small"
+        className="trend-tag"
+      >
+        {config.text}
+      </Tag>
     )
   }
 
@@ -78,8 +77,10 @@ const WorkflowOverview: React.FC<WorkflowOverviewProps> = ({
 
         {/* 总任务数 */}
         <View className="stat-card primary">
-          <View className="stat-icon">
-            <CheckNormal size="24" color="#576b95" />
+          <View className="stat-icon-wrapper">
+            <View className="stat-icon primary">
+              <CheckNormal size="24" color="#576b95" />
+            </View>
           </View>
           <View className="stat-content">
             <Text className="stat-number">{stats.totalTasks}</Text>
@@ -89,8 +90,10 @@ const WorkflowOverview: React.FC<WorkflowOverviewProps> = ({
 
         {/* 已完成任务 */}
         <View className="stat-card success">
-          <View className="stat-icon">
-            <CheckNormal size="24" color="#07c160" />
+          <View className="stat-icon-wrapper">
+            <View className="stat-icon success">
+              <CheckNormal size="24" color="#07c160" />
+            </View>
           </View>
           <View className="stat-content">
             <Text className="stat-number">{stats.completedTasks}</Text>
@@ -103,8 +106,10 @@ const WorkflowOverview: React.FC<WorkflowOverviewProps> = ({
 
         {/* 待处理任务 */}
         <View className="stat-card warning">
-          <View className="stat-icon">
-            <Clock size="24" color="#ff8f00" />
+          <View className="stat-icon-wrapper">
+            <View className="stat-icon warning">
+              <Clock size="24" color="#ff8f00" />
+            </View>
           </View>
           <View className="stat-content">
             <Text className="stat-number">{stats.pendingTasks}</Text>
@@ -114,8 +119,10 @@ const WorkflowOverview: React.FC<WorkflowOverviewProps> = ({
 
         {/* 已逾期任务 */}
         <View className="stat-card danger">
-          <View className="stat-icon">
-            <Warning size="24" color="#ff4757" />
+          <View className="stat-icon-wrapper">
+            <View className="stat-icon danger">
+              <Warning size="24" color="#ff4757" />
+            </View>
           </View>
           <View className="stat-content">
             <Text className="stat-number">{stats.overdueTasks}</Text>
