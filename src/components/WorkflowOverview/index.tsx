@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text } from '@tarojs/components'
 import { Progress, Tag } from '@nutui/nutui-react-taro'
-import { CheckNormal, Clock, Warning, User } from '@nutui/icons-react-taro'
+import { CheckNormal, Clock, Warning, User, ArrowUp } from '@nutui/icons-react-taro'
 import { cn } from '../../utils/cn'
 import './index.scss'
 
@@ -42,24 +42,13 @@ const WorkflowOverview: React.FC<WorkflowOverviewProps> = ({
 
   // 格式化趋势显示
   const renderTrend = () => {
-    if (!showTrend || !stats.trend) return null
-
-    const trendConfig = {
-      up: { text: '本周趋势', color: 'success', textColor: '#07c160' },
-      down: { text: '本周趋势', color: 'danger', textColor: '#ff4757' },
-      stable: { text: '本周趋势', color: 'primary', textColor: '#576b95' }
-    }
-
-    const config = trendConfig[stats.trend]
+    if (!showTrend) return null
 
     return (
-      <Tag
-        type={config.color as any}
-        size="small"
-        className="trend-tag"
-      >
-        {config.text}
-      </Tag>
+      <View className="trend-badge">
+        <ArrowUp size="12" color="#fff" />
+        <Text className="trend-text">本周趋势</Text>
+      </View>
     )
   }
 

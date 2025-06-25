@@ -14,11 +14,17 @@
       color: #333;
     }
 
-    .trend-tag {
-      :global(.nut-tag) {
+    .trend-badge {
+      display: flex;
+      align-items: center;
+      background-color: #07c160;
+      border-radius: 16rpx;
+      padding: 8rpx 16rpx;
+      gap: 6rpx;
+
+      .trend-text {
         font-size: 22rpx;
-        padding: 8rpx 16rpx;
-        border-radius: 16rpx;
+        color: #fff;
         font-weight: 500;
       }
     }
@@ -36,7 +42,6 @@
       background-color: #fff;
       border-radius: 16rpx;
       padding: 32rpx;
-      border: 1rpx solid #f0f0f0;
       transition: all 0.3s ease;
       overflow: hidden;
 
@@ -122,22 +127,7 @@
         }
       }
 
-      // 卡片类型样式
-      &.primary {
-        border-left: 6rpx solid #576b95;
-      }
-
-      &.success {
-        border-left: 6rpx solid #07c160;
-      }
-
-      &.warning {
-        border-left: 6rpx solid #ff8f00;
-      }
-
-      &.danger {
-        border-left: 6rpx solid #ff4757;
-      }
+      // 卡片类型样式移除边框
     }
   }
 
@@ -146,7 +136,6 @@
     background-color: #fff;
     border-radius: 16rpx;
     padding: 32rpx;
-    border: 1rpx solid #f0f0f0;
 
     .detail-title {
       font-size: 32rpx;
@@ -245,10 +234,12 @@
         font-size: 32rpx;
       }
 
-      .trend-tag {
-        :global(.nut-tag) {
+      .trend-badge {
+        padding: 6rpx 12rpx;
+        gap: 4rpx;
+
+        .trend-text {
           font-size: 20rpx;
-          padding: 6rpx 12rpx;
         }
       }
     }
@@ -338,10 +329,12 @@
         font-size: 40rpx;
       }
 
-      .trend-tag {
-        :global(.nut-tag) {
+      .trend-badge {
+        padding: 10rpx 20rpx;
+        gap: 8rpx;
+
+        .trend-text {
           font-size: 24rpx;
-          padding: 10rpx 20rpx;
         }
       }
     }
