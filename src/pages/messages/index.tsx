@@ -150,6 +150,7 @@ const MessagesPage: React.FC = () => {
   return (
     <MobileLayout
       className="messages-page"
+      hasBottomTab={true}
       footer={
         <BottomNavigation
           messageCount={unreadCount}
@@ -265,8 +266,7 @@ const MessagesPage: React.FC = () => {
               </View>
             )}
 
-            {/* 底部安全区域占位 */}
-            <View className="bottom-spacer" />
+
           </View>
         </ScrollView>
       </View>

@@ -112,6 +112,7 @@ const ProfilePage: React.FC = () => {
   return (
     <MobileLayout
       className="profile-page"
+      hasBottomTab={true}
       footer={
         <BottomNavigation
           messageCount={3}

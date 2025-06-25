@@ -11,6 +11,8 @@ interface MobileLayoutProps {
   enableSafeArea?: boolean
   /** 启用键盘弹起适配 */
   enableKeyboardAdjust?: boolean
+  /** 是否有底部TabBar */
+  hasBottomTab?: boolean
   /** 页面头部内容 */
   header?: React.ReactNode
   /** 页面底部内容 */
@@ -27,6 +29,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   className,
   enableSafeArea = false,
   enableKeyboardAdjust = false,
+  hasBottomTab = false,
   header,
   footer,
   children
@@ -39,6 +42,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
     <View className={cn('mobile-layout', className, {
       'safe-area-enabled': enableSafeArea,
       'keyboard-adjust-enabled': enableKeyboardAdjust,
+      'has-bottom-tab': hasBottomTab,
       'iphone-x': isIphoneX
     })}>
 

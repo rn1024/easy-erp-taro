@@ -284,6 +284,7 @@ const CreatePage: React.FC = () => {
   return (
     <MobileLayout
       className="create-page"
+      hasBottomTab={true}
       footer={
         <BottomNavigation
           messageCount={3}

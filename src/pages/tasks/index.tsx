@@ -52,6 +52,7 @@ const TasksPage: React.FC = () => {
   return (
     <MobileLayout
       enableSafeArea
+      hasBottomTab={true}
       className="tasks-page"
       header={
         <TopNavigation
@@ -91,8 +92,7 @@ const TasksPage: React.FC = () => {
             </View>
           )}
 
-          {/* 底部安全区域占位 */}
-          <View className="bottom-spacer" />
+
         </View>
       </ScrollView>
     </MobileLayout>

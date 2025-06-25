@@ -30,6 +30,15 @@
     transition: all 0.3s ease;
   }
 
+  // 有底部TabBar时的样式
+  &.has-bottom-tab {
+    .layout-content {
+      // 为底部TabBar预留空间 (基础高度114rpx + 安全区域)
+      padding-bottom: calc(114rpx + env(safe-area-inset-bottom, 0px));
+      padding-bottom: calc(114rpx + constant(safe-area-inset-bottom, 0px)); /* 兼容性 */
+    }
+  }
+
   // 页面底部样式
   .layout-footer {
     width: 100%;

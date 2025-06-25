@@ -67,6 +67,7 @@ const HomePage: React.FC = () => {
   return (
     <MobileLayout
       className="home-page"
+      hasBottomTab={true}
       footer={
         <BottomNavigation
           messageCount={3}
@@ -146,8 +147,7 @@ const HomePage: React.FC = () => {
           className="home-actions"
         />
 
-        {/* 底部安全区域占位 */}
-        <View className="bottom-spacer" />
+
       </ScrollView>
     </MobileLayout>
   )
