@@ -201,9 +201,21 @@
         }
       }
 
-      .progress-bar {
-        // 使用NutUI Progress组件的默认样式
+            .progress-bar {
         margin-top: 8rpx;
+
+        // 覆盖NutUI Progress的样式实现渐变
+        :global(.nut-progress) {
+          .nut-progress-outer {
+            background-color: #f5f5f5;
+            border-radius: 8rpx;
+
+            .nut-progress-inner {
+              background: linear-gradient(90deg, #576b95 0%, #07c160 100%) !important;
+              border-radius: 8rpx;
+            }
+          }
+        }
       }
     }
   }

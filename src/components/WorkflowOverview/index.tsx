@@ -133,7 +133,7 @@ const WorkflowOverview: React.FC<WorkflowOverviewProps> = ({
           {/* 活跃用户 */}
           <View className="detail-item">
             <View className="detail-icon">
-              <User size="20" color="#666" />
+              <User size="20" color="#576b95" />
             </View>
             <Text className="detail-label">活跃用户</Text>
             <Text className="detail-value">{stats.activeUsers}人</Text>
@@ -142,7 +142,7 @@ const WorkflowOverview: React.FC<WorkflowOverviewProps> = ({
           {/* 完成率 */}
           <View className="detail-item">
             <View className="detail-icon">
-              <CheckNormal size="20" color="#666" />
+              <CheckNormal size="20" color="#07c160" />
             </View>
             <Text className="detail-label">完成率</Text>
             <Text className="detail-value">{stats.completionRate}%</Text>
@@ -151,7 +151,7 @@ const WorkflowOverview: React.FC<WorkflowOverviewProps> = ({
           {/* 平均完成时间 */}
           <View className="detail-item">
             <View className="detail-icon">
-              <Clock size="20" color="#666" />
+              <Clock size="20" color="#ff8f00" />
             </View>
             <Text className="detail-label">平均完成时间</Text>
             <Text className="detail-value">{stats.avgCompletionTime}</Text>
