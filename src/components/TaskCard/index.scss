@@ -3,7 +3,6 @@
   border-radius: 16rpx;
   padding: 32rpx;
   margin-bottom: 16rpx;
-  transition: all 0.3s ease;
   cursor: pointer;
 
   &:active {
@@ -19,8 +18,8 @@
     }
   }
 
-  // 标题行：圆点 + 标题 + 警告图标
-  .task-title-row {
+  // 第一行：圆点 + 标题 + 警告图标
+  .task-header {
     display: flex;
     align-items: center;
     margin-bottom: 16rpx;
@@ -47,33 +46,30 @@
     }
   }
 
-  // 任务描述
+  // 第二行：描述
   .task-description {
     font-size: 26rpx;
     color: #666;
     line-height: 1.5;
     margin-bottom: 20rpx;
-    padding-left: 28rpx; // 对齐圆点
+    margin-left: 28rpx; // 对齐圆点
+    display: block;
   }
 
-  // 状态和优先级行
-  .status-priority-row {
+  // 第三行：状态徽章 + 优先级
+  .status-row {
     display: flex;
     align-items: center;
     margin-bottom: 20rpx;
-    padding-left: 28rpx; // 对齐圆点
+    margin-left: 28rpx; // 对齐圆点
 
-    .status-badge {
+    :global(.nut-badge) {
+      font-size: 22rpx;
+      font-weight: 400;
+      padding: 6rpx 16rpx;
+      border-radius: 12rpx;
+      line-height: 1.2;
       margin-right: 24rpx;
-
-      :global(.nut-badge) {
-        font-size: 22rpx;
-        font-weight: 400;
-        padding: 6rpx 16rpx;
-        border-radius: 12rpx;
-        line-height: 1.2;
-        border: none;
-      }
     }
 
     .priority-text {
@@ -82,13 +78,13 @@
     }
   }
 
-  // 责任人和时间行
-  .assignee-time-row {
+  // 第四行：责任人 + 时间
+  .assignee-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20rpx;
-    padding-left: 28rpx; // 对齐圆点
+    margin-left: 28rpx; // 对齐圆点
 
     .assignee-info {
       display: flex;
@@ -98,11 +94,12 @@
         margin-right: 12rpx;
 
         :global(.nut-avatar) {
-          width: 48rpx;
-          height: 48rpx;
+          width: 48rpx !important;
+          height: 48rpx !important;
           font-size: 20rpx;
           background-color: #e8f0fe;
           color: #576b95;
+          border-radius: 50%;
         }
       }
 
@@ -113,12 +110,12 @@
       }
     }
 
-    .time-info {
+    .due-date {
       display: flex;
       align-items: center;
       gap: 6rpx;
 
-      .time-text {
+      .due-date-text {
         font-size: 24rpx;
         color: #ff4757;
         font-weight: 400;
@@ -131,32 +128,29 @@
     }
   }
 
-  // 进度行
+  // 第五行：进度条 + 查看详情
   .progress-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-left: 28rpx; // 对齐圆点
+    margin-left: 28rpx; // 对齐圆点
 
-    .progress-left {
+    .progress-section {
       flex: 1;
       margin-right: 24rpx;
 
-      .task-progress {
-        width: 200rpx;
+      :global(.nut-progress) {
         margin-bottom: 8rpx;
 
-        :global(.nut-progress) {
-          .nut-progress-outer {
-            background-color: #e8e8e8;
-            height: 8rpx;
-            border-radius: 4rpx;
-          }
+        .nut-progress-outer {
+          background-color: #e8e8e8;
+          height: 8rpx;
+          border-radius: 4rpx;
+        }
 
-          .nut-progress-inner {
-            border-radius: 4rpx;
-            transition: width 0.3s ease;
-          }
+        .nut-progress-inner {
+          border-radius: 4rpx;
+          transition: width 0.3s ease;
         }
       }
 
@@ -171,7 +165,7 @@
       font-size: 24rpx;
       color: #576b95;
       font-weight: 400;
-      text-decoration: none;
+      flex-shrink: 0;
     }
   }
 }
@@ -182,7 +176,7 @@
     padding: 24rpx;
     margin-bottom: 12rpx;
 
-    .task-title-row {
+    .task-header {
       margin-bottom: 12rpx;
 
       .task-title {
@@ -193,14 +187,14 @@
     .task-description {
       font-size: 24rpx;
       margin-bottom: 16rpx;
-      padding-left: 24rpx;
+      margin-left: 24rpx;
     }
 
-    .status-priority-row {
+    .status-row {
       margin-bottom: 16rpx;
-      padding-left: 24rpx;
+      margin-left: 24rpx;
 
-      .status-badge :global(.nut-badge) {
+      :global(.nut-badge) {
         font-size: 20rpx;
         padding: 4rpx 12rpx;
       }
@@ -210,9 +204,9 @@
       }
     }
 
-    .assignee-time-row {
+    .assignee-row {
       margin-bottom: 16rpx;
-      padding-left: 24rpx;
+      margin-left: 24rpx;
 
       .assignee-info {
         .assignee-avatar :global(.nut-avatar) {
@@ -226,15 +220,15 @@
         }
       }
 
-      .time-info .time-text {
+      .due-date .due-date-text {
         font-size: 22rpx;
       }
     }
 
     .progress-row {
-      padding-left: 24rpx;
+      margin-left: 24rpx;
 
-      .progress-left {
+      .progress-section {
         .task-progress {
           width: 160rpx;
         }
@@ -256,7 +250,7 @@
   .task-card {
     padding: 40rpx;
 
-    .task-title-row {
+    .task-header {
       .task-title {
         font-size: 32rpx;
       }
@@ -264,19 +258,19 @@
 
     .task-description {
       font-size: 28rpx;
-      padding-left: 32rpx;
+      margin-left: 32rpx;
     }
 
-    .status-priority-row {
-      padding-left: 32rpx;
+    .status-row {
+      margin-left: 32rpx;
 
       .priority-text {
         font-size: 26rpx;
       }
     }
 
-    .assignee-time-row {
-      padding-left: 32rpx;
+    .assignee-row {
+      margin-left: 32rpx;
 
       .assignee-info {
         .assignee-avatar :global(.nut-avatar) {
@@ -289,15 +283,15 @@
         }
       }
 
-      .time-info .time-text {
+      .due-date .due-date-text {
         font-size: 26rpx;
       }
     }
 
     .progress-row {
-      padding-left: 32rpx;
+      margin-left: 32rpx;
 
-      .progress-left {
+      .progress-section {
         .task-progress {
           width: 240rpx;
         }
@@ -319,7 +313,7 @@
   .task-card {
     background-color: #1f1f1f;
 
-    .task-title-row .task-title {
+    .task-header .task-title {
       color: #fff;
     }
 
@@ -327,22 +321,22 @@
       color: #ccc;
     }
 
-    .status-priority-row .priority-text {
+    .status-row .priority-text {
       color: #ccc;
     }
 
-    .assignee-time-row {
+    .assignee-row {
       .assignee-info .assignee-name {
         color: #fff;
       }
 
-      .time-info .time-text {
+      .due-date .due-date-text {
         color: #ff4757;
       }
     }
 
     .progress-row {
-      .progress-left .progress-text {
+      .progress-section .progress-text {
         color: #ccc;
       }
 

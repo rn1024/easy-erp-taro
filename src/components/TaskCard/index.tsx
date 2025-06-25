@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text } from '@tarojs/components'
 import { Badge, Avatar, Progress } from '@nutui/nutui-react-taro'
-import { Clock, User, Warning } from '@nutui/icons-react-taro'
+import { Clock, Warning } from '@nutui/icons-react-taro'
 import { cn } from '../../utils/cn'
 import './index.scss'
 
@@ -41,46 +41,42 @@ interface TaskCardProps {
   onTaskClick?: (task: Task) => void
   /** 自定义样式类名 */
   className?: string
-  /** 是否显示详细信息 */
-  showDetails?: boolean
 }
 
 /**
  * 任务卡片组件
- * 展示任务的完整信息，支持点击交互和状态显示
  */
 const TaskCard: React.FC<TaskCardProps> = ({
   task,
   onTaskClick,
-  className,
-  showDetails = true
+  className
 }) => {
 
   // 获取状态显示信息
   const getStatusInfo = (status: TaskStatus) => {
     const statusMap = {
-      pending: { text: '待处理', color: '#999', bgColor: '#f5f5f5' },
+      pending: { text: '待处理', color: '#ffa500', bgColor: '#fff2e8' },
       progress: { text: '进行中', color: '#576b95', bgColor: '#e8f0fe' },
       completed: { text: '已完成', color: '#07c160', bgColor: '#e8f7ee' },
       rejected: { text: '已拒绝', color: '#ff4757', bgColor: '#ffedef' },
-      overdue: { text: '已逾期', color: '#ff6b35', bgColor: '#fff2f0' }
+      overdue: { text: '已逾期', color: '#ff4757', bgColor: '#ffedef' }
     }
     return statusMap[status] || statusMap.pending
   }
 
-  // 获取优先级显示信息
+  // 获取优先级信息
   const getPriorityInfo = (priority: TaskPriority) => {
     const priorityMap = {
-      high: { text: '高', color: '#ff4757', dotColor: '#ff4757' },
-      medium: { text: '中', color: '#ffa500', dotColor: '#ffa500' },
-      low: { text: '低', color: '#07c160', dotColor: '#07c160' }
+      high: { text: '高', color: '#ff4757' },
+      medium: { text: '中', color: '#ffa500' },
+      low: { text: '低', color: '#07c160' }
     }
     return priorityMap[priority]
   }
 
   // 计算工作流进度
   const getWorkflowProgress = () => {
-    return (task.workflow.currentStep / task.workflow.totalSteps) * 100
+    return Math.round((task.workflow.currentStep / task.workflow.totalSteps) * 100)
   }
 
   // 格式化时间显示
@@ -100,8 +96,8 @@ const TaskCard: React.FC<TaskCardProps> = ({
       return `${diffDays}天后`
     } else {
       return date.toLocaleDateString('zh-CN', {
-        month: '2-digit',
-        day: '2-digit'
+        month: 'numeric',
+        day: 'numeric'
       })
     }
   }
@@ -117,76 +113,67 @@ const TaskCard: React.FC<TaskCardProps> = ({
 
   return (
     <View
-      className={cn('task-card', className, {
-        'overdue': isOverdue(),
-        'completed': task.status === 'completed'
-      })}
+      className={cn('task-card', className)}
       onClick={() => onTaskClick?.(task)}
     >
-      {/* 标题行：圆点 + 标题 + 警告图标 */}
-      <View className="task-title-row">
+      {/* 第一行：圆点 + 标题 + 警告图标 */}
+      <View className="task-header">
         <View
           className="priority-dot"
-          style={{ backgroundColor: priorityInfo.dotColor }}
+          style={{ backgroundColor: priorityInfo.color }}
         />
         <Text className="task-title">{task.title}</Text>
         {isOverdue() && (
           <Warning
             size="16"
             color="#ff4757"
-            className="warning-icon"
           />
         )}
       </View>
 
-      {/* 任务描述 */}
-      {task.description && (
-        <Text className="task-description">{task.description}</Text>
-      )}
+      {/* 第二行：描述 */}
+      <Text className="task-description">{task.description}</Text>
 
-      {/* 状态和优先级行 */}
-      <View className="status-priority-row">
+      {/* 第三行：状态徽章 + 优先级 */}
+      <View className="status-row">
         <Badge
           value={statusInfo.text}
           style={{
             backgroundColor: statusInfo.bgColor,
             color: statusInfo.color,
+            border: 'none'
           }}
-          className="status-badge"
         />
         <Text className="priority-text">优先级: {priorityInfo.text}</Text>
       </View>
 
-      {/* 责任人和时间行 */}
-      <View className="assignee-time-row">
+      {/* 第四行：责任人 + 时间 */}
+      <View className="assignee-row">
         <View className="assignee-info">
           <Avatar
-            size="small"
-            src={task.assignee.avatar}
+            size="24"
             className="assignee-avatar"
           >
-            {!task.assignee.avatar && task.assignee.name.slice(0, 1)}
+            {task.assignee.name.slice(0, 1)}
           </Avatar>
           <Text className="assignee-name">{task.assignee.name}</Text>
         </View>
 
-        <View className="time-info">
+        <View className="due-date">
           <Clock size="12" color="#ff4757" />
-          <Text className={cn('time-text', { 'overdue': isOverdue() })}>
-            {formatDueDate(task.dueDate)}
-          </Text>
+          <Text className="due-date-text">{formatDueDate(task.dueDate)}</Text>
           {isOverdue() && <Warning size="12" color="#ff4757" />}
         </View>
       </View>
 
-      {/* 进度行 */}
+      {/* 第五行：进度条 + 查看详情 */}
       <View className="progress-row">
-        <View className="progress-left">
+        <View className="progress-section">
           <Progress
             percentage={workflowProgress}
-            strokeWidth="8"
+            strokeWidth="4"
             color="#576b95"
-            className="task-progress"
+            style={{ width: '120px' }}
           />
           <Text className="progress-text">
             {task.workflow.currentStep}/{task.workflow.totalSteps} {task.workflow.stepName}
