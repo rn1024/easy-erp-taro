@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, ScrollView, Text } from '@tarojs/components'
-import { Tabs, Badge, Card } from '@nutui/nutui-react-taro'
-import { CheckNormal, Clock, User, Message } from '@nutui/icons-react-taro'
+import { Tabs, Badge, Card, Avatar } from '@nutui/nutui-react-taro'
+import { CheckNormal, Clock, User, Warning, Refresh } from '@nutui/icons-react-taro'
 import Taro from '@tarojs/taro'
 import {
   MobileLayout,
@@ -12,7 +12,7 @@ import './index.scss'
 // 消息类型接口
 interface Message {
   id: string
-  type: 'task' | 'approval' | 'workflow' | 'system'
+  type: 'task' | 'system' | 'unread'
   title: string
   content: string
   time: string
@@ -21,109 +21,124 @@ interface Message {
     name: string
     avatar?: string
   }
-  relatedTask?: {
-    id: string
-    name: string
-  }
+  category: string
+  action?: string
 }
 
 const MessagesPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('messages')
   const [currentMessageType, setCurrentMessageType] = useState('all')
 
-  // 模拟消息数据
+  // 模拟消息数据 - 按设计稿内容
   const messages: Message[] = [
     {
       id: '1',
       type: 'task',
-      title: '任务已分配',
-      content: '您收到一个新的任务：产品需求评审',
-      time: '2024-12-24 14:30',
+      title: '新任务分配',
+      content: '您被分配了新任务"产品需求评审"，请及时处理',
+      time: '6/22 10:30',
       isRead: false,
       sender: { name: '产品经理', avatar: '' },
-      relatedTask: { id: '1', name: '产品需求评审' }
+      category: '任务',
+      action: '查看任务'
     },
     {
       id: '2',
-      type: 'approval',
-      title: '待您审批',
-      content: '设计方案审批流程需要您的审批',
-      time: '2024-12-24 13:15',
+      type: 'unread',
+      title: '审批提醒',
+      content: '您有3个工作流程待审批，请尽快处理',
+      time: '6/22 09:15',
       isRead: false,
-      sender: { name: '张三', avatar: '' },
-      relatedTask: { id: '2', name: '设计方案审批' }
+      sender: { name: '', avatar: '' },
+      category: '审批'
     },
     {
       id: '3',
-      type: 'workflow',
-      title: '工作流状态更新',
-      content: '代码评审工作流已进入下一步骤',
-      time: '2024-12-24 11:45',
+      type: 'task',
+      title: '流程状态更新',
+      content: '用户界面设计流程已进入下一环节',
+      time: '6/22 08:45',
       isRead: true,
-      sender: { name: '系统', avatar: '' },
-      relatedTask: { id: '3', name: '代码评审' }
+      sender: { name: '李四', avatar: '' },
+      category: '流程'
     },
     {
       id: '4',
       type: 'system',
-      title: '系统通知',
-      content: '系统将于今晚22:00-23:00进行维护',
-      time: '2024-12-24 10:00',
+      title: '系统维护通知',
+      content: '系统将于今晚22:00-24:00进行维护，期间可能影响使用',
+      time: '6/21 16:00',
       isRead: true,
-      sender: { name: '系统管理员', avatar: '' }
+      sender: { name: '', avatar: '' },
+      category: '系统'
     },
     {
       id: '5',
       type: 'task',
-      title: '任务截止提醒',
-      content: '您的任务"用户反馈处理"将在2小时后截止',
-      time: '2024-12-24 09:30',
+      title: '任务即将到期',
+      content: '任务"移动端适配"将于明天到期，请注意及时完成',
+      time: '6/21 14:30',
       isRead: false,
-      sender: { name: '系统', avatar: '' },
-      relatedTask: { id: '4', name: '用户反馈处理' }
+      sender: { name: '', avatar: '' },
+      category: '任务',
+      action: '查看任务'
     }
   ]
 
-  // 消息分类配置
+  // 消息分类配置 - 按设计稿调整
   const messageTypes = [
     { key: 'all', label: '全部', count: messages.length },
+    { key: 'unread', label: '未读', count: messages.filter(m => !m.isRead).length },
     { key: 'task', label: '任务', count: messages.filter(m => m.type === 'task').length },
-    { key: 'approval', label: '审批', count: messages.filter(m => m.type === 'approval').length },
-    { key: 'workflow', label: '流程', count: messages.filter(m => m.type === 'workflow').length },
     { key: 'system', label: '系统', count: messages.filter(m => m.type === 'system').length }
   ]
 
   // 获取筛选后的消息
-  const filteredMessages = currentMessageType === 'all'
-    ? messages
-    : messages.filter(m => m.type === currentMessageType)
+  const getFilteredMessages = () => {
+    switch (currentMessageType) {
+      case 'unread':
+        return messages.filter(m => !m.isRead)
+      case 'task':
+        return messages.filter(m => m.type === 'task')
+      case 'system':
+        return messages.filter(m => m.type === 'system')
+      default:
+        return messages
+    }
+  }
+
+  const filteredMessages = getFilteredMessages()
 
   // 未读消息数量
   const unreadCount = messages.filter(m => !m.isRead).length
 
   // 获取消息图标
-  const getMessageIcon = (type: Message['type']) => {
-    switch (type) {
-      case 'task':
-        return <CheckNormal size="16" color="#07c160" />
-      case 'approval':
-        return <Clock size="16" color="#ff8f00" />
-      case 'workflow':
-        return <User size="16" color="#576b95" />
-      case 'system':
-        return <Message size="16" color="#ff4757" />
-      default:
-        return <Message size="16" color="#666" />
+  const getMessageIcon = (message: Message) => {
+    if (message.sender?.name === '产品经理') {
+      return <Avatar size="32" className="sender-avatar">产</Avatar>
     }
+    if (message.title.includes('审批')) {
+      return <Clock size="16" color="#ff8f00" />
+    }
+    if (message.title.includes('流程')) {
+      return <Avatar size="32" className="sender-avatar">李</Avatar>
+    }
+    if (message.type === 'system') {
+      return <Warning size="16" color="#ff4757" />
+    }
+    if (message.title.includes('即将到期')) {
+      return <CheckNormal size="16" color="#07c160" />
+    }
+    return <User size="16" color="#576b95" />
   }
 
   // 处理消息点击
   const handleMessageClick = (message: Message) => {
     console.log('点击消息:', message.title)
 
-    if (message.relatedTask) {
+    if (message.action) {
       Taro.showToast({
-        title: `跳转到任务: ${message.relatedTask.name}`,
+        title: message.action,
         icon: 'none',
         duration: 2000
       })
@@ -144,8 +159,6 @@ const MessagesPage: React.FC = () => {
       duration: 1500
     })
   }
-
-
 
   return (
     <MobileLayout
@@ -188,17 +201,7 @@ const MessagesPage: React.FC = () => {
               <Tabs.TabPane
                 key={type.key}
                 value={type.key}
-                title={
-                  <View className="tab-title">
-                    <Text>{type.label}</Text>
-                    {type.count > 0 && (
-                      <Badge
-                        content={type.count}
-                        className="tab-badge"
-                      />
-                    )}
-                  </View>
-                }
+                title={type.label}
               />
             ))}
           </Tabs>
@@ -214,44 +217,40 @@ const MessagesPage: React.FC = () => {
           <View className="messages-list">
             {filteredMessages.length > 0 ? (
               filteredMessages.map(message => (
-                <Card
+                <View
                   key={message.id}
-                  className={`message-card ${!message.isRead ? 'unread' : ''}`}
+                  className={`message-item ${!message.isRead ? 'unread' : ''}`}
                   onClick={() => handleMessageClick(message)}
                 >
-                  <View className="message-content">
-                    <View className="message-header">
-                      <View className="message-info">
-                        <View className="message-icon">
-                          {getMessageIcon(message.type)}
-                        </View>
-                        <View className="message-title-wrapper">
-                          <Text className="message-title">{message.title}</Text>
-                          {!message.isRead && (
-                            <View className="unread-dot" />
-                          )}
-                        </View>
-                      </View>
-                      <Text className="message-time">{message.time}</Text>
+                  <View className="message-left">
+                    <View className="message-icon">
+                      {getMessageIcon(message)}
                     </View>
+                  </View>
 
-                    <View className="message-body">
-                      <Text className="message-text">{message.content}</Text>
-                      {message.sender && (
-                        <Text className="message-sender">
-                          来自: {message.sender.name}
-                        </Text>
+                  <View className="message-main">
+                    <View className="message-header">
+                      <View className="message-title-row">
+                        <Text className="message-title">{message.title}</Text>
+                        <Text className="message-category">{message.category}</Text>
+                      </View>
+                      {!message.isRead && (
+                        <View className="unread-dot" />
                       )}
                     </View>
 
-                    {message.relatedTask && (
-                      <View className="related-task">
-                        <Text className="task-label">相关任务:</Text>
-                        <Text className="task-name">{message.relatedTask.name}</Text>
-                      </View>
-                    )}
+                    <Text className="message-content">{message.content}</Text>
+
+                    <View className="message-footer">
+                      <Text className="message-sender-time">
+                        {message.sender?.name && `${message.sender.name} • `}{message.time}
+                      </Text>
+                      {message.action && (
+                        <Text className="message-action">{message.action}</Text>
+                      )}
+                    </View>
                   </View>
-                </Card>
+                </View>
               ))
             ) : (
               <View className="empty-state">
@@ -265,8 +264,6 @@ const MessagesPage: React.FC = () => {
                 </View>
               </View>
             )}
-
-
           </View>
         </ScrollView>
       </View>
