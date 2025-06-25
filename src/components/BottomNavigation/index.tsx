@@ -3,7 +3,7 @@ import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { Badge } from '@nutui/nutui-react-taro'
 import { Home, CheckNormal, Plus, Message, User } from '@nutui/icons-react-taro'
-import { useMobile, useIsIphoneX } from '../../hooks/useMobile'
+// 移除不必要的导入，使用CSS env()处理安全区域
 import { cn } from '../../utils/cn'
 import tabBarManager from '../../utils/tabBarManager'
 import './index.scss'
@@ -33,7 +33,7 @@ const TAB_CONFIG = [
   },
   {
     id: 'create',
-    label: '创建',
+    label: '创建流程',
     icon: Plus,
     pagePath: '/pages/create/index',
     special: true,
@@ -60,14 +60,12 @@ const TAB_CONFIG = [
  * 微信小程序增强底部导航组件
  * 自主管理导航逻辑，无需外部传入回调函数
  * 集成微信小程序API，支持振动反馈、徽章显示、页面预加载等功能
+ * 动态适配底部安全区域高度
  */
 const BottomNavigation: React.FC<BottomNavigationProps> = ({
   messageCount = 0,
   visible = true
 }) => {
-  const { screenInfo } = useMobile()
-  const isIphoneX = useIsIphoneX()
-
   const [currentTab, setCurrentTab] = useState('home')
   const [currentMessageCount, setCurrentMessageCount] = useState(messageCount)
 
@@ -231,15 +229,11 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
 
   if (!visible) return null
 
+  // 简化：让CSS env()自动处理安全区域
+  console.log('BottomNavigation 使用CSS env()自动处理安全区域')
+
   return (
-    <View
-      className={cn('bottom-navigation', {
-        'iphone-x': isIphoneX
-      })}
-      style={{
-        paddingBottom: isIphoneX ? '34rpx' : '0'
-      }}
-    >
+    <View className="bottom-navigation">
       <View className="nav-content">
         {TAB_CONFIG.map(tab => renderTabItem(tab))}
       </View>

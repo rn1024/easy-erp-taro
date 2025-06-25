@@ -6,7 +6,13 @@
   z-index: 1000;
   background-color: #fff;
   border-top: 1rpx solid #e8e8e8;
+  box-shadow: 0 -2rpx 8rpx rgba(0, 0, 0, 0.08);
 
+  /* 使用微信小程序支持的CSS安全区域变量 */
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: constant(safe-area-inset-bottom); /* 兼容性 */
+
+  // 基础导航内容
   .nav-content {
     display: flex;
     align-items: stretch;
@@ -47,26 +53,30 @@
             transition: all 0.2s ease;
           }
 
-          .tab-badge {
-            position: absolute;
-            top: -4rpx;
-            right: -4rpx;
-            transform: scale(0.8);
+                  .tab-badge {
+          position: absolute;
+          top: -8rpx;
+          right: -8rpx;
+          transform: scale(0.9);
+          z-index: 2;
 
-            :global(.nut-badge) {
-              background-color: #ff4757;
-              color: #fff;
-              font-size: 20rpx;
-              line-height: 1;
-              padding: 4rpx 6rpx;
-              border-radius: 10rpx;
-              min-width: 20rpx;
-              height: 20rpx;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            }
+          :global(.nut-badge) {
+            background-color: #ff4757;
+            color: #fff;
+            font-size: 18rpx;
+            line-height: 1;
+            padding: 4rpx 8rpx;
+            border-radius: 12rpx;
+            min-width: 24rpx;
+            height: 24rpx;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            box-shadow: 0 2rpx 4rpx rgba(255, 71, 87, 0.3);
+            border: 2rpx solid #fff;
           }
+        }
         }
 
         .tab-label {
@@ -75,6 +85,9 @@
           transition: color 0.2s ease;
           text-align: center;
           line-height: 1.2;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
 
           &.active {
             color: #07c160;
@@ -113,6 +126,9 @@
           font-weight: 500;
           text-align: center;
           line-height: 1.2;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .special-bg {
@@ -136,9 +152,38 @@
       }
     }
   }
+
+  // iPhone X系列适配
+  &.iphone-x {
+    // 为iPhone X系列添加额外的视觉处理
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1rpx;
+      background: linear-gradient(90deg, transparent 0%, #e8e8e8 20%, #e8e8e8 80%, transparent 100%);
+    }
+  }
+
+  // 安全区域填充区域（样式由内联样式控制）
+  .safe-area-padding {
+    display: block;
+    // 高度、背景色、边框由内联样式设置以确保兼容性
+  }
+
+  // 有安全区域时的样式调整
+  &.has-safe-area {
+    .nav-content {
+      // 确保导航内容不会被安全区域影响
+      position: relative;
+      z-index: 1;
+    }
+  }
 }
 
-// 小屏幕适配
+// 小屏幕适配 (iPhone SE等)
 @media screen and (max-width: 350px) {
   .bottom-navigation {
     .nav-content {
@@ -181,7 +226,7 @@
   }
 }
 
-// 大屏幕适配
+// 大屏幕适配 (iPhone Plus、Pro Max等)
 @media screen and (min-width: 414px) {
   .bottom-navigation {
     .nav-content {
@@ -224,14 +269,87 @@
   }
 }
 
-// iPhone X系列底部安全区域适配
-.bottom-navigation[style*="padding-bottom"] {
-  .nav-content {
-    margin-bottom: 0;
+// 极小屏幕适配 (width < 320px)
+@media screen and (max-width: 320px) {
+  .bottom-navigation {
+    .nav-content {
+      height: 80rpx;
+      padding: 4rpx 0;
+
+      .tab-item {
+        padding: 4rpx 2rpx;
+
+        &:not(.special) {
+          .tab-icon-container {
+            margin-bottom: 2rpx;
+
+            .tab-icon {
+              width: 36rpx;
+              height: 36rpx;
+            }
+          }
+
+          .tab-label {
+            font-size: 16rpx;
+          }
+        }
+
+        &.special {
+          .tab-icon-container .tab-icon {
+            width: 48rpx;
+            height: 48rpx;
+            border-radius: 24rpx;
+          }
+
+          .tab-label {
+            font-size: 16rpx;
+          }
+        }
+      }
+    }
   }
 }
 
-// 深色模式支持 (预留)
+// 超大屏幕适配 (iPad等)
+@media screen and (min-width: 768px) {
+  .bottom-navigation {
+    .nav-content {
+      height: 120rpx;
+      padding: 12rpx 0;
+      max-width: 500px;
+      margin: 0 auto;
+
+      .tab-item {
+        padding: 12rpx 8rpx;
+
+        &:not(.special) {
+          .tab-icon-container .tab-icon {
+            width: 52rpx;
+            height: 52rpx;
+          }
+
+          .tab-label {
+            font-size: 24rpx;
+          }
+        }
+
+        &.special {
+          .tab-icon-container .tab-icon {
+            width: 64rpx;
+            height: 64rpx;
+            border-radius: 32rpx;
+          }
+
+          .tab-label {
+            font-size: 24rpx;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 深色模式支持
 @media (prefers-color-scheme: dark) {
   .bottom-navigation {
     background-color: #1f1f1f;
@@ -255,6 +373,12 @@
           color: #fff;
         }
       }
+    }
+
+    // 深色模式下的安全区域样式
+    .safe-area-padding {
+      background-color: #1f1f1f;
+      border-top-color: #333;
     }
   }
 }
@@ -289,5 +413,51 @@
   }
   100% {
     transform: scale(0.9);
+  }
+}
+
+// 脉搏动画（用于重要通知）
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10rpx rgba(255, 71, 87, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 71, 87, 0);
+  }
+}
+
+// 高活跃度消息徽章动画
+.tab-badge :global(.nut-badge) {
+  &.high-activity {
+    animation: pulse 2s infinite;
+  }
+}
+
+// 无障碍访问优化
+@media (prefers-reduced-motion: reduce) {
+  .bottom-navigation {
+    .tab-item {
+      transition: none;
+    }
+
+    .tab-icon,
+    .special-bg {
+      transition: none;
+    }
+  }
+
+  .tab-item.active:not(.special) .tab-icon {
+    animation: none;
+  }
+
+  .tab-item.special .tab-icon:active {
+    animation: none;
+  }
+
+  .tab-badge :global(.nut-badge.high-activity) {
+    animation: none;
   }
 }
