@@ -1,19 +1,22 @@
+@use '../../styles/variables.scss' as *;
+
 .task-card {
-  background-color: #fff;
-  border-radius: 16rpx;
-  padding: 32rpx;
-  margin-bottom: 16rpx;
+  background-color: $bg-primary;
+  border-radius: $radius-md;
+  padding: $spacing-xl;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-1;
   cursor: pointer;
 
   &:active {
     transform: scale(0.98);
-    transition: transform 0.1s ease;
+    transition: transform $duration-instant ease;
   }
 
   // 已完成任务样式
   &.completed {
     .task-title {
-      color: #999;
+      color: $text-tertiary;
       text-decoration: line-through;
     }
   }
@@ -22,23 +25,23 @@
   .task-header {
     display: flex;
     align-items: center;
-    margin-bottom: 16rpx;
+    margin-bottom: $spacing-md;
 
     .priority-dot {
-      width: 12rpx;
-      height: 12rpx;
+      width: $spacing-sm;
+      height: $spacing-sm;
       border-radius: 50%;
-      margin-right: 16rpx;
+      margin-right: $spacing-md;
       flex-shrink: 0;
     }
 
     .task-title {
       flex: 1;
-      font-size: 30rpx;
+      font-size: $font-base;
       font-weight: 600;
-      color: #333;
-      line-height: 1.4;
-      margin-right: 8rpx;
+      color: $text-primary;
+      line-height: $leading-normal;
+      margin-right: $spacing-xs;
     }
 
     .warning-icon {
@@ -48,11 +51,11 @@
 
   // 第二行：描述
   .task-description {
-    font-size: 26rpx;
-    color: #666;
-    line-height: 1.5;
-    margin-bottom: 20rpx;
-    margin-left: 28rpx; // 对齐圆点
+    font-size: $font-sm;
+    color: $text-secondary;
+    line-height: $leading-normal;
+    margin-bottom: $spacing-lg;
+    margin-left: 28rpx;
     display: block;
   }
 
@@ -61,8 +64,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20rpx;
-    margin-left: 28rpx; // 对齐圆点
+    margin-bottom: $spacing-lg;
+    margin-left: 28rpx;
 
     .status-section {
       display: flex;
@@ -76,25 +79,25 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 12rpx;
+        margin-right: $spacing-sm;
 
         .status-inner {
-          width: 8rpx;
-          height: 8rpx;
+          width: $spacing-xs;
+          height: $spacing-xs;
           border-radius: 50%;
         }
       }
 
       .status-text {
-        font-size: 24rpx;
-        color: #333;
+        font-size: $font-xs;
+        color: $text-primary;
         font-weight: 400;
       }
     }
 
     .priority-text {
-      font-size: 24rpx;
-      color: #666;
+      font-size: $font-xs;
+      color: $text-secondary;
     }
   }
 
@@ -103,29 +106,29 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20rpx;
-    margin-left: 28rpx; // 对齐圆点
+    margin-bottom: $spacing-lg;
+    margin-left: 28rpx;
 
     .assignee-info {
       display: flex;
       align-items: center;
 
       .assignee-avatar {
-        margin-right: 12rpx;
+        margin-right: $spacing-sm;
 
         :global(.nut-avatar) {
           width: 48rpx !important;
           height: 48rpx !important;
           font-size: 20rpx;
-          background-color: #e8f0fe;
-          color: #576b95;
+          background-color: $primary-light;
+          color: $wechat-blue;
           border-radius: 50%;
         }
       }
 
       .assignee-name {
-        font-size: 24rpx;
-        color: #333;
+        font-size: $font-xs;
+        color: $text-primary;
         font-weight: 400;
       }
     }
@@ -136,12 +139,12 @@
       gap: 6rpx;
 
       .due-date-text {
-        font-size: 24rpx;
-        color: #ff4757;
+        font-size: $font-xs;
+        color: $danger-color;
         font-weight: 400;
 
         &.overdue {
-          color: #ff4757;
+          color: $danger-color;
           font-weight: 600;
         }
       }
@@ -153,36 +156,36 @@
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    margin-left: 28rpx; // 对齐圆点
+    margin-left: 28rpx;
 
     .progress-section {
       flex: 1;
-      margin-right: 24rpx;
+      margin-right: $spacing-lg;
 
       :global(.nut-progress) {
         .nut-progress-outer {
-          background-color: #e8e8e8;
-          height: 8rpx;
-          border-radius: 4rpx;
+          background-color: $gray-3;
+          height: $spacing-xs;
+          border-radius: $spacing-base;
         }
 
         .nut-progress-inner {
-          border-radius: 4rpx;
-          transition: width 0.3s ease;
+          border-radius: $spacing-base;
+          transition: width $duration-slow ease;
         }
       }
 
       .progress-text {
         font-size: 22rpx;
-        color: #666;
+        color: $text-secondary;
         line-height: 1.2;
-        margin-top: 4rpx;
+        margin-top: $spacing-base;
       }
     }
 
     .view-details {
-      font-size: 24rpx;
-      color: #576b95;
+      font-size: $font-xs;
+      color: $wechat-blue;
       font-weight: 400;
       flex-shrink: 0;
     }

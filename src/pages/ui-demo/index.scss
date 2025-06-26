@@ -1,0 +1,72 @@
+@use '../../styles/variables.scss' as *;
+
+.ui-demo {
+  padding: $spacing-lg;
+  background-color: $bg-secondary;
+  min-height: 100vh;
+
+  &__section {
+    margin-bottom: $spacing-2xl;
+  }
+
+  &__title {
+    font-size: $font-xl;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: $spacing-lg;
+    display: block;
+  }
+
+  &__group {
+    background-color: $bg-primary;
+    border-radius: $radius-md;
+    padding: $spacing-lg;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__subtitle {
+    font-size: $font-base;
+    font-weight: 500;
+    color: $text-secondary;
+    margin-bottom: $spacing-md;
+    display: block;
+  }
+
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-md;
+    margin-bottom: $spacing-md;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &--badge {
+      gap: $spacing-xl;
+    }
+  }
+
+  &__badge-box {
+    width: 120rpx;
+    height: 80rpx;
+    background-color: $bg-secondary;
+    border-radius: $radius-sm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-sm;
+    color: $text-secondary;
+  }
+
+  &__status-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    margin-bottom: $spacing-lg;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

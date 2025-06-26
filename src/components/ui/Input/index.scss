@@ -1,0 +1,122 @@
+@use '../../../styles/variables.scss' as *;
+
+.ui-input {
+  margin-bottom: $spacing-lg;
+
+  // 标签
+  &__label {
+    display: flex;
+    align-items: center;
+    font-size: $font-base;
+    font-weight: 500;
+    color: $text-primary;
+    margin-bottom: $spacing-sm;
+  }
+
+  // 必填标记
+  &__required {
+    color: $danger-color;
+    margin-right: $spacing-xs;
+  }
+
+  // 输入框容器
+  &__wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: $bg-primary;
+    border: 2rpx solid $border-color;
+    border-radius: $radius-sm;
+    min-height: $touch-target-min;
+    transition: all $duration-fast ease;
+
+    &:focus-within {
+      border-color: $primary-color;
+      box-shadow: 0 0 0 4rpx rgba($primary-color, 0.1);
+    }
+
+    // 错误状态
+    &--error {
+      border-color: $danger-color;
+
+      &:focus-within {
+        box-shadow: 0 0 0 4rpx rgba($danger-color, 0.1);
+      }
+    }
+
+    // 禁用状态
+    &--disabled {
+      background-color: $bg-secondary;
+      cursor: not-allowed;
+
+      .ui-input__field {
+        color: $text-tertiary;
+      }
+    }
+  }
+
+  // 前缀图标
+  &__prefix {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: $spacing-md;
+    color: $text-secondary;
+  }
+
+  // 后缀图标
+  &__suffix {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: $spacing-md;
+    color: $text-secondary;
+  }
+
+  // 输入框
+  &__field {
+    flex: 1;
+    padding: 0 $spacing-md;
+
+    :global {
+      .nut-input {
+        font-size: $font-base;
+        color: $text-primary;
+        background-color: transparent;
+
+        &::placeholder {
+          color: $text-tertiary;
+        }
+      }
+
+      .nut-input__clear {
+        margin-right: $spacing-sm;
+      }
+    }
+  }
+
+  // 提示信息
+  &__message {
+    margin-top: $spacing-xs;
+    font-size: $font-sm;
+    color: $text-secondary;
+
+    // 错误信息
+    &--error {
+      color: $danger-color;
+    }
+  }
+}
+
+// 搜索输入框特殊样式
+.ui-search-input {
+  .ui-input__wrapper {
+    background-color: $bg-secondary;
+    border-color: transparent;
+
+    &:focus-within {
+      background-color: $bg-primary;
+      border-color: $primary-color;
+    }
+  }
+}

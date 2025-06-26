@@ -1,0 +1,240 @@
+@use '../../styles/variables.scss' as *;
+
+.security-settings {
+  min-height: 100vh;
+  background-color: $bg-secondary;
+
+  // 顶部导航
+  .nav-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: $bg-primary;
+    border-bottom: 1rpx solid $border-color;
+
+    .nav-content {
+      display: flex;
+      align-items: center;
+      height: $touch-target-min;
+      padding: 0 $spacing-xl;
+
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        color: $text-primary;
+      }
+
+      .nav-title {
+        font-size: $font-lg;
+        font-weight: 600;
+      }
+    }
+  }
+
+  // 内容区域
+  .settings-content {
+    padding-bottom: $spacing-3xl;
+  }
+
+  // 设置组
+  .settings-group {
+    margin-bottom: $spacing-md;
+
+    :global {
+      .nut-cell-group__title {
+        padding: $spacing-md $spacing-xl;
+        font-size: $font-sm;
+        color: $text-secondary;
+      }
+
+      .nut-cell {
+        min-height: $touch-target-min;
+        padding: $spacing-md $spacing-xl;
+
+        &::after {
+          border-bottom-color: $border-light;
+        }
+      }
+
+      .nut-cell__title {
+        font-size: $font-base;
+        color: $text-primary;
+      }
+
+      .nut-cell__description {
+        font-size: $font-sm;
+        color: $text-secondary;
+        margin-top: $spacing-xs;
+      }
+
+      .nut-cell__value {
+        display: flex;
+        align-items: center;
+      }
+
+      .nut-switch {
+        margin-left: auto;
+      }
+    }
+  }
+
+  // 设备列表项
+  .device-item {
+    display: flex;
+    align-items: center;
+    padding: $spacing-md;
+    background-color: $bg-secondary;
+    border-radius: $radius-sm;
+    margin-bottom: $spacing-sm;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .device-icon {
+      width: 48rpx;
+      height: 48rpx;
+      background-color: $bg-primary;
+      border-radius: $radius-sm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: $spacing-md;
+      color: $text-secondary;
+    }
+
+    .device-info {
+      flex: 1;
+
+      .device-header {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        margin-bottom: $spacing-xs;
+
+        .device-name {
+          font-size: $font-base;
+          font-weight: 500;
+          color: $text-primary;
+        }
+      }
+
+      .device-meta {
+        font-size: $font-sm;
+        color: $text-secondary;
+      }
+    }
+
+    :global {
+      .nut-button {
+        margin-left: $spacing-md;
+      }
+
+      .nut-badge {
+        height: 20rpx;
+        line-height: 20rpx;
+        padding: 0 $spacing-sm;
+        font-size: $font-xs;
+      }
+    }
+  }
+
+  // 密码表单
+  .password-form {
+    padding: $spacing-lg 0;
+
+    .form-item {
+      margin-bottom: $spacing-lg;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .form-label {
+        display: block;
+        font-size: $font-base;
+        color: $text-primary;
+        margin-bottom: $spacing-sm;
+      }
+
+      .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        :global {
+          .nut-input {
+            flex: 1;
+            padding-right: 48rpx;
+          }
+        }
+
+        .eye-icon {
+          position: absolute;
+          right: $spacing-md;
+          top: 50%;
+          transform: translateY(-50%);
+          padding: $spacing-xs;
+          color: $text-secondary;
+        }
+      }
+    }
+  }
+}
+
+// 响应式适配
+@media screen and (max-width: 350px) {
+  .security-settings {
+    .nav-header .nav-content {
+      padding: 0 $spacing-lg;
+
+      .nav-title {
+        font-size: $font-base;
+      }
+    }
+
+    .settings-group :global {
+      .nut-cell-group__title {
+        padding: $spacing-sm $spacing-lg;
+      }
+
+      .nut-cell {
+        padding: $spacing-sm $spacing-lg;
+      }
+    }
+
+    .device-item {
+      padding: $spacing-sm;
+
+      .device-icon {
+        width: 40rpx;
+        height: 40rpx;
+      }
+
+      .device-info {
+        .device-name {
+          font-size: $font-sm;
+        }
+
+        .device-meta {
+          font-size: $font-xs;
+        }
+      }
+    }
+  }
+}
+
+// 大屏幕适配
+@media screen and (min-width: 414px) {
+  .security-settings {
+    .device-item {
+      padding: $spacing-lg;
+
+      .device-icon {
+        width: 56rpx;
+        height: 56rpx;
+      }
+    }
+  }
+}

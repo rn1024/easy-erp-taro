@@ -1,0 +1,548 @@
+{
+  "projectInfo": {
+    "name": "微信小程序工作流管理界面设计系统",
+    "version": "1.0.0",
+    "description": "基于微信小程序设计规范的工作流管理界面设计系统",
+    "lastUpdated": "2025-01-02",
+    "author": "Easy ERP Team",
+    "designTool": "Figma",
+    "frontendFramework": "Taro + NutUI",
+    "cssProcessor": "SCSS",
+    "buildTool": "Style-Dictionary"
+  },
+  "designAssets": {
+    "colors": {
+      "brand": {
+        "primary": {
+          "name": "--color-brand-primary",
+          "value": "#07C160",
+          "description": "微信生态常用绿色"
+        },
+        "secondary": {
+          "name": "--color-brand-secondary",
+          "value": "#10AEFF",
+          "description": "场景强调、链接等"
+        }
+      },
+      "functional": {
+        "info": {
+          "name": "--color-info",
+          "value": "#2F86F6",
+          "contrast": "≥ 4.5:1"
+        },
+        "success": {
+          "name": "--color-success",
+          "value": "#00B578",
+          "contrast": "≥ 4.5:1"
+        },
+        "warning": {
+          "name": "--color-warning",
+          "value": "#FF9F0A",
+          "contrast": "≥ 4.5:1"
+        },
+        "error": {
+          "name": "--color-error",
+          "value": "#FF3B30",
+          "contrast": "≥ 4.5:1"
+        }
+      },
+      "neutral": {
+        "gray-1": {
+          "name": "--gray-1",
+          "value": "#FFFFFF",
+          "description": "0-100分9档灰阶"
+        },
+        "gray-2": {
+          "name": "--gray-2",
+          "value": "#F7F7F7"
+        },
+        "gray-3": {
+          "name": "--gray-3",
+          "value": "#E5E5E5"
+        },
+        "gray-4": {
+          "name": "--gray-4",
+          "value": "#D9D9D9"
+        },
+        "gray-5": {
+          "name": "--gray-5",
+          "value": "#B2B2B2"
+        },
+        "gray-6": {
+          "name": "--gray-6",
+          "value": "#808080"
+        },
+        "gray-7": {
+          "name": "--gray-7",
+          "value": "#4B4B4B"
+        },
+        "gray-8": {
+          "name": "--gray-8",
+          "value": "#2C2C2C"
+        },
+        "gray-9": {
+          "name": "--gray-9",
+          "value": "#1A1A1A"
+        }
+      },
+      "wechat": {
+        "green": "#07C160",
+        "blue": "#576B95",
+        "orange": "#FA9D3B",
+        "red": "#FA5151",
+        "gray": "#888888",
+        "background": "#F5F5F7",
+        "cardBackground": "#FFFFFF",
+        "sectionBackground": "#F8FAFC"
+      },
+      "status": {
+        "pending": "#F59E0B",
+        "progress": "#3B82F6",
+        "completed": "#10B981",
+        "rejected": "#EF4444",
+        "overdue": "#DC2626"
+      }
+    },
+    "typography": {
+      "fontFamily": {
+        "default": "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, Roboto, 'miui', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif",
+        "description": "系统默认 PingFang SC，在 iOS/Android 全覆盖"
+      },
+      "fontSize": {
+        "title-lg": {
+          "name": "--font-title-lg",
+          "value": "48rpx",
+          "lineHeight": "1.5"
+        },
+        "title-md": {
+          "name": "--font-title-md",
+          "value": "40rpx",
+          "lineHeight": "1.5"
+        },
+        "body": {
+          "name": "--font-body",
+          "value": "32rpx",
+          "lineHeight": "1.5",
+          "description": "正文基准字号"
+        },
+        "caption": {
+          "name": "--font-caption",
+          "value": "28rpx",
+          "lineHeight": "1.5"
+        },
+        "small": {
+          "name": "--font-small",
+          "value": "24rpx",
+          "lineHeight": "1.5"
+        }
+      },
+      "fontWeight": {
+        "normal": 400,
+        "medium": 500,
+        "semibold": 600
+      }
+    },
+    "borderRadius": {
+      "sm": {
+        "name": "--radius-sm",
+        "value": "8rpx",
+        "usage": "按钮、输入框"
+      },
+      "md": {
+        "name": "--radius-md",
+        "value": "12rpx",
+        "usage": "卡片"
+      },
+      "lg": {
+        "name": "--radius-lg",
+        "value": "24rpx",
+        "usage": "模态框、Toast"
+      },
+      "xl": {
+        "name": "--radius-xl",
+        "value": "32rpx",
+        "usage": "大型容器"
+      },
+      "full": {
+        "name": "--radius-full",
+        "value": "9999rpx",
+        "usage": "圆形元素"
+      }
+    },
+    "shadows": {
+      "sm": {
+        "name": "--shadow-1",
+        "value": "0 2rpx 8rpx rgba(0,0,0,.04)",
+        "usage": "卡片、浮层"
+      },
+      "md": {
+        "name": "--shadow-2",
+        "value": "0 4rpx 16rpx rgba(0,0,0,.06)",
+        "usage": "悬浮状态"
+      },
+      "lg": {
+        "name": "--shadow-3",
+        "value": "0 8rpx 32rpx rgba(0,0,0,.08)",
+        "usage": "弹窗、抽屉"
+      }
+    }
+  },
+  "layoutGrid": {
+    "designWidth": {
+      "value": "750rpx",
+      "description": "主流 UI 包的默认基准"
+    },
+    "gridSystem": {
+      "columns": 12,
+      "columnWidth": "56rpx",
+      "gutter": "24rpx",
+      "description": "适配营销/图文，方便 split-view"
+    },
+    "spacing": {
+      "base": "4rpx",
+      "scale": [8, 12, 16, 24, 32, 48, 64],
+      "description": "4rpx 基线，保证组件拼装对齐"
+    },
+    "safeArea": {
+      "statusBar": {
+        "iOS": "44px",
+        "Android": "48px",
+        "description": "默认透明，可根据主题着色"
+      },
+      "tabBar": "98rpx",
+      "bottomSafe": "env(safe-area-inset-bottom)"
+    },
+    "touchTarget": {
+      "minimum": "44 × 44px",
+      "description": "任何可交互元素不得低于该尺寸"
+    }
+  },
+  "components": {
+    "button": {
+      "variants": {
+        "primary": {
+          "height": "88rpx",
+          "borderRadius": "--radius-md",
+          "background": "--color-brand-primary",
+          "color": "#FFFFFF",
+          "fontSize": "--font-body",
+          "disabled": {
+            "opacity": 0.35
+          }
+        },
+        "secondary": {
+          "background": "--gray-2",
+          "color": "--gray-7"
+        },
+        "outline": {
+          "background": "transparent",
+          "border": "1rpx solid --gray-3",
+          "color": "--gray-7"
+        },
+        "ghost": {
+          "background": "transparent",
+          "color": "--color-brand-primary"
+        },
+        "destructive": {
+          "background": "--color-error",
+          "color": "#FFFFFF"
+        }
+      },
+      "sizes": {
+        "small": {
+          "height": "64rpx",
+          "paddingHorizontal": "24rpx",
+          "fontSize": "--font-caption"
+        },
+        "medium": {
+          "height": "88rpx",
+          "paddingHorizontal": "32rpx",
+          "fontSize": "--font-body"
+        },
+        "large": {
+          "height": "96rpx",
+          "paddingHorizontal": "48rpx",
+          "fontSize": "--font-title-md"
+        }
+      }
+    },
+    "input": {
+      "height": "88rpx",
+      "fontSize": "32rpx",
+      "borderRadius": "--radius-sm",
+      "placeholder": {
+        "color": "--gray-5"
+      },
+      "border": {
+        "default": "1rpx solid #E5E5E5",
+        "focus": "1rpx solid --color-brand-primary"
+      },
+      "description": "高度88rpx，占位符--gray-5，1px底线"
+    },
+    "navbar": {
+      "height": {
+        "iOS": "88rpx",
+        "Android": "96rpx"
+      },
+      "title": {
+        "fontSize": "--font-title-md",
+        "color": "--gray-9"
+      },
+      "padding": {
+        "horizontal": "32rpx"
+      },
+      "darkMode": {
+        "support": true,
+        "attribute": "data-weui-theme='dark'"
+      }
+    },
+    "tabBar": {
+      "maxItems": 5,
+      "icon": {
+        "size": "48rpx",
+        "activeColor": "--color-brand-primary",
+        "inactiveColor": "--gray-5"
+      },
+      "text": {
+        "fontSize": "--font-caption",
+        "activeColor": "--color-brand-primary",
+        "inactiveColor": "--gray-5"
+      },
+      "badge": {
+        "background": "--color-error",
+        "color": "#FFFFFF",
+        "size": "16rpx"
+      }
+    },
+    "toast": {
+      "minWidth": "240rpx",
+      "maxWidth": "560rpx",
+      "borderRadius": "--radius-lg",
+      "fontSize": "--font-body",
+      "padding": "24rpx 32rpx",
+      "shadow": "--shadow-1",
+      "duration": {
+        "short": 1500,
+        "medium": 2500,
+        "long": 3500
+      }
+    },
+    "card": {
+      "background": "#FFFFFF",
+      "borderRadius": "--radius-md",
+      "padding": "32rpx",
+      "margin": "16rpx",
+      "shadow": "--shadow-1",
+      "border": "1rpx solid --gray-3"
+    },
+    "list": {
+      "itemHeight": "96rpx",
+      "padding": "24rpx 32rpx",
+      "separator": {
+        "height": "1rpx",
+        "color": "--gray-3",
+        "margin": "0 32rpx"
+      }
+    },
+    "dialog": {
+      "width": "560rpx",
+      "borderRadius": "--radius-lg",
+      "title": {
+        "fontSize": "--font-title-md",
+        "color": "--gray-9",
+        "padding": "32rpx"
+      },
+      "content": {
+        "fontSize": "--font-body",
+        "color": "--gray-7",
+        "padding": "0 32rpx 32rpx"
+      },
+      "actions": {
+        "height": "88rpx",
+        "borderTop": "1rpx solid --gray-3"
+      }
+    }
+  },
+  "animation": {
+    "duration": {
+      "instant": "100ms",
+      "fast": "150ms",
+      "normal": "200ms",
+      "slow": "300ms",
+      "pageTransition": "250ms"
+    },
+    "easing": {
+      "default": "ease",
+      "easeIn": "ease-in",
+      "easeOut": "ease-out",
+      "easeInOut": "ease-in-out",
+      "spring": "cubic-bezier(.25,.8,.25,1)"
+    },
+    "scenarios": {
+      "pageSwitch": {
+        "duration": "250ms",
+        "easing": "ease-out",
+        "description": "滑入/滑出 16rpx"
+      },
+      "buttonPress": {
+        "duration": "100ms",
+        "easing": "ease-in",
+        "description": "透明度 0.8 → 1"
+      },
+      "modalShow": {
+        "duration": "200ms",
+        "easing": "cubic-bezier(.25,.8,.25,1)",
+        "description": "scale 0.95 → 1"
+      },
+      "skeleton": {
+        "delay": "500ms",
+        "description": "防止闪烁"
+      }
+    }
+  },
+  "accessibility": {
+    "contrast": {
+      "minimum": "4.5:1",
+      "standard": "WCAG 2.1 AA",
+      "darkMode": true
+    },
+    "touch": {
+      "minimumTarget": "44×44px",
+      "spacing": "8rpx"
+    },
+    "text": {
+      "scalable": true,
+      "maxScale": "120%",
+      "overflow": "no-truncate"
+    },
+    "motion": {
+      "reducedMotion": "prefers-reduced-motion",
+      "maxDuration": "5s"
+    },
+    "aria": {
+      "labels": "required",
+      "roles": "required",
+      "descriptions": "recommended"
+    }
+  },
+  "tokens": {
+    "exportFormat": [
+      "wxss",
+      "scss",
+      "json"
+    ],
+    "namespace": "@brand",
+    "platforms": {
+      "wechat": {
+        "transformGroup": "wxss",
+        "buildPath": "dist/wechat/",
+        "files": [
+          {
+            "destination": "theme.wxss",
+            "format": "wxss/variables"
+          }
+        ]
+      },
+      "taro": {
+        "transformGroup": "scss",
+        "buildPath": "dist/taro/",
+        "files": [
+          {
+            "destination": "_variables.scss",
+            "format": "scss/variables"
+          }
+        ]
+      }
+    },
+    "styleDictionary": {
+      "source": ["design-tokens/**/*.json"],
+      "platforms": {
+        "wxss": {
+          "transformGroup": "wxss",
+          "buildPath": "build/wxss/",
+          "files": [
+            {
+              "destination": "theme.wxss",
+              "format": "css/variables",
+              "options": {
+                "outputReferences": true
+              }
+            }
+          ]
+        },
+        "scss": {
+          "transformGroup": "scss",
+          "buildPath": "build/scss/",
+          "files": [
+            {
+              "destination": "_variables.scss",
+              "format": "scss/variables"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "workflow": {
+    "design": {
+      "tool": "Figma",
+      "plugins": ["Figma Tokens"],
+      "library": "Published as team library"
+    },
+    "development": {
+      "step1": "Figma: 建立 Color/Typography/Effects Tokens → 发布库",
+      "step2": "Style-Dictionary: 从 Figma Tokens 拉取，自动产出 theme.wxss/theme.scss",
+      "step3": "组件库: fork WeUI 或 TDesign Mini → 替换变量 = 套品牌皮肤",
+      "step4": "CI 检测: Playwright 像素回归 + Lighthouse A11y 分数≥ 90",
+      "step5": "版本治理: 遵循 SemVer；任何视觉破坏性改动必须 major 并编写迁移文档"
+    }
+  },
+  "codeExamples": {
+    "wxss": {
+      "theme": "/** theme.wxss **/\n@import 'style-dictionary';\n\npage {\n  --color-brand-primary: #07C160;\n  --color-brand-secondary: #10AEFF;\n  --font-body: 32rpx;\n  /* ...其余变量 */\n}",
+      "button": ".btn-primary {\n  height: 88rpx;\n  border-radius: var(--radius-md);\n  background: var(--color-brand-primary);\n  font-size: var(--font-body);\n  color: #fff;\n}\n.btn-primary--disabled {\n  opacity: .35;\n}",
+      "card": ".card {\n  background: var(--color-card);\n  border-radius: var(--radius-md);\n  padding: 32rpx;\n  box-shadow: var(--shadow-1);\n}",
+      "status": ".status-completed {\n  color: var(--color-status-completed);\n  background-color: rgba(16, 185, 129, 0.1);\n}"
+    },
+    "taro": {
+      "scss": "@import 'variables';\n\n.button {\n  height: px2rpx(44);\n  border-radius: $radius-md;\n  background: $color-brand-primary;\n  font-size: $font-body;\n}"
+    }
+  },
+  "bestPractices": [
+    {
+      "category": "设计端",
+      "description": "直接把设计资产表搬进 Figma Tokens，命名不改"
+    },
+    {
+      "category": "前端端",
+      "description": "用 Style-Dictionary 一键导出 .wxss"
+    },
+    {
+      "category": "组件端",
+      "description": "引入 WeUI / TDesign Mini，覆盖变量即可"
+    },
+    {
+      "category": "测试端",
+      "description": "按点击热区 44×44px、对比度 4.5:1 做自动回归"
+    },
+    {
+      "category": "性能",
+      "description": "使用 transform: translateZ(0) 开启硬件加速"
+    },
+    {
+      "category": "响应式",
+      "description": "虽然主要针对移动端，但也要考虑横屏和平板适配"
+    }
+  ],
+  "version": {
+    "current": "1.0.0",
+    "lastUpdated": "2025-01-02",
+    "changelog": [
+      {
+        "version": "1.0.0",
+        "date": "2025-01-02",
+        "changes": "初始版本，基于微信小程序设计规范整理"
+      }
+    ]
+  }
+}

@@ -1,0 +1,258 @@
+@use '../../styles/variables.scss' as *;
+
+.account-settings {
+  min-height: 100vh;
+  background-color: $bg-secondary;
+
+  // 顶部导航
+  .nav-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: $bg-primary;
+    border-bottom: 1rpx solid $border-color;
+
+    .nav-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: $touch-target-min;
+      padding: 0 $spacing-xl;
+
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        color: $text-primary;
+      }
+
+      .nav-title {
+        font-size: $font-lg;
+        font-weight: 600;
+      }
+
+      .nav-right {
+        .nav-action {
+          font-size: $font-base;
+          color: $primary-color;
+
+          &.cancel {
+            color: $text-secondary;
+            margin-right: $spacing-lg;
+          }
+
+          &.save {
+            color: $primary-color;
+            font-weight: 500;
+          }
+        }
+
+        .nav-actions {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+  }
+
+  // 内容区域
+  .settings-content {
+    padding-bottom: $spacing-3xl;
+  }
+
+  // 头像区域
+  .profile-header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xl;
+    padding: $spacing-xl;
+    background-color: $bg-primary;
+    margin-bottom: $spacing-md;
+
+    .avatar-section {
+      position: relative;
+
+      .user-avatar {
+        border: 2rpx solid $border-color;
+      }
+
+      .camera-badge {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 32rpx;
+        height: 32rpx;
+        background-color: $primary-color;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2rpx solid $bg-primary;
+      }
+    }
+
+    .profile-info {
+      flex: 1;
+
+      .user-name {
+        font-size: $font-lg;
+        font-weight: 600;
+        color: $text-primary;
+        display: block;
+        margin-bottom: $spacing-xs;
+      }
+
+      .user-position {
+        font-size: $font-base;
+        color: $text-primary;
+        display: block;
+        margin-bottom: $spacing-xs;
+      }
+
+      .user-department {
+        font-size: $font-sm;
+        color: $text-secondary;
+        display: block;
+      }
+    }
+  }
+
+  // 信息组
+  .info-group {
+    margin-bottom: $spacing-md;
+
+    :global {
+      .nut-cell-group__title {
+        padding: $spacing-md $spacing-xl;
+        font-size: $font-sm;
+        color: $text-secondary;
+      }
+
+      .nut-cell {
+        min-height: $touch-target-min;
+        padding: $spacing-md $spacing-xl;
+
+        &::after {
+          border-bottom-color: $border-light;
+        }
+      }
+
+      .nut-cell__title {
+        font-size: $font-base;
+        color: $text-primary;
+        min-width: 120rpx;
+      }
+
+      .nut-cell__value {
+        flex: 1;
+        text-align: right;
+      }
+
+      .nut-input {
+        text-align: right;
+        font-size: $font-base;
+
+        &.disabled {
+          color: $text-secondary;
+          background-color: transparent;
+        }
+      }
+
+      .nut-input__input {
+        text-align: right;
+      }
+    }
+
+    .cell-input {
+      width: 100%;
+
+      &.disabled {
+        :global(.nut-input__input) {
+          color: $text-secondary;
+        }
+      }
+    }
+
+    .picker-cell {
+      &.clickable {
+        :global {
+          .nut-cell__value {
+            position: relative;
+            padding-right: 20rpx;
+
+            &::after {
+              content: '';
+              position: absolute;
+              right: 0;
+              top: 50%;
+              transform: translateY(-50%);
+              width: 12rpx;
+              height: 12rpx;
+              border-right: 2rpx solid $text-tertiary;
+              border-bottom: 2rpx solid $text-tertiary;
+              transform: translateY(-50%) rotate(-45deg);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 响应式适配
+@media screen and (max-width: 350px) {
+  .account-settings {
+    .nav-header .nav-content {
+      padding: 0 $spacing-lg;
+
+      .nav-title {
+        font-size: $font-base;
+      }
+    }
+
+    .profile-header {
+      padding: $spacing-lg;
+      gap: $spacing-lg;
+
+      .profile-info {
+        .user-name {
+          font-size: $font-base;
+        }
+
+        .user-position {
+          font-size: $font-sm;
+        }
+
+        .user-department {
+          font-size: $font-xs;
+        }
+      }
+    }
+
+    .info-group :global {
+      .nut-cell-group__title {
+        padding: $spacing-sm $spacing-lg;
+      }
+
+      .nut-cell {
+        padding: $spacing-sm $spacing-lg;
+      }
+    }
+  }
+}
+
+// 大屏幕适配
+@media screen and (min-width: 414px) {
+  .account-settings {
+    .profile-header {
+      padding: $spacing-2xl;
+
+      .avatar-section {
+        .camera-badge {
+          width: 36rpx;
+          height: 36rpx;
+        }
+      }
+    }
+  }
+}

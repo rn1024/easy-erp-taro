@@ -1,0 +1,117 @@
+@use '../../../styles/variables.scss' as *;
+
+.ui-button {
+  // 确保触摸目标符合规范
+  min-height: $touch-target-min;
+  transition: all $duration-fast ease;
+
+  // 尺寸变体
+  &--small {
+    min-height: 64rpx;
+    font-size: $font-sm;
+
+    :global {
+      .nut-button__text {
+        padding: 0 $spacing-md;
+      }
+    }
+  }
+
+  &--medium {
+    min-height: $touch-target-min;
+    font-size: $font-base;
+  }
+
+  &--large {
+    min-height: 96rpx;
+    font-size: $font-lg;
+
+    :global {
+      .nut-button__text {
+        padding: 0 $spacing-xl;
+      }
+    }
+  }
+
+  // 全宽按钮
+  &--full {
+    width: 100%;
+  }
+
+  // 自定义变体样式
+  &--ghost {
+    :global {
+      .nut-button {
+        background-color: transparent;
+        border-color: transparent;
+
+        &:active {
+          background-color: $bg-tertiary;
+        }
+      }
+    }
+  }
+
+  &--outline {
+    :global {
+      .nut-button {
+        border-width: 2rpx;
+      }
+    }
+  }
+
+  // 禁用状态
+  &:global(.nut-button--disabled) {
+    opacity: 0.5;
+  }
+
+  // 加载状态
+  &:global(.nut-button--loading) {
+    :global {
+      .nut-button__icon {
+        animation: rotate $duration-slow linear infinite;
+      }
+    }
+  }
+}
+
+// 图标按钮
+.ui-icon-button {
+  :global {
+    .nut-button__text {
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  &--round {
+    border-radius: 50%;
+
+    &.ui-button--small {
+      width: 64rpx;
+      height: 64rpx;
+    }
+
+    &.ui-button--medium {
+      width: $touch-target-min;
+      height: $touch-target-min;
+    }
+
+    &.ui-button--large {
+      width: 96rpx;
+      height: 96rpx;
+    }
+  }
+}
+
+// 旋转动画
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

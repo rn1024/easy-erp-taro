@@ -7,41 +7,51 @@ export default {
     'pages/profile/index',
     'pages/account/index',
     'pages/security/index',
-    'pages/help/index'
+    'pages/help/index',
+    'pages/ui-demo/index'
   ],
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: '工作流管理',
+    navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black'
   },
   // 启用自定义tabBar
   tabBar: {
     custom: true,
-    color: '#666666',
-    selectedColor: '#07c160',
-    backgroundColor: '#ffffff',
-    borderStyle: 'black',
+    color: '#666',
+    selectedColor: '#07C160',
+    backgroundColor: '#fff',
     list: [
       {
         pagePath: 'pages/home/index',
-        text: '首页'
+        text: '首页',
+        iconPath: 'assets/icons/home.png',
+        selectedIconPath: 'assets/icons/home-active.png'
       },
       {
         pagePath: 'pages/tasks/index',
-        text: '任务'
+        text: '任务',
+        iconPath: 'assets/icons/task.png',
+        selectedIconPath: 'assets/icons/task-active.png'
       },
       {
         pagePath: 'pages/create/index',
-        text: '创建'
+        text: '创建',
+        iconPath: 'assets/icons/add.png',
+        selectedIconPath: 'assets/icons/add-active.png'
       },
       {
         pagePath: 'pages/messages/index',
-        text: '消息'
+        text: '消息',
+        iconPath: 'assets/icons/message.png',
+        selectedIconPath: 'assets/icons/message-active.png'
       },
       {
         pagePath: 'pages/profile/index',
-        text: '我的'
+        text: '我的',
+        iconPath: 'assets/icons/user.png',
+        selectedIconPath: 'assets/icons/user-active.png'
       }
     ]
   }

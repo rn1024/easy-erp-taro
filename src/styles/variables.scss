@@ -1,151 +1,182 @@
 // ==================== 颜色系统 ====================
+// 基于微信小程序设计规范 v1.0.0
 
-// 主色调
-$primary-color: #3b82f6;      // 蓝色
-$primary-hover: #2563eb;
-$primary-active: #1d4ed8;
-$primary-light: #dbeafe;
+// 品牌色
+$primary-color: #07C160;       // 微信绿 - 主要操作、强调元素
+$primary-hover: #06AD56;       // 手动计算的深色版本（原darken 5%）
+$primary-active: #059A4C;      // 手动计算的深色版本（原darken 10%）
+$primary-light: rgba(7, 193, 96, 0.1);
 
-// 成功色
-$success-color: #10b981;      // 绿色
-$success-hover: #059669;
-$success-light: #d1fae5;
+$secondary-color: #10AEFF;     // 场景强调、链接等
+$secondary-hover: #0F9EE6;     // 手动计算的深色版本（原darken 5%）
+$secondary-light: rgba(16, 174, 255, 0.1);
 
-// 警告色
-$warning-color: #f59e0b;      // 橙色
-$warning-hover: #d97706;
-$warning-light: #fef3c7;
+// 功能色
+$info-color: #2F86F6;          // 信息色
+$info-light: rgba(47, 134, 246, 0.1);
 
-// 错误色
-$danger-color: #ef4444;       // 红色
-$danger-hover: #dc2626;
-$danger-light: #fee2e2;
+$success-color: #00B578;       // 成功色 (原#10b981需更正)
+$success-hover: #00A36C;       // 手动计算的深色版本（原darken 5%）
+$success-light: rgba(0, 181, 120, 0.1);
 
-// 中性色
-$gray-50: #f9fafb;
-$gray-100: #f3f4f6;
-$gray-200: #e5e7eb;
-$gray-300: #d1d5db;
-$gray-400: #9ca3af;
-$gray-500: #6b7280;
-$gray-600: #4b5563;
-$gray-700: #374151;
-$gray-800: #1f2937;
-$gray-900: #111827;
+$warning-color: #FF9F0A;       // 警告色 (原#f59e0b需更正)
+$warning-hover: #E68F09;       // 手动计算的深色版本（原darken 5%）
+$warning-light: rgba(255, 159, 10, 0.1);
+
+$danger-color: #FF3B30;        // 错误色 (原#ef4444需更正)
+$danger-hover: #E6352B;        // 手动计算的深色版本（原darken 5%）
+$danger-light: rgba(255, 59, 48, 0.1);
+
+// 中性色 - 9档灰阶
+$gray-1: #FFFFFF;
+$gray-2: #F7F7F7;
+$gray-3: #E5E5E5;
+$gray-4: #D9D9D9;
+$gray-5: #B2B2B2;
+$gray-6: #808080;
+$gray-7: #4B4B4B;
+$gray-8: #2C2C2C;
+$gray-9: #1A1A1A;
+
+// 微信生态专用色
+$wechat-green: #07C160;
+$wechat-blue: #576B95;
+$wechat-orange: #FA9D3B;
+$wechat-red: #FA5151;
+$wechat-gray: #888888;
 
 // 背景色
-$bg-primary: #ffffff;
-$bg-secondary: #f8fafc;
-$bg-tertiary: #f1f5f9;
+$bg-primary: #FFFFFF;
+$bg-secondary: #F5F5F7;        // 微信背景色
+$bg-tertiary: #F8FAFC;         // 区块背景色
 
 // 文字颜色
-$text-primary: #1f2937;
-$text-secondary: #6b7280;
-$text-tertiary: #9ca3af;
-$text-white: #ffffff;
+$text-primary: $gray-9;        // #1A1A1A
+$text-secondary: $gray-6;      // #808080
+$text-tertiary: $gray-5;       // #B2B2B2
+$text-white: #FFFFFF;
 
 // 边框色
-$border-color: #e5e7eb;
-$border-light: #f3f4f6;
-$border-dark: #d1d5db;
+$border-color: $gray-3;        // #E5E5E5
+$border-light: $gray-2;        // #F7F7F7
+$border-dark: $gray-4;         // #D9D9D9
+
+// 状态色
+$status-pending: #F59E0B;
+$status-progress: #3B82F6;
+$status-completed: #10B981;
+$status-rejected: #EF4444;
+$status-overdue: #DC2626;
 
 // ==================== 尺寸系统 ====================
 
-// 间距 (rpx单位，已按2倍转换)
-$spacing-xs: 8rpx;     // 4px -> 8rpx
-$spacing-sm: 16rpx;    // 8px -> 16rpx
-$spacing-md: 24rpx;    // 12px -> 24rpx
-$spacing-lg: 32rpx;    // 16px -> 32rpx
-$spacing-xl: 48rpx;    // 24px -> 48rpx
-$spacing-2xl: 64rpx;   // 32px -> 64rpx
-$spacing-3xl: 96rpx;   // 48px -> 96rpx
+// 间距 - 基于4rpx基准单位
+$spacing-base: 4rpx;           // 基准单位
+$spacing-xs: 8rpx;             // 紧凑间距
+$spacing-sm: 12rpx;            // 小间距
+$spacing-md: 16rpx;            // 标准间距
+$spacing-lg: 24rpx;            // 中等间距
+$spacing-xl: 32rpx;            // 大间距
+$spacing-2xl: 48rpx;           // 超大间距
+$spacing-3xl: 64rpx;           // 巨大间距
 
-// 字体大小 (rpx单位)
-$font-xs: 24rpx;       // 12px -> 24rpx
-$font-sm: 28rpx;       // 14px -> 28rpx
-$font-base: 32rpx;     // 16px -> 32rpx
-$font-lg: 36rpx;       // 18px -> 36rpx
-$font-xl: 40rpx;       // 20px -> 40rpx
-$font-2xl: 48rpx;      // 24px -> 48rpx
-$font-3xl: 60rpx;      // 30px -> 60rpx
+// 字体大小 - 基于750设计稿
+$font-xs: 24rpx;               // 小号文字
+$font-sm: 28rpx;               // 说明文字
+$font-base: 32rpx;             // 正文基准字号
+$font-lg: 40rpx;               // 中标题
+$font-xl: 48rpx;               // 大标题
 
 // 行高
 $leading-tight: 1.25;
-$leading-normal: 1.5;
+$leading-normal: 1.5;          // 标准行高
 $leading-relaxed: 1.75;
 
-// 圆角
-$radius-sm: 8rpx;      // 4px -> 8rpx
-$radius-md: 16rpx;     // 8px -> 16rpx
-$radius-lg: 24rpx;     // 12px -> 24rpx
-$radius-xl: 32rpx;     // 16px -> 32rpx
-$radius-full: 9999rpx;
+// 圆角系统
+$radius-none: 0;               // 无圆角
+$radius-xs: 4rpx;              // 添加极小圆角
+$radius-sm: 8rpx;              // 小圆角
+$radius-md: 12rpx;             // 中圆角 (原16rpx需更正)
+$radius-lg: 24rpx;             // 大圆角
+$radius-xl: 32rpx;             // 超大圆角
+$radius-full: 9999rpx;         // 全圆角
 
-// 阴影
-$shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
-$shadow-md: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
-$shadow-lg: 0 20rpx 50rpx rgba(0, 0, 0, 0.15);
+// 阴影 - 三级阴影系统
+$shadow-0: none;                                 // 无阴影
+$shadow-1: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);    // 轻阴影 - 卡片、浮层
+$shadow-2: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);   // 中阴影 - 悬浮状态
+$shadow-3: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);   // 重阴影 - 弹窗、抽屉
 
 // ==================== 布局系统 ====================
 
-// 容器最大宽度
-$container-max-width: 750rpx;
+// 设计基准宽度
+$design-width: 750rpx;
 
-// 页面内边距
-$page-padding: 32rpx;          // 16px -> 32rpx
-$page-padding-sm: 24rpx;       // 12px -> 24rpx
+// 栅格系统
+$grid-columns: 12;
+$grid-column-width: 56rpx;
+$grid-gutter: 24rpx;
 
-// 卡片内边距
-$card-padding: 32rpx;          // 16px -> 32rpx
-$card-padding-sm: 24rpx;       // 12px -> 24rpx
+// 页面边距
+$page-margin: 16rpx;           // 标准边距
+$page-padding: 32rpx;          // 卡片内边距
+$card-padding: 32rpx;          // 添加卡片内边距定义
+$section-spacing: 8rpx;        // 区块间距
 
 // 导航栏高度
-$navbar-height: 88rpx;         // 44px -> 88rpx
-$tabbar-height: 98rpx;         // 49px -> 98rpx
+$navbar-height-ios: 88rpx;     // iOS高度
+$navbar-height-android: 96rpx; // Android高度
+$tabbar-height: 98rpx;         // 标签栏高度
 
 // 安全区域
 $safe-area-top: env(safe-area-inset-top);
 $safe-area-bottom: env(safe-area-inset-bottom);
 
+// 触摸目标最小尺寸
+$touch-target-min: 88rpx;      // 44px
+
 // ==================== 动画系统 ====================
 
-// 缓动函数
-$ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
-$ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
-
 // 动画时长
-$duration-fast: 0.15s;
-$duration-normal: 0.3s;
-$duration-slow: 0.5s;
+$duration-instant: 100ms;      // 瞬时 - 状态切换
+$duration-fast: 150ms;         // 快速 - 简单交互
+$duration-normal: 200ms;       // 正常 - 大部分动画
+$duration-slow: 300ms;         // 慢速 - 复杂动画
+$duration-page: 250ms;         // 页面切换
 
-// ==================== 响应式断点 ====================
-
-// 小程序屏幕宽度范围
-$breakpoint-sm: 320px;    // 小屏手机
-$breakpoint-md: 375px;    // 标准手机
-$breakpoint-lg: 414px;    // 大屏手机
-$breakpoint-xl: 768px;    // 平板
+// 缓动函数
+$ease-default: ease;
+$ease-in: ease-in;
+$ease-out: ease-out;
+$ease-in-out: ease-in-out;
+$ease-spring: cubic-bezier(0.25, 0.8, 0.25, 1);
 
 // ==================== 组件特定变量 ====================
 
-// 按钮
-$button-height: 88rpx;         // 44px -> 88rpx
-$button-height-sm: 64rpx;      // 32px -> 64rpx
-$button-height-lg: 104rpx;     // 52px -> 104rpx
-$button-padding-x: 32rpx;      // 16px -> 32rpx
+// 按钮尺寸
+$button-height-sm: 64rpx;      // 小号按钮
+$button-height: 88rpx;         // 中号按钮（默认）
+$button-height-lg: 96rpx;      // 大号按钮
+$button-padding-sm: 24rpx;
+$button-padding: 32rpx;
+$button-padding-lg: 48rpx;
 
 // 输入框
-$input-height: 88rpx;          // 44px -> 88rpx
-$input-padding-x: 24rpx;       // 12px -> 24rpx
-$input-border-width: 2rpx;     // 1px -> 2rpx
+$input-height: 88rpx;          // 符合触摸目标
+$input-font-size: 32rpx;       // 防止iOS缩放
+$input-padding-x: 24rpx;
+$input-border-width: 2rpx;
+$input-placeholder-color: $gray-5;
 
-// 卡片
-$card-border-radius: 16rpx;    // 8px -> 16rpx
-$card-border-width: 2rpx;      // 1px -> 2rpx
+// Toast
+$toast-min-width: 240rpx;
+$toast-max-width: 560rpx;
+$toast-padding: 24rpx 32rpx;
 
-// 徽章
-$badge-size: 32rpx;            // 16px -> 32rpx
-$badge-font-size: 20rpx;       // 10px -> 20rpx
+// 列表项
+$list-item-height: 96rpx;
+$list-item-padding: 24rpx 32rpx;
+$list-separator-height: 2rpx;
 
 // ==================== 工具类 ====================
 
@@ -202,9 +233,9 @@ $badge-font-size: 20rpx;       // 10px -> 20rpx
 // 卡片样式
 @mixin card-style {
   background: $bg-primary;
-  border-radius: $card-border-radius;
+  border-radius: $radius-md;
   padding: $card-padding;
-  box-shadow: $shadow-sm;
+  box-shadow: $shadow-1;
 }
 
 // 响应式混合宏

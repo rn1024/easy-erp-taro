@@ -55,11 +55,11 @@ const TaskCard: React.FC<TaskCardProps> = ({
   // 获取状态显示信息
   const getStatusInfo = (status: TaskStatus) => {
     const statusMap = {
-      pending: { text: '待处理', color: '#ffa500' },
-      progress: { text: '进行中', color: '#576b95' },
-      completed: { text: '已完成', color: '#07c160' },
-      rejected: { text: '已拒绝', color: '#ff4757' },
-      overdue: { text: '已逾期', color: '#ff4757' }
+      pending: { text: '待处理', color: '#FF9F0A' },
+      progress: { text: '进行中', color: '#576B95' },
+      completed: { text: '已完成', color: '#07C160' },
+      rejected: { text: '已拒绝', color: '#FF3B30' },
+      overdue: { text: '已逾期', color: '#FF3B30' }
     }
     return statusMap[status] || statusMap.pending
   }
@@ -67,9 +67,9 @@ const TaskCard: React.FC<TaskCardProps> = ({
   // 获取优先级信息
   const getPriorityInfo = (priority: TaskPriority) => {
     const priorityMap = {
-      high: { text: '高', color: '#ff4757' },
-      medium: { text: '中', color: '#ffa500' },
-      low: { text: '低', color: '#07c160' }
+      high: { text: '高', color: '#FF3B30' },
+      medium: { text: '中', color: '#FF9F0A' },
+      low: { text: '低', color: '#07C160' }
     }
     return priorityMap[priority]
   }
@@ -175,7 +175,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
       <View className="progress-row">
         <View className="progress-section">
           <Progress
-            percentage={workflowProgress}
+            percent={workflowProgress}
             strokeWidth="8"
             color="#576b95"
             style={{ width: '120px', marginBottom: '4px' }}

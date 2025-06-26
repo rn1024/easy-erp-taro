@@ -1,0 +1,139 @@
+@use '../../../styles/variables.scss' as *;
+
+.ui-card {
+  background-color: $bg-primary;
+  border-radius: $radius-md;
+  overflow: hidden;
+  transition: all $duration-fast ease;
+
+  // 边框样式
+  &--bordered {
+    box-shadow: $shadow-1;
+  }
+
+  // 可点击样式
+  &--clickable {
+    cursor: pointer;
+
+    &:active {
+      transform: scale(0.98);
+      box-shadow: $shadow-0;
+    }
+  }
+
+  // 内边距变体
+  &--padding-none {
+    .ui-card__header,
+    .ui-card__body,
+    .ui-card__actions {
+      padding: 0;
+    }
+  }
+
+  &--padding-small {
+    .ui-card__header,
+    .ui-card__body,
+    .ui-card__actions {
+      padding: $spacing-md;
+    }
+  }
+
+  &--padding-large {
+    .ui-card__header,
+    .ui-card__body,
+    .ui-card__actions {
+      padding: $spacing-2xl;
+    }
+  }
+
+  // 头部
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-xl;
+    border-bottom: 1rpx solid $border-light;
+
+    &-content {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  // 标题
+  &__title {
+    font-size: $font-lg;
+    font-weight: 600;
+    color: $text-primary;
+    line-height: $leading-tight;
+  }
+
+  // 副标题
+  &__subtitle {
+    margin-top: $spacing-xs;
+    font-size: $font-sm;
+    color: $text-secondary;
+    line-height: $leading-normal;
+  }
+
+  // 额外内容
+  &__extra {
+    flex-shrink: 0;
+    margin-left: $spacing-md;
+    font-size: $font-sm;
+    color: $text-secondary;
+  }
+
+  // 内容区
+  &__body {
+    padding: $spacing-xl;
+
+    &:first-child {
+      padding-top: $spacing-xl;
+    }
+
+    &:last-child {
+      padding-bottom: $spacing-xl;
+    }
+  }
+
+  // 操作区
+  &__actions {
+    display: flex;
+    align-items: center;
+    padding: $spacing-md $spacing-xl;
+    border-top: 1rpx solid $border-light;
+
+    > * {
+      margin-right: $spacing-md;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+// 独立的卡片组件样式
+.ui-card-header {
+  padding: $spacing-xl;
+  border-bottom: 1rpx solid $border-light;
+}
+
+.ui-card-content {
+  padding: $spacing-xl;
+}
+
+.ui-card-title {
+  font-size: $font-xl;
+  font-weight: 600;
+  color: $text-primary;
+  line-height: $leading-tight;
+  margin-bottom: $spacing-sm;
+}
+
+.ui-card-description {
+  font-size: $font-base;
+  color: $text-secondary;
+  line-height: $leading-relaxed;
+}

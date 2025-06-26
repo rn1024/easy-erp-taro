@@ -1,0 +1,348 @@
+@use '../../styles/variables.scss' as *;
+
+.workflow-builder {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: $bg-secondary;
+
+  // 工具栏
+  &__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-lg;
+    background-color: $bg-primary;
+    border-bottom: 1rpx solid $border-light;
+  }
+
+  &__title {
+    font-size: $font-lg;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $spacing-md;
+  }
+
+  // 主体区域
+  &__main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  // 节点模板
+  &__templates {
+    width: 320rpx;
+    background-color: $bg-primary;
+    border-right: 1rpx solid $border-light;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__section-title {
+    display: block;
+    padding: $spacing-lg;
+    font-size: $font-base;
+    font-weight: 500;
+    color: $text-secondary;
+    border-bottom: 1rpx solid $border-light;
+  }
+
+  &__template-list {
+    flex: 1;
+    padding: $spacing-md;
+  }
+
+  &__template {
+    margin-bottom: $spacing-md;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__template-content {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &__template-icon {
+    flex-shrink: 0;
+
+    &.node--start {
+      color: $success-color;
+    }
+
+    &.node--end {
+      color: $danger-color;
+    }
+
+    &.node--condition {
+      color: $warning-color;
+    }
+
+    &.node--action {
+      color: $primary-color;
+    }
+  }
+
+  &__template-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__template-name {
+    display: block;
+    font-size: $font-base;
+    font-weight: 500;
+    color: $text-primary;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__template-desc {
+    display: block;
+    font-size: $font-sm;
+    color: $text-tertiary;
+    @include text-ellipsis;
+  }
+
+  // 画布区域
+  &__canvas {
+    flex: 1;
+    position: relative;
+    background-color: $bg-tertiary;
+    background-image:
+      linear-gradient(0deg, $border-light 1rpx, transparent 1rpx),
+      linear-gradient(90deg, $border-light 1rpx, transparent 1rpx);
+    background-size: 40rpx 40rpx;
+  }
+
+  &__scroll {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__workspace {
+    position: relative;
+    width: 2000rpx;
+    height: 2000rpx;
+  }
+
+  // 节点样式
+  &__node {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 160rpx;
+    height: 80rpx;
+    background-color: $bg-primary;
+    border: 2rpx solid $border-color;
+    border-radius: $radius-md;
+    box-shadow: $shadow-1;
+    cursor: pointer;
+    transition: all $duration-fast ease;
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &--selected {
+      border-color: $primary-color;
+      box-shadow: 0 0 0 4rpx rgba($primary-color, 0.2);
+    }
+
+    &--connecting {
+      animation: pulse 1s infinite;
+    }
+
+    &.node--start {
+      border-color: $success-color;
+      background-color: $success-light;
+
+      .workflow-builder__node-icon {
+        color: $success-color;
+      }
+    }
+
+    &.node--end {
+      border-color: $danger-color;
+      background-color: $danger-light;
+
+      .workflow-builder__node-icon {
+        color: $danger-color;
+      }
+    }
+
+    &.node--condition {
+      border-color: $warning-color;
+      background-color: $warning-light;
+
+      .workflow-builder__node-icon {
+        color: $warning-color;
+      }
+    }
+
+    &.node--action {
+      border-color: $primary-color;
+      background-color: $primary-light;
+
+      .workflow-builder__node-icon {
+        color: $primary-color;
+      }
+    }
+  }
+
+  &__node-icon {
+    margin-bottom: $spacing-xs;
+  }
+
+  &__node-name {
+    font-size: $font-sm;
+    color: $text-primary;
+    font-weight: 500;
+  }
+
+  &__node-connect {
+    position: absolute;
+    bottom: -20rpx;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32rpx;
+    height: 32rpx;
+    background-color: $primary-color;
+    border-radius: $radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $text-white;
+    opacity: 0;
+    transition: opacity $duration-fast ease;
+
+    .workflow-builder__node:hover & {
+      opacity: 1;
+    }
+  }
+
+  // 连接线
+  &__connection {
+    position: absolute;
+    border-bottom: 2rpx dashed $primary-color;
+    pointer-events: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: -8rpx;
+      bottom: -8rpx;
+      width: 0;
+      height: 0;
+      border-left: 8rpx solid $primary-color;
+      border-top: 4rpx solid transparent;
+      border-bottom: 4rpx solid transparent;
+    }
+  }
+
+  // 空状态
+  &__empty {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  &__empty-icon {
+    color: $text-tertiary;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__empty-text {
+    font-size: $font-base;
+    color: $text-secondary;
+  }
+
+  // 属性面板
+  &__properties {
+    width: 400rpx;
+    background-color: $bg-primary;
+    border-left: 1rpx solid $border-light;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__properties-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-lg;
+    border-bottom: 1rpx solid $border-light;
+  }
+
+  &__properties-close {
+    color: $text-tertiary;
+    cursor: pointer;
+
+    &:active {
+      color: $text-secondary;
+    }
+  }
+
+  &__properties-content {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  &__properties-actions {
+    padding: $spacing-lg;
+    border-top: 1rpx solid $border-light;
+  }
+
+  // 连接提示
+  &__connecting-hint {
+    position: fixed;
+    bottom: $spacing-2xl;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-md $spacing-xl;
+    background-color: $primary-color;
+    color: $text-white;
+    border-radius: $radius-full;
+    box-shadow: $shadow-2;
+    font-size: $font-sm;
+    animation: slideUp $duration-normal ease-out;
+  }
+}
+
+// 动画
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba($primary-color, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10rpx rgba($primary-color, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba($primary-color, 0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

@@ -25,7 +25,8 @@
   .layout-content {
     flex: 1;
     position: relative;
-    overflow: hidden;
+    overflow: auto; // 允许内容滚动
+    -webkit-overflow-scrolling: touch; // iOS 平滑滚动
     // 为键盘适配预留空间
     transition: all 0.3s ease;
   }
@@ -33,9 +34,15 @@
   // 有底部TabBar时的样式
   &.has-bottom-tab {
     .layout-content {
-      // 为底部TabBar预留空间 (基础高度114rpx + 安全区域)
-      padding-bottom: calc(114rpx + env(safe-area-inset-bottom, 0px));
-      padding-bottom: calc(114rpx + constant(safe-area-inset-bottom, 0px)); /* 兼容性 */
+      // 为底部TabBar预留空间 (基础高度120rpx + 安全区域)
+      padding-bottom: calc(120rpx + env(safe-area-inset-bottom, 0px));
+      padding-bottom: calc(120rpx + constant(safe-area-inset-bottom, 0px)); /* 兼容性 */
+
+      // 防止滚动时抖动
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
   }
 

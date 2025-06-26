@@ -1,0 +1,207 @@
+@use '../../styles/variables.scss' as *;
+
+.mobile-workflow-form {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: $bg-secondary;
+
+  // 表单头部
+  &__header {
+    margin: $spacing-md;
+    margin-bottom: 0;
+  }
+
+  &__title {
+    display: block;
+    font-size: $font-lg;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__description {
+    display: block;
+    font-size: $font-base;
+    color: $text-secondary;
+    line-height: $leading-relaxed;
+  }
+
+  // 表单内容
+  &__content {
+    flex: 1;
+    padding: $spacing-md;
+    overflow-y: auto;
+  }
+
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+  }
+
+  // 表单操作
+  &__actions {
+    display: flex;
+    gap: $spacing-md;
+    padding: $spacing-lg;
+    background-color: $bg-primary;
+    border-top: 1rpx solid $border-light;
+    box-shadow: 0 -2rpx 8rpx rgba(0, 0, 0, 0.04);
+
+    > * {
+      flex: 1;
+    }
+  }
+}
+
+// 表单字段
+.form-field {
+  &__label {
+    display: flex;
+    align-items: center;
+    font-size: $font-base;
+    font-weight: 500;
+    color: $text-primary;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__required {
+    color: $danger-color;
+    margin-right: $spacing-xs;
+  }
+
+  &__textarea {
+    width: 100%;
+    min-height: 200rpx;
+    padding: $spacing-md;
+    font-size: $font-base;
+    line-height: $leading-normal;
+    color: $text-primary;
+    background-color: $bg-primary;
+    border: 2rpx solid $border-color;
+    border-radius: $radius-md;
+    transition: border-color $duration-fast ease;
+
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+    }
+
+    &--error {
+      border-color: $danger-color;
+    }
+  }
+
+  &__error {
+    display: block;
+    font-size: $font-sm;
+    color: $danger-color;
+    margin-top: $spacing-xs;
+  }
+
+  &--error {
+    .form-cell {
+      border-color: $danger-color;
+    }
+  }
+}
+
+// 表单单元格
+.form-cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-lg;
+  background-color: $bg-primary;
+  border: 1rpx solid $border-light;
+  border-radius: $radius-md;
+  transition: all $duration-fast ease;
+
+  &:active {
+    background-color: $bg-secondary;
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    display: block;
+    font-size: $font-base;
+    font-weight: 500;
+    color: $text-primary;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__description {
+    display: block;
+    font-size: $font-sm;
+    color: $text-secondary;
+    @include text-ellipsis;
+  }
+
+  &__extra {
+    flex-shrink: 0;
+    margin-left: $spacing-md;
+    color: $text-tertiary;
+  }
+}
+
+// NutUI 组件样式覆盖
+.nut-checkbox-group,
+.nut-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.nut-checkbox,
+.nut-radio {
+  display: flex;
+  align-items: center;
+  padding: $spacing-sm 0;
+
+  .nut-checkbox__label,
+  .nut-radio__label {
+    font-size: $font-base;
+    color: $text-primary;
+    margin-left: $spacing-sm;
+  }
+}
+
+.nut-rate {
+  display: flex;
+  gap: $spacing-sm;
+
+  .nut-rate-item {
+    font-size: 48rpx;
+    color: $gray-4;
+
+    &.nut-rate-active {
+      color: $warning-color;
+    }
+  }
+}
+
+.nut-switch {
+  &.nut-switch-base {
+    width: 88rpx;
+    height: 48rpx;
+
+    &.nut-switch-open {
+      background-color: $primary-color;
+    }
+
+    .nut-switch-button {
+      width: 40rpx;
+      height: 40rpx;
+      top: 4rpx;
+
+      &.nut-switch-button-open {
+        left: calc(100% - 44rpx);
+      }
+    }
+  }
+}

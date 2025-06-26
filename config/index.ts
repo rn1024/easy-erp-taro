@@ -1,5 +1,4 @@
 import { defineConfig, type UserConfigExport } from '@tarojs/cli'
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin'
 import devConfig from './dev'
 import prodConfig from './prod'
 import vitePluginImp from 'vite-plugin-imp'
@@ -22,47 +21,48 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
     },
     copy: {
       patterns: [
+        // 复制自定义 tabBar 的原生文件
+        {
+          from: 'src/custom-tab-bar/index.js',
+          to: 'dist/custom-tab-bar/index.js'
+        },
+        {
+          from: 'src/custom-tab-bar/index.wxml',
+          to: 'dist/custom-tab-bar/index.wxml'
+        },
+        {
+          from: 'src/custom-tab-bar/index.wxss',
+          to: 'dist/custom-tab-bar/index.wxss'
+        },
+        {
+          from: 'src/custom-tab-bar/index.json',
+          to: 'dist/custom-tab-bar/index.json'
+        }
       ],
       options: {
       }
     },
     framework: 'react',
     compiler: {
-      vitePlugins: [vitePluginImp({
-        libList: [
-          {
-            libName: '@nutui/nutui-react-taro',
-            style: (name) => {
-              return `@nutui/nutui-react-taro/dist/esm/${name}/style/css`
-            },
-            replaceOldImport: false,
-            camel2DashComponentName: false,
-          }
-        ]
-      })],
-      type: 'vite'
-    },
-    mini: {
-      postcss: {
-        pxtransform: {
-          enable: true,
-          config: {
-            selectorBlackList: ['nut-']
-          }
-        },
-        cssModules: {
-          enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
-          config: {
-            namingPattern: 'module', // 转换模式，取值为 global/module
-            generateScopedName: '[name]__[local]___[hash:base64:5]'
-          }
-        }
-      },
+      type: 'vite',
+      vitePlugins: [
+        vitePluginImp({
+          libList: [
+            {
+              libName: '@nutui/nutui-react-taro',
+              style: (name) => {
+                return `@nutui/nutui-react-taro/dist/esm/${name}/style/css`
+              },
+              replaceOldImport: false,
+              camel2DashComponentName: false
+            }
+          ]
+        })
+      ]
     },
     h5: {
       publicPath: '/',
       staticDirectory: 'static',
-
       miniCssExtractPluginOption: {
         ignoreOrder: true,
         filename: 'css/[name].[hash].css',
@@ -72,6 +72,28 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
         autoprefixer: {
           enable: true,
           config: {}
+        },
+        cssModules: {
+          enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
+          config: {
+            namingPattern: 'module', // 转换模式，取值为 global/module
+            generateScopedName: '[name]__[local]___[hash:base64:5]'
+          }
+        }
+      },
+      webpackChain(chain) {
+        chain.resolve.alias
+          .set('@/components', ['src/components/index'])
+          .set('@/utils', ['src/utils/index'])
+      }
+    },
+    mini: {
+      postcss: {
+        pxtransform: {
+          enable: true,
+          config: {
+            selectorBlackList: ['nut-']
+          }
         },
         cssModules: {
           enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true

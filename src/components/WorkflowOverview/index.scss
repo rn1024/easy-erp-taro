@@ -1,30 +1,32 @@
+@use '../../styles/variables.scss' as *;
+
 .workflow-overview {
-  padding: 32rpx;
+  padding: $spacing-xl;
 
   // 头部标题和趋势
   .overview-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 32rpx;
+    margin-bottom: $spacing-xl;
 
     .overview-title {
-      font-size: 36rpx;
+      font-size: $font-lg;      // 40rpx
       font-weight: 600;
-      color: #333;
+      color: $text-primary;
     }
 
     .trend-badge {
       display: flex;
       align-items: center;
-      background-color: #07c160;
-      border-radius: 16rpx;
-      padding: 8rpx 16rpx;
+      background-color: $primary-color;
+      border-radius: $radius-md;
+      padding: $spacing-xs $spacing-md;
       gap: 6rpx;
 
       .trend-text {
         font-size: 22rpx;
-        color: #fff;
+        color: $text-white;
         font-weight: 500;
       }
     }
@@ -34,24 +36,25 @@
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16rpx;
-    margin-bottom: 32rpx;
+    gap: $spacing-md;
+    margin-bottom: $spacing-xl;
 
     .stat-card {
       position: relative;
-      background-color: #fff;
-      border-radius: 16rpx;
-      padding: 32rpx;
-      transition: all 0.3s ease;
+      background-color: $bg-primary;
+      border-radius: $radius-md;
+      padding: $spacing-xl;
+      box-shadow: $shadow-1;
+      transition: all $duration-slow ease;
       overflow: hidden;
 
       &:hover {
-        box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+        box-shadow: $shadow-2;
         transform: translateY(-2rpx);
       }
 
       .stat-icon-wrapper {
-        margin-bottom: 16rpx;
+        margin-bottom: $spacing-md;
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -62,62 +65,62 @@
           justify-content: center;
           width: 64rpx;
           height: 64rpx;
-          border-radius: 16rpx;
+          border-radius: $radius-md;
 
           &.primary {
-            background-color: #e8f0fe;
+            background-color: $secondary-light;
           }
 
           &.success {
-            background-color: #e8f7ee;
+            background-color: $success-light;
           }
 
           &.warning {
-            background-color: #fff2e8;
+            background-color: $warning-light;
           }
 
           &.danger {
-            background-color: #ffedef;
+            background-color: $danger-light;
           }
         }
       }
 
       .stat-content {
         .stat-number {
-          font-size: 48rpx;
+          font-size: $font-xl;
           font-weight: 600;
-          color: #333;
+          color: $text-primary;
           line-height: 1.2;
-          margin-bottom: 8rpx;
+          margin-bottom: $spacing-xs;
           display: block;
         }
 
         .stat-label {
-          font-size: 24rpx;
-          color: #666;
+          font-size: $font-xs;
+          color: $text-secondary;
           font-weight: 500;
         }
       }
 
       .stat-badge {
         position: absolute;
-        top: 16rpx;
-        right: 16rpx;
-        padding: 8rpx 12rpx;
-        border-radius: 12rpx;
+        top: $spacing-md;
+        right: $spacing-md;
+        padding: $spacing-xs $spacing-sm;
+        border-radius: $radius-sm;
         font-size: 20rpx;
         font-weight: 600;
 
         &.success {
-          background-color: #e8f7ee;
-          color: #07c160;
-          border: 1rpx solid #07c160;
+          background-color: $success-light;
+          color: $success-color;
+          border: 1rpx solid $success-color;
         }
 
         &.danger {
-          background-color: #ffedef;
-          color: #ff4757;
-          border: 1rpx solid #ff4757;
+          background-color: $danger-light;
+          color: $danger-color;
+          border: 1rpx solid $danger-color;
           animation: pulse-warning 2s infinite;
         }
 
@@ -126,8 +129,6 @@
           font-weight: 600;
         }
       }
-
-      // 卡片类型样式移除边框
     }
   }
 

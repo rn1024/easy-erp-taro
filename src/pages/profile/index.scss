@@ -1,323 +1,265 @@
+@use '../../styles/variables.scss' as *;
+
 .profile-page {
   min-height: 100vh;
   background-color: #f5f7fa;
 
   .profile-scroll {
-    height: 100%;
-    background-color: #f5f7fa;
+    height: 100vh;
+  }
 
-    .profile-content {
+  .profile-content {
+    padding: 32rpx;
+    padding-bottom: 120rpx; // 为 tabBar 留出空间
+
+    // 用户信息卡片
+    .user-info-card {
+      background-color: #fff;
+      border-radius: 24rpx;
+      margin-bottom: 32rpx;
       padding: 32rpx;
+      box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
 
-      // 用户信息卡片
-      .user-info-card {
-        background-color: #fff;
-        border-radius: 24rpx;
+      .user-header {
+        display: flex;
+        align-items: center;
+        gap: 32rpx;
         margin-bottom: 32rpx;
-        overflow: hidden;
-        box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
 
-        .user-header {
-          display: flex;
-          align-items: flex-start;
-          gap: 32rpx;
-          padding: 40rpx 32rpx 24rpx 32rpx;
-          background: linear-gradient(135deg, #576b95 0%, #4a5d87 100%);
-          color: #fff;
-
-          .user-avatar {
-            position: relative;
-            cursor: pointer;
-
-            .avatar {
-              border: 4rpx solid rgba(255, 255, 255, 0.2);
-              box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
-            }
-
-            .avatar-edit {
-              position: absolute;
-              bottom: 0;
-              right: 0;
-              width: 24rpx;
-              height: 24rpx;
-              background-color: #07c160;
-              border-radius: 50%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              border: 2rpx solid #fff;
-            }
-          }
-
-          .user-basic {
-            flex: 1;
-
-            .user-name {
-              font-size: 36rpx;
-              font-weight: 600;
-              color: #fff;
-              margin-bottom: 8rpx;
-              display: block;
-            }
-
-            .user-position {
-              font-size: 26rpx;
-              color: rgba(255, 255, 255, 0.8);
-              margin-bottom: 12rpx;
-              display: block;
-            }
-
-            .user-email {
-              font-size: 24rpx;
-              color: rgba(255, 255, 255, 0.6);
-              display: block;
-            }
+        .user-avatar {
+          .avatar {
+            border: 4rpx solid rgba(0, 0, 0, 0.1);
           }
         }
 
-        .user-stats {
-          padding: 24rpx 32rpx 32rpx 32rpx;
+        .user-basic {
+          flex: 1;
 
-          .join-info {
-            text-align: center;
-
-            .join-label {
-              font-size: 24rpx;
-              color: #999;
-              margin-bottom: 8rpx;
-              display: block;
-            }
-
-            .join-date {
-              font-size: 28rpx;
-              font-weight: 600;
-              color: #333;
-              margin-bottom: 8rpx;
-              display: block;
-            }
-
-            .work-days {
-              font-size: 22rpx;
-              color: #666;
-              display: block;
-            }
-          }
-        }
-      }
-
-      // 工作统计卡片
-      .work-stats-card {
-        background-color: #fff;
-        border-radius: 24rpx;
-        margin-bottom: 32rpx;
-        padding: 32rpx;
-        box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
-
-        .stats-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 32rpx;
-
-          .stats-title {
-            font-size: 32rpx;
+          .user-name {
+            font-size: 36rpx;
             font-weight: 600;
             color: #333;
+            display: block;
+            margin-bottom: 8rpx;
           }
 
-          .stats-period {
-            font-size: 22rpx;
+          .user-position {
+            font-size: 26rpx;
+            color: #666;
+            display: block;
+            margin-bottom: 8rpx;
+          }
+
+          .user-email {
+            font-size: 24rpx;
             color: #999;
-            background-color: #f8f9fa;
-            padding: 8rpx 16rpx;
-            border-radius: 12rpx;
-          }
-        }
-
-        .stats-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 24rpx;
-          margin-bottom: 32rpx;
-
-          .stat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-
-            .stat-icon {
-              width: 48rpx;
-              height: 48rpx;
-              border-radius: 50%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              margin-bottom: 16rpx;
-
-              &.completed {
-                background-color: #e8f7ee;
-              }
-
-              &.pending {
-                background-color: #fff7e6;
-              }
-
-              &.created {
-                background-color: #e6f2ff;
-              }
-            }
-
-            .stat-value {
-              font-size: 40rpx;
-              font-weight: 700;
-              color: #333;
-              margin-bottom: 8rpx;
-              display: block;
-            }
-
-            .stat-label {
-              font-size: 22rpx;
-              color: #666;
-              display: block;
-            }
-          }
-        }
-
-        .completion-progress {
-          .progress-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16rpx;
-
-            .progress-label {
-              font-size: 26rpx;
-              color: #333;
-              font-weight: 500;
-            }
-
-            .progress-value {
-              font-size: 32rpx;
-              font-weight: 700;
-              color: #07c160;
-            }
-          }
-
-          .progress-bar {
-            margin-bottom: 16rpx;
-            // NutUI Progress组件样式调整
-          }
-
-          .progress-desc {
-            font-size: 22rpx;
-            color: #999;
-            text-align: center;
             display: block;
           }
         }
       }
 
-      // 设置菜单卡片
-      .settings-menu-card {
-        background-color: #fff;
-        border-radius: 24rpx;
-        margin-bottom: 32rpx;
-        overflow: hidden;
-        box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+      .user-stats {
+        .join-info {
+          text-align: center;
 
-        .menu-header {
-          padding: 32rpx 32rpx 24rpx 32rpx;
-          border-bottom: 1rpx solid #f0f0f0;
+          .join-label {
+            font-size: 24rpx;
+            color: #999;
+            display: block;
+            margin-bottom: 8rpx;
+          }
 
-          .menu-title {
-            font-size: 32rpx;
+          .join-date {
+            font-size: 28rpx;
             font-weight: 600;
             color: #333;
+            display: block;
           }
         }
+      }
+    }
 
-        .menu-list {
-          .menu-item {
-            border-bottom: 1rpx solid #f0f0f0;
-            transition: background-color 0.3s ease;
+    // 工作统计卡片
+    .work-stats-card {
+      background-color: #fff;
+      border-radius: 24rpx;
+      margin-bottom: 32rpx;
+      padding: 32rpx;
+      box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
 
-            &.last {
-              border-bottom: none;
+      .stats-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 32rpx;
+
+        .stats-title {
+          font-size: 32rpx;
+          font-weight: 600;
+          color: #333;
+        }
+
+        .stats-period {
+          font-size: 22rpx;
+          color: #999;
+          background-color: #f8f9fa;
+          padding: 8rpx 16rpx;
+          border-radius: 12rpx;
+        }
+      }
+
+      .stats-grid {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 32rpx;
+
+        .stat-item {
+          text-align: center;
+
+          .stat-icon {
+            width: 48rpx;
+            height: 48rpx;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16rpx;
+
+            &.completed {
+              background-color: #e8f7ee;
             }
 
-            &:hover {
-              background-color: #f8f9fa;
+            &.pending {
+              background-color: #fff7e6;
             }
 
-            &:active {
-              background-color: #f0f0f0;
+            &.created {
+              background-color: #e6f2ff;
             }
+          }
 
-            .menu-content {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              padding: 32rpx;
+          .stat-value {
+            font-size: 40rpx;
+            font-weight: 700;
+            color: #333;
+            display: block;
+            margin-bottom: 8rpx;
+          }
 
-              .menu-left {
-                display: flex;
-                align-items: center;
-                gap: 24rpx;
-                flex: 1;
-
-                .menu-icon {
-                  width: 48rpx;
-                  height: 48rpx;
-                  border-radius: 12rpx;
-                  background-color: #f8f9fa;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  flex-shrink: 0;
-                }
-
-                .menu-info {
-                  flex: 1;
-
-                  .menu-title-text {
-                    font-size: 30rpx;
-                    font-weight: 500;
-                    color: #333;
-                    margin-bottom: 8rpx;
-                    display: block;
-                  }
-
-                  .menu-desc {
-                    font-size: 22rpx;
-                    color: #999;
-                    display: block;
-                  }
-                }
-              }
-
-              .menu-right {
-                display: flex;
-                align-items: center;
-                gap: 16rpx;
-
-                .menu-badge {
-                  background-color: #ff4757;
-                  color: #fff;
-                  font-size: 20rpx;
-                  padding: 4rpx 8rpx;
-                  border-radius: 10rpx;
-                  min-width: 16rpx;
-                  text-align: center;
-                }
-              }
-            }
+          .stat-label {
+            font-size: 22rpx;
+            color: #666;
+            display: block;
           }
         }
       }
 
-      .bottom-spacer {
-        height: 40rpx;
+      .completion-progress {
+        .progress-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 16rpx;
+
+          .progress-label {
+            font-size: 26rpx;
+            color: #333;
+            font-weight: 500;
+          }
+
+          .progress-value {
+            font-size: 32rpx;
+            font-weight: 700;
+            color: #07c160;
+          }
+        }
+
+        .progress-bar {
+          margin-bottom: 16rpx;
+        }
+
+        .progress-desc {
+          font-size: 22rpx;
+          color: #999;
+          text-align: center;
+          display: block;
+        }
+      }
+    }
+
+    // 设置菜单卡片
+    .settings-menu-card {
+      background-color: #fff;
+      border-radius: 24rpx;
+      overflow: hidden;
+      box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+
+      .menu-header {
+        padding: 32rpx;
+        border-bottom: 1rpx solid #f0f0f0;
+
+        .menu-title {
+          font-size: 32rpx;
+          font-weight: 600;
+          color: #333;
+        }
+      }
+
+      .menu-list {
+        .menu-item {
+          border-bottom: 1rpx solid #f0f0f0;
+
+          &.last {
+            border-bottom: none;
+          }
+
+          .menu-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 32rpx;
+
+            .menu-left {
+              display: flex;
+              align-items: center;
+              gap: 24rpx;
+              flex: 1;
+
+              .menu-icon {
+                width: 48rpx;
+                height: 48rpx;
+                border-radius: 12rpx;
+                background-color: #f8f9fa;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+
+              .menu-info {
+                flex: 1;
+
+                .menu-title-text {
+                  font-size: 30rpx;
+                  font-weight: 500;
+                  color: #333;
+                  display: block;
+                  margin-bottom: 8rpx;
+                }
+
+                .menu-desc {
+                  font-size: 22rpx;
+                  color: #999;
+                  display: block;
+                }
+              }
+            }
+
+            .menu-right {
+              display: flex;
+              align-items: center;
+            }
+          }
+        }
       }
     }
   }

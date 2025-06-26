@@ -1,14 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, ScrollView, Text } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import {
-  MobileLayout,
-  BottomNavigation,
   TopNavigation,
   TaskCard
 } from '../../components'
 import { getMockData } from '../../data/mockData'
-import type { Task } from '../../components'
+import tabBarManager from '../../utils/tabBarManager'
 import './index.scss'
 
 const TasksPage: React.FC = () => {
@@ -17,6 +15,23 @@ const TasksPage: React.FC = () => {
 
   // 获取模拟数据
   const { tasks } = getMockData()
+
+  useEffect(() => {
+    // 设置当前激活的Tab
+    tabBarManager.setActiveTab(1)
+  }, [])
+
+  useDidShow(() => {
+    // 设置自定义 tabBar 的选中状态
+    if (typeof Taro.getTabBar === 'function') {
+      const tabBar = Taro.getTabBar(Taro.getCurrentInstance().page) as any
+      if (tabBar && tabBar.setData) {
+        tabBar.setData({
+          selected: 1
+        })
+      }
+    }
+  })
 
   // 筛选任务
   const filteredTasks = tasks.filter(task => {
@@ -27,6 +42,17 @@ const TasksPage: React.FC = () => {
     return true
   })
 
+  // 处理任务点击
+  const handleTaskClick = (task: any) => {
+    console.log('点击任务:', task.id)
+    // 这里可以跳转到任务详情页
+    Taro.showToast({
+      title: '任务详情开发中',
+      icon: 'none',
+      duration: 2000
+    })
+  }
+
   // 处理搜索
   const handleSearch = (query: string) => {
     setSearchQuery(query)
@@ -35,40 +61,23 @@ const TasksPage: React.FC = () => {
   // 处理筛选
   const handleFilter = (filters: any) => {
     console.log('应用筛选:', filters)
-    // 这里可以实现具体的筛选逻辑
     setActiveFilters(Object.keys(filters).length)
   }
 
-  // 处理任务点击
-  const handleTaskClick = (task: Task) => {
-    console.log('点击任务:', task.title)
-    Taro.showToast({
-      title: `查看任务: ${task.title}`,
-      icon: 'none',
-      duration: 2000
-    })
-  }
-
   return (
-    <MobileLayout
-      hasBottomTab={true}
-      className="tasks-page"
-      header={
-        <TopNavigation
-          onSearch={handleSearch}
-          onFilter={handleFilter}
-          activeFilters={activeFilters}
-          showSearch={true}
-          showFilter={true}
-          searchPlaceholder="搜索任务、责任人..."
-        />
-      }
-      footer={
-        <BottomNavigation
-          messageCount={3}
-        />
-      }
-    >
+    <View className="tasks-page">
+      {/* 顶部导航 */}
+      <TopNavigation
+        title="我的任务"
+        showSearch
+        showFilter
+        searchPlaceholder="搜索任务或负责人"
+        onSearch={handleSearch}
+        onFilter={handleFilter}
+        activeFilters={activeFilters}
+      />
+
+      {/* 任务列表 */}
       <ScrollView
         className="tasks-scroll"
         scrollY
@@ -76,34 +85,22 @@ const TasksPage: React.FC = () => {
         showScrollbar={false}
       >
         <View className="tasks-content">
-          {/* 任务列表标题 */}
-          <View className="tasks-header">
-            <Text className="tasks-title">任务列表 ({filteredTasks.length})</Text>
-          </View>
-
-          {/* 任务列表 */}
-          <View className="tasks-list">
-            {filteredTasks.length > 0 ? (
-              filteredTasks.map(task => (
-                <TaskCard
-                  key={task.id}
-                  task={task}
-                  onTaskClick={handleTaskClick}
-                />
-              ))
-            ) : (
-              <View className="empty-state">
-                <View className="empty-icon">📝</View>
-                <View className="empty-title">暂无任务</View>
-                <View className="empty-desc">
-                  {searchQuery ? '没有找到相关任务' : '还没有分配给您的任务'}
-                </View>
-              </View>
-            )}
-          </View>
+          {filteredTasks.length > 0 ? (
+            filteredTasks.map(task => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                onTaskClick={handleTaskClick}
+              />
+            ))
+          ) : (
+            <View className="empty-state">
+              <Text className="empty-text">暂无任务</Text>
+            </View>
+          )}
         </View>
       </ScrollView>
-    </MobileLayout>
+    </View>
   )
 }
 
