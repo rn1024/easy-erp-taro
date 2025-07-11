@@ -1,0 +1,186 @@
+@use "@nutui/nutui-react-taro/dist/styles/variables.scss" as *;
+
+.workflow-status {
+  padding: 32px;
+  background: #fff;
+  border-radius: 16px;
+  margin: 16px;
+
+  &__header {
+    margin-bottom: 32px;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  &__name {
+    font-size: 36px;
+    font-weight: 600;
+    color: #333;
+    flex: 1;
+  }
+
+  &__tag {
+    margin-left: 16px;
+    font-size: 24px;
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
+
+  &__description {
+    font-size: 28px;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  &__steps {
+    margin-bottom: 32px;
+  }
+
+  &__steps-container {
+    padding-left: 0;
+  }
+
+  &__step {
+    display: flex;
+    margin-bottom: 24px;
+    
+    &--completed {
+      .workflow-status__step-icon {
+        background: #52c41a;
+        color: #fff;
+      }
+      
+      .workflow-status__step-line {
+        background: #52c41a;
+      }
+    }
+    
+    &--active {
+      .workflow-status__step-icon {
+        background: #1890ff;
+        color: #fff;
+      }
+    }
+    
+    &--pending {
+      .workflow-status__step-icon {
+        background: #f0f0f0;
+        color: #999;
+      }
+    }
+    
+    &--skipped {
+      .workflow-status__step-icon {
+        background: #ff4d4f;
+        color: #fff;
+      }
+    }
+  }
+
+  &__step-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 16px;
+  }
+
+  &__step-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  &__step-number {
+    font-size: 14px;
+  }
+
+  &__step-line {
+    width: 2px;
+    height: 40px;
+    background: #f0f0f0;
+    margin-top: 8px;
+  }
+
+  &__step-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__step-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  &__step-detail {
+    margin-top: 16px;
+  }
+
+  &__step-desc {
+    font-size: 26px;
+    color: #666;
+    margin-bottom: 12px;
+  }
+
+  &__step-assignee {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  &__assignee-avatar {
+    margin-right: 12px;
+  }
+
+  &__assignee-name {
+    font-size: 24px;
+    color: #333;
+  }
+
+  &__step-due,
+  &__step-completed {
+    font-size: 22px;
+    color: #999;
+    margin-bottom: 4px;
+  }
+
+  &__footer {
+    border-top: 2px solid #f0f0f0;
+    padding-top: 24px;
+  }
+
+  &__meta {
+    margin-bottom: 16px;
+  }
+
+  &__creator,
+  &__dates,
+  &__category {
+    font-size: 24px;
+    color: #666;
+    margin-bottom: 8px;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  &__tag-item {
+    font-size: 22px;
+    padding: 6px 12px;
+    border-radius: 6px;
+  }
+} 

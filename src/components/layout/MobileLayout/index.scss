@@ -1,0 +1,184 @@
+@use "@nutui/nutui-react-taro/dist/styles/variables.scss" as *;
+
+.mobile-layout {
+  min-height: 100vh;
+  min-height: 100dvh; // 动态视口高度
+  background-color: #f5f5f7; // 微信小程序背景色
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+  
+  // 防止橡皮筋效果
+  overscroll-behavior-y: none;
+  // 优化移动端滚动
+  -webkit-overflow-scrolling: touch;
+  // 防止选择高亮
+  -webkit-user-select: none;
+  user-select: none;
+  // 防止拖拽
+  -webkit-user-drag: none;
+  // 防止长按菜单
+  -webkit-touch-callout: none;
+  // 优化点击延迟
+  touch-action: manipulation;
+  // 防止iOS Safari缩放
+  -webkit-text-size-adjust: 100%;
+
+  &__content {
+    flex: 1;
+    position: relative;
+    overflow-x: hidden;
+    // 硬件加速
+    transform: translateZ(0);
+    // 提升滚动性能
+    will-change: scroll-position;
+  }
+}
+
+// 微信小程序容器
+.wechat-container {
+  max-width: 375px;
+  margin: 0 auto;
+  position: relative;
+  overflow-x: hidden;
+}
+
+// 安全区域适配
+.mobile-layout--with-safe-area {
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+// 确保内容区域不会被TabBar遮挡
+.mobile-layout--with-tabbar {
+  .mobile-layout__content {
+    padding-bottom: 60px; // TabBar高度
+  }
+}
+
+// 移动端适配
+@media (max-width: 375px) {
+  .mobile-layout {
+    font-size: 13px;
+  }
+  
+  .wechat-container {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 376px) and (max-width: 414px) {
+  .mobile-layout {
+    font-size: 15px;
+  }
+}
+
+// 横屏适配
+@media (orientation: landscape) and (max-height: 500px) {
+  .mobile-layout {
+    font-size: 12px;
+  }
+  
+  .wechat-container {
+    max-width: 100%;
+  }
+  
+  .mobile-landscape-hide {
+    display: none;
+  }
+}
+
+// 键盘弹起时的适配
+@supports (-webkit-touch-callout: none) {
+  .mobile-layout.keyboard-adjust {
+    padding-bottom: max(constant(safe-area-inset-bottom), env(safe-area-inset-bottom), 20px);
+    transition: padding-bottom 0.3s ease;
+  }
+}
+
+// 深色模式适配
+@media (prefers-color-scheme: dark) {
+  .mobile-layout {
+    background-color: #111827;
+    color: #f9fafb;
+  }
+}
+
+// 高分辨率屏幕优化
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .mobile-layout {
+    // 高分辨率下的细节优化
+    .high-dpi-border {
+      border-width: 0.5px;
+    }
+  }
+}
+
+// 可访问性优化
+@media (prefers-reduced-motion: reduce) {
+  .mobile-layout {
+    .mobile-layout__content {
+      transition: none;
+    }
+  }
+}
+
+// 输入框样式（防止iOS Safari缩放）
+.mobile-layout {
+  input, textarea {
+    font-size: 16px !important;
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}
+
+// 触摸反馈优化
+.mobile-layout {
+  .touch-feedback {
+    -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
+    tap-highlight-color: rgba(59, 130, 246, 0.1);
+  }
+  
+  .touch-feedback:active {
+    background-color: rgba(59, 130, 246, 0.05);
+  }
+}
+
+// 长列表优化
+.mobile-layout {
+  .virtual-scroll {
+    contain: layout style paint;
+    content-visibility: auto;
+  }
+}
+
+// 固定定位元素的安全区域适配
+.mobile-layout {
+  .fixed-top {
+    top: constant(safe-area-inset-top);
+    top: env(safe-area-inset-top);
+    background-color: #ffffff;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  .fixed-bottom {
+    bottom: constant(safe-area-inset-bottom);
+    bottom: env(safe-area-inset-bottom);
+    background-color: #ffffff;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+// iOS特定优化
+@supports (-webkit-appearance: none) {
+  .mobile-layout {
+    .ios-blur {
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+    }
+  }
+} 

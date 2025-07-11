@@ -1,0 +1,118 @@
+@use "@nutui/nutui-react-taro/dist/styles/variables.scss" as *;
+
+.account-settings {
+  min-height: 100vh;
+  background: #f8f9fa;
+
+  &__header {
+    background: #fff;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 16px;
+  }
+
+  &__cancel-btn {
+    color: #666;
+    font-size: 28px;
+  }
+
+  &__save-btn {
+    font-size: 28px;
+  }
+
+  &__content {
+    padding: 32px;
+  }
+
+  &__avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 48px;
+    padding: 32px;
+    background: #fff;
+    border-radius: 16px;
+  }
+
+  &__avatar-container {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  &__avatar {
+    border: 4px solid #f0f0f0;
+  }
+
+  &__avatar-edit {
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    width: 48px;
+    height: 48px;
+    background: #1890ff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &__user-info {
+    text-align: center;
+  }
+
+  &__user-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+  }
+
+  &__user-id {
+    font-size: 14px;
+    color: #999;
+    margin-bottom: 4px;
+  }
+
+  &__join-date {
+    font-size: 14px;
+    color: #666;
+  }
+
+  &__editable-cell {
+    cursor: pointer;
+    
+    &:hover {
+      background: #f5f5f5;
+    }
+  }
+
+  &__cell {
+    margin-bottom: 16px;
+    border-radius: 16px;
+  }
+
+  &__edit-form {
+    padding: 16px;
+  }
+
+  &__dialog-footer {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+  }
+} 

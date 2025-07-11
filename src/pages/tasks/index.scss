@@ -1,0 +1,41 @@
+.tasks-page {
+  background-color: #f8f9fa;
+
+  &__refresh {
+    min-height: calc(100vh - 44px); // 减去导航栏高度
+  }
+
+  &__content {
+    padding-bottom: 20px;
+  }
+
+  &__search-result {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #666;
+    background: white;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  &__list {
+    .task-card {
+      margin: 12px 16px;
+
+      &:first-child {
+        margin-top: 16px;
+      }
+
+      &:last-child {
+        margin-bottom: 16px;
+      }
+    }
+  }
+
+  &__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    padding: 40px 20px;
+  }
+} 

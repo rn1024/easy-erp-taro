@@ -1,0 +1,151 @@
+@use "@nutui/nutui-react-taro/dist/styles/variables.scss" as *;
+
+.security-settings {
+  min-height: 100vh;
+  background: #f8f9fa;
+
+  &__header {
+    background: #fff;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+  }
+
+  &__content {
+    padding: 32px;
+  }
+
+  &__info {
+    font-size: 24px;
+    color: #666;
+  }
+
+  &__login-info {
+    padding: 32px;
+    background: #fff;
+    border-radius: 16px;
+  }
+
+  &__login-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #f0f0f0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__login-label {
+    font-size: 28px;
+    color: #333;
+    font-weight: 500;
+  }
+
+  &__login-value {
+    font-size: 26px;
+    color: #666;
+    text-align: right;
+    flex: 1;
+    margin-left: 32px;
+  }
+
+  &__suggestions {
+    margin-top: 48px;
+    padding: 32px;
+    background: #fff;
+    border-radius: 16px;
+  }
+
+  &__suggestions-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 32px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 24px;
+  }
+
+  &__suggestions-list {
+    padding-left: 16px;
+  }
+
+  &__suggestion-item {
+    font-size: 26px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__password-dialog {
+    padding: 32px;
+  }
+
+  &__password-field {
+    margin-bottom: 32px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__field-label {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  &__password-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__password-input {
+    flex: 1;
+    padding-right: 80px;
+    border: 2px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 24px;
+    font-size: 28px;
+
+    &:focus {
+      border-color: #1890ff;
+    }
+  }
+
+  &__password-toggle {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 8px;
+    cursor: pointer;
+    color: #666;
+
+    &:hover {
+      color: #1890ff;
+    }
+  }
+
+  &__password-hint {
+    font-size: 22px;
+    color: #999;
+    margin-top: 12px;
+    line-height: 1.4;
+  }
+} 

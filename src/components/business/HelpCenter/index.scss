@@ -1,0 +1,206 @@
+@use "@nutui/nutui-react-taro/dist/styles/variables.scss" as *;
+
+.help-center {
+  min-height: 100vh;
+  background: #f8f9fa;
+
+  &__header {
+    background: #fff;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+  }
+
+  &__content {
+    padding: 32px;
+  }
+
+  &__search {
+    margin-bottom: 48px;
+  }
+
+  &__section-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 24px;
+  }
+
+  &__quick-actions {
+    margin-bottom: 48px;
+  }
+
+  &__actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  &__action-item {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+
+    &:active {
+      background: #f0f9ff;
+      border-color: #1890ff;
+    }
+  }
+
+  &__action-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  &__action-desc {
+    font-size: 24px;
+    color: #666;
+    line-height: 1.4;
+  }
+
+  &__categories {
+    margin-bottom: 48px;
+  }
+
+  &__category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  &__category-tag {
+    font-size: 26px;
+    padding: 16px 24px;
+    border-radius: 32px;
+    border: none;
+    transition: all 0.3s ease;
+
+    &--active {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+    }
+  }
+
+  &__faqs {
+    margin-bottom: 48px;
+  }
+
+  &__faq-list {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  &__faq-item {
+    border-bottom: 1px solid #f0f0f0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:active {
+      background: #f8f9fa;
+    }
+  }
+
+  &__faq-title {
+    font-size: 28px;
+    font-weight: 500;
+    color: #333;
+    flex: 1;
+    line-height: 1.5;
+  }
+
+  &__faq-arrow {
+    font-size: 24px;
+    color: #999;
+    margin-left: 24px;
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+
+    &--expanded {
+      transform: rotate(90deg);
+    }
+  }
+
+  &__faq-content {
+    padding: 0 32px 32px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  &__faq-answer {
+    font-size: 26px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  &__faq-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__helpful-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 24px;
+    color: #666;
+    padding: 16px 24px;
+    border-radius: 8px;
+    background: #f8f9fa;
+
+    &:active {
+      background: #e6f7ff;
+      color: #1890ff;
+    }
+  }
+
+  &__no-results {
+    text-align: center;
+    padding: 80px 32px;
+    background: #fff;
+    border-radius: 16px;
+  }
+
+  &__no-results-text {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 16px;
+  }
+
+  &__no-results-hint {
+    font-size: 26px;
+    color: #999;
+  }
+
+  &__contact {
+    margin-bottom: 48px;
+  }
+
+  &__contact-item {
+    margin-bottom: 16px;
+    border-radius: 16px;
+    background: #fff;
+  }
+} 

@@ -1,0 +1,169 @@
+.create-workflow {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+
+  &__header {
+    background: #fff;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+  }
+
+  &__content {
+    padding: 0 16px 20px;
+  }
+
+  &__categories {
+    margin: 16px 0;
+  }
+
+  &__category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 4px;
+  }
+
+  &__category-tag {
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &--active {
+      transform: scale(1.05);
+    }
+  }
+
+  &__templates {
+    margin: 20px 0;
+  }
+
+  &__template-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  &__tips {
+    margin: 20px 0;
+    padding: 16px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  &__tips-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+  }
+
+  &__tips-list {
+    color: #666;
+    line-height: 1.6;
+  }
+
+  &__tip-item {
+    margin-bottom: 4px;
+    font-size: 14px;
+  }
+}
+
+.template-card {
+  &__content {
+    padding: 16px;
+  }
+
+  &__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  &__info {
+    flex: 1;
+  }
+
+  &__name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+  }
+
+  &__desc {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.4;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  &__time {
+    font-size: 12px;
+    color: #999;
+  }
+
+  &__popularity {
+    margin-top: 8px;
+  }
+
+  &__popularity-bar {
+    width: 100%;
+    height: 4px;
+    background: #f0f0f0;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  &__popularity-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #52c41a, #1890ff);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  &__popularity-text {
+    font-size: 11px;
+    color: #999;
+  }
+
+  &__actions {
+    padding: 0 16px 16px;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 12px;
+    margin-top: 12px;
+  }
+} 

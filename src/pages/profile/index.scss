@@ -1,0 +1,115 @@
+.profile-page {
+  background-color: #f8f9fa;
+
+  &__content {
+    padding-bottom: 40px;
+  }
+
+  &__user-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 24px 20px;
+    color: white;
+    text-align: center;
+  }
+
+  &__avatar {
+    margin-bottom: 16px;
+  }
+
+  &__user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__user-name {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  &__user-role {
+    font-size: 16px;
+    opacity: 0.9;
+    margin-bottom: 2px;
+  }
+
+  &__user-department {
+    font-size: 14px;
+    opacity: 0.8;
+    margin-bottom: 4px;
+  }
+
+  &__user-email {
+    font-size: 12px;
+    opacity: 0.7;
+  }
+
+  &__section {
+    margin-top: 16px;
+    background: white;
+  }
+
+  &__section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    padding: 16px 16px 12px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  &__menu-list,
+  &__settings-list {
+    .nut-cell {
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+
+  &__menu-item,
+  &__setting-item {
+    .nut-cell__value {
+      padding: 16px;
+    }
+  }
+
+  &__menu-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  &__menu-icon {
+    font-size: 20px;
+    width: 24px;
+    text-align: center;
+  }
+
+  &__menu-title {
+    font-size: 15px;
+    color: #333;
+    flex: 1;
+  }
+
+  &__menu-badge {
+    margin-left: auto;
+  }
+
+  &__setting-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__setting-label {
+    font-size: 15px;
+    color: #333;
+  }
+} 
