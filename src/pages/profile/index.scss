@@ -188,7 +188,8 @@
 
   &__performance-item {
     &:not(:last-child) {
-      margin-bottom: 32rpx;
+      margin-bottom: 24rpx;
+      padding-bottom: 4rpx;
     }
   }
 
@@ -196,41 +197,40 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 16rpx;
+    margin-bottom: 12rpx;
   }
 
   &__performance-label {
-    font-size: 28rpx;
+    font-size: 30rpx;
     color: #666;
+    font-weight: normal;
   }
 
   &__performance-value {
-    font-size: 28rpx;
+    font-size: 36rpx;
     font-weight: 600;
     color: #1a1a1a;
   }
 
   &__performance-badge {
-    background: #f0f0f0;
     color: #666;
-    font-size: 22rpx;
-    padding: 8rpx 16rpx;
-    border-radius: 16rpx;
+    font-size: 30rpx;
+    font-weight: normal;
     white-space: nowrap;
   }
 
   &__progress-container {
     width: 100%;
-    height: 16rpx;
+    height: 12rpx;
     background: #f0f0f0;
-    border-radius: 8rpx;
+    border-radius: 6rpx;
     overflow: hidden;
   }
 
   &__progress-bar {
     height: 100%;
     background: #52c41a;
-    border-radius: 8rpx;
+    border-radius: 6rpx;
     transition: width 0.3s ease;
   }
 
