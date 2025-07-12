@@ -5,14 +5,16 @@
   background-color: #f8f9fa;
 
   &__content {
-    padding: 24rpx 32rpx;
+    padding: 0 32rpx 24rpx;
   }
 
   // 搜索框
   &__search {
-    margin-bottom: 32rpx;
+    margin: 0 -32rpx 32rpx;
+    padding: 20rpx 32rpx;
+    background: #ffffff;
 
-    .custom-search-bar {
+    .search-bar {
       background: transparent;
     }
   }
@@ -58,6 +60,7 @@
     font-size: 28rpx;
     font-weight: 500;
     color: #666;
+    white-space: nowrap;
 
     .help-page__tab--active & {
       color: #fff;
@@ -80,6 +83,7 @@
     font-weight: 600;
     color: #1a1a1a;
     margin-bottom: 24rpx;
+    white-space: nowrap;
   }
 
   // 帮助分类网格
@@ -97,6 +101,9 @@
     touch-action: manipulation;
     box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
     padding: 32rpx 24rpx;
+    min-height: 200rpx;
+    display: flex;
+    flex-direction: column;
 
     &:active {
       transform: scale(0.98);
@@ -109,6 +116,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 16rpx;
+    height: 100%;
   }
 
   &__category-icon {
@@ -119,11 +127,16 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 8rpx;
+    flex-shrink: 0;
   }
 
   &__category-info {
     flex: 1;
     min-width: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   &__category-name {
@@ -132,6 +145,9 @@
     color: #1a1a1a;
     margin-bottom: 8rpx;
     line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__category-desc {
@@ -139,6 +155,12 @@
     color: #666;
     margin-bottom: 12rpx;
     line-height: 1.4;
+    flex: 1;
+    word-break: break-all;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   &__category-count {
@@ -148,6 +170,8 @@
     padding: 8rpx 16rpx;
     border-radius: 12rpx;
     align-self: flex-start;
+    white-space: nowrap;
+    margin-top: auto;
   }
 
   // 联系支持
@@ -165,6 +189,7 @@
     cursor: pointer;
     touch-action: manipulation;
     transition: all 0.2s ease;
+    min-height: 120rpx;
 
     &:not(:last-child) {
       border-bottom: 1rpx solid #f0f0f0;
@@ -189,20 +214,29 @@
   &__support-content {
     flex: 1;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   &__support-title {
     font-size: 32rpx;
     font-weight: 500;
     color: #1a1a1a;
-    margin-bottom: 4rpx;
+    margin-bottom: 6rpx;
     line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__support-desc {
     font-size: 26rpx;
     color: #666;
     line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   // FAQ页面
@@ -224,6 +258,7 @@
     font-size: 24rpx;
     padding: 8rpx 16rpx;
     border-radius: 12rpx;
+    white-space: nowrap;
 
     Text {
       font-size: 24rpx;
@@ -264,6 +299,7 @@
     line-height: 1.4;
     flex: 1;
     padding-right: 16rpx;
+    word-break: break-all;
   }
 
   &__faq-answer {
@@ -278,18 +314,22 @@
     line-height: 1.5;
     margin-bottom: 24rpx;
     margin-top: 24rpx;
+    word-break: break-all;
   }
 
   &__faq-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16rpx;
   }
 
   &__faq-meta {
     display: flex;
     align-items: center;
     gap: 16rpx;
+    flex-wrap: wrap;
   }
 
   &__faq-tag {
@@ -298,6 +338,7 @@
     font-size: 22rpx;
     padding: 6rpx 12rpx;
     border-radius: 8rpx;
+    white-space: nowrap;
 
     Text {
       font-size: 22rpx;
@@ -307,6 +348,7 @@
   &__faq-helpful {
     font-size: 22rpx;
     color: #999;
+    white-space: nowrap;
   }
 
   &__faq-helpful-btn {
@@ -318,6 +360,7 @@
     cursor: pointer;
     touch-action: manipulation;
     transition: all 0.2s ease;
+    white-space: nowrap;
 
     &:active {
       background: #e6f4ff;
@@ -349,15 +392,26 @@
   // 响应式适配
   @media (max-width: 750rpx) {
     &__content {
+      padding: 0 24rpx 20rpx;
+    }
+
+    &__search {
+      margin: 0 -24rpx 32rpx;
       padding: 20rpx 24rpx;
+    }
+
+    &__section-title {
+      font-size: 32rpx;
     }
 
     &__categories-grid {
       gap: 16rpx;
+      grid-template-columns: 1fr;
     }
 
     &__category-card {
       padding: 24rpx 20rpx;
+      min-height: 160rpx;
     }
 
     &__category-icon {
@@ -371,10 +425,12 @@
 
     &__category-desc {
       font-size: 22rpx;
+      -webkit-line-clamp: 1;
     }
 
     &__support-item {
       padding: 24rpx;
+      min-height: 100rpx;
     }
 
     &__support-title {
@@ -405,6 +461,12 @@
 
     &__faq-answer-text {
       font-size: 26rpx;
+    }
+
+    &__faq-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12rpx;
     }
   }
 } 

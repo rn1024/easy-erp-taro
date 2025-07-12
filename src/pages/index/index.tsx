@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, Text } from '@tarojs/components'
 import { PullToRefresh } from '@nutui/nutui-react-taro'
 import { MaterialIcons } from 'taro-icons'
-import MobileLayout from '@/components/layout/MobileLayout'
+import MobileLayout from '@/components/MobileLayout'
 import './index.scss'
 
 interface Stats {
@@ -153,7 +153,7 @@ const Index: React.FC = () => {
                         <View className="index-page__stat-icon" style={{ color: item.color }}>
                           <MaterialIcons 
                             name={item.iconName} 
-                            size={16} 
+                            size={24} 
                             color={item.color} 
                           />
                         </View>
@@ -192,7 +192,7 @@ const Index: React.FC = () => {
                       <View className="index-page__metric-icon">
                         <MaterialIcons 
                           name="people" 
-                          size={14} 
+                          size={20} 
                           color="#6b7280" 
                         />
                       </View>
@@ -205,7 +205,7 @@ const Index: React.FC = () => {
                       <View className="index-page__metric-icon">
                         <MaterialIcons 
                           name="timer" 
-                          size={14} 
+                          size={20} 
                           color="#6b7280" 
                         />
                       </View>

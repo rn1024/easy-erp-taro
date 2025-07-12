@@ -3,7 +3,7 @@ import { View, Text } from '@tarojs/components'
 import { Button, Avatar } from '@nutui/nutui-react-taro'
 import { MaterialIcons } from 'taro-icons'
 import Taro from '@tarojs/taro'
-import MobileLayout from '@/components/layout/MobileLayout'
+import MobileLayout from '@/components/MobileLayout'
 
 
 
@@ -65,25 +65,29 @@ const Profile: React.FC = () => {
       title: '创建流程',
       value: userStats.createdWorkflows,
       iconName: 'add',
-      color: '#1890ff'
+      color: '#1890ff',
+      bgColor: 'rgba(24, 144, 255, 0.1)'
     },
     {
       title: '完成任务',
       value: userStats.completedTasks,
       iconName: 'done',
-      color: '#52c41a'
+      color: '#52c41a',
+      bgColor: 'rgba(82, 196, 26, 0.1)'
     },
     {
       title: '待办任务',
       value: userStats.pendingTasks,
       iconName: 'schedule',
-      color: '#fa8c16'
+      color: '#fa8c16',
+      bgColor: 'rgba(250, 140, 22, 0.1)'
     },
     {
       title: '完成率',
       value: `${userStats.completionRate}%`,
       iconName: 'star',
-      color: '#722ed1'
+      color: '#722ed1',
+      bgColor: 'rgba(114, 46, 209, 0.1)'
     }
   ]
 
@@ -174,10 +178,13 @@ const Profile: React.FC = () => {
                 <View key={index} className="profile-page__stat-card">
                   <View className="profile-page__stat-content">
                     <View className="profile-page__stat-header">
-                      <View className="profile-page__stat-icon">
+                      <View 
+                        className="profile-page__stat-icon"
+                        style={{ backgroundColor: card.bgColor }}
+                      >
                         <MaterialIcons 
                           name={card.iconName} 
-                          size={20} 
+                          size={28} 
                           color={card.color} 
                         />
                       </View>
@@ -240,7 +247,7 @@ const Profile: React.FC = () => {
                       <Text className="profile-page__menu-desc">{item.description}</Text>
                     </View>
                     <View className="profile-page__menu-arrow">
-                      <MaterialIcons name="keyboard_arrow_right" size={20} color="#bbb" />
+                      <MaterialIcons name="MaterialIcons" size={16} color="#666" />
                     </View>
                   </View>
                   {index < menuItems.length - 1 && (

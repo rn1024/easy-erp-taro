@@ -1,15 +1,16 @@
-.create-page {
+.create-workflow {
   min-height: 100vh;
   background-color: #f8f9fa;
-  // 安全区域适配
   padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
 
+
+
   &__content {
-    padding: 12rpx 32rpx 0;
+    padding: 24rpx 32rpx 0;
   }
 
   &__categories {
-    padding: 8rpx 0;
+    padding: 24rpx 0;
   }
 
   &__category-tabs {
@@ -150,7 +151,7 @@
   // 响应式断点
   @media (max-width: 750rpx) {
     &__content {
-      padding: 8rpx 24rpx 0;
+      padding: 20rpx 24rpx 0;
     }
     
     &__category-tag {
@@ -277,12 +278,12 @@
     font-size: 32rpx;
   }
 
-  .create-page__template-card:active &__arrow {
+  .create-workflow__template-card:active &__arrow {
     color: #1890ff;
     transform: translateY(-50%) translateX(4rpx);
   }
 
-  .create-page__template-card--selected &__arrow {
+  .create-workflow__template-card--selected &__arrow {
     color: #1890ff;
   }
   

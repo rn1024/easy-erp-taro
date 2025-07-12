@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react'
 import { View, Text } from '@tarojs/components'
 import { Popup, Button, RadioGroup, Radio, Cell, PullToRefresh } from '@nutui/nutui-react-taro'
-import MobileLayout from '@/components/layout/MobileLayout'
-import TaskCard from '@/components/business/TaskCard'
-import CustomSearchBar from '@/components/business/CustomSearchBar'
+import MobileLayout from '@/components/MobileLayout'
+import TaskCard from '@/components/TaskCard'
+import SearchBar from '@/components/SearchBar'
 import { Task } from '@/types'
 import { mockTasks } from '@/constants/mockData'
 import './index.scss'
@@ -18,6 +18,7 @@ const Tasks: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>(mockTasks)
   const [searchValue, setSearchValue] = useState('')
   const [showFilterPopup, setShowFilterPopup] = useState(false)
+  const [showQuickFilters, setShowQuickFilters] = useState(false)
   const [filters, setFilters] = useState<FilterState>({
     status: '',
     priority: '',
@@ -44,6 +45,21 @@ const Tasks: React.FC = () => {
     return Object.values(filters).filter(value => value !== '').length
   }, [filters])
 
+  // 状态选项
+  const statusOptions = [
+    { label: '待处理', value: 'pending' },
+    { label: '进行中', value: 'in_progress' },
+    { label: '已完成', value: 'completed' },
+    { label: '已拒绝', value: 'cancelled' }
+  ]
+
+  // 优先级选项
+  const priorityOptions = [
+    { label: '高', value: 'high' },
+    { label: '中', value: 'medium' },
+    { label: '低', value: 'low' }
+  ]
+
   const handleSearch = (value: string) => {
     setSearchValue(value)
   }
@@ -51,6 +67,20 @@ const Tasks: React.FC = () => {
   const handleTaskClick = (task: Task) => {
     console.log('点击任务:', task.title)
     // 这里可以导航到任务详情页
+  }
+
+  const handleStatusFilter = (status: string) => {
+    setFilters(prev => ({
+      ...prev,
+      status: prev.status === status ? '' : status
+    }))
+  }
+
+  const handlePriorityFilter = (priority: string) => {
+    setFilters(prev => ({
+      ...prev,
+      priority: prev.priority === priority ? '' : priority
+    }))
   }
 
   const handleFilterConfirm = () => {
@@ -98,20 +128,82 @@ const Tasks: React.FC = () => {
   return (
     <MobileLayout className="tasks-page">
       <View className="tasks-page__wrapper">
-        {/* 搜索和筛选栏 - 移到SafeArea内部 */}
-        <CustomSearchBar
-          placeholder="搜索任务、负责人..."
-          value={searchValue}
-          onSearch={handleSearch}
-          onChange={setSearchValue}
-          onFilterClick={() => setShowFilterPopup(true)}
-          activeFilters={activeFilterCount}
-        />
+        {/* 搜索和筛选栏 */}
+        <View className="tasks-page__search-filter">
+          <SearchBar
+            placeholder="搜索任务、负责人..."
+            value={searchValue}
+            onSearch={handleSearch}
+            onChange={setSearchValue}
+          />
+          <View 
+            className={`tasks-page__filter-btn ${activeFilterCount > 0 ? 'tasks-page__filter-btn--active' : ''}`}
+            onClick={() => setShowQuickFilters(!showQuickFilters)}
+          >
+            <Text className="tasks-page__filter-text">筛选</Text>
+            {activeFilterCount > 0 && (
+              <View className="tasks-page__filter-badge">
+                {activeFilterCount}
+              </View>
+            )}
+          </View>
+        </View>
 
         {/* 页面内容 */}
         <View className="tasks-page__container">
           <PullToRefresh onRefresh={handleRefresh}>
             <View className="tasks-page__content">
+              {/* 快速筛选条件 */}
+              {showQuickFilters && (
+                <View className="tasks-page__quick-filters">
+                  {/* 状态筛选 */}
+                  <View className="tasks-page__filter-section">
+                    <Text className="tasks-page__section-title">状态筛选</Text>
+                    <View className="tasks-page__filter-options">
+                      {statusOptions.map((option) => (
+                        <View
+                          key={option.value}
+                          className={`tasks-page__filter-option ${
+                            filters.status === option.value ? 'tasks-page__filter-option--active' : ''
+                          }`}
+                          onClick={() => handleStatusFilter(option.value)}
+                        >
+                          <Text className="tasks-page__filter-option-text">{option.label}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+
+                  {/* 优先级筛选 */}
+                  <View className="tasks-page__filter-section">
+                    <Text className="tasks-page__section-title">优先级筛选</Text>
+                    <View className="tasks-page__filter-options priority-options">
+                      {priorityOptions.map((option) => (
+                        <View
+                          key={option.value}
+                          className={`tasks-page__filter-option ${
+                            filters.priority === option.value ? 'tasks-page__filter-option--active' : ''
+                          }`}
+                          onClick={() => handlePriorityFilter(option.value)}
+                        >
+                          <Text className="tasks-page__filter-option-text">{option.label}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+
+                  {/* 更多筛选按钮 */}
+                  <View className="tasks-page__more-filters">
+                    <View 
+                      className="tasks-page__more-filters-btn"
+                      onClick={() => setShowFilterPopup(true)}
+                    >
+                      <Text className="tasks-page__more-filters-text">更多筛选选项</Text>
+                    </View>
+                  </View>
+                </View>
+              )}
+
               {/* 页面标题 */}
               <View className="tasks-page__header">
                 <Text className="tasks-page__title">
@@ -169,7 +261,7 @@ const Tasks: React.FC = () => {
           </View>
 
           {/* 状态筛选 */}
-          <View className="tasks-page__filter-section">
+          <View className="tasks-page__filter-popup-section">
             <Text className="tasks-page__filter-label">任务状态</Text>
             <RadioGroup
               value={filters.status}
@@ -184,7 +276,7 @@ const Tasks: React.FC = () => {
           </View>
 
           {/* 优先级筛选 */}
-          <View className="tasks-page__filter-section">
+          <View className="tasks-page__filter-popup-section">
             <Text className="tasks-page__filter-label">优先级</Text>
             <RadioGroup
               value={filters.priority}
@@ -199,7 +291,7 @@ const Tasks: React.FC = () => {
           </View>
 
           {/* 负责人筛选 */}
-          <View className="tasks-page__filter-section">
+          <View className="tasks-page__filter-popup-section">
             <Text className="tasks-page__filter-label">负责人</Text>
             <RadioGroup
               value={filters.assignee}

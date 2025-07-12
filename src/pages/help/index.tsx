@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { View, Text } from '@tarojs/components'
 import { MaterialIcons } from 'taro-icons'
-import MobileLayout from '@/components/layout/MobileLayout'
-import CustomSearchBar from '@/components/business/CustomSearchBar'
+import MobileLayout from '@/components/MobileLayout'
+import SearchBar from '@/components/SearchBar'
 import './index.scss'
 
 interface FAQ {
@@ -166,7 +166,7 @@ const Help: React.FC = () => {
       <View className="help-page__content">
         {/* 搜索框 */}
         <View className="help-page__search">
-          <CustomSearchBar
+          <SearchBar
             placeholder="搜索帮助内容..."
             value={searchQuery}
             onChange={setSearchQuery}

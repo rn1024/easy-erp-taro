@@ -1,26 +1,22 @@
 import React, { useState } from 'react'
-import { View, Input, Text } from '@tarojs/components'
+import { View, Input } from '@tarojs/components'
 import { MaterialIcons } from 'taro-icons'
 import './index.scss'
 
-interface CustomSearchBarProps {
+interface SearchBarProps {
   placeholder?: string
   value?: string
   onSearch?: (value: string) => void
   onChange?: (value: string) => void
-  onFilterClick?: () => void
-  activeFilters?: number
   disabled?: boolean
   className?: string
 }
 
-const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
+const SearchBar: React.FC<SearchBarProps> = ({
   placeholder = '搜索任务、负责人...',
   value = '',
   onSearch,
   onChange,
-  onFilterClick,
-  activeFilters = 0,
   disabled = false,
   className = ''
 }) => {
@@ -52,20 +48,16 @@ const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
     onSearch?.('')
   }
 
-  const handleFilterClick = () => {
-    onFilterClick?.()
-  }
-
   return (
-    <View className={`custom-search-bar ${className}`}>
-      <View className="custom-search-bar__wrapper">
+    <View className={`search-bar ${className}`}>
+      <View className="search-bar__wrapper">
         {/* 搜索输入框 */}
-        <View className={`custom-search-bar__input-wrapper ${isFocused ? 'focused' : ''}`}>
-          <View className="custom-search-bar__search-icon">
+        <View className={`search-bar__input-wrapper ${isFocused ? 'focused' : ''}`}>
+          <View className="search-bar__search-icon">
             <MaterialIcons name="search" size={16} color="#666" />
           </View>
           <Input
-            className="custom-search-bar__input"
+            className="search-bar__input"
             placeholder={placeholder}
             value={inputValue}
             onInput={handleInputChange}
@@ -74,25 +66,11 @@ const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
             onConfirm={handleInputConfirm}
             disabled={disabled}
             confirmType="search"
-            placeholderClass="custom-search-bar__placeholder"
+            placeholderClass="search-bar__placeholder"
           />
           {inputValue && (
-            <View className="custom-search-bar__clear-icon" onClick={handleClear}>
+            <View className="search-bar__clear-icon" onClick={handleClear}>
               <MaterialIcons name="close" size={16} color="#666" />
-            </View>
-          )}
-        </View>
-
-        {/* 筛选按钮 */}
-        <View 
-          className={`custom-search-bar__filter-btn ${activeFilters > 0 ? 'active' : ''}`}
-          onClick={handleFilterClick}
-        >
-          <MaterialIcons name="filter_list" size={16} color="#666" />
-          <Text className="custom-search-bar__filter-text">筛选</Text>
-          {activeFilters > 0 && (
-            <View className="custom-search-bar__filter-badge">
-              {activeFilters}
             </View>
           )}
         </View>
@@ -101,4 +79,4 @@ const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
   )
 }
 
-export default CustomSearchBar 
+export default SearchBar 
