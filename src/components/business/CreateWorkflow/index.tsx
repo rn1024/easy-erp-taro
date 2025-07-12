@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import { View, Text } from '@tarojs/components'
 import { 
   Card, 
-  Grid, 
-  GridItem, 
   Tag, 
-  Button
+  Button,
+  NavBar
 } from '@nutui/nutui-react-taro'
 import { 
   Plus, 
@@ -15,7 +14,8 @@ import {
   Clock, 
   CheckNormal,
   Notice,
-  ArrowRight
+  ArrowRight,
+  ArrowLeft
 } from '@nutui/icons-react-taro'
 import Taro from '@tarojs/taro'
 import './index.scss'
@@ -35,10 +35,11 @@ interface WorkflowTemplate {
 
 interface CreateWorkflowProps {
   onTemplateSelect?: (template: WorkflowTemplate) => void
+  onBack?: () => void
 }
 
-const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect }) => {
-  const [selectedCategory, setSelectedCategory] = useState('all')
+const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBack }) => {
+  const [selectedCategory, setSelectedCategory] = useState('全部')
   const [selectedTemplate, setSelectedTemplate] = useState<WorkflowTemplate | null>(null)
 
   const templates: WorkflowTemplate[] = [
@@ -48,10 +49,10 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect }) => 
       description: '新产品功能需求评审和技术方案确认流程',
       icon: Service,
       color: '#1890ff',
-      bgColor: 'rgba(24, 144, 255, 0.1)',
+      bgColor: '#e6f7ff',
       steps: 4,
       estimatedTime: '3-5天',
-      category: 'product',
+      category: '产品',
       popularity: 95
     },
     {
@@ -60,10 +61,10 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect }) => 
       description: 'UI/UX设计方案审批和修改反馈流程',
       icon: Setting,
       color: '#722ed1',
-      bgColor: 'rgba(114, 46, 209, 0.1)',
+      bgColor: '#f9f0ff',
       steps: 3,
       estimatedTime: '2-3天',
-      category: 'design',
+      category: '设计',
       popularity: 88
     },
     {
@@ -72,10 +73,10 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect }) => 
       description: '多人协作项目管理和进度跟踪流程',
       icon: User,
       color: '#52c41a',
-      bgColor: 'rgba(82, 196, 26, 0.1)',
+      bgColor: '#f6ffed',
       steps: 5,
       estimatedTime: '1-2周',
-      category: 'collaboration',
+      category: '协作',
       popularity: 92
     },
     {
@@ -84,10 +85,10 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect }) => 
       description: '软件缺陷报告、分配和修复验证流程',
       icon: Notice,
       color: '#f5222d',
-      bgColor: 'rgba(245, 34, 45, 0.1)',
+      bgColor: '#fff2f0',
       steps: 4,
       estimatedTime: '1-3天',
-      category: 'technical',
+      category: '技术',
       popularity: 78
     },
     {
@@ -96,10 +97,10 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect }) => 
       description: '内容创作、审核和发布的完整流程',
       icon: CheckNormal,
       color: '#fa8c16',
-      bgColor: 'rgba(250, 140, 22, 0.1)',
+      bgColor: '#fff7e6',
       steps: 3,
       estimatedTime: '1-2天',
-      category: 'content',
+      category: '内容',
       popularity: 85
     },
     {
@@ -107,26 +108,18 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect }) => 
       name: '自定义流程',
       description: '根据具体需求创建自定义工作流程',
       icon: Plus,
-      color: '#13c2c2',
-      bgColor: 'rgba(19, 194, 194, 0.1)',
+      color: '#666666',
+      bgColor: '#f5f5f5',
       steps: 0,
       estimatedTime: '自定义',
-      category: 'custom',
-      popularity: 100
+      category: '其他',
+      popularity: 0
     }
   ]
 
-  const categories = [
-    { id: 'all', name: '全部' },
-    { id: 'product', name: '产品' },
-    { id: 'design', name: '设计' },
-    { id: 'collaboration', name: '协作' },
-    { id: 'technical', name: '技术' },
-    { id: 'content', name: '内容' },
-    { id: 'custom', name: '自定义' }
-  ]
+  const categories = ['全部', '产品', '设计', '协作', '技术', '内容', '其他']
 
-  const filteredTemplates = selectedCategory === 'all' 
+  const filteredTemplates = selectedCategory === '全部' 
     ? templates 
     : templates.filter(t => t.category === selectedCategory)
 
@@ -134,15 +127,19 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect }) => 
     setSelectedTemplate(template)
     if (template.id === 'custom') {
       // 跳转到自定义工作流构建器
-      console.log('自定义工作流构建器开发中')
+      Taro.showToast({
+        title: '自定义工作流开发中',
+        icon: 'none'
+      })
     } else {
       // 使用模板创建工作流
       if (onTemplateSelect) {
         onTemplateSelect(template)
       } else {
-        // 跳转到工作流表单页面
-        Taro.navigateTo({
-          url: `/pages/workflowForm/index?templateId=${template.id}`
+        // 显示创建成功提示
+        Taro.showToast({
+          title: '模板已选择',
+          icon: 'success'
         })
       }
     }
@@ -150,44 +147,65 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect }) => 
 
   const handleQuickStart = () => {
     if (selectedTemplate) {
-      console.log(`正在创建${selectedTemplate.name}...`)
-      // 模拟创建成功
       Taro.showToast({
-        title: '创建成功',
+        title: `创建${selectedTemplate.name}成功`,
         icon: 'success'
       })
+      // 延迟返回上一页
+      setTimeout(() => {
+        if (onBack) {
+          onBack()
+        } else {
+          Taro.navigateBack()
+        }
+      }, 1500)
+    }
+  }
+
+  const handleBack = () => {
+    if (onBack) {
+      onBack()
+    } else {
+      Taro.navigateBack()
     }
   }
 
   return (
     <View className="create-workflow">
+      {/* 顶部导航 */}
       <View className="create-workflow__header">
-        <View className="create-workflow__title">创建工作流</View>
-        <View className="create-workflow__subtitle">选择合适的模板快速创建工作流程</View>
+        <View className="create-workflow__nav">
+          <View className="create-workflow__back-btn" onClick={handleBack}>
+            <ArrowLeft size="20" />
+          </View>
+          <View className="create-workflow__title">创建工作流程</View>
+        </View>
       </View>
 
       <View className="create-workflow__content">
-        {/* 分类标签 */}
+        {/* 分类选择 */}
         <View className="create-workflow__categories">
           <View className="create-workflow__category-tabs">
             {categories.map(category => (
-              <Tag
-                key={category.id}
+              <View
+                key={category}
                 className={`create-workflow__category-tag ${
-                  selectedCategory === category.id ? 'create-workflow__category-tag--active' : ''
+                  selectedCategory === category ? 'create-workflow__category-tag--active' : ''
                 }`}
-                onClick={() => setSelectedCategory(category.id)}
-                background={selectedCategory === category.id ? '#1890ff' : '#f5f5f5'}
-                color={selectedCategory === category.id ? '#fff' : '#666'}
+                onClick={() => setSelectedCategory(category)}
               >
-                {category.name}
-              </Tag>
+                {category}
+              </View>
             ))}
           </View>
         </View>
 
-        {/* 模板网格 */}
+        {/* 模板列表 */}
         <View className="create-workflow__templates">
+          <View className="create-workflow__templates-header">
+            <Text className="create-workflow__templates-title">选择模板</Text>
+          </View>
+          
           <View className="create-workflow__templates-grid">
             {filteredTemplates.map(template => {
               const Icon = template.icon
@@ -208,36 +226,38 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect }) => 
                           color: template.color 
                         }}
                       >
-                        <Icon size="20" />
+                        <Icon size="24" />
                       </View>
                       
-                      {template.popularity > 0 && (
-                        <View className="template-card__popularity-badge">
-                          热门 {template.popularity}%
+                      <View className="template-card__info">
+                        <View className="template-card__name-row">
+                          <Text className="template-card__name">{template.name}</Text>
+                          {template.popularity > 0 && (
+                            <View className="template-card__popularity-badge">
+                              热门 {template.popularity}%
+                            </View>
+                          )}
                         </View>
-                      )}
-                    </View>
-                    
-                    <View className="template-card__info">
-                      <View className="template-card__name">{template.name}</View>
-                      <View className="template-card__desc">{template.description}</View>
-                      
-                      <View className="template-card__meta">
-                        {template.steps > 0 && (
+                        
+                        <Text className="template-card__desc">{template.description}</Text>
+                        
+                        <View className="template-card__meta">
+                          {template.steps > 0 && (
+                            <View className="template-card__meta-item">
+                              <CheckNormal size="12" />
+                              <Text className="template-card__meta-text">{template.steps}个步骤</Text>
+                            </View>
+                          )}
                           <View className="template-card__meta-item">
-                            <CheckNormal size="12" />
-                            <Text className="template-card__meta-text">{template.steps}步骤</Text>
+                            <Clock size="12" />
+                            <Text className="template-card__meta-text">{template.estimatedTime}</Text>
                           </View>
-                        )}
-                        <View className="template-card__meta-item">
-                          <Clock size="12" />
-                          <Text className="template-card__meta-text">{template.estimatedTime}</Text>
                         </View>
                       </View>
-                    </View>
-                    
-                    <View className="template-card__arrow">
-                      <ArrowRight size="16" />
+                      
+                      <View className="template-card__arrow">
+                        <ArrowRight size="16" />
+                      </View>
                     </View>
                   </View>
                 </Card>
@@ -251,10 +271,10 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect }) => 
           <View className="create-workflow__quick-start">
             <Card className="create-workflow__quick-start-card">
               <View className="create-workflow__quick-start-content">
-                <View className="create-workflow__quick-start-title">快速开始</View>
-                <View className="create-workflow__quick-start-desc">
+                <Text className="create-workflow__quick-start-title">快速开始</Text>
+                <Text className="create-workflow__quick-start-desc">
                   使用"{selectedTemplate.name}"模板快速创建工作流程
-                </View>
+                </Text>
                 <Button
                   className="create-workflow__quick-start-btn"
                   type="primary"
@@ -266,22 +286,6 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect }) => 
             </Card>
           </View>
         )}
-
-        {/* 提示信息 */}
-        <View className="create-workflow__tips">
-          <View className="create-workflow__tips-title">💡 温馨提示</View>
-          <View className="create-workflow__tips-list">
-            <View className="create-workflow__tip-item">
-              • 选择合适的模板可以快速搭建工作流程
-            </View>
-            <View className="create-workflow__tip-item">
-              • 自定义流程支持灵活配置步骤和人员
-            </View>
-            <View className="create-workflow__tip-item">
-              • 创建后可以随时修改和优化流程
-            </View>
-          </View>
-        </View>
       </View>
     </View>
   )
