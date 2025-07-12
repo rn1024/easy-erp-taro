@@ -1,17 +1,9 @@
 import React, { useState } from 'react'
-import { View, Text, Input } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { 
-  SearchBar, 
   Button
 } from '@nutui/nutui-react-taro'
-import { 
-  Search,
-  CheckNormal,
-  Clock,
-  Notice,
-  Service,
-  ArrowLeft
-} from '@nutui/icons-react-taro'
+import { MaterialIcons } from 'taro-icons'
 import Taro from '@tarojs/taro'
 import './index.scss'
 
@@ -33,7 +25,6 @@ interface MessageCenterProps {
 }
 
 const MessageCenter: React.FC<MessageCenterProps> = ({ onBack }) => {
-  const [searchKeyword, setSearchKeyword] = useState('')
   const [selectedTab, setSelectedTab] = useState('all')
   const [messages, setMessages] = useState<MessageItem[]>([
     {
@@ -108,15 +99,6 @@ const MessageCenter: React.FC<MessageCenterProps> = ({ onBack }) => {
       }
     }
 
-    // 按搜索关键词过滤
-    if (searchKeyword) {
-      filtered = filtered.filter(m => 
-        m.title.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-        m.content.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-        (m.sender && m.sender.toLowerCase().includes(searchKeyword.toLowerCase()))
-      )
-    }
-
     return filtered.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
   }
 
@@ -156,15 +138,15 @@ const MessageCenter: React.FC<MessageCenterProps> = ({ onBack }) => {
   const getMessageIcon = (type: string) => {
     switch (type) {
       case 'task':
-        return CheckNormal
+        return 'check'
       case 'system':
-        return Notice
+        return 'notifications'
       case 'workflow':
-        return Service
+        return 'build'
       case 'approval':
-        return Clock
+        return 'schedule'
       default:
-        return Service
+        return 'build'
     }
   }
 
@@ -206,44 +188,7 @@ const MessageCenter: React.FC<MessageCenterProps> = ({ onBack }) => {
 
   return (
     <View className="message-center">
-      {/* 顶部导航 */}
-      <View className="message-center__header">
-        <View className="message-center__nav">
-          <View className="message-center__nav-left">
-            <View className="message-center__back-btn" onClick={handleBack}>
-              <ArrowLeft size="20" />
-            </View>
-            <Text className="message-center__title">消息中心</Text>
-            {unreadCount > 0 && (
-              <View className="message-center__unread-badge">
-                {unreadCount}
-              </View>
-            )}
-          </View>
-          <Button 
-            size="small" 
-            fill="none"
-            onClick={handleMarkAllRead}
-            className="message-center__mark-all-btn"
-            disabled={unreadCount === 0}
-          >
-            全部已读
-          </Button>
-        </View>
-      </View>
-
       <View className="message-center__content">
-        {/* 搜索框 */}
-        <View className="message-center__search">
-          <SearchBar
-            placeholder="搜索消息"
-            value={searchKeyword}
-            onChange={setSearchKeyword}
-            left={<Search size="16" />}
-            className="message-center__search-bar"
-          />
-        </View>
-
         {/* 标签页 */}
         <View className="message-center__tabs">
           <View className="message-center__tabs-container">
@@ -269,7 +214,7 @@ const MessageCenter: React.FC<MessageCenterProps> = ({ onBack }) => {
             </View>
           ) : (
             filteredMessages.map(message => {
-              const Icon = getMessageIcon(message.type)
+              const iconName = getMessageIcon(message.type)
               return (
                 <View
                   key={message.id}
@@ -290,7 +235,7 @@ const MessageCenter: React.FC<MessageCenterProps> = ({ onBack }) => {
                           />
                         ) : (
                           <View className="message-card__icon">
-                            <Icon size="24" />
+                            <MaterialIcons name={iconName} size={24} color="#666" />
                           </View>
                         )}
                       </View>

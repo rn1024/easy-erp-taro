@@ -17,100 +17,7 @@
     padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
   }
 
-  // 搜索和筛选栏 - 现在在SafeArea内部
-  &__search-bar {
-    display: flex;
-    align-items: center;
-    gap: 24rpx;
-    padding: 32rpx;
-    background: #ffffff;
-    // 修复1px边框问题 - 使用transform实现真1物理像素
-    position: relative;
-    z-index: 10;
-    
-    &::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      height: 1rpx;
-      background: #f0f0f0;
-      transform: scaleY(0.5);
-      transform-origin: bottom;
-    }
-  }
-
-  &__search-input {
-    flex: 1;
-    
-    .nut-searchbar {
-      background: #f5f5f5;
-      border-radius: 44rpx;
-      border: none;
-      min-height: 88rpx;
-      
-      &__input {
-        background: transparent;
-        font-size: 32rpx; // 防止iOS缩放
-        color: #333;
-        line-height: 1.4;
-        
-        &::placeholder {
-          color: #999;
-          font-size: 32rpx;
-        }
-      }
-      
-      &__icon {
-        color: #999;
-      }
-    }
-  }
-
-  &__filter-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    padding: 16rpx 24rpx;
-    background: #f5f5f5;
-    border-radius: 24rpx;
-    cursor: pointer;
-    min-width: 120rpx;
-    min-height: 88rpx; // 确保44px触摸目标
-    touch-action: manipulation;
-    
-    // 优化触摸反馈
-    transition: all 0.2s ease;
-    
-    &:active {
-      background: #e8e8e8;
-      transform: scale(0.98);
-    }
-  }
-
-  &__filter-text {
-    font-size: 24rpx;
-    color: #666;
-    margin-top: 4rpx;
-  }
-
-  &__filter-badge {
-    position: absolute;
-    top: 8rpx;
-    right: 12rpx;
-    background: #ff4d4f;
-    color: white;
-    font-size: 20rpx;
-    min-width: 32rpx;
-    height: 32rpx;
-    border-radius: 16rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  // 自定义搜索栏样式现在由CustomSearchBar组件自己管理
 
   // 页面内容容器
   &__container {
@@ -323,35 +230,6 @@
 // 移动端适配 (750rpx对应375px)
 @media (max-width: 750rpx) {
   .tasks-page {
-    &__search-bar {
-      padding: 24rpx;
-      gap: 16rpx;
-    }
-    
-    &__search-input {
-      .nut-searchbar {
-        min-height: 80rpx;
-        
-        &__input {
-          font-size: 28rpx;
-          
-          &::placeholder {
-            font-size: 28rpx;
-          }
-        }
-      }
-    }
-    
-    &__filter-btn {
-      min-width: 100rpx;
-      min-height: 80rpx;
-      padding: 12rpx 20rpx;
-    }
-    
-    &__filter-text {
-      font-size: 22rpx;
-    }
-    
     &__container {
       padding: 0 24rpx;
     }
@@ -383,14 +261,6 @@
   .tasks-page {
     background: #111827;
     
-    &__search-bar {
-      background: #1f2937;
-      
-      &::after {
-        background: #374151;
-      }
-    }
-    
     &__title {
       color: #ffffff;
     }
@@ -415,10 +285,7 @@
 @media screen and (min-width: 1rpx) {
   .tasks-page {
     // 小程序环境下的特殊处理
-    &__search-bar {
-      // 考虑小程序导航栏高度
-      padding-top: 32rpx;
-    }
+    // 自定义搜索栏组件会自己处理小程序适配
   }
 }
 

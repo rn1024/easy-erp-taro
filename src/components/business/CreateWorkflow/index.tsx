@@ -5,17 +5,7 @@ import {
   Button,
   NavBar
 } from '@nutui/nutui-react-taro'
-import { 
-  Plus, 
-  Service, 
-  User, 
-  Setting, 
-  Clock, 
-  CheckNormal,
-  Notice,
-  ArrowRight,
-  ArrowLeft
-} from '@nutui/icons-react-taro'
+import { MaterialIcons } from 'taro-icons'
 import Taro from '@tarojs/taro'
 import './index.scss'
 
@@ -23,7 +13,7 @@ interface WorkflowTemplate {
   id: string
   name: string
   description: string
-  icon: React.ElementType
+  icon: string
   color: string
   bgColor: string
   steps: number
@@ -46,7 +36,7 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBac
       id: 'product_review',
       name: '产品需求评审',
       description: '新产品功能需求评审和技术方案确认流程',
-      icon: Service,
+      icon: 'build',
       color: '#1890ff',
       bgColor: '#e6f7ff',
       steps: 4,
@@ -58,7 +48,7 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBac
       id: 'design_approval',
       name: '设计方案审批',
       description: 'UI/UX设计方案审批和修改反馈流程',
-      icon: Setting,
+      icon: 'settings',
       color: '#722ed1',
       bgColor: '#f9f0ff',
       steps: 3,
@@ -70,7 +60,7 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBac
       id: 'team_project',
       name: '团队协作项目',
       description: '多人协作项目管理和进度跟踪流程',
-      icon: User,
+      icon: 'person',
       color: '#52c41a',
       bgColor: '#f6ffed',
       steps: 5,
@@ -82,7 +72,7 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBac
       id: 'bug_fix',
       name: '问题修复流程',
       description: '软件缺陷报告、分配和修复验证流程',
-      icon: Notice,
+      icon: 'notifications',
       color: '#f5222d',
       bgColor: '#fff2f0',
       steps: 4,
@@ -94,7 +84,7 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBac
       id: 'content_review',
       name: '内容审核流程',
       description: '内容创作、审核和发布的完整流程',
-      icon: CheckNormal,
+      icon: 'check',
       color: '#fa8c16',
       bgColor: '#fff7e6',
       steps: 3,
@@ -106,7 +96,7 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBac
       id: 'custom',
       name: '自定义流程',
       description: '根据具体需求创建自定义工作流程',
-      icon: Plus,
+      icon: 'add',
       color: '#666666',
       bgColor: '#f5f5f5',
       steps: 0,
@@ -171,16 +161,6 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBac
 
   return (
     <View className="create-workflow">
-      {/* 顶部导航 */}
-      <View className="create-workflow__header">
-        <View className="create-workflow__nav">
-          <View className="create-workflow__back-btn" onClick={handleBack}>
-            <ArrowLeft size="20" />
-          </View>
-          <View className="create-workflow__title">创建工作流程</View>
-        </View>
-      </View>
-
       <View className="create-workflow__content">
         {/* 分类选择 */}
         <View className="create-workflow__categories">
@@ -207,7 +187,6 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBac
           
           <View className="create-workflow__templates-grid">
             {filteredTemplates.map(template => {
-              const Icon = template.icon
               return (
                 <View 
                   key={template.id}
@@ -225,7 +204,7 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBac
                           color: template.color 
                         }}
                       >
-                        <Icon size="24" />
+                        <MaterialIcons name={template.icon} size={24} color={template.color} />
                       </View>
                       
                       <View className="template-card__info">
@@ -243,19 +222,19 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBac
                         <View className="template-card__meta">
                           {template.steps > 0 && (
                             <View className="template-card__meta-item">
-                              <CheckNormal size="12" />
+                              <MaterialIcons name="check" size={12} color="#666" />
                               <Text className="template-card__meta-text">{template.steps}个步骤</Text>
                             </View>
                           )}
                           <View className="template-card__meta-item">
-                            <Clock size="12" />
+                            <MaterialIcons name="schedule" size={12} color="#666" />
                             <Text className="template-card__meta-text">{template.estimatedTime}</Text>
                           </View>
                         </View>
                       </View>
                       
                       <View className="template-card__arrow">
-                        <ArrowRight size="16" />
+                        <MaterialIcons name="arrow_forward" size={16} color="#666" />
                       </View>
                     </View>
                   </View>

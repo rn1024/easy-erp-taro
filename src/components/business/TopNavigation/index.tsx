@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text } from '@tarojs/components'
 import { NavBar, SearchBar, Popup, Button, Radio, Form, FormItem, Cell } from '@nutui/nutui-react-taro'
-import { Search, Filter } from '@nutui/icons-react-taro'
+import { MaterialIcons } from 'taro-icons'
 import './index.scss'
 
 interface FilterOptions {
@@ -80,9 +80,11 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
     
     if (showSearch) {
       actions.push(
-        <Search 
+        <MaterialIcons 
           key="search"
-          size="20"
+          name="search"
+          size={20}
+          color="#666"
           onClick={handleSearchClick}
           className="top-nav__action"
         />
@@ -96,7 +98,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
           className="top-nav__filter-btn"
           onClick={handleFilterClick}
         >
-          <Filter size="20" />
+          <MaterialIcons name="filter_list" size={20} color="#666" />
           {activeFilters > 0 && (
             <View className="top-nav__filter-badge">{activeFilters}</View>
           )}

@@ -162,7 +162,6 @@
   &__stat-icon {
     width: 64rpx;
     height: 64rpx;
-    border-radius: 16rpx;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -259,12 +258,10 @@
   &__menu-icon {
     width: 80rpx;
     height: 80rpx;
-    background: #f5f5f5;
     border-radius: 20rpx;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #666;
     flex-shrink: 0;
   }
 

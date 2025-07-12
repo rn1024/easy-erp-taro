@@ -3,61 +3,10 @@
   background-color: #f8f9fa;
   padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
 
-  &__header {
-    background: #fff;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    position: relative;
-    
-    &::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      height: 1rpx;
-      background: #e9ecef;
-      transform: scaleY(0.5);
-      transform-origin: bottom;
-    }
-  }
 
-  &__nav {
-    display: flex;
-    align-items: center;
-    gap: 24rpx;
-    padding: 24rpx 32rpx;
-    min-height: 88rpx;
-  }
-
-  &__back-btn {
-    width: 64rpx;
-    height: 64rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 16rpx;
-    background: #f5f5f5;
-    cursor: pointer;
-    touch-action: manipulation;
-    transition: all 0.2s ease;
-
-    &:active {
-      transform: scale(0.95);
-      background: #e8e8e8;
-    }
-  }
-
-  &__title {
-    font-size: 36rpx;
-    font-weight: 600;
-    color: #1a1a1a;
-    flex: 1;
-  }
 
   &__content {
-    padding: 0 32rpx;
+    padding: 24rpx 32rpx 0;
   }
 
   &__categories {
@@ -216,20 +165,7 @@
   // 响应式断点
   @media (max-width: 750rpx) {
     &__content {
-      padding: 0 24rpx;
-    }
-    
-    &__nav {
-      padding: 20rpx 24rpx;
-    }
-    
-    &__title {
-      font-size: 32rpx;
-    }
-    
-    &__back-btn {
-      width: 56rpx;
-      height: 56rpx;
+      padding: 20rpx 24rpx 0;
     }
     
     &__category-tag {

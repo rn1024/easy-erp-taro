@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, Image } from '@tarojs/components'
-import { CheckNormal, Clock, Notice, Warning } from '@nutui/icons-react-taro'
+import { MaterialIcons } from 'taro-icons'
 import { Task } from '@/types'
 import './index.scss'
 
@@ -16,32 +16,32 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
         text: '待处理', 
         color: '#f59e0b',
         bgColor: 'rgba(245, 158, 11, 0.1)',
-        icon: <Clock size={12} />
+        icon: <MaterialIcons name="schedule" size={12} color="#f59e0b" />
       },
       in_progress: { 
         text: '进行中', 
         color: '#3b82f6',
         bgColor: 'rgba(59, 130, 246, 0.1)',
-        icon: <Notice size={12} />
+        icon: <MaterialIcons name="notifications" size={12} color="#3b82f6" />
       },
       completed: { 
         text: '已完成', 
         color: '#10b981',
         bgColor: 'rgba(16, 185, 129, 0.1)',
-        icon: <CheckNormal size={12} />
+        icon: <MaterialIcons name="check" size={12} color="#10b981" />
       },
       cancelled: { 
         text: '已拒绝', 
         color: '#ef4444',
         bgColor: 'rgba(239, 68, 68, 0.1)',
-        icon: <Warning size={12} />
+        icon: <MaterialIcons name="warning" size={12} color="#ef4444" />
       }
     }
     return statusMap[status] || { 
       text: '未知', 
       color: '#6b7280',
       bgColor: 'rgba(107, 114, 128, 0.1)',
-      icon: <Clock size={12} />
+      icon: <MaterialIcons name="schedule" size={12} color="#6b7280" />
     }
   }
 

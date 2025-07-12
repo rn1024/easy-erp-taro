@@ -7,7 +7,7 @@ import {
   Input, 
   Switch
 } from '@nutui/nutui-react-taro'
-import { Eye } from '@nutui/icons-react-taro'
+import { MaterialIcons } from 'taro-icons'
 import './index.scss'
 
 interface SecuritySettingsProps {
@@ -221,7 +221,7 @@ const SecuritySettings: React.FC<SecuritySettingsProps> = () => {
                 className="security-settings__password-toggle"
                 onClick={() => togglePasswordVisibility('current')}
               >
-                {showPasswords.current ? '🙈' : <Eye size="16" />}
+                {showPasswords.current ? '🙈' : <MaterialIcons name="visibility" size={16} color="#666" />}
               </View>
             </View>
           </View>
@@ -240,7 +240,7 @@ const SecuritySettings: React.FC<SecuritySettingsProps> = () => {
                 className="security-settings__password-toggle"
                 onClick={() => togglePasswordVisibility('new')}
               >
-                {showPasswords.new ? '🙈' : <Eye size="16" />}
+                {showPasswords.new ? '🙈' : <MaterialIcons name="visibility" size={16} color="#666" />}
               </View>
             </View>
             <View className="security-settings__password-hint">
@@ -262,7 +262,7 @@ const SecuritySettings: React.FC<SecuritySettingsProps> = () => {
                 className="security-settings__password-toggle"
                 onClick={() => togglePasswordVisibility('confirm')}
               >
-                {showPasswords.confirm ? '🙈' : <Eye size="16" />}
+                {showPasswords.confirm ? '🙈' : <MaterialIcons name="visibility" size={16} color="#666" />}
               </View>
             </View>
           </View>

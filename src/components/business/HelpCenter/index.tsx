@@ -7,7 +7,7 @@ import {
   Tag,
   Button
 } from '@nutui/nutui-react-taro'
-import { Search, Star } from '@nutui/icons-react-taro'
+import { MaterialIcons } from 'taro-icons'
 import './index.scss'
 
 interface HelpCenterProps {
@@ -190,7 +190,7 @@ const HelpCenter: React.FC<HelpCenterProps> = () => {
             value={searchKeyword}
             onChange={setSearchKeyword}
             onSearch={handleSearch}
-            left={<Search size="16" />}
+            left={<MaterialIcons name="search" size={16} color="#666" />}
           />
         </View>
 
@@ -262,7 +262,7 @@ const HelpCenter: React.FC<HelpCenterProps> = () => {
                           onClick={handleHelpful}
                           className="help-center__helpful-btn"
                         >
-                          <Star size="12" />
+                          <MaterialIcons name="star" size={12} color="#666" />
                           有帮助 ({faq.helpful})
                         </Button>
                       </View>

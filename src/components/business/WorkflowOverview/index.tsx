@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text } from '@tarojs/components'
+import { MaterialIcons } from 'taro-icons'
 import './index.scss'
 
 interface Stats {
@@ -22,22 +23,26 @@ const WorkflowOverview: React.FC<WorkflowOverviewProps> = ({ stats }) => {
     {
       label: '总任务',
       value: stats.totalTasks,
-      color: '#3b82f6'
+      color: '#3b82f6',
+      iconName: 'assignment'
     },
     {
       label: '已完成',
       value: stats.completedTasks,
-      color: '#10b981'
+      color: '#10b981',
+      iconName: 'done'
     },
     {
       label: '待处理',
       value: stats.pendingTasks,
-      color: '#f59e0b'
+      color: '#f59e0b',
+      iconName: 'schedule'
     },
     {
       label: '已逾期',
       value: stats.overdueTasks,
-      color: '#ef4444'
+      color: '#ef4444',
+      iconName: 'warning'
     }
   ]
 
@@ -48,25 +53,34 @@ const WorkflowOverview: React.FC<WorkflowOverviewProps> = ({ stats }) => {
           <Text className="workflow-overview__title">工作流概览</Text>
           
           {/* 统计卡片 */}
-          <View className="workflow-overview__stats-grid">
+          <View className="workflow-overview__stats">
             {statItems.map((item, index) => (
               <View key={index} className="workflow-overview__stat-item">
-                <Text 
-                  className="workflow-overview__stat-value"
-                  style={{ color: item.color }}
-                >
-                  {item.value}
-                </Text>
+                <View className="workflow-overview__stat-header">
+                  <View className="workflow-overview__stat-icon" style={{ color: item.color }}>
+                    <MaterialIcons 
+                      name={item.iconName} 
+                      size={16} 
+                      color={item.color} 
+                    />
+                  </View>
+                  <Text 
+                    className="workflow-overview__stat-value"
+                    style={{ color: item.color }}
+                  >
+                    {item.value}
+                  </Text>
+                </View>
                 <Text className="workflow-overview__stat-label">{item.label}</Text>
               </View>
             ))}
           </View>
 
           {/* 完成率 */}
-          <View className="workflow-overview__progress-section">
-            <View className="workflow-overview__progress-header">
-              <Text className="workflow-overview__progress-label">完成率</Text>
-              <Text className="workflow-overview__progress-value">
+          <View className="workflow-overview__completion">
+            <View className="workflow-overview__completion-header">
+              <Text className="workflow-overview__completion-label">完成率</Text>
+              <Text className="workflow-overview__completion-value">
                 {stats.completionRate}%
               </Text>
             </View>
@@ -79,13 +93,31 @@ const WorkflowOverview: React.FC<WorkflowOverviewProps> = ({ stats }) => {
           </View>
 
           {/* 其他指标 */}
-          <View className="workflow-overview__metrics-grid">
+          <View className="workflow-overview__metrics">
             <View className="workflow-overview__metric-item">
-              <Text className="workflow-overview__metric-title">活跃用户</Text>
+              <View className="workflow-overview__metric-header">
+                <View className="workflow-overview__metric-icon">
+                  <MaterialIcons 
+                    name="people" 
+                    size={14} 
+                    color="#6b7280" 
+                  />
+                </View>
+                <Text className="workflow-overview__metric-label">活跃用户</Text>
+              </View>
               <Text className="workflow-overview__metric-value">{stats.activeUsers}</Text>
             </View>
             <View className="workflow-overview__metric-item">
-              <Text className="workflow-overview__metric-title">平均完成时间</Text>
+              <View className="workflow-overview__metric-header">
+                <View className="workflow-overview__metric-icon">
+                  <MaterialIcons 
+                    name="timer" 
+                    size={14} 
+                    color="#6b7280" 
+                  />
+                </View>
+                <Text className="workflow-overview__metric-label">平均完成时间</Text>
+              </View>
               <Text className="workflow-overview__metric-value">{stats.avgCompletionTime}</Text>
             </View>
           </View>

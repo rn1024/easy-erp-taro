@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from '@tarojs/components'
 import { Tag, Avatar } from '@nutui/nutui-react-taro'
-import { CheckNormal, Close, Clock } from '@nutui/icons-react-taro'
+import { MaterialIcons } from 'taro-icons'
 import { Workflow, WorkflowStep } from '@/types'
 import './index.scss'
 
@@ -20,11 +20,11 @@ const WorkflowStatus: React.FC<WorkflowStatusProps> = ({
   const getStepIcon = (step: WorkflowStep) => {
     switch (step.status) {
       case 'completed':
-        return <CheckNormal color="#52c41a" size="12" />
+        return <MaterialIcons name="check" size={12} color="#52c41a" />
       case 'active':
-        return <Clock color="#1890ff" size="12" />
+        return <MaterialIcons name="schedule" size={12} color="#1890ff" />
       case 'skipped':
-        return <Close color="#ff4d4f" size="12" />
+        return <MaterialIcons name="close" size={12} color="#ff4d4f" />
       default:
         return null
     }

@@ -1,0 +1,170 @@
+.custom-search-bar {
+  padding: 20rpx 24rpx;
+  background: #ffffff;
+  border-bottom: 2rpx solid #f5f5f5;
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16rpx;
+  }
+
+  &__input-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 72rpx;
+    background: #f5f5f5;
+    border: 2rpx solid #e5e5e5;
+    border-radius: 20rpx;
+    padding: 0 24rpx;
+    transition: all 0.3s ease;
+
+    &.focused {
+      border-color: #007aff;
+      background: #ffffff;
+    }
+  }
+
+  &__search-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999999;
+    margin-right: 16rpx;
+    flex-shrink: 0;
+  }
+
+  &__input {
+    flex: 1;
+    height: 100%;
+    font-size: 30rpx;
+    line-height: 40rpx;
+    color: #333333;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+
+    &::placeholder {
+      color: #999999;
+      font-size: 30rpx;
+    }
+  }
+
+  &__placeholder {
+    color: #999999;
+    font-size: 30rpx;
+  }
+
+  &__clear-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40rpx;
+    height: 40rpx;
+    color: #999999;
+    margin-left: 16rpx;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #666666;
+    }
+  }
+
+  &__filter-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8rpx;
+    height: 72rpx;
+    padding: 0 24rpx;
+    background: #ffffff;
+    border: 2rpx solid #e5e5e5;
+    border-radius: 20rpx;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    flex-shrink: 0;
+    min-width: 120rpx;
+
+    &:hover {
+      background: #f8f8f8;
+    }
+
+    &.active {
+      background: #007aff;
+      border-color: #007aff;
+      color: #ffffff;
+
+      .custom-search-bar__filter-text {
+        color: #ffffff;
+      }
+    }
+  }
+
+  &__filter-text {
+    font-size: 30rpx;
+    color: #333333;
+    transition: color 0.3s ease;
+  }
+
+  &__filter-badge {
+    position: absolute;
+    top: -8rpx;
+    right: -8rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32rpx;
+    height: 32rpx;
+    background: #ff4757;
+    color: #ffffff;
+    font-size: 20rpx;
+    border-radius: 16rpx;
+    padding: 0 8rpx;
+    box-sizing: border-box;
+    font-weight: 500;
+  }
+}
+
+// 小屏幕适配
+@media screen and (max-width: 375px) {
+  .custom-search-bar {
+    padding: 20rpx 24rpx;
+
+    &__wrapper {
+      gap: 16rpx;
+    }
+
+    &__input-wrapper {
+      height: 64rpx;
+      padding: 0 20rpx;
+      border-radius: 16rpx;
+    }
+
+    &__filter-btn {
+      height: 64rpx;
+      padding: 0 20rpx;
+      min-width: 100rpx;
+      border-radius: 16rpx;
+    }
+
+    &__input {
+      font-size: 28rpx;
+    }
+
+    &__placeholder {
+      font-size: 28rpx;
+    }
+
+    &__filter-text {
+      font-size: 28rpx;
+    }
+  }
+} 

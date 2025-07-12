@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react'
 import { View, Text } from '@tarojs/components'
-import { SearchBar, Popup, Button, RadioGroup, Radio, Cell, PullToRefresh } from '@nutui/nutui-react-taro'
-import { Filter as FilterIcon } from '@nutui/icons-react-taro'
+import { Popup, Button, RadioGroup, Radio, Cell, PullToRefresh } from '@nutui/nutui-react-taro'
 import MobileLayout from '@/components/layout/MobileLayout'
 import TaskCard from '@/components/business/TaskCard'
+import CustomSearchBar from '@/components/business/CustomSearchBar'
 import { Task } from '@/types'
 import { mockTasks } from '@/constants/mockData'
 import './index.scss'
@@ -99,28 +99,14 @@ const Tasks: React.FC = () => {
     <MobileLayout className="tasks-page">
       <View className="tasks-page__wrapper">
         {/* 搜索和筛选栏 - 移到SafeArea内部 */}
-        <View className="tasks-page__search-bar">
-          <View className="tasks-page__search-input">
-            <SearchBar
-              placeholder="搜索任务、负责人..."
-              value={searchValue}
-              onSearch={handleSearch}
-              onChange={setSearchValue}
-            />
-          </View>
-          <View 
-            className="tasks-page__filter-btn"
-            onClick={() => setShowFilterPopup(true)}
-          >
-            <FilterIcon size="20" />
-            <Text className="tasks-page__filter-text">筛选</Text>
-            {activeFilterCount > 0 && (
-              <View className="tasks-page__filter-badge">
-                {activeFilterCount}
-              </View>
-            )}
-          </View>
-        </View>
+        <CustomSearchBar
+          placeholder="搜索任务、负责人..."
+          value={searchValue}
+          onSearch={handleSearch}
+          onChange={setSearchValue}
+          onFilterClick={() => setShowFilterPopup(true)}
+          activeFilters={activeFilterCount}
+        />
 
         {/* 页面内容 */}
         <View className="tasks-page__container">

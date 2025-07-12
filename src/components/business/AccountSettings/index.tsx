@@ -9,7 +9,7 @@ import {
   Avatar, 
   ActionSheet
 } from '@nutui/nutui-react-taro'
-import { Edit } from '@nutui/icons-react-taro'
+import { MaterialIcons } from 'taro-icons'
 import './index.scss'
 
 interface AccountSettingsProps {
@@ -164,7 +164,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = () => {
                 className="account-settings__avatar-edit"
                 onClick={handleAvatarChange}
               >
-                <Edit size="16" />
+                <MaterialIcons name="edit" size={16} color="#666" />
               </View>
             )}
           </View>

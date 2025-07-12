@@ -1,19 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text } from '@tarojs/components'
 import { Button, Avatar } from '@nutui/nutui-react-taro'
-import { 
-  User, 
-  Setting, 
-  Notice, 
-  Service, 
-  Edit,
-  ArrowRight,
-  Clock,
-  CheckNormal,
-  Phone,
-  Mail,
-  Location
-} from '@nutui/icons-react-taro'
+import { MaterialIcons } from 'taro-icons'
 import Taro from '@tarojs/taro'
 import MobileLayout from '@/components/layout/MobileLayout'
 import { mockUsers } from '@/constants/mockData'
@@ -61,55 +49,51 @@ const Profile: React.FC = () => {
     {
       title: '创建流程',
       value: userStats.createdWorkflows,
-      icon: Service,
-      color: '#1890ff',
-      bgColor: '#e6f7ff'
+      iconName: 'add',
+      color: '#1890ff'
     },
     {
       title: '完成任务',
       value: userStats.completedTasks,
-      icon: CheckNormal,
-      color: '#52c41a',
-      bgColor: '#f6ffed'
+      iconName: 'done',
+      color: '#52c41a'
     },
     {
       title: '待办任务',
       value: userStats.pendingTasks,
-      icon: Clock,
-      color: '#fa8c16',
-      bgColor: '#fff7e6'
+      iconName: 'schedule',
+      color: '#fa8c16'
     },
     {
       title: '完成率',
       value: `${userStats.completionRate}%`,
-      icon: CheckNormal,
-      color: '#722ed1',
-      bgColor: '#f9f0ff'
+      iconName: 'star',
+      color: '#722ed1'
     }
   ]
 
   const menuItems = [
     {
       title: '账户设置',
-      icon: User,
+      iconName: 'person',
       description: '编辑个人信息',
       onClick: () => console.log('跳转到账户设置')
     },
     {
       title: '通知设置',
-      icon: Notice,
+      iconName: 'notifications',
       description: '管理推送通知',
       onClick: () => console.log('跳转到通知设置')
     },
     {
       title: '安全设置',
-      icon: Setting,
+      iconName: 'security',
       description: '密码和安全选项',
       onClick: () => console.log('跳转到安全设置')
     },
     {
       title: '帮助中心',
-      icon: Service,
+      iconName: 'help',
       description: '常见问题和支持',
       onClick: () => console.log('跳转到帮助中心')
     }
@@ -130,7 +114,7 @@ const Profile: React.FC = () => {
                 {user.name.charAt(0)}
               </Avatar>
               <View className="profile-page__avatar-edit" onClick={() => console.log('更换头像')}>
-                <Edit size="12" />
+                <MaterialIcons name="edit" size={12} color="#666" />
               </View>
             </View>
             
@@ -141,7 +125,7 @@ const Profile: React.FC = () => {
                   className="profile-page__edit-btn"
                   onClick={() => console.log('编辑个人信息')}
                 >
-                  <Edit size="12" />
+                  <MaterialIcons name="edit" size={12} color="#666" />
                 </View>
               </View>
               <Text className="profile-page__user-position">{user.role}</Text>
@@ -152,21 +136,21 @@ const Profile: React.FC = () => {
           <View className="profile-page__user-details">
             <View className="profile-page__detail-row">
               <View className="profile-page__detail-item">
-                <Mail size="16" />
+                <MaterialIcons name="email" size={16} color="#666" />
                 <Text className="profile-page__detail-text">{user.email}</Text>
               </View>
               <View className="profile-page__detail-item">
-                <Phone size="16" />
+                <MaterialIcons name="phone" size={16} color="#666" />
                 <Text className="profile-page__detail-text">138****8888</Text>
               </View>
             </View>
             <View className="profile-page__detail-row">
               <View className="profile-page__detail-item">
-                <Location size="16" />
+                <MaterialIcons name="location_on" size={16} color="#666" />
                 <Text className="profile-page__detail-text">入职: {formatJoinDate('2023-01-15')}</Text>
               </View>
               <View className="profile-page__detail-item">
-                <Clock size="16" />
+                <MaterialIcons name="schedule" size={16} color="#666" />
                 <Text className="profile-page__detail-text">工作 {calculateWorkingDays()} 天</Text>
               </View>
             </View>
@@ -178,19 +162,16 @@ const Profile: React.FC = () => {
           <Text className="profile-page__section-title">我的统计</Text>
           <View className="profile-page__stats-grid">
             {statsCards.map((card, index) => {
-              const Icon = card.icon
               return (
                 <View key={index} className="profile-page__stat-card">
                   <View className="profile-page__stat-content">
                     <View className="profile-page__stat-header">
-                      <View 
-                        className="profile-page__stat-icon"
-                        style={{ 
-                          backgroundColor: card.bgColor,
-                          color: card.color 
-                        }}
-                      >
-                        <Icon size="20" />
+                      <View className="profile-page__stat-icon">
+                        <MaterialIcons 
+                          name={card.iconName} 
+                          size={20} 
+                          color={card.color} 
+                        />
                       </View>
                     </View>
                     <Text className="profile-page__stat-value">{card.value}</Text>
@@ -235,7 +216,6 @@ const Profile: React.FC = () => {
           <Text className="profile-page__section-title">设置</Text>
           <View className="profile-page__menu-card">
             {menuItems.map((item, index) => {
-              const Icon = item.icon
               return (
                 <View key={index}>
                   <View 
@@ -243,13 +223,13 @@ const Profile: React.FC = () => {
                     onClick={item.onClick}
                   >
                     <View className="profile-page__menu-icon">
-                      <Icon size="20" />
+                      <MaterialIcons name={item.iconName} size={20} color="#666" />
                     </View>
                     <View className="profile-page__menu-content">
                       <Text className="profile-page__menu-title">{item.title}</Text>
                       <Text className="profile-page__menu-desc">{item.description}</Text>
                     </View>
-                    <ArrowRight size="16" className="profile-page__menu-arrow" />
+                    <MaterialIcons name="chevron_right" size={16} color="#ccc" />
                   </View>
                   {index < menuItems.length - 1 && (
                     <View className="profile-page__menu-divider" />
