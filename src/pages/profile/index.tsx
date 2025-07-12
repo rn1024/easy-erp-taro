@@ -205,9 +205,9 @@ const Profile: React.FC = () => {
             <View className="profile-page__performance-item">
               <View className="profile-page__performance-header">
                 <Text className="profile-page__performance-label">平均响应时间</Text>
-                <Text className="profile-page__performance-badge">
-                  {userStats.averageResponseTime}
-                </Text>
+                <View className="profile-page__performance-badge">
+                  <Text>{userStats.averageResponseTime}</Text>
+                </View>
               </View>
             </View>
           </View>
