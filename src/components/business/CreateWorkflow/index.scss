@@ -145,6 +145,7 @@
     transition: all 0.3s ease;
     position: relative;
     touch-action: manipulation;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
 
     &::after {
       content: '';
@@ -167,10 +168,6 @@
       }
       background: rgba(24, 144, 255, 0.02);
     }
-
-    .nut-card__body {
-      padding: 0;
-    }
   }
 
   &__quick-start {
@@ -181,10 +178,7 @@
     background: #fff;
     border-radius: 32rpx;
     overflow: hidden;
-
-    .nut-card__body {
-      padding: 0;
-    }
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
   }
 
   &__quick-start-content {

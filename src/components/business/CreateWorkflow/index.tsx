@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text } from '@tarojs/components'
 import { 
-  Card, 
   Tag, 
   Button,
   NavBar
@@ -210,7 +209,7 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBac
             {filteredTemplates.map(template => {
               const Icon = template.icon
               return (
-                <Card 
+                <View 
                   key={template.id}
                   className={`create-workflow__template-card ${
                     selectedTemplate?.id === template.id ? 'create-workflow__template-card--selected' : ''
@@ -260,7 +259,7 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBac
                       </View>
                     </View>
                   </View>
-                </Card>
+                </View>
               )
             })}
           </View>
@@ -269,7 +268,7 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBac
         {/* 快速开始 */}
         {selectedTemplate && selectedTemplate.id !== 'custom' && (
           <View className="create-workflow__quick-start">
-            <Card className="create-workflow__quick-start-card">
+            <View className="create-workflow__quick-start-card">
               <View className="create-workflow__quick-start-content">
                 <Text className="create-workflow__quick-start-title">快速开始</Text>
                 <Text className="create-workflow__quick-start-desc">
@@ -283,7 +282,7 @@ const CreateWorkflow: React.FC<CreateWorkflowProps> = ({ onTemplateSelect, onBac
                   立即创建
                 </Button>
               </View>
-            </Card>
+            </View>
           </View>
         )}
       </View>
