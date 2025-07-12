@@ -114,7 +114,7 @@ const Profile: React.FC = () => {
                 {user.name.charAt(0)}
               </Avatar>
               <View className="profile-page__avatar-edit" onClick={() => console.log('更换头像')}>
-                <MaterialIcons name="edit" size={12} color="#666" />
+                <MaterialIcons name="camera_alt" size={12} color="#666" />
               </View>
             </View>
             
@@ -231,7 +231,9 @@ const Profile: React.FC = () => {
                       <Text className="profile-page__menu-title">{item.title}</Text>
                       <Text className="profile-page__menu-desc">{item.description}</Text>
                     </View>
-                    <MaterialIcons name="chevron_right" size={16} color="#ccc" />
+                    <View className="profile-page__menu-arrow">
+                      <Text style={{ fontSize: '16px', color: '#bbb' }}>›</Text>
+                    </View>
                   </View>
                   {index < menuItems.length - 1 && (
                     <View className="profile-page__menu-divider" />
