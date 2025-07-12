@@ -1,7 +1,8 @@
 .profile-page {
   min-height: 100vh;
   background-color: #f8f9fa;
-  padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
+
+
 
   &__content {
     padding: 32rpx;
@@ -361,11 +362,7 @@
       font-size: 32rpx;
     }
 
-    &__edit-btn,
-    &__avatar-edit {
-      width: 40rpx;
-      height: 40rpx;
-    }
+
 
     &__section-title {
       font-size: 28rpx;
@@ -419,4 +416,6 @@
       font-size: 30rpx;
     }
   }
+
+
 } 

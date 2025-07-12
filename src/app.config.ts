@@ -4,7 +4,10 @@ export default defineAppConfig({
     'pages/tasks/index',
     'pages/create/index',
     'pages/messages/index',
-    'pages/profile/index'
+    'pages/profile/index',
+    'pages/userinfo/index',
+    'pages/security/index',
+    'pages/help/index'
   ],
   window: {
     backgroundTextStyle: 'light',

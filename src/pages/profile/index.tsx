@@ -4,6 +4,9 @@ import { Button, Avatar } from '@nutui/nutui-react-taro'
 import { MaterialIcons } from 'taro-icons'
 import Taro from '@tarojs/taro'
 import MobileLayout from '@/components/layout/MobileLayout'
+
+
+
 import { mockUsers } from '@/constants/mockData'
 import { User as UserType } from '@/types'
 import './index.scss'
@@ -17,6 +20,8 @@ interface UserStats {
   averageResponseTime: string
 }
 
+
+
 const Profile: React.FC = () => {
   const [user] = useState<UserType>(mockUsers[0])
   const [userStats] = useState<UserStats>({
@@ -27,6 +32,8 @@ const Profile: React.FC = () => {
     completionRate: 89,
     averageResponseTime: '2.3小时'
   })
+  
+  const [currentView, setCurrentView] = useState<'main' | 'account' | 'security'>('main')
 
   const formatJoinDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -44,6 +51,14 @@ const Profile: React.FC = () => {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
     return diffDays
   }
+
+  const handleBackToMain = () => {
+    setCurrentView('main')
+  }
+
+
+
+
 
   const statsCards = [
     {
@@ -77,27 +92,27 @@ const Profile: React.FC = () => {
       title: '账户设置',
       iconName: 'person',
       description: '编辑个人信息',
-      onClick: () => console.log('跳转到账户设置')
-    },
-    {
-      title: '通知设置',
-      iconName: 'notifications',
-      description: '管理推送通知',
-      onClick: () => console.log('跳转到通知设置')
+      onClick: () => Taro.navigateTo({ url: '/pages/userinfo/index' })
     },
     {
       title: '安全设置',
       iconName: 'security',
       description: '密码和安全选项',
-      onClick: () => console.log('跳转到安全设置')
+      onClick: () => Taro.navigateTo({ url: '/pages/security/index' })
     },
     {
       title: '帮助中心',
       iconName: 'help',
       description: '常见问题和支持',
-      onClick: () => console.log('跳转到帮助中心')
+      onClick: () => Taro.navigateTo({ url: '/pages/help/index' })
     }
   ]
+
+  // 账户设置现在是独立页面，通过路由跳转
+
+  // 安全设置现在是独立页面，通过路由跳转
+
+
 
   return (
     <MobileLayout className="profile-page">
@@ -113,20 +128,13 @@ const Profile: React.FC = () => {
               >
                 {user.name.charAt(0)}
               </Avatar>
-              <View className="profile-page__avatar-edit" onClick={() => console.log('更换头像')}>
-                <MaterialIcons name="camera_alt" size={12} color="#666" />
-              </View>
+
             </View>
             
             <View className="profile-page__user-info">
               <View className="profile-page__user-name-row">
                 <Text className="profile-page__user-name">{user.name}</Text>
-                <View 
-                  className="profile-page__edit-btn"
-                  onClick={() => console.log('编辑个人信息')}
-                >
-                  <MaterialIcons name="edit" size={12} color="#666" />
-                </View>
+
               </View>
               <Text className="profile-page__user-position">{user.role}</Text>
               <Text className="profile-page__user-department">{user.department}</Text>
@@ -232,7 +240,7 @@ const Profile: React.FC = () => {
                       <Text className="profile-page__menu-desc">{item.description}</Text>
                     </View>
                     <View className="profile-page__menu-arrow">
-                      <Text style={{ fontSize: '16px', color: '#bbb' }}>›</Text>
+                      <MaterialIcons name="keyboard_arrow_right" size={20} color="#bbb" />
                     </View>
                   </View>
                   {index < menuItems.length - 1 && (
@@ -265,6 +273,10 @@ const Profile: React.FC = () => {
           </Button>
         </View>
       </View>
+
+
+
+
     </MobileLayout>
   )
 }

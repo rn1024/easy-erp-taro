@@ -29,7 +29,7 @@ interface ContactInfo {
   hours?: string
 }
 
-const HelpCenter: React.FC<HelpCenterProps> = () => {
+const HelpCenter: React.FC<HelpCenterProps> = ({ onBack }) => {
   const [searchKeyword, setSearchKeyword] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [expandedItems, setExpandedItems] = useState<string[]>([])
@@ -178,8 +178,15 @@ const HelpCenter: React.FC<HelpCenterProps> = () => {
 
   return (
     <View className="help-center">
+      {/* 自定义头部导航 */}
       <View className="help-center__header">
-        <View className="help-center__title">帮助中心</View>
+        <View className="help-center__nav">
+          <View className="help-center__back-btn" onClick={onBack}>
+            <MaterialIcons name="arrow_back" size={20} color="#333" />
+          </View>
+          <View className="help-center__title">帮助中心</View>
+          <View className="help-center__placeholder" />
+        </View>
       </View>
 
       <View className="help-center__content">
