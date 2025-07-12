@@ -17,37 +17,37 @@ export const mockUsers: User[] = [
     id: '1',
     name: '张三',
     email: 'zhangsan@example.com',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Zhang',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face',
     role: '产品经理',
     department: '产品部',
-    lastLoginTime: '2024-07-11 09:30:00'
+    lastLoginTime: '2024-06-24 09:30:00'
   },
   {
     id: '2',
     name: '李四',
     email: 'lisi@example.com',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Li',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face',
     role: '开发工程师',
     department: '技术部',
-    lastLoginTime: '2024-07-11 10:15:00'
+    lastLoginTime: '2024-06-24 10:15:00'
   },
   {
     id: '3',
     name: '王五',
     email: 'wangwu@example.com',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Wang',
+    avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=32&h=32&fit=crop&crop=face',
     role: '设计师',
     department: '设计部',
-    lastLoginTime: '2024-07-11 08:45:00'
+    lastLoginTime: '2024-06-24 08:45:00'
   },
   {
     id: '4',
     name: '赵六',
     email: 'zhaoliu@example.com',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Zhao',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=face',
     role: '测试工程师',
     department: '技术部',
-    lastLoginTime: '2024-07-10 17:20:00'
+    lastLoginTime: '2024-06-23 17:20:00'
   }
 ]
 
@@ -55,62 +55,83 @@ export const mockUsers: User[] = [
 export const mockTasks: Task[] = [
   {
     id: '1',
-    title: '设计新版本界面',
-    description: '根据产品需求设计新版本的用户界面，包括首页、列表页和详情页',
+    title: '产品需求评审',
+    description: '对新版本产品功能进行需求评审，确认技术实现方案',
     status: 'in_progress' as TaskStatus,
     priority: 'high' as TaskPriority,
-    assignee: mockUsers[2],
+    assignee: mockUsers[0], // 张三
     creator: mockUsers[0],
-    dueDate: '2024-07-15',
-    createdAt: '2024-07-08 09:00:00',
-    updatedAt: '2024-07-11 14:30:00',
-    progress: 65,
+    dueDate: '2024-06-25',
+    createdAt: '2024-06-20 09:00:00',
+    updatedAt: '2024-06-24 14:30:00',
+    progress: 50,
     workflowId: '1',
-    tags: ['设计', 'UI', '高优先级']
+    tags: ['产品', '需求', '评审'],
+    workflow: {
+      currentStep: 2,
+      totalSteps: 4,
+      stepName: '技术评审'
+    }
   },
   {
     id: '2',
-    title: '实现用户认证功能',
-    description: '开发用户登录、注册、密码重置等认证相关功能',
+    title: '用户界面设计',
+    description: '完成新功能的UI/UX设计，包括原型图和交互说明',
     status: 'pending' as TaskStatus,
     priority: 'medium' as TaskPriority,
-    assignee: mockUsers[1],
+    assignee: mockUsers[2], // 王五
     creator: mockUsers[0],
-    dueDate: '2024-07-18',
-    createdAt: '2024-07-09 10:30:00',
-    updatedAt: '2024-07-11 11:00:00',
-    progress: 20,
+    dueDate: '2024-06-28',
+    createdAt: '2024-06-21 10:30:00',
+    updatedAt: '2024-06-24 11:00:00',
+    progress: 33,
     workflowId: '1',
-    tags: ['开发', '认证', '后端']
+    tags: ['设计', 'UI', 'UX'],
+    workflow: {
+      currentStep: 1,
+      totalSteps: 3,
+      stepName: '设计初稿'
+    }
   },
   {
     id: '3',
-    title: '编写测试用例',
-    description: '为新功能编写完整的测试用例，包括单元测试和集成测试',
-    status: 'review' as TaskStatus,
-    priority: 'medium' as TaskPriority,
-    assignee: mockUsers[3],
-    creator: mockUsers[1],
-    dueDate: '2024-07-20',
-    createdAt: '2024-07-10 08:15:00',
-    updatedAt: '2024-07-11 16:45:00',
-    progress: 80,
+    title: '数据库优化',
+    description: '优化数据库查询性能，提升系统响应速度',
+    status: 'completed' as TaskStatus,
+    priority: 'high' as TaskPriority,
+    assignee: mockUsers[1], // 李四
+    creator: mockUsers[0],
+    dueDate: '2024-06-22',
+    createdAt: '2024-06-18 14:20:00',
+    updatedAt: '2024-06-22 12:00:00',
+    progress: 100,
     workflowId: '1',
-    tags: ['测试', '质量保证']
+    tags: ['数据库', '性能', '优化'],
+    workflow: {
+      currentStep: 3,
+      totalSteps: 3,
+      stepName: '已完成'
+    }
   },
   {
     id: '4',
-    title: '优化数据库性能',
-    description: '分析数据库查询性能，优化慢查询，提高系统响应速度',
-    status: 'completed' as TaskStatus,
-    priority: 'high' as TaskPriority,
-    assignee: mockUsers[1],
+    title: '移动端适配',
+    description: '完成移动端响应式设计适配，确保各设备正常显示',
+    status: 'cancelled' as TaskStatus,
+    priority: 'low' as TaskPriority,
+    assignee: mockUsers[3], // 赵六
     creator: mockUsers[0],
-    dueDate: '2024-07-12',
-    createdAt: '2024-07-05 14:20:00',
-    updatedAt: '2024-07-11 12:00:00',
-    progress: 100,
-    tags: ['数据库', '性能优化', '技术债务']
+    dueDate: '2024-06-20',
+    createdAt: '2024-06-15 08:15:00',
+    updatedAt: '2024-06-20 16:45:00',
+    progress: 50,
+    workflowId: '1',
+    tags: ['移动端', '响应式', '适配'],
+    workflow: {
+      currentStep: 2,
+      totalSteps: 4,
+      stepName: '设计审查'
+    }
   }
 ]
 

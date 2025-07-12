@@ -1,63 +1,86 @@
 .create-page {
   background-color: #f8f9fa;
+  // 安全区域适配
+  padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
 
   &__content {
-    padding: 16px 16px 40px;
+    padding: 32rpx 32rpx 80rpx;
   }
 
   &__form-card {
-    margin-bottom: 16px;
-    padding: 20px;
-    border-radius: 12px;
+    margin-bottom: 32rpx;
+    padding: 40rpx;
+    border-radius: 24rpx;
   }
 
   &__header {
-    margin-bottom: 24px;
+    margin-bottom: 48rpx;
     text-align: center;
   }
 
   &__title {
-    font-size: 20px;
+    font-size: 36rpx;
     font-weight: 600;
     color: #333;
-    margin-bottom: 8px;
+    margin-bottom: 16rpx;
   }
 
   &__subtitle {
-    font-size: 14px;
+    font-size: 28rpx;
     color: #666;
   }
 
   &__form {
     .nut-form-item {
-      margin-bottom: 20px;
+      margin-bottom: 40rpx;
     }
   }
 
   &__actions {
     display: flex;
-    gap: 16px;
-    margin-top: 32px;
+    gap: 32rpx;
+    margin-top: 64rpx;
   }
 
   &__reset-btn,
   &__submit-btn {
     flex: 1;
+    min-height: 88rpx;
+    border-radius: 24rpx;
+    font-size: 32rpx;
+    font-weight: 600;
+    touch-action: manipulation;
+    
+    &:active {
+      transform: scale(0.98);
+    }
   }
 
   &__templates {
-    padding: 20px;
-    border-radius: 12px;
+    padding: 40rpx;
+    border-radius: 24rpx;
   }
 
   &__templates-header {
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 32rpx;
+    padding-bottom: 24rpx;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      height: 1rpx;
+      background: #f0f0f0;
+      transform: scaleY(0.5);
+      transform-origin: bottom;
+    }
   }
 
   &__templates-title {
-    font-size: 16px;
+    font-size: 32rpx;
     font-weight: 600;
     color: #333;
   }
@@ -65,15 +88,19 @@
   &__templates-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 24rpx;
   }
 
   &__template-item {
-    padding: 16px;
+    padding: 32rpx;
     background: #f8f9fa;
-    border-radius: 8px;
+    border-radius: 16rpx;
     cursor: pointer;
     transition: all 0.3s ease;
+    min-height: 88rpx;
+    display: flex;
+    align-items: center;
+    touch-action: manipulation;
 
     &:active {
       transform: scale(0.98);
@@ -82,14 +109,30 @@
   }
 
   &__template-name {
-    font-size: 14px;
+    font-size: 28rpx;
     font-weight: 500;
     color: #333;
-    margin-bottom: 4px;
+    margin-bottom: 8rpx;
   }
 
   &__template-desc {
-    font-size: 12px;
+    font-size: 24rpx;
     color: #666;
+  }
+
+  // 响应式断点
+  @media (max-width: 750rpx) {
+    &__content {
+      padding: 24rpx;
+    }
+    
+    &__title {
+      font-size: 32rpx;
+    }
+    
+    &__template-item {
+      padding: 24rpx;
+      min-height: 80rpx;
+    }
   }
 } 

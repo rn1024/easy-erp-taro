@@ -24,6 +24,11 @@ export interface Task {
   progress: number
   workflowId?: string
   tags: string[]
+  workflow: {
+    currentStep: number
+    totalSteps: number
+    stepName: string
+  }
 }
 
 export type TaskStatus = 'pending' | 'in_progress' | 'review' | 'completed' | 'cancelled'

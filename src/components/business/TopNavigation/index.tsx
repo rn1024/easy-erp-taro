@@ -1,16 +1,23 @@
 import React, { useState } from 'react'
-import { View } from '@tarojs/components'
-import { NavBar, SearchBar, Popup } from '@nutui/nutui-react-taro'
-import { Search } from '@nutui/icons-react-taro'
-import { SearchFilters } from '@/types'
+import { View, Text } from '@tarojs/components'
+import { NavBar, SearchBar, Popup, Button, Radio, Form, FormItem, Cell } from '@nutui/nutui-react-taro'
+import { Search, Filter } from '@nutui/icons-react-taro'
 import './index.scss'
+
+interface FilterOptions {
+  status?: string
+  priority?: string
+  assignee?: string
+  dateRange?: string
+}
 
 interface TopNavigationProps {
   title?: string
   showSearch?: boolean
   showFilter?: boolean
   onSearch?: (keyword: string) => void
-  onFilter?: (filters: SearchFilters) => void
+  onFilter?: (filters: FilterOptions) => void
+  activeFilters?: number
   placeholder?: string
 }
 
@@ -20,11 +27,18 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
   showFilter = false,
   onSearch,
   onFilter,
+  activeFilters = 0,
   placeholder = '搜索任务...'
 }) => {
   const [searchVisible, setSearchVisible] = useState(false)
   const [filterVisible, setFilterVisible] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState('')
+  const [filterForm, setFilterForm] = useState<FilterOptions>({
+    status: '',
+    priority: '',
+    assignee: '',
+    dateRange: ''
+  })
 
   const handleSearchClick = () => {
     setSearchVisible(true)
@@ -45,12 +59,19 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
   }
 
   const handleFilterConfirm = () => {
-    // 这里应该收集筛选条件并调用onFilter
-    onFilter?.({
-      status: [], // 实际应该从UI收集
-      priority: [], // 实际应该从UI收集
-      assignee: []
-    })
+    onFilter?.(filterForm)
+    setFilterVisible(false)
+  }
+
+  const handleFilterReset = () => {
+    const resetForm = {
+      status: '',
+      priority: '',
+      assignee: '',
+      dateRange: ''
+    }
+    setFilterForm(resetForm)
+    onFilter?.(resetForm)
     setFilterVisible(false)
   }
 
@@ -72,10 +93,13 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
       actions.push(
         <View 
           key="filter"
-          className="top-nav__action"
+          className="top-nav__filter-btn"
           onClick={handleFilterClick}
         >
-          筛选
+          <Filter size="20" />
+          {activeFilters > 0 && (
+            <View className="top-nav__filter-badge">{activeFilters}</View>
+          )}
         </View>
       )
     }
@@ -125,29 +149,112 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
         className="top-navigation__filter-popup"
       >
         <View className="top-navigation__filter-container">
-          <View className="top-navigation__filter-title">筛选条件</View>
-          {/* 这里可以添加更多筛选选项 */}
-          <View className="top-navigation__filter-item">
-            <View>状态筛选</View>
-            {/* 添加状态选择器 */}
+          <View className="top-navigation__filter-header">
+            <Text className="top-navigation__filter-title">筛选条件</Text>
           </View>
-          <View className="top-navigation__filter-item">
-            <View>优先级筛选</View>
-            {/* 添加优先级选择器 */}
-          </View>
+          
+          <Form className="top-navigation__filter-form">
+            <FormItem label="状态">
+              <Radio.Group
+                value={filterForm.status}
+                onChange={(value) => setFilterForm({...filterForm, status: String(value)})}
+              >
+                <Cell>
+                  <Radio value="">全部</Radio>
+                </Cell>
+                <Cell>
+                  <Radio value="pending">待处理</Radio>
+                </Cell>
+                <Cell>
+                  <Radio value="progress">进行中</Radio>
+                </Cell>
+                <Cell>
+                  <Radio value="completed">已完成</Radio>
+                </Cell>
+                <Cell>
+                  <Radio value="rejected">已拒绝</Radio>
+                </Cell>
+              </Radio.Group>
+            </FormItem>
+            
+            <FormItem label="优先级">
+              <Radio.Group
+                value={filterForm.priority}
+                onChange={(value) => setFilterForm({...filterForm, priority: String(value)})}
+              >
+                <Cell>
+                  <Radio value="">全部</Radio>
+                </Cell>
+                <Cell>
+                  <Radio value="high">高</Radio>
+                </Cell>
+                <Cell>
+                  <Radio value="medium">中</Radio>
+                </Cell>
+                <Cell>
+                  <Radio value="low">低</Radio>
+                </Cell>
+              </Radio.Group>
+            </FormItem>
+
+            <FormItem label="负责人">
+              <Radio.Group
+                value={filterForm.assignee}
+                onChange={(value) => setFilterForm({...filterForm, assignee: String(value)})}
+              >
+                <Cell>
+                  <Radio value="">全部</Radio>
+                </Cell>
+                <Cell>
+                  <Radio value="zhang">张三</Radio>
+                </Cell>
+                <Cell>
+                  <Radio value="li">李四</Radio>
+                </Cell>
+                <Cell>
+                  <Radio value="wang">王五</Radio>
+                </Cell>
+                <Cell>
+                  <Radio value="zhao">赵六</Radio>
+                </Cell>
+              </Radio.Group>
+            </FormItem>
+
+            <FormItem label="时间范围">
+              <Radio.Group
+                value={filterForm.dateRange}
+                onChange={(value) => setFilterForm({...filterForm, dateRange: String(value)})}
+              >
+                <Cell>
+                  <Radio value="">全部</Radio>
+                </Cell>
+                <Cell>
+                  <Radio value="today">今天</Radio>
+                </Cell>
+                <Cell>
+                  <Radio value="week">本周</Radio>
+                </Cell>
+                <Cell>
+                  <Radio value="overdue">已逾期</Radio>
+                </Cell>
+              </Radio.Group>
+            </FormItem>
+          </Form>
+          
           <View className="top-navigation__filter-actions">
-            <View 
+            <Button 
               className="top-navigation__filter-reset"
-              onClick={() => setFilterVisible(false)}
+              onClick={handleFilterReset}
             >
               重置
-            </View>
-            <View 
+            </Button>
+            <Button 
+              type="primary"
               className="top-navigation__filter-confirm"
               onClick={handleFilterConfirm}
             >
-              确认
-            </View>
+              确认筛选
+            </Button>
           </View>
         </View>
       </Popup>
