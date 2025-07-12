@@ -1,6 +1,6 @@
 .profile-page {
-  background: #f8f9fa;
   min-height: 100vh;
+  background-color: #f8f9fa;
   padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
 
   &__content {
@@ -9,111 +9,124 @@
 
   &__user-card {
     background: #fff;
-    border-radius: 32rpx;
-    margin-bottom: 48rpx;
-    overflow: hidden;
-
-    .nut-card__body {
-      padding: 48rpx;
-    }
+    border-radius: 24rpx;
+    padding: 32rpx;
+    margin-bottom: 32rpx;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
   }
 
   &__user-header {
     display: flex;
-    align-items: flex-start;
-    gap: 32rpx;
-    margin-bottom: 40rpx;
+    align-items: center;
+    gap: 24rpx;
+    margin-bottom: 24rpx;
+  }
+
+  &__avatar-container {
+    position: relative;
   }
 
   &__avatar {
-    flex-shrink: 0;
-    width: 160rpx;
-    height: 160rpx;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  &__avatar-edit {
+    position: absolute;
+    bottom: -4rpx;
+    right: -4rpx;
+    width: 48rpx;
+    height: 48rpx;
+    background: #fff;
+    border: 2rpx solid #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: all 0.2s ease;
+
+    &:active {
+      transform: scale(0.95);
+      background: #f8f9fa;
+    }
   }
 
   &__user-info {
     flex: 1;
+    min-width: 0;
   }
 
   &__user-name-row {
     display: flex;
     align-items: center;
-    gap: 24rpx;
-    margin-bottom: 16rpx;
+    gap: 16rpx;
+    margin-bottom: 8rpx;
   }
 
   &__user-name {
     font-size: 36rpx;
     font-weight: 600;
     color: #1a1a1a;
+    flex: 1;
   }
 
   &__edit-btn {
-    padding: 8rpx 16rpx;
-    height: auto;
-    min-height: 56rpx;
-    min-width: 56rpx;
-    border-radius: 16rpx;
-    font-size: 24rpx;
+    width: 48rpx;
+    height: 48rpx;
+    background: #f5f5f5;
+    border-radius: 12rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
     touch-action: manipulation;
-    
+    transition: all 0.2s ease;
+
     &:active {
-      transform: scale(0.98);
+      transform: scale(0.95);
+      background: #e8e8e8;
     }
   }
 
-  &__user-role {
-    font-size: 32rpx;
-    color: #1890ff;
-    font-weight: 500;
-    margin-bottom: 8rpx;
+  &__user-position {
+    font-size: 28rpx;
+    color: #666;
+    margin-bottom: 4rpx;
   }
 
   &__user-department {
-    font-size: 28rpx;
-    color: #666;
+    font-size: 24rpx;
+    color: #999;
   }
 
   &__user-details {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24rpx;
-    padding-top: 40rpx;
-    position: relative;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 20rpx;
-      right: 0;
-      height: 1rpx;
-      background: #f0f0f0;
-      transform: scaleY(0.5);
-      transform-origin: top;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 16rpx;
+  }
+
+  &__detail-row {
+    display: flex;
+    gap: 32rpx;
   }
 
   &__detail-item {
+    flex: 1;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    min-height: 60rpx;
-  }
-
-  &__detail-label {
-    font-size: 28rpx;
+    gap: 12rpx;
     color: #666;
   }
 
-  &__detail-value {
-    font-size: 28rpx;
-    color: #1a1a1a;
-    font-weight: 500;
+  &__detail-text {
+    font-size: 24rpx;
+    color: #666;
   }
 
   &__section {
-    margin-bottom: 48rpx;
+    margin-bottom: 32rpx;
   }
 
   &__section-title {
@@ -121,7 +134,6 @@
     font-weight: 600;
     color: #1a1a1a;
     margin-bottom: 24rpx;
-    padding-left: 8rpx;
   }
 
   &__stats-grid {
@@ -132,36 +144,32 @@
 
   &__stat-card {
     background: #fff;
-    border-radius: 32rpx;
-    overflow: hidden;
-    min-height: 140rpx;
-
-    .nut-card__body {
-      padding: 40rpx;
-    }
+    border-radius: 24rpx;
+    padding: 32rpx;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
   }
 
   &__stat-content {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   &__stat-header {
-    display: flex;
-    justify-content: center;
     margin-bottom: 24rpx;
   }
 
   &__stat-icon {
-    width: 80rpx;
-    height: 80rpx;
-    border-radius: 24rpx;
+    width: 64rpx;
+    height: 64rpx;
+    border-radius: 16rpx;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   &__stat-value {
-    font-size: 48rpx;
+    font-size: 40rpx;
     font-weight: 600;
     color: #1a1a1a;
     margin-bottom: 8rpx;
@@ -174,227 +182,134 @@
 
   &__performance-card {
     background: #fff;
-    border-radius: 32rpx;
-    overflow: hidden;
-
-    .nut-card__body {
-      padding: 40rpx;
-    }
+    border-radius: 24rpx;
+    padding: 32rpx;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
   }
 
   &__performance-item {
     &:not(:last-child) {
-      margin-bottom: 40rpx;
+      margin-bottom: 32rpx;
     }
   }
 
   &__performance-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 24rpx;
-    min-height: 48rpx;
+    justify-content: space-between;
+    margin-bottom: 16rpx;
   }
 
   &__performance-label {
     font-size: 28rpx;
     color: #666;
-    font-weight: 500;
   }
 
   &__performance-value {
-    font-size: 32rpx;
-    color: #1a1a1a;
+    font-size: 28rpx;
     font-weight: 600;
+    color: #1a1a1a;
   }
 
   &__performance-badge {
-    background: #f5f5f5;
+    background: #f0f0f0;
     color: #666;
-    font-size: 24rpx;
+    font-size: 22rpx;
     padding: 8rpx 16rpx;
     border-radius: 16rpx;
-    font-weight: 500;
+    white-space: nowrap;
   }
 
-  &__menu-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24rpx;
+  &__progress-container {
+    width: 100%;
+    height: 16rpx;
+    background: #f0f0f0;
+    border-radius: 8rpx;
+    overflow: hidden;
+  }
+
+  &__progress-bar {
+    height: 100%;
+    background: #52c41a;
+    border-radius: 8rpx;
+    transition: width 0.3s ease;
   }
 
   &__menu-card {
     background: #fff;
-    border-radius: 32rpx;
+    border-radius: 24rpx;
     overflow: hidden;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-height: 120rpx;
-    touch-action: manipulation;
-
-    &:active {
-      transform: scale(0.98);
-      box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.12);
-    }
-
-    .nut-card__body {
-      padding: 40rpx;
-    }
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
   }
 
-  &__menu-content {
-    text-align: center;
-    position: relative;
+  &__menu-item {
+    display: flex;
+    align-items: center;
+    gap: 24rpx;
+    padding: 32rpx;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: all 0.2s ease;
+
+    &:active {
+      background: #f8f9fa;
+    }
   }
 
   &__menu-icon {
-    font-size: 64rpx;
-    margin-bottom: 16rpx;
-  }
-
-  &__menu-title {
-    font-size: 28rpx;
-    color: #1a1a1a;
-    font-weight: 500;
-  }
-
-  &__menu-badge {
-    position: absolute;
-    top: -16rpx;
-    right: -16rpx;
-    transform: scale(0.8);
-  }
-
-  &__notification-card {
-    background: #fff;
-    border-radius: 32rpx;
-    overflow: hidden;
-
-    .nut-card__body {
-      padding: 0;
-    }
-  }
-
-  &__notification-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 40rpx;
-    min-height: 88rpx;
-    position: relative;
-
-    &:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      left: 40rpx;
-      bottom: 0;
-      right: 40rpx;
-      height: 1rpx;
-      background: #f0f0f0;
-      transform: scaleY(0.5);
-      transform-origin: bottom;
-    }
-  }
-
-  &__notification-info {
-    flex: 1;
-    margin-right: 32rpx;
-  }
-
-  &__notification-label {
-    font-size: 28rpx;
-    color: #1a1a1a;
-    font-weight: 500;
-    margin-bottom: 8rpx;
-  }
-
-  &__notification-desc {
-    font-size: 24rpx;
-    color: #666;
-    line-height: 1.4;
-  }
-
-  &__settings-card {
-    background: #fff;
-    border-radius: 32rpx;
-    overflow: hidden;
-
-    .nut-card__body {
-      padding: 0;
-    }
-  }
-
-  &__setting-item {
-    display: flex;
-    align-items: center;
-    padding: 40rpx;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    min-height: 88rpx;
-    touch-action: manipulation;
-    position: relative;
-
-    &:active {
-      background: rgba(24, 144, 255, 0.02);
-      transform: scale(0.98);
-    }
-  }
-
-  &__setting-icon {
     width: 80rpx;
     height: 80rpx;
-    border-radius: 24rpx;
     background: #f5f5f5;
+    border-radius: 20rpx;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 32rpx;
     color: #666;
+    flex-shrink: 0;
   }
 
-  &__setting-content {
+  &__menu-content {
     flex: 1;
+    min-width: 0;
   }
 
-  &__setting-title {
-    font-size: 28rpx;
-    color: #1a1a1a;
+  &__menu-title {
+    font-size: 32rpx;
     font-weight: 500;
+    color: #1a1a1a;
     margin-bottom: 8rpx;
   }
 
-  &__setting-desc {
+  &__menu-desc {
     font-size: 24rpx;
-    color: #666;
-    line-height: 1.4;
+    color: #999;
   }
 
-  &__setting-arrow {
+  &__menu-arrow {
     color: #ccc;
-    margin-left: 24rpx;
+    flex-shrink: 0;
   }
 
-  &__setting-divider {
+  &__menu-divider {
     height: 1rpx;
     background: #f0f0f0;
-    margin-left: 144rpx;
-    transform: scaleY(0.5);
-    transform-origin: center;
+    margin-left: 104rpx;
   }
 
   &__logout-btn {
     width: 100%;
     min-height: 96rpx;
     border-radius: 24rpx;
-    border-color: #ff4d4f;
+    border: 2rpx solid #ff4d4f;
     color: #ff4d4f;
     font-size: 32rpx;
     font-weight: 500;
+    background: transparent;
     touch-action: manipulation;
 
     &:active {
-      background: rgba(255, 77, 79, 0.05);
       transform: scale(0.98);
+      background: rgba(255, 77, 79, 0.02);
     }
   }
 
@@ -403,42 +318,76 @@
     &__content {
       padding: 24rpx;
     }
-    
-    &__user-card .nut-card__body {
-      padding: 32rpx;
+
+    &__user-card,
+    &__section {
+      margin-bottom: 24rpx;
     }
-    
+
     &__user-header {
-      gap: 24rpx;
+      gap: 20rpx;
+      margin-bottom: 20rpx;
     }
-    
-    &__avatar {
-      width: 120rpx;
-      height: 120rpx;
-    }
-    
+
     &__user-name {
       font-size: 32rpx;
     }
-    
+
+    &__edit-btn,
+    &__avatar-edit {
+      width: 40rpx;
+      height: 40rpx;
+    }
+
     &__section-title {
       font-size: 28rpx;
+      margin-bottom: 20rpx;
     }
-    
+
     &__stats-grid {
       gap: 16rpx;
     }
-    
-    &__stat-card .nut-card__body {
+
+    &__stat-card,
+    &__performance-card,
+    &__menu-card {
       padding: 24rpx;
     }
-    
-    &__stat-value {
-      font-size: 40rpx;
+
+    &__stat-icon {
+      width: 56rpx;
+      height: 56rpx;
     }
-    
-    &__menu-grid {
-      gap: 16rpx;
+
+    &__stat-value {
+      font-size: 36rpx;
+    }
+
+    &__menu-item {
+      padding: 24rpx;
+      gap: 20rpx;
+    }
+
+    &__menu-icon {
+      width: 64rpx;
+      height: 64rpx;
+    }
+
+    &__menu-title {
+      font-size: 28rpx;
+    }
+
+    &__menu-desc {
+      font-size: 22rpx;
+    }
+
+    &__menu-divider {
+      margin-left: 84rpx;
+    }
+
+    &__logout-btn {
+      min-height: 88rpx;
+      font-size: 30rpx;
     }
   }
 } 

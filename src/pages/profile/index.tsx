@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text } from '@tarojs/components'
-import { Cell, Avatar, Switch, Badge, Card, Progress, Button } from '@nutui/nutui-react-taro'
+import { Button, Avatar } from '@nutui/nutui-react-taro'
 import { 
   User, 
   Setting, 
@@ -9,7 +9,10 @@ import {
   Edit,
   ArrowRight,
   Clock,
-  CheckNormal
+  CheckNormal,
+  Phone,
+  Mail,
+  Location
 } from '@nutui/icons-react-taro'
 import Taro from '@tarojs/taro'
 import MobileLayout from '@/components/layout/MobileLayout'
@@ -36,19 +39,6 @@ const Profile: React.FC = () => {
     completionRate: 89,
     averageResponseTime: '2.3小时'
   })
-  
-  const [notifications, setNotifications] = useState({
-    taskReminders: true,
-    workflowUpdates: true,
-    emailNotifications: false
-  })
-
-  const handleNotificationChange = (key: string, value: boolean) => {
-    setNotifications(prev => ({
-      ...prev,
-      [key]: value
-    }))
-  }
 
   const formatJoinDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -73,57 +63,32 @@ const Profile: React.FC = () => {
       value: userStats.createdWorkflows,
       icon: Service,
       color: '#1890ff',
-      bgColor: 'rgba(24, 144, 255, 0.1)'
+      bgColor: '#e6f7ff'
     },
     {
       title: '完成任务',
       value: userStats.completedTasks,
       icon: CheckNormal,
       color: '#52c41a',
-      bgColor: 'rgba(82, 196, 26, 0.1)'
+      bgColor: '#f6ffed'
     },
     {
       title: '待办任务',
       value: userStats.pendingTasks,
       icon: Clock,
       color: '#fa8c16',
-      bgColor: 'rgba(250, 140, 22, 0.1)'
+      bgColor: '#fff7e6'
     },
     {
       title: '完成率',
       value: `${userStats.completionRate}%`,
       icon: CheckNormal,
       color: '#722ed1',
-      bgColor: 'rgba(114, 46, 209, 0.1)'
+      bgColor: '#f9f0ff'
     }
   ]
 
   const menuItems = [
-    {
-      title: '我的任务',
-      icon: '📋',
-      badge: 5,
-      onClick: () => Taro.switchTab({ url: '/pages/tasks/index' })
-    },
-    {
-      title: '我的审批',
-      icon: '✅',
-      badge: 2,
-      onClick: () => console.log('跳转到我的审批')
-    },
-    {
-      title: '工作流程',
-      icon: '🔄',
-      onClick: () => console.log('跳转到工作流程')
-    },
-    {
-      title: '团队协作',
-      icon: '👥',
-      onClick: () => console.log('跳转到团队协作')
-    }
-  ]
-
-  const settingItems = [
     {
       title: '账户设置',
       icon: User,
@@ -154,56 +119,68 @@ const Profile: React.FC = () => {
     <MobileLayout className="profile-page">
       <View className="profile-page__content">
         {/* 用户信息卡片 */}
-        <Card className="profile-page__user-card">
+        <View className="profile-page__user-card">
           <View className="profile-page__user-header">
-            <Avatar
-              size="80"
-              src={user.avatar}
-              className="profile-page__avatar"
-            >
-              {user.name.charAt(0)}
-            </Avatar>
+            <View className="profile-page__avatar-container">
+              <Avatar
+                size="64"
+                src={user.avatar}
+                className="profile-page__avatar"
+              >
+                {user.name.charAt(0)}
+              </Avatar>
+              <View className="profile-page__avatar-edit" onClick={() => console.log('更换头像')}>
+                <Edit size="12" />
+              </View>
+            </View>
+            
             <View className="profile-page__user-info">
               <View className="profile-page__user-name-row">
                 <Text className="profile-page__user-name">{user.name}</Text>
-                <Button
+                <View 
                   className="profile-page__edit-btn"
-                  size="small"
-                  fill="outline"
                   onClick={() => console.log('编辑个人信息')}
                 >
                   <Edit size="12" />
-                </Button>
+                </View>
               </View>
-              <Text className="profile-page__user-role">{user.role}</Text>
+              <Text className="profile-page__user-position">{user.role}</Text>
               <Text className="profile-page__user-department">{user.department}</Text>
             </View>
           </View>
           
           <View className="profile-page__user-details">
-            <View className="profile-page__detail-item">
-              <Text className="profile-page__detail-label">邮箱</Text>
-              <Text className="profile-page__detail-value">{user.email}</Text>
+            <View className="profile-page__detail-row">
+              <View className="profile-page__detail-item">
+                <Mail size="16" />
+                <Text className="profile-page__detail-text">{user.email}</Text>
+              </View>
+              <View className="profile-page__detail-item">
+                <Phone size="16" />
+                <Text className="profile-page__detail-text">138****8888</Text>
+              </View>
             </View>
-            <View className="profile-page__detail-item">
-              <Text className="profile-page__detail-label">入职时间</Text>
-              <Text className="profile-page__detail-value">{formatJoinDate('2023-01-15')}</Text>
-            </View>
-            <View className="profile-page__detail-item">
-              <Text className="profile-page__detail-label">工作天数</Text>
-              <Text className="profile-page__detail-value">{calculateWorkingDays()} 天</Text>
+            <View className="profile-page__detail-row">
+              <View className="profile-page__detail-item">
+                <Location size="16" />
+                <Text className="profile-page__detail-text">入职: {formatJoinDate('2023-01-15')}</Text>
+              </View>
+              <View className="profile-page__detail-item">
+                <Clock size="16" />
+                <Text className="profile-page__detail-text">工作 {calculateWorkingDays()} 天</Text>
+              </View>
             </View>
           </View>
-        </Card>
+        </View>
 
         {/* 统计数据 */}
         <View className="profile-page__section">
-          <View className="profile-page__section-title">我的统计</View>
+          <Text className="profile-page__section-title">我的统计</Text>
           <View className="profile-page__stats-grid">
             {statsCards.map((card, index) => {
               const Icon = card.icon
               return (
-                <Card key={index} className="profile-page__stat-card">
+                <View key={index} className="profile-page__stat-card">
                   <View className="profile-page__stat-content">
                     <View className="profile-page__stat-header">
                       <View 
@@ -216,10 +193,10 @@ const Profile: React.FC = () => {
                         <Icon size="20" />
                       </View>
                     </View>
-                    <View className="profile-page__stat-value">{card.value}</View>
-                    <View className="profile-page__stat-label">{card.title}</View>
+                    <Text className="profile-page__stat-value">{card.value}</Text>
+                    <Text className="profile-page__stat-label">{card.title}</Text>
                   </View>
-                </Card>
+                </View>
               )
             })}
           </View>
@@ -227,119 +204,60 @@ const Profile: React.FC = () => {
 
         {/* 工作表现 */}
         <View className="profile-page__section">
-          <View className="profile-page__section-title">工作表现</View>
-          <Card className="profile-page__performance-card">
+          <Text className="profile-page__section-title">工作表现</Text>
+          <View className="profile-page__performance-card">
             <View className="profile-page__performance-item">
               <View className="profile-page__performance-header">
                 <Text className="profile-page__performance-label">任务完成率</Text>
                 <Text className="profile-page__performance-value">{userStats.completionRate}%</Text>
               </View>
-              <Progress 
-                percent={userStats.completionRate} 
-                color="#52c41a"
-                showText={false}
-                strokeWidth={8}
-              />
+              <View className="profile-page__progress-container">
+                <View 
+                  className="profile-page__progress-bar"
+                  style={{ width: `${userStats.completionRate}%` }}
+                />
+              </View>
             </View>
             
             <View className="profile-page__performance-item">
               <View className="profile-page__performance-header">
                 <Text className="profile-page__performance-label">平均响应时间</Text>
-                <Text className="profile-page__performance-badge">
+                <View className="profile-page__performance-badge">
                   {userStats.averageResponseTime}
-                </Text>
-              </View>
-            </View>
-          </Card>
-        </View>
-
-        {/* 快速操作 */}
-        <View className="profile-page__section">
-          <View className="profile-page__section-title">快速操作</View>
-          <View className="profile-page__menu-grid">
-            {menuItems.map((item, index) => (
-              <Card 
-                key={index} 
-                className="profile-page__menu-card"
-                onClick={item.onClick}
-              >
-                <View className="profile-page__menu-content">
-                  <View className="profile-page__menu-icon">{item.icon}</View>
-                  <View className="profile-page__menu-title">{item.title}</View>
-                  {item.badge && (
-                    <Badge value={item.badge.toString()} className="profile-page__menu-badge" />
-                  )}
                 </View>
-              </Card>
-            ))}
+              </View>
+            </View>
           </View>
-        </View>
-
-        {/* 通知设置 */}
-        <View className="profile-page__section">
-          <View className="profile-page__section-title">通知设置</View>
-          <Card className="profile-page__notification-card">
-            <View className="profile-page__notification-item">
-              <View className="profile-page__notification-info">
-                <Text className="profile-page__notification-label">任务提醒</Text>
-                <Text className="profile-page__notification-desc">新任务和截止日期提醒</Text>
-              </View>
-              <Switch
-                checked={notifications.taskReminders}
-                onChange={(value) => handleNotificationChange('taskReminders', value)}
-              />
-            </View>
-            <View className="profile-page__notification-item">
-              <View className="profile-page__notification-info">
-                <Text className="profile-page__notification-label">工作流更新</Text>
-                <Text className="profile-page__notification-desc">工作流程状态变更通知</Text>
-              </View>
-              <Switch
-                checked={notifications.workflowUpdates}
-                onChange={(value) => handleNotificationChange('workflowUpdates', value)}
-              />
-            </View>
-            <View className="profile-page__notification-item">
-              <View className="profile-page__notification-info">
-                <Text className="profile-page__notification-label">邮件通知</Text>
-                <Text className="profile-page__notification-desc">重要通知邮件提醒</Text>
-              </View>
-              <Switch
-                checked={notifications.emailNotifications}
-                onChange={(value) => handleNotificationChange('emailNotifications', value)}
-              />
-            </View>
-          </Card>
         </View>
 
         {/* 设置菜单 */}
         <View className="profile-page__section">
-          <View className="profile-page__section-title">设置</View>
-          <Card className="profile-page__settings-card">
-            {settingItems.map((item, index) => {
+          <Text className="profile-page__section-title">设置</Text>
+          <View className="profile-page__menu-card">
+            {menuItems.map((item, index) => {
               const Icon = item.icon
               return (
                 <View key={index}>
                   <View 
-                    className="profile-page__setting-item"
+                    className="profile-page__menu-item"
                     onClick={item.onClick}
                   >
-                    <View className="profile-page__setting-icon">
+                    <View className="profile-page__menu-icon">
                       <Icon size="20" />
                     </View>
-                    <View className="profile-page__setting-content">
-                      <Text className="profile-page__setting-title">{item.title}</Text>
-                      <Text className="profile-page__setting-desc">{item.description}</Text>
+                    <View className="profile-page__menu-content">
+                      <Text className="profile-page__menu-title">{item.title}</Text>
+                      <Text className="profile-page__menu-desc">{item.description}</Text>
                     </View>
-                    <ArrowRight size="16" className="profile-page__setting-arrow" />
+                    <ArrowRight size="16" className="profile-page__menu-arrow" />
                   </View>
-                  {index < settingItems.length - 1 && (
-                    <View className="profile-page__setting-divider" />
+                  {index < menuItems.length - 1 && (
+                    <View className="profile-page__menu-divider" />
                   )}
                 </View>
               )
             })}
-          </Card>
+          </View>
         </View>
 
         {/* 退出登录 */}
