@@ -190,22 +190,24 @@ const Profile: React.FC = () => {
             <View className="profile-page__performance-item">
               <View className="profile-page__performance-header">
                 <Text className="profile-page__performance-label">任务完成率</Text>
-                <Text className="profile-page__performance-value">{userStats.completionRate}%</Text>
-              </View>
-              <View className="profile-page__progress-container">
-                <View 
-                  className="profile-page__progress-bar"
-                  style={{ width: `${userStats.completionRate}%` }}
-                />
+                <View className="profile-page__performance-right">
+                  <View className="profile-page__progress-container">
+                    <View 
+                      className="profile-page__progress-bar"
+                      style={{ width: `${userStats.completionRate}%` }}
+                    />
+                  </View>
+                  <Text className="profile-page__performance-value">{userStats.completionRate}%</Text>
+                </View>
               </View>
             </View>
             
             <View className="profile-page__performance-item">
               <View className="profile-page__performance-header">
                 <Text className="profile-page__performance-label">平均响应时间</Text>
-                <View className="profile-page__performance-badge">
+                <Text className="profile-page__performance-badge">
                   {userStats.averageResponseTime}
-                </View>
+                </Text>
               </View>
             </View>
           </View>
