@@ -24,6 +24,83 @@
   // 防止iOS Safari缩放
   -webkit-text-size-adjust: 100%;
 
+  // 自定义导航栏
+  &__header {
+    background-color: #ffffff;
+    border-bottom: 1rpx solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 88rpx;
+    padding: 0 32rpx;
+    position: relative;
+  }
+
+  &__nav-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48rpx;
+    height: 48rpx;
+    border-radius: 8rpx;
+    
+    &:active {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  &__nav-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 60%;
+  }
+
+  &__nav-title-text {
+    font-size: 32rpx;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16rpx;
+  }
+
+  // 用户信息区域
+  &__user-info {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    padding: 32rpx;
+    margin: 16rpx 24rpx;
+    border-radius: 16rpx;
+    box-shadow: 0 4rpx 16rpx rgba(59, 130, 246, 0.2);
+  }
+
+  &__user-welcome {
+    font-size: 32rpx;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 8rpx;
+  }
+
+  &__user-role {
+    font-size: 24rpx;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  // 页面内容区域
   &__content {
     flex: 1;
     position: relative;
@@ -32,6 +109,68 @@
     transform: translateZ(0);
     // 提升滚动性能
     will-change: scroll-position;
+  }
+
+  // 加载状态
+  &__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80rpx 32rpx;
+    min-height: 300rpx;
+  }
+
+  &__loading-text {
+    font-size: 28rpx;
+    color: #6b7280;
+    margin-top: 24rpx;
+  }
+}
+
+// 错误边界样式
+.error-boundary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 32rpx;
+  min-height: 100vh;
+  background-color: #f5f5f7;
+
+  &__icon {
+    margin-bottom: 32rpx;
+  }
+
+  &__title {
+    font-size: 36rpx;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 16rpx;
+    text-align: center;
+  }
+
+  &__message {
+    font-size: 28rpx;
+    color: #6b7280;
+    margin-bottom: 48rpx;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  &__button {
+    background-color: #3b82f6;
+    color: #ffffff;
+    font-size: 28rpx;
+    font-weight: 500;
+    padding: 24rpx 48rpx;
+    border-radius: 12rpx;
+    box-shadow: 0 2rpx 8rpx rgba(59, 130, 246, 0.3);
+    
+    &:active {
+      background-color: #2563eb;
+      transform: scale(0.98);
+    }
   }
 }
 
@@ -54,7 +193,7 @@
 // 确保内容区域不会被TabBar遮挡
 .mobile-layout--with-tabbar {
   .mobile-layout__content {
-    padding-bottom: 60px; // TabBar高度
+    padding-bottom: 120rpx; // TabBar高度
   }
 }
 
@@ -62,6 +201,20 @@
 @media (max-width: 375px) {
   .mobile-layout {
     font-size: 13px;
+    
+    &__nav {
+      height: 80rpx;
+      padding: 0 24rpx;
+    }
+    
+    &__nav-title-text {
+      font-size: 28rpx;
+    }
+    
+    &__user-info {
+      margin: 12rpx 16rpx;
+      padding: 24rpx;
+    }
   }
   
   .wechat-container {
@@ -79,6 +232,19 @@
 @media (orientation: landscape) and (max-height: 500px) {
   .mobile-layout {
     font-size: 12px;
+    
+    &__user-info {
+      margin: 8rpx 16rpx;
+      padding: 16rpx 24rpx;
+    }
+    
+    &__user-welcome {
+      font-size: 28rpx;
+    }
+    
+    &__user-role {
+      font-size: 22rpx;
+    }
   }
   
   .wechat-container {
@@ -103,6 +269,23 @@
   .mobile-layout {
     background-color: #111827;
     color: #f9fafb;
+    
+    &__header {
+      background-color: #1f2937;
+      border-bottom-color: #374151;
+    }
+    
+    &__nav-title-text {
+      color: #f9fafb;
+    }
+  }
+  
+  .error-boundary {
+    background-color: #111827;
+    
+    &__title {
+      color: #f9fafb;
+    }
   }
 }
 
@@ -121,6 +304,11 @@
   .mobile-layout {
     .mobile-layout__content {
       transition: none;
+    }
+    
+    &__nav-left:active,
+    .error-boundary__button:active {
+      transform: none;
     }
   }
 }

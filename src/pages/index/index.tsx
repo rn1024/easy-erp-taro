@@ -11,7 +11,6 @@ interface Stats {
   pendingTasks: number
   overdueTasks: number
   activeUsers: number
-  completionRate: number
   avgCompletionTime: string
   trend: 'up' | 'down' | 'stable'
 }
@@ -32,7 +31,6 @@ const Index: React.FC = () => {
     pendingTasks: 4,
     overdueTasks: 2,
     activeUsers: 3,
-    completionRate: 75,
     avgCompletionTime: '3.5天',
     trend: 'up'
   })
@@ -106,8 +104,7 @@ const Index: React.FC = () => {
     // 更新统计数据
     setStats({
       ...stats,
-      totalTasks: stats.totalTasks + 1,
-      completionRate: Math.min(stats.completionRate + 2, 100)
+      totalTasks: stats.totalTasks + 1
     })
   }
 
@@ -167,22 +164,6 @@ const Index: React.FC = () => {
                       <Text className="index-page__stat-label">{item.label}</Text>
                     </View>
                   ))}
-                </View>
-
-                {/* 完成率 */}
-                <View className="index-page__completion">
-                  <View className="index-page__completion-header">
-                    <Text className="index-page__completion-label">完成率</Text>
-                    <Text className="index-page__completion-value">
-                      {stats.completionRate}%
-                    </Text>
-                  </View>
-                  <View className="index-page__progress-bar">
-                    <View 
-                      className="index-page__progress-fill"
-                      style={{ width: `${stats.completionRate}%` }}
-                    />
-                  </View>
                 </View>
 
                 {/* 其他指标 */}

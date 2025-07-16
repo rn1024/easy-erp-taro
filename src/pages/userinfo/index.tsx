@@ -10,6 +10,7 @@ import {
   ActionSheet
 } from '@nutui/nutui-react-taro'
 import { MaterialIcons } from 'taro-icons'
+import MobileLayout from '@/components/MobileLayout'
 import './index.scss'
 
 interface UserProfile {
@@ -106,7 +107,7 @@ const UserInfoPage: React.FC = () => {
   }
 
   return (
-    <View className="userinfo-page">
+    <MobileLayout className="userinfo-page">
       {/* 编辑按钮区域 */}
       <View className="userinfo-page__header-actions">
         {isEditing ? (
@@ -268,7 +269,7 @@ const UserInfoPage: React.FC = () => {
           />
         </View>
       </Dialog>
-    </View>
+    </MobileLayout>
   )
 }
 

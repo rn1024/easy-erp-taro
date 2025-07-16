@@ -1,0 +1,70 @@
+# Easy ERP Taro 项目规范总览
+
+## 📋 规范文件说明
+- **技术规范** [tech-stack.mdc](mdc:.cursor/rules/tech-stack.mdc) - 总是应用
+- **样式规范** [styles.mdc](mdc:.cursor/rules/styles.mdc) - SCSS文件适用  
+- **组件规范** [components.mdc](mdc:.cursor/rules/components.mdc) - TSX文件适用
+- **业务规范** [business-rules.mdc](mdc:.cursor/rules/business-rules.mdc) - 总是应用
+- **TypeScript规范** [typescript.mdc](mdc:.cursor/rules/typescript.mdc) - TS/TSX文件适用
+
+## 🏗️ 项目概述
+**Easy ERP Taro** 是基于 Taro 4.1.2 构建的多端企业级移动应用，主要目标是微信小程序，支持工作流管理、任务跟踪等ERP功能。
+
+### 技术栈核心
+```
+Taro 4.1.2 + React 18 + TypeScript + NutUI + SCSS + Zustand
+```
+
+### 关键约束
+1. **图标系统**: 只能使用 `taro-icons` 的 `MaterialIcons`，禁用emoji/HTML图标
+2. **组件结构**: 扁平化，所有组件直接放在 `@/components/` 根目录
+3. **页面原则**: 页面不嵌套复杂组件，保持职责分离
+4. **构建目标**: 微信小程序为主，包大小限制2MB+20MB
+
+## 🎨 设计系统
+- **主背景**: #f5f5f7 (微信标准)
+- **卡片背景**: #ffffff  
+- **主文字**: #1a1a1a
+- **次要文字**: #6b7280
+- **单位**: rpx (微信小程序相对像素)
+- **触摸目标**: 最小48rpx×48rpx
+
+## 📁 目录结构
+```
+src/
+├── components/    # 扁平化组件：MobileLayout, TaskCard, SearchBar等
+├── pages/        # 页面：index, tasks, create, profile等  
+├── types/        # 完整的TS类型定义
+├── constants/    # 常量和模拟数据
+├── utils/        # 工具函数
+└── assets/       # 静态资源
+```
+
+## 🔧 开发原则
+1. **复制优先**: 优先复制现有代码再修改，减少生成时间
+2. **一次对话**: 避免频繁重启，保持开发环境稳定  
+3. **系统分析**: 问题无效时停下分析根本原因
+4. **移动优先**: 所有交互考虑移动端体验
+
+## 📱 移动端优化
+- 使用 `MobileLayout` 包装页面内容
+- 安全区域适配 (SafeArea)
+- 触摸反馈动画
+- 防止iOS缩放和橡皮筋效果
+- 硬件加速和滚动优化
+
+## 🚀 性能要求
+- 构建时间: ~3.5s
+- 模块数量: 650+
+- 代码分割和懒加载
+- 图片压缩和CDN优化
+- 虚拟滚动长列表
+
+## 🔒 代码质量
+- 严格TypeScript类型检查
+- 禁止any类型（除历史兼容）
+- 统一错误处理和API响应格式
+- BEM + SCSS命名规范
+- React hooks + Zustand状态管理
+
+这个项目已完成16个核心组件迁移，技术架构稳定，重点关注移动端体验优化和微信小程序适配。

@@ -1,0 +1,469 @@
+@use "@nutui/nutui-react-taro/dist/styles/variables.scss" as *;
+
+.finished-inventory-page {
+  padding: 24rpx;
+  background-color: #f5f5f7;
+  min-height: 100vh;
+
+  // 搜索栏
+  &__search {
+    display: flex;
+    align-items: center;
+    gap: 16rpx;
+    margin-bottom: 16rpx;
+    padding: 16rpx 20rpx;
+    background-color: #ffffff;
+    border-radius: 16rpx;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+
+    .search-input {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 12rpx;
+      padding: 12rpx 16rpx;
+      background-color: #f8fafc;
+      border-radius: 12rpx;
+      border: 1rpx solid #e2e8f0;
+
+      .nut-input {
+        border: none;
+        background: transparent;
+        font-size: 28rpx;
+        
+        .nut-input__native {
+          font-size: 28rpx;
+        }
+      }
+    }
+
+    .filter-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48rpx;
+      height: 48rpx;
+      border-radius: 12rpx;
+      background-color: #f8fafc;
+      transition: all 0.2s ease;
+
+      &:active {
+        transform: scale(0.95);
+        background-color: #e2e8f0;
+      }
+    }
+  }
+
+  // 筛选器
+  &__filters {
+    margin-bottom: 16rpx;
+    padding: 20rpx;
+    background-color: #ffffff;
+    border-radius: 16rpx;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+
+    .filter-row {
+      display: flex;
+      flex-direction: column;
+      gap: 24rpx;
+    }
+
+    .filter-chips {
+      .filter-label {
+        font-size: 26rpx;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 12rpx;
+        display: block;
+      }
+
+      .filter-chip-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12rpx;
+      }
+
+      .filter-chip {
+        padding: 12rpx 20rpx;
+        border-radius: 20rpx;
+        border: 1rpx solid #e5e7eb;
+        background-color: #f9fafb;
+        transition: all 0.2s ease;
+        
+        // 确保触摸目标足够大
+        min-height: 48rpx;
+        display: flex;
+        align-items: center;
+        
+        Text {
+          font-size: 24rpx;
+          color: #6b7280;
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+
+        &--active {
+          background-color: #3b82f6;
+          border-color: #3b82f6;
+
+          Text {
+            color: #ffffff;
+          }
+        }
+      }
+    }
+
+    .filter-actions {
+      margin-top: 20rpx;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  // 工具栏
+  &__toolbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 24rpx;
+    padding: 16rpx 0;
+
+    .add-btn {
+      display: flex;
+      align-items: center;
+      gap: 8rpx;
+      height: 64rpx;
+      padding: 0 24rpx;
+      border-radius: 12rpx;
+      font-size: 26rpx;
+      font-weight: 500;
+      
+      // 确保触摸目标足够大
+      min-height: 48rpx;
+      
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+
+  // 内容区域
+  &__content {
+    background-color: transparent;
+    border-radius: 0;
+    
+    .loading-state,
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80rpx 24rpx;
+      text-align: center;
+      background-color: #ffffff;
+      border-radius: 16rpx;
+      box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+      
+      Text {
+        margin-top: 16rpx;
+        color: #6b7280;
+        font-size: 28rpx;
+        
+        &.empty-text {
+          font-size: 32rpx;
+          font-weight: 600;
+          color: #374151;
+          margin-bottom: 8rpx;
+        }
+        
+        &.empty-desc {
+          font-size: 24rpx;
+          margin-top: 8rpx;
+        }
+      }
+    }
+
+    .inventory-list {
+      height: calc(100vh - 280rpx);
+      
+      .load-more {
+        padding: 24rpx;
+        text-align: center;
+        
+        Text {
+          font-size: 24rpx;
+          color: #9ca3af;
+        }
+      }
+    }
+  }
+}
+
+// 库存项目样式
+.inventory-item {
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f1f5f9;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16rpx;
+  }
+
+  &__title {
+    flex: 1;
+    font-size: 30rpx;
+    font-weight: 600;
+    color: #1f2937;
+    line-height: 1.4;
+    margin-right: 16rpx;
+  }
+
+  &__quantity {
+    font-size: 26rpx;
+    font-weight: 500;
+    color: #10b981;
+    background-color: #ecfdf5;
+    padding: 4rpx 12rpx;
+    border-radius: 8rpx;
+    white-space: nowrap;
+    
+    &--low {
+      color: #ef4444;
+      background-color: #fef2f2;
+    }
+  }
+
+  &__details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12rpx 24rpx;
+    margin-bottom: 20rpx;
+  }
+
+  &__detail {
+    font-size: 24rpx;
+    color: #6b7280;
+    line-height: 1.4;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 16rpx;
+    justify-content: flex-end;
+  }
+}
+
+// 表格操作按钮样式
+.table-actions {
+  display: flex;
+  gap: 12rpx;
+  align-items: center;
+}
+
+.table-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  height: 56rpx;
+  padding: 0 16rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  
+  // 确保触摸目标足够大
+  min-height: 48rpx;
+  
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &--danger {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1rpx solid #fecaca;
+    
+    &:active {
+      background-color: #fee2e2;
+    }
+  }
+}
+
+// 库存数量样式
+.inventory-quantity {
+  font-weight: 500;
+  color: #10b981;
+  
+  &--low {
+    color: #ef4444;
+  }
+}
+
+// 移动端优化
+@media (max-width: 375px) {
+  .finished-inventory-page {
+    padding: 16rpx;
+
+    &__search {
+      padding: 12rpx 16rpx;
+      margin-bottom: 12rpx;
+
+      .search-input {
+        padding: 10rpx 14rpx;
+
+        .nut-input {
+          .nut-input__native {
+            font-size: 26rpx;
+          }
+        }
+      }
+
+      .filter-btn {
+        width: 44rpx;
+        height: 44rpx;
+      }
+    }
+
+    &__filters {
+      padding: 16rpx;
+      margin-bottom: 12rpx;
+
+      .filter-chips {
+        .filter-label {
+          font-size: 24rpx;
+        }
+
+        .filter-chip {
+          padding: 10rpx 16rpx;
+          min-height: 44rpx;
+
+          Text {
+            font-size: 22rpx;
+          }
+        }
+      }
+    }
+
+    &__toolbar {
+      margin-bottom: 16rpx;
+
+      .add-btn {
+        height: 56rpx;
+        padding: 0 20rpx;
+        font-size: 24rpx;
+        gap: 6rpx;
+      }
+    }
+
+    &__content {
+      .loading-state,
+      .empty-state {
+        padding: 60rpx 20rpx;
+
+        Text {
+          font-size: 26rpx;
+
+          &.empty-text {
+            font-size: 28rpx;
+          }
+
+          &.empty-desc {
+            font-size: 22rpx;
+          }
+        }
+      }
+
+      .inventory-list {
+        height: calc(100vh - 240rpx);
+      }
+    }
+  }
+}
+
+// 横屏适配
+@media (orientation: landscape) and (max-height: 500px) {
+  .finished-inventory-page {
+    padding: 16rpx;
+
+    &__content {
+      .inventory-list {
+        height: calc(100vh - 200rpx);
+      }
+    }
+  }
+}
+
+// 深色模式
+@media (prefers-color-scheme: dark) {
+  .finished-inventory-page {
+    background-color: #111827;
+    
+    &__content {
+      background-color: #1f2937;
+    }
+    
+    &__loading,
+    &__empty .nut-text {
+      color: #9ca3af;
+    }
+  }
+  
+  .inventory-item {
+    border-bottom-color: #374151;
+    
+    &__title {
+      color: #f9fafb;
+    }
+    
+    &__detail {
+      color: #9ca3af;
+    }
+    
+    &__quantity {
+      color: #34d399;
+      background-color: #064e3b;
+      
+      &--low {
+        color: #f87171;
+        background-color: #7f1d1d;
+      }
+    }
+  }
+  
+  .table-action-btn {
+    &--danger {
+      background-color: #7f1d1d;
+      color: #f87171;
+      border-color: #991b1b;
+      
+      &:active {
+        background-color: #991b1b;
+      }
+    }
+  }
+}
+
+// 可访问性优化
+@media (prefers-reduced-motion: reduce) {
+  .finished-inventory-page__add-btn,
+  .table-action-btn {
+    transition: none;
+    
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+// 触摸反馈优化
+.finished-inventory-page__add-btn,
+.table-action-btn {
+  -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
+  tap-highlight-color: rgba(59, 130, 246, 0.1);
+} 

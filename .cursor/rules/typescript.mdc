@@ -1,0 +1,119 @@
+---
+alwaysApply: true
+---
+# Easy ERP Taro TypeScript 规范
+
+## 配置参考
+基于项目配置: [tsconfig.json](mdc:tsconfig.json)
+
+## 类型定义规范
+参考完整类型定义: [src/types/index.ts](mdc:src/types/index.ts)
+
+### 接口命名
+```typescript
+// 业务实体: 直接使用名词
+interface User {
+  id: string
+  name: string
+}
+
+// 组件Props: 添加 Props 后缀
+interface ButtonProps {
+  children: React.ReactNode
+  onClick?: () => void
+}
+
+// API响应: 添加相应后缀
+interface ApiResponse<T> {
+  success: boolean
+  data: T
+}
+```
+
+### 联合类型
+```typescript
+// 状态枚举使用字符串联合类型
+export type TaskStatus = 'pending' | 'in_progress' | 'review' | 'completed' | 'cancelled'
+export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent'
+```
+
+### 泛型使用
+```typescript
+// API响应泛型
+interface PaginatedResponse<T = any> {
+  items: T[]
+  total: number
+  page: number
+  pageSize: number
+  hasMore: boolean
+}
+```
+
+## 导入导出规范
+```typescript
+// 路径别名
+import Component from '@/components/Component'
+import { User } from '@/types'
+
+// 默认导出组件
+export default ComponentName
+
+// 命名导出类型和工具
+export { type User, type TaskStatus }
+export { formatDate, validateEmail }
+```
+
+## 组件类型约束
+```typescript
+// React组件必须明确类型
+const Component: React.FC<ComponentProps> = ({ prop1, prop2 }) => {
+  return <View>{prop1}</View>
+}
+
+// 事件处理函数
+const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  // 处理逻辑
+}
+
+// 子组件类型
+interface LayoutProps {
+  children: React.ReactNode  // 而不是 any
+}
+```
+
+## 严格模式配置
+基于 tsconfig.json 配置：
+- `strictNullChecks: true` - 严格空值检查
+- `noImplicitAny: false` - 允许隐式any（历史兼容）
+- `noUnusedLocals: true` - 禁止未使用变量
+- `noUnusedParameters: true` - 禁止未使用参数
+
+## 类型守卫和断言
+```typescript
+// 类型守卫
+function isUser(obj: any): obj is User {
+  return obj && typeof obj.id === 'string'
+}
+
+// 类型断言（谨慎使用）
+const user = data as User
+```
+
+## 错误处理类型
+```typescript
+// 统一错误类型
+interface AppError {
+  code: string
+  message: string
+  details?: any
+}
+
+// 异步操作结果类型
+type AsyncResult<T> = {
+  success: true
+  data: T
+} | {
+  success: false
+  error: AppError
+}
+```

@@ -1,0 +1,79 @@
+---
+alwaysApply: true
+---
+# Easy ERP Taro 样式规范
+
+## SCSS 规范
+```scss
+// 必须导入 NutUI 变量
+@use "@nutui/nutui-react-taro/dist/styles/variables.scss" as *;
+
+// 使用 BEM 命名规范
+.component-name {
+  &__element {
+    &--modifier {
+      // 样式
+    }
+  }
+}
+```
+
+## 移动端适配规范
+1. **尺寸单位**: 使用 `rpx` (微信小程序相对像素)
+   - 1rpx = 屏幕宽度/750
+   - 设计稿基于 iPhone 6 (375px)
+
+2. **触摸目标**: 最小 48rpx × 48rpx
+3. **安全区域**: 使用 `SafeArea` 组件或 CSS env()
+4. **响应式断点**:
+   - 小屏: max-width: 375px (750rpx)
+   - 中屏: 376px - 414px
+   - 横屏: orientation: landscape
+
+## 颜色系统
+- **主背景**: #f5f5f7 (微信小程序标准)
+- **卡片背景**: #ffffff
+- **主文字**: #1a1a1a
+- **次要文字**: #6b7280
+- **边框**: #e5e7eb
+
+## 动画规范
+- **标准缓动**: `ease` 或 `cubic-bezier(0.4, 0, 0.2, 1)`
+- **时长**: 0.3s (快速交互) / 0.5s (页面转场)
+- **激活态**: `transform: scale(0.98)`
+
+## 性能优化
+```scss
+// 硬件加速
+.accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+// 防止重绘
+.contain-layout {
+  contain: layout style paint;
+}
+```
+
+## 移动端特殊处理
+```scss
+// 防止iOS缩放
+input, textarea {
+  font-size: 16px !important;
+}
+
+// 优化滚动
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}
+
+// 防止选择和拖拽
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+```

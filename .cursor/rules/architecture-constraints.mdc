@@ -1,0 +1,267 @@
+---
+alwaysApply: true
+---
+
+# 项目架构严格约束规则
+
+## 🏗️ 组件架构约束
+
+### 📁 组件目录结构 - 扁平化原则
+
+#### ✅ 正确的组件存放方式
+```
+src/components/
+├── DataTable/
+│   ├── index.tsx
+│   └── index.scss
+├── FormModal/
+│   ├── index.tsx
+│   └── index.scss
+├── ScannerCard/
+│   ├── index.tsx
+│   └── index.scss
+└── TaskProgress/
+    ├── index.tsx
+    └── index.scss
+```
+
+#### ❌ 严格禁止的目录结构
+```
+src/components/
+├── business/           // ❌ 禁止创建business目录
+│   └── TaskCard/
+├── layout/            // ❌ 禁止创建layout目录
+│   └── Header/
+├── ui/                // ❌ 禁止创建ui目录
+│   └── Button/
+└── common/            // ❌ 禁止创建common目录
+    └── Loading/
+```
+
+### 📄 页面职责分离原则
+
+#### ✅ 正确的页面实现 - 保持简洁
+```typescript
+// pages/tasks/index.tsx
+import MobileLayout from '@/components/MobileLayout'
+import TaskList from '@/components/TaskList'
+
+const TaskPage: React.FC = () => {
+  return (
+    <MobileLayout>
+      <TaskList />
+    </MobileLayout>
+  )
+}
+
+export default TaskPage
+```
+
+#### ❌ 严格禁止的页面实现 - 嵌套复杂逻辑
+```typescript
+// ❌ 禁止：页面直接包含复杂业务逻辑
+const TaskPage: React.FC = () => {
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [loading, setLoading] = useState(false)
+  const [filters, setFilters] = useState<TaskFilters>({})
+  
+  // ❌ 禁止：大量业务逻辑在页面中
+  const fetchTasks = async () => {
+    setLoading(true)
+    try {
+      const result = await ApiService.getTasks(filters)
+      setTasks(result.data)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+  
+  const handleStatusChange = (taskId: string, status: TaskStatus) => {
+    // 大量业务逻辑...
+  }
+  
+  return (
+    <View className="task-page">
+      {/* ❌ 禁止：复杂UI直接在页面中 */}
+      <View className="task-header">
+        <SearchBar onSearch={handleSearch} />
+        <FilterButton onClick={showFilters} />
+      </View>
+      <View className="task-content">
+        {tasks.map(task => (
+          <TaskCard 
+            key={task.id}
+            task={task}
+            onStatusChange={handleStatusChange}
+          />
+        ))}
+      </View>
+    </View>
+  )
+}
+```
+
+### 🧩 组件职责明确
+
+#### ✅ 正确的组件拆分
+```typescript
+// components/TaskList/index.tsx - 专注业务逻辑
+const TaskList: React.FC = () => {
+  const { tasks, loading, handleStatusChange } = useTaskList()
+  
+  if (loading) return <LoadingIndicator />
+  
+  return (
+    <View className="task-list">
+      <TaskHeader />
+      <TaskContent tasks={tasks} onStatusChange={handleStatusChange} />
+    </View>
+  )
+}
+
+// components/TaskCard/index.tsx - 专注单个任务展示
+const TaskCard: React.FC<TaskCardProps> = ({ task, onStatusChange }) => {
+  return (
+    <View className="task-card">
+      <TaskInfo task={task} />
+      <TaskActions task={task} onStatusChange={onStatusChange} />
+    </View>
+  )
+}
+```
+
+## 📦 组件开发规范
+
+### 🎯 组件命名规范
+```typescript
+// ✅ 正确的组件命名
+- DataTable          // PascalCase文件夹名
+- FormModal          // PascalCase文件夹名  
+- ScannerCard        // PascalCase文件夹名
+- TaskProgress       // PascalCase文件夹名
+
+// ❌ 错误的组件命名
+- dataTable          // ❌ 小写开头
+- form-modal         // ❌ 连字符
+- scanner_card       // ❌ 下划线
+- taskprogress       // ❌ 没有明确分词
+```
+
+### 📄 组件文件规范
+```typescript
+// ✅ 每个组件必须包含的文件
+ComponentName/
+├── index.tsx        // ✅ 组件逻辑文件
+└── index.scss       // ✅ 组件样式文件
+
+// ❌ 禁止的文件命名
+ComponentName/
+├── ComponentName.tsx    // ❌ 禁止使用组件名
+├── component.tsx        // ❌ 禁止使用非index名
+├── styles.scss          // ❌ 禁止使用非index名
+└── ComponentName.scss   // ❌ 禁止使用组件名
+```
+
+### 🎨 CSS类名规范 - BEM模式
+```scss
+// ✅ 正确的BEM命名
+.task-card {                    // Block
+  &__header {                   // Element
+    &--urgent {                 // Modifier
+      color: #ef4444;
+    }
+  }
+  
+  &__content {                  // Element
+    &--expanded {               // Modifier
+      height: auto;
+    }
+  }
+  
+  &__actions {                  // Element
+    &--disabled {               // Modifier
+      opacity: 0.5;
+    }
+  }
+}
+
+// ❌ 错误的命名方式
+.taskCard {                     // ❌ 驼峰命名
+  .header.urgent {              // ❌ 嵌套类名
+    color: red;
+  }
+  
+  #content {                    // ❌ ID选择器
+    height: auto;
+  }
+}
+```
+
+## 🚫 开发流程约束
+
+### ⚡ 开发环境稳定性原则
+
+#### ✅ 正确的问题解决流程
+1. **代码调试优先** - 通过控制台、日志分析问题
+2. **查看错误信息** - 仔细阅读错误提示
+3. **检查代码逻辑** - 逐步排查代码问题
+4. **最后才重启** - 只在确认是环境问题时重启
+
+#### ❌ 禁止的操作模式
+```bash
+# ❌ 禁止频繁重启服务
+pnpm run dev:weapp  # 启动
+# 遇到问题立即
+Ctrl+C              # 停止
+pnpm run dev:weapp  # 重启
+# 问题没解决又
+Ctrl+C              # 停止
+pnpm run dev:weapp  # 再次重启
+```
+
+### 🔍 系统性问题分析原则
+
+#### ✅ 正确的问题分析流程
+1. **停下来分析** - 不要盲目重复操作
+2. **理解问题全貌** - 分析问题的根本原因
+3. **制定解决方案** - 有针对性的解决策略
+4. **验证解决效果** - 确认问题真正解决
+
+#### ❌ 禁止的盲目操作
+```typescript
+// ❌ 错误示例：盲目尝试
+// 尝试方案1
+const solution1 = () => { /* 某种实现 */ }
+
+// 不分析直接尝试方案2  
+const solution2 = () => { /* 另一种实现 */ }
+
+// 继续盲目尝试方案3
+const solution3 = () => { /* 第三种实现 */ }
+
+// ✅ 正确做法：系统分析
+// 1. 分析问题原因
+// 2. 理解预期行为  
+// 3. 制定针对性方案
+// 4. 实施并验证
+```
+
+## 📋 架构约束检查清单
+
+开发前必须确认：
+- [ ] 组件放在 @/components/ 根目录（扁平化）
+- [ ] 页面只包含布局，不包含业务逻辑
+- [ ] 业务逻辑封装在独立组件中
+- [ ] 使用 MobileLayout 包装页面内容
+- [ ] 遵循 BEM CSS 命名规范
+- [ ] 组件文件使用 index.tsx/index.scss
+
+开发中必须遵循：
+- [ ] 问题优先通过代码调试解决
+- [ ] 多轮无效操作时停下分析根因
+- [ ] 保持开发环境连续性
+- [ ] 系统性思考问题全貌
+
+**这些架构约束是项目稳定性的基础，违反将导致代码混乱和维护困难！**

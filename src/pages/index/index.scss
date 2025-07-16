@@ -81,44 +81,7 @@
     line-height: 1.2;
   }
 
-  // 完成率样式
-  &__completion {
-    margin-bottom: 32rpx;
-  }
 
-  &__completion-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16rpx;
-  }
-
-  &__completion-label {
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #1a1a1a;
-  }
-
-  &__completion-value {
-    font-size: 32rpx;
-    font-weight: 600;
-    color: #10b981;
-  }
-
-  &__progress-bar {
-    width: 100%;
-    height: 16rpx;
-    background-color: #e5e7eb;
-    border-radius: 8rpx;
-    overflow: hidden;
-  }
-
-  &__progress-fill {
-    height: 100%;
-    background-color: #10b981;
-    border-radius: 8rpx;
-    transition: width 0.3s ease;
-  }
 
   // 其他指标样式
   &__metrics {
@@ -368,9 +331,7 @@
       color: #ffffff;
     }
 
-    &__completion-label {
-      color: #ffffff;
-    }
+
 
     &__progress-bar {
       background: #4b5563;

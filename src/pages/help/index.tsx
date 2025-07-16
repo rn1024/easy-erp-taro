@@ -51,14 +51,6 @@ const Help: React.FC = () => {
       description: '个人信息和安全设置',
       count: 6,
       color: '#fa8c16'
-    },
-    {
-      id: 'notification',
-      name: '通知消息',
-      iconName: 'notifications',
-      description: '消息提醒和通知设置',
-      count: 4,
-      color: '#722ed1'
     }
   ]
 
@@ -84,13 +76,7 @@ const Help: React.FC = () => {
       category: 'account',
       helpful: 32
     },
-    {
-      id: '4',
-      question: '如何设置消息通知？',
-      answer: '在"我的"页面中选择"通知设置"，您可以自定义各种通知的开启状态。',
-      category: 'notification',
-      helpful: 28
-    },
+
     {
       id: '5',
       question: '工作流程可以设置几个审批环节？',
@@ -112,13 +98,7 @@ const Help: React.FC = () => {
       category: 'account',
       helpful: 18
     },
-    {
-      id: '8',
-      question: '如何关闭某些类型的推送通知？',
-      answer: '在通知设置页面，您可以分别控制任务提醒、邮件通知、推送通知等的开启状态。',
-      category: 'notification',
-      helpful: 15
-    }
+
   ]
 
   const filteredFAQs = faqs.filter(faq => {

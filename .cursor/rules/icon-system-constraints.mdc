@@ -1,0 +1,90 @@
+---
+alwaysApply: true
+---
+
+# 图标系统严格约束规则
+
+## 🚨 绝对禁止的图标使用方式
+
+### ❌ 严格禁止使用
+```typescript
+// 禁止使用 emoji
+<Text>📱 扫描</Text>
+<Text>✅ 完成</Text>
+<Text>❌ 失败</Text>
+<Text>⚠️ 警告</Text>
+
+// 禁止使用 HTML/Unicode 图标
+<span className="icon">✓</span>
+<div>♦ 菱形</div>
+<Text>&check;</Text>
+
+// 禁止引入其他图标库
+import { Icon } from 'antd'
+import { FaHome } from 'react-icons/fa'
+import SvgIcon from '@/components/SvgIcon'
+```
+
+### ✅ 唯一正确的图标使用方式
+```typescript
+// 只能使用 MaterialIcons
+import { MaterialIcons } from 'taro-icons'
+
+// 正确示例
+<MaterialIcons name="smartphone" size={24} color="#3b82f6" />
+<MaterialIcons name="check" size={20} color="#10b981" />
+<MaterialIcons name="close" size={20} color="#ef4444" />
+<MaterialIcons name="warning" size={24} color="#f59e0b" />
+<MaterialIcons name="home" size={24} />
+<MaterialIcons name="search" size={20} />
+```
+
+## 📋 常用MaterialIcons映射表
+
+| 功能 | emoji/HTML | MaterialIcons name |
+|------|------------|-------------------|
+| 成功/完成 | ✅ ✓ | `check` `check_circle` |
+| 失败/错误 | ❌ ✗ | `close` `error` `cancel` |
+| 警告 | ⚠️ | `warning` `error_outline` |
+| 信息 | ℹ️ | `info` `info_outline` |
+| 手机 | 📱 | `smartphone` `phone_iphone` |
+| 搜索 | 🔍 | `search` |
+| 首页 | 🏠 | `home` |
+| 用户 | 👤 | `person` `account_circle` |
+| 设置 | ⚙️ | `settings` |
+| 菜单 | ☰ | `menu` |
+| 添加 | ➕ | `add` `add_circle` |
+| 删除 | 🗑️ | `delete` `delete_outline` |
+| 编辑 | ✏️ | `edit` `edit_outline` |
+| 保存 | 💾 | `save` |
+| 下载 | ⬇️ | `download` `file_download` |
+| 上传 | ⬆️ | `upload` `file_upload` |
+| 刷新 | 🔄 | `refresh` |
+| 时间 | 🕐 | `schedule` `access_time` |
+| 位置 | 📍 | `location_on` `place` |
+| 邮件 | 📧 | `email` `mail` |
+| 电话 | ☎️ | `phone` `call` |
+| 消息 | 💬 | `message` `chat` |
+| 通知 | 🔔 | `notifications` |
+| 收藏 | ⭐ | `star` `favorite` |
+| 分享 | 📤 | `share` |
+| 更多 | ⋯ | `more_horiz` `more_vert` |
+
+## 🔧 实施检查清单
+
+开发过程中必须检查：
+- [ ] 代码中没有任何emoji字符
+- [ ] 没有HTML实体字符 (&check;, &times; 等)
+- [ ] 只从 'taro-icons' 导入 MaterialIcons
+- [ ] 所有图标都有明确的 name 属性
+- [ ] 图标尺寸使用合理的size值 (16-48)
+
+## ⚡ 违规处理原则
+
+如果发现使用了禁止的图标：
+1. **立即停止** 当前实现
+2. **查找对应** 的MaterialIcons名称
+3. **替换实现** 使用正确的图标组件
+4. **验证效果** 确保图标显示正常
+
+**记住：这是项目的核心约束，违反此规则需要大量返工！**

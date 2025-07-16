@@ -1,0 +1,407 @@
+@use "@nutui/nutui-react-taro/dist/styles/variables.scss" as *;
+
+.form-modal {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #ffffff;
+  border-radius: 24rpx 24rpx 0 0;
+
+  // 标题栏
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32rpx 24rpx;
+    border-bottom: 1rpx solid #f1f5f9;
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 100;
+  }
+
+  &__title {
+    font-size: 32rpx;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48rpx;
+    height: 48rpx;
+    border-radius: 8rpx;
+    cursor: pointer;
+    
+    &:active {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  // 表单内容
+  &__content {
+    flex: 1;
+    padding: 24rpx;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  // 数字输入框特殊样式
+  &__number-input {
+    position: relative;
+    
+    .nut-input {
+      cursor: pointer;
+    }
+  }
+
+  // 操作按钮
+  &__footer {
+    display: flex;
+    gap: 24rpx;
+    padding: 24rpx;
+    border-top: 1rpx solid #f1f5f9;
+    background-color: #ffffff;
+    position: sticky;
+    bottom: 0;
+  }
+
+  &__cancel-btn {
+    flex: 1;
+    height: 88rpx;
+    background-color: #f1f5f9;
+    color: #6b7280;
+    border: none;
+    border-radius: 12rpx;
+    font-size: 28rpx;
+    font-weight: 500;
+    
+    &:active {
+      background-color: #e2e8f0;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+
+  &__confirm-btn {
+    flex: 1;
+    height: 88rpx;
+    background-color: #3b82f6;
+    color: #ffffff;
+    border: none;
+    border-radius: 12rpx;
+    font-size: 28rpx;
+    font-weight: 500;
+    
+    &:active {
+      background-color: #2563eb;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+}
+
+// NutUI Form组件样式重写
+.form-modal {
+  .nut-form {
+    .nut-form-item {
+      margin-bottom: 32rpx;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .nut-form-item__label {
+      font-size: 28rpx;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 16rpx;
+      
+      &.required::before {
+        content: '*';
+        color: #ef4444;
+        margin-right: 8rpx;
+      }
+    }
+
+    .nut-form-item__body {
+      position: relative;
+    }
+
+    // 错误状态样式
+    .nut-form-item--error {
+      .nut-input,
+      .nut-textarea {
+        border-color: #ef4444;
+        
+        &:focus {
+          border-color: #ef4444;
+          box-shadow: 0 0 0 3rpx rgba(239, 68, 68, 0.1);
+        }
+      }
+    }
+
+    // 错误消息
+    .nut-form-item__error-message {
+      font-size: 24rpx;
+      color: #ef4444;
+      margin-top: 8rpx;
+      line-height: 1.4;
+    }
+  }
+
+  // Input组件样式
+  .nut-input {
+    height: 88rpx;
+    border: 2rpx solid #e5e7eb;
+    border-radius: 12rpx;
+    padding: 0 24rpx;
+    font-size: 28rpx;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3rpx rgba(59, 130, 246, 0.1);
+    }
+
+    &:disabled {
+      background-color: #f9fafb;
+      color: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    &::placeholder {
+      color: #9ca3af;
+    }
+  }
+
+  // TextArea组件样式
+  .nut-textarea {
+    min-height: 160rpx;
+    border: 2rpx solid #e5e7eb;
+    border-radius: 12rpx;
+    padding: 24rpx;
+    font-size: 28rpx;
+    background-color: #ffffff;
+    resize: none;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3rpx rgba(59, 130, 246, 0.1);
+    }
+
+    &::placeholder {
+      color: #9ca3af;
+    }
+  }
+
+  // Picker组件样式
+  .nut-picker {
+    .nut-input {
+      cursor: pointer;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        right: 24rpx;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-left: 8rpx solid transparent;
+        border-right: 8rpx solid transparent;
+        border-top: 10rpx solid #9ca3af;
+      }
+    }
+  }
+}
+
+// 移动端适配
+@media (max-width: 375px) {
+  .form-modal {
+    &__header {
+      padding: 24rpx 16rpx;
+    }
+
+    &__title {
+      font-size: 28rpx;
+    }
+
+    &__content {
+      padding: 16rpx;
+    }
+
+    &__footer {
+      padding: 16rpx;
+      gap: 16rpx;
+    }
+
+    &__cancel-btn,
+    &__confirm-btn {
+      height: 80rpx;
+      font-size: 26rpx;
+    }
+
+    .nut-form {
+      .nut-form-item {
+        margin-bottom: 24rpx;
+      }
+
+      .nut-form-item__label {
+        font-size: 26rpx;
+        margin-bottom: 12rpx;
+      }
+
+      .nut-form-item__error-message {
+        font-size: 22rpx;
+      }
+    }
+
+    .nut-input {
+      height: 80rpx;
+      font-size: 26rpx;
+      padding: 0 20rpx;
+    }
+
+    .nut-textarea {
+      min-height: 140rpx;
+      padding: 20rpx;
+      font-size: 26rpx;
+    }
+  }
+}
+
+// 横屏适配
+@media (orientation: landscape) and (max-height: 500px) {
+  .form-modal {
+    &__header {
+      padding: 16rpx 24rpx;
+    }
+
+    &__title {
+      font-size: 28rpx;
+    }
+
+    &__content {
+      padding: 16rpx 24rpx;
+    }
+
+    &__footer {
+      padding: 16rpx 24rpx;
+    }
+
+    &__cancel-btn,
+    &__confirm-btn {
+      height: 72rpx;
+      font-size: 24rpx;
+    }
+
+    .nut-form {
+      .nut-form-item {
+        margin-bottom: 20rpx;
+      }
+
+      .nut-form-item__label {
+        font-size: 24rpx;
+        margin-bottom: 8rpx;
+      }
+    }
+
+    .nut-input {
+      height: 72rpx;
+      font-size: 24rpx;
+    }
+
+    .nut-textarea {
+      min-height: 120rpx;
+      font-size: 24rpx;
+    }
+  }
+}
+
+// 深色模式
+@media (prefers-color-scheme: dark) {
+  .form-modal {
+    background-color: #1f2937;
+
+    &__header {
+      background-color: #1f2937;
+      border-bottom-color: #374151;
+    }
+
+    &__title {
+      color: #f9fafb;
+    }
+
+    &__footer {
+      background-color: #1f2937;
+      border-top-color: #374151;
+    }
+
+    &__cancel-btn {
+      background-color: #374151;
+      color: #d1d5db;
+
+      &:active {
+        background-color: #4b5563;
+      }
+    }
+
+    .nut-form {
+      .nut-form-item__label {
+        color: #d1d5db;
+      }
+    }
+
+    .nut-input,
+    .nut-textarea {
+      background-color: #374151;
+      border-color: #4b5563;
+      color: #f9fafb;
+
+      &:focus {
+        border-color: #3b82f6;
+      }
+
+      &:disabled {
+        background-color: #4b5563;
+        color: #6b7280;
+      }
+
+      &::placeholder {
+        color: #6b7280;
+      }
+    }
+  }
+}
+
+// 可访问性优化
+@media (prefers-reduced-motion: reduce) {
+  .form-modal {
+    .nut-input,
+    .nut-textarea,
+    &__cancel-btn,
+    &__confirm-btn {
+      transition: none;
+    }
+  }
+}
+
+// 触摸反馈优化
+.form-modal {
+  &__close,
+  &__cancel-btn,
+  &__confirm-btn {
+    -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
+    tap-highlight-color: rgba(59, 130, 246, 0.1);
+  }
+} 

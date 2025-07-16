@@ -10,6 +10,7 @@ import {
   TaskPriority,
   MessageType
 } from '../types'
+import type { Product as AdminProduct } from '../types/admin'
 
 // Mock用户数据
 export const mockUsers: User[] = [
@@ -352,6 +353,70 @@ export const mockWorkflowTemplates: WorkflowTemplate[] = [
   }
 ]
 
+// Mock产品数据 - 用于扫描功能
+export const mockProducts: AdminProduct[] = [
+  {
+    id: '1',
+    sku: 'SKU001',
+    shop: '数码商城',
+    category: '手机配件',
+    name: 'iPhone充电线',
+    label: '1234567890123',
+    packageInfo: '塑料包装盒',
+    outerBoxInfo: '20x10x5cm',
+    accessoriesInfo: '充电线x1',
+    remark: '原装品质'
+  },
+  {
+    id: '2', 
+    sku: 'SKU002',
+    shop: '家居生活',
+    category: '厨房用品',
+    name: '不锈钢保温杯',
+    label: '1234567890124',
+    packageInfo: '彩盒包装',
+    outerBoxInfo: '25x15x8cm',
+    accessoriesInfo: '保温杯x1, 说明书x1',
+    remark: '500ml容量'
+  },
+  {
+    id: '3',
+    sku: 'SKU003', 
+    shop: '运动户外',
+    category: '运动装备',
+    name: '瑜伽垫',
+    label: '1234567890125',
+    packageInfo: '收纳袋包装',
+    outerBoxInfo: '70x25x15cm',
+    accessoriesInfo: '瑜伽垫x1, 收纳袋x1',
+    remark: '环保材质'
+  },
+  {
+    id: '4',
+    sku: 'SKU004',
+    shop: '数码商城', 
+    category: '电脑配件',
+    name: '无线鼠标',
+    label: '1234567890126',
+    packageInfo: '简约包装',
+    outerBoxInfo: '15x10x5cm',
+    accessoriesInfo: '鼠标x1, USB接收器x1',
+    remark: '2.4G连接'
+  },
+  {
+    id: '5',
+    sku: 'SKU005',
+    shop: '家居生活',
+    category: '家纺用品', 
+    name: '纯棉毛巾',
+    label: '1234567890127',
+    packageInfo: '透明袋装',
+    outerBoxInfo: '30x20x3cm',
+    accessoriesInfo: '毛巾x1',
+    remark: '100%纯棉'
+  }
+]
+
 // 导出所有数据的默认值
 export const mockData = {
   users: mockUsers,
@@ -360,7 +425,8 @@ export const mockData = {
   dashboardStats: mockDashboardStats,
   quickActions: mockQuickActions,
   messages: mockMessages,
-  workflowTemplates: mockWorkflowTemplates
+  workflowTemplates: mockWorkflowTemplates,
+  products: mockProducts
 }
 
 // 状态选项配置

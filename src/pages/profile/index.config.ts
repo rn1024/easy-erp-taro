@@ -1,8 +1,7 @@
 export default definePageConfig({
-  navigationBarTitleText: '我的',
-  navigationBarBackgroundColor: '#ffffff',
-  navigationBarTextStyle: 'black',
-  backgroundColor: '#f8f9fa'
+  navigationBarTitleText: '个人中心',
+  enablePullDownRefresh: false,
+  navigationStyle: 'default'
 })
 
 function definePageConfig(config: any) {

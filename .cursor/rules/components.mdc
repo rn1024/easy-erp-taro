@@ -1,0 +1,87 @@
+---
+globs: *.tsx,*.jsx
+---
+
+# Easy ERP Taro 组件规范
+
+## 组件结构标准
+```typescript
+// 组件目录结构
+components/
+  ComponentName/
+    index.tsx      // 组件逻辑
+    index.scss     // 组件样式
+```
+
+## 组件代码模板
+```typescript
+import React from 'react'
+import { View, Text } from '@tarojs/components'
+import { MaterialIcons } from 'taro-icons'
+import './index.scss'
+
+interface ComponentProps {
+  // 必须定义清晰的接口
+  children?: React.ReactNode
+  className?: string
+  // 其他属性
+}
+
+const ComponentName: React.FC<ComponentProps> = ({ 
+  children,
+  className = '',
+  ...otherProps 
+}) => {
+  return (
+    <View className={`component-name ${className}`}>
+      {children}
+    </View>
+  )
+}
+
+export default ComponentName
+```
+
+## 组件命名规则
+1. **文件夹**: PascalCase (如: MobileLayout)
+2. **文件名**: index.tsx / index.scss
+3. **CSS类名**: kebab-case + BEM (如: mobile-layout__content)
+4. **组件名**: PascalCase，与文件夹同名
+
+## 图标使用规范
+```typescript
+// 只能使用 MaterialIcons
+import { MaterialIcons } from 'taro-icons'
+
+// 标准用法
+<MaterialIcons 
+  name="add" 
+  size={24} 
+  color="#3b82f6" 
+/>
+```
+
+## 组件位置规则
+- **业务组件**: 直接放在 `@/components/` 根目录
+- **禁止**: 使用 business/ 或 layout/ 子目录
+- **页面组件**: 页面不嵌套组件，保持简洁
+
+## Props 设计原则
+1. **必选参数**: 放在前面，使用解构
+2. **可选参数**: 提供默认值
+3. **事件处理**: 使用 on + 动词命名 (如: onClick, onRefresh)
+4. **样式相关**: className, style 放在最后
+
+## 性能优化
+```typescript
+// 使用 React.memo 优化渲染
+const OptimizedComponent = React.memo(Component)
+
+// 使用 useCallback 优化事件处理
+const handleClick = useCallback(() => {
+  // 处理逻辑
+}, [dependencies])
+```
+
+## 错误边界
+所有组件必须考虑错误状态的处理，提供降级方案。

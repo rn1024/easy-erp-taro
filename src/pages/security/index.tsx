@@ -8,6 +8,7 @@ import {
   Switch
 } from '@nutui/nutui-react-taro'
 import { MaterialIcons } from 'taro-icons'
+import MobileLayout from '@/components/MobileLayout'
 import './index.scss'
 
 interface SecurityConfig {
@@ -151,7 +152,7 @@ const SecurityPage: React.FC = () => {
   }
 
   return (
-    <View className="security-page">
+    <MobileLayout className="security-page">
       <View className="security-page__content">
         {/* 密码管理 */}
         <CellGroup title="密码管理" className="security-page__group">
@@ -363,7 +364,7 @@ const SecurityPage: React.FC = () => {
           </View>
         </View>
       </Dialog>
-    </View>
+    </MobileLayout>
   )
 }
 

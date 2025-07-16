@@ -1,4 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: '用户信息',
+  navigationBarTitleText: '账户设置',
   backgroundColor: '#f7f8fa'
 }) 

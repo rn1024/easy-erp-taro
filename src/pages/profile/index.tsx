@@ -4,9 +4,6 @@ import { Button, Avatar } from '@nutui/nutui-react-taro'
 import { MaterialIcons } from 'taro-icons'
 import Taro from '@tarojs/taro'
 import MobileLayout from '@/components/MobileLayout'
-
-
-
 import { mockUsers } from '@/constants/mockData'
 import { User as UserType } from '@/types'
 import './index.scss'
@@ -20,8 +17,6 @@ interface UserStats {
   averageResponseTime: string
 }
 
-
-
 const Profile: React.FC = () => {
   const [user] = useState<UserType>(mockUsers[0])
   const [userStats] = useState<UserStats>({
@@ -32,8 +27,6 @@ const Profile: React.FC = () => {
     completionRate: 89,
     averageResponseTime: '2.3小时'
   })
-  
-  const [currentView, setCurrentView] = useState<'main' | 'account' | 'security'>('main')
 
   const formatJoinDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -52,42 +45,30 @@ const Profile: React.FC = () => {
     return diffDays
   }
 
-  const handleBackToMain = () => {
-    setCurrentView('main')
-  }
-
-
-
-
-
   const statsCards = [
     {
       title: '创建流程',
       value: userStats.createdWorkflows,
       iconName: 'add',
-      color: '#1890ff',
-      bgColor: 'rgba(24, 144, 255, 0.1)'
+      color: '#1890ff'
     },
     {
       title: '完成任务',
       value: userStats.completedTasks,
       iconName: 'done',
-      color: '#52c41a',
-      bgColor: 'rgba(82, 196, 26, 0.1)'
+      color: '#52c41a'
     },
     {
       title: '待办任务',
       value: userStats.pendingTasks,
       iconName: 'schedule',
-      color: '#fa8c16',
-      bgColor: 'rgba(250, 140, 22, 0.1)'
+      color: '#fa8c16'
     },
     {
       title: '完成率',
       value: `${userStats.completionRate}%`,
       iconName: 'star',
-      color: '#722ed1',
-      bgColor: 'rgba(114, 46, 209, 0.1)'
+      color: '#722ed1'
     }
   ]
 
@@ -112,12 +93,6 @@ const Profile: React.FC = () => {
     }
   ]
 
-  // 账户设置现在是独立页面，通过路由跳转
-
-  // 安全设置现在是独立页面，通过路由跳转
-
-
-
   return (
     <MobileLayout className="profile-page">
       <View className="profile-page__content">
@@ -132,13 +107,20 @@ const Profile: React.FC = () => {
               >
                 {user.name.charAt(0)}
               </Avatar>
-
+              <View className="profile-page__avatar-edit" onClick={() => console.log('更换头像')}>
+                <MaterialIcons name="edit" size={12} color="#666" />
+              </View>
             </View>
             
             <View className="profile-page__user-info">
               <View className="profile-page__user-name-row">
                 <Text className="profile-page__user-name">{user.name}</Text>
-
+                <View 
+                  className="profile-page__edit-btn"
+                  onClick={() => console.log('编辑个人信息')}
+                >
+                  <MaterialIcons name="edit" size={12} color="#666" />
+                </View>
               </View>
               <Text className="profile-page__user-position">{user.role}</Text>
               <Text className="profile-page__user-department">{user.department}</Text>
@@ -178,13 +160,10 @@ const Profile: React.FC = () => {
                 <View key={index} className="profile-page__stat-card">
                   <View className="profile-page__stat-content">
                     <View className="profile-page__stat-header">
-                      <View 
-                        className="profile-page__stat-icon"
-                        style={{ backgroundColor: card.bgColor }}
-                      >
+                      <View className="profile-page__stat-icon">
                         <MaterialIcons 
                           name={card.iconName} 
-                          size={28} 
+                          size={20} 
                           color={card.color} 
                         />
                       </View>
@@ -205,15 +184,13 @@ const Profile: React.FC = () => {
             <View className="profile-page__performance-item">
               <View className="profile-page__performance-header">
                 <Text className="profile-page__performance-label">任务完成率</Text>
-                <View className="profile-page__performance-right">
-                  <View className="profile-page__progress-container">
-                    <View 
-                      className="profile-page__progress-bar"
-                      style={{ width: `${userStats.completionRate}%` }}
-                    />
-                  </View>
-                  <Text className="profile-page__performance-value">{userStats.completionRate}%</Text>
-                </View>
+                <Text className="profile-page__performance-value">{userStats.completionRate}%</Text>
+              </View>
+              <View className="profile-page__progress-container">
+                <View 
+                  className="profile-page__progress-bar"
+                  style={{ width: `${userStats.completionRate}%` }}
+                />
               </View>
             </View>
             
@@ -221,7 +198,7 @@ const Profile: React.FC = () => {
               <View className="profile-page__performance-header">
                 <Text className="profile-page__performance-label">平均响应时间</Text>
                 <View className="profile-page__performance-badge">
-                  <Text>{userStats.averageResponseTime}</Text>
+                  {userStats.averageResponseTime}
                 </View>
               </View>
             </View>
@@ -246,9 +223,7 @@ const Profile: React.FC = () => {
                       <Text className="profile-page__menu-title">{item.title}</Text>
                       <Text className="profile-page__menu-desc">{item.description}</Text>
                     </View>
-                    <View className="profile-page__menu-arrow">
-                      <MaterialIcons name="MaterialIcons" size={16} color="#666" />
-                    </View>
+                    <MaterialIcons name="chevron_right" size={16} color="#ccc" />
                   </View>
                   {index < menuItems.length - 1 && (
                     <View className="profile-page__menu-divider" />
@@ -280,10 +255,6 @@ const Profile: React.FC = () => {
           </Button>
         </View>
       </View>
-
-
-
-
     </MobileLayout>
   )
 }

@@ -211,4 +211,25 @@ export interface WorkflowTemplate {
   creator: User
   usageCount: number
   tags: string[]
+}
+
+// 产品相关类型
+export interface Product {
+  id: string
+  name: string
+  shop: string
+  category: string
+  info?: string
+  packaging?: string
+  outerBox?: string
+  accessories?: string
+  remark?: string
+  sku?: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface ProductFilters {
+  shop?: string
+  category?: string
 } 

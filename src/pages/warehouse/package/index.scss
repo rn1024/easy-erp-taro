@@ -1,0 +1,286 @@
+@use "@nutui/nutui-react-taro/dist/styles/variables.scss" as *;
+
+.package-task-page {
+  padding: 24rpx;
+  background-color: #f5f5f7;
+  min-height: 100vh;
+
+  // 统计卡片
+  &__stats {
+    margin-bottom: 24rpx;
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16rpx;
+      background: #ffffff;
+      border-radius: 24rpx;
+      padding: 32rpx;
+      box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+      
+      .stat-item {
+        text-align: center;
+        
+        .stat-number {
+          font-size: 48rpx;
+          font-weight: 600;
+          color: #1a1a1a;
+          line-height: 1.2;
+          margin-bottom: 8rpx;
+        }
+        
+        .stat-label {
+          font-size: 24rpx;
+          color: #6b7280;
+          line-height: 1.2;
+        }
+      }
+    }
+  }
+
+  // 搜索栏
+  &__search {
+    display: flex;
+    align-items: center;
+    gap: 16rpx;
+    margin-bottom: 16rpx;
+    padding: 16rpx 20rpx;
+    background-color: #ffffff;
+    border-radius: 16rpx;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+
+    .search-input {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 12rpx;
+      padding: 12rpx 16rpx;
+      background-color: #f8fafc;
+      border-radius: 12rpx;
+      border: 1rpx solid #e2e8f0;
+
+      .nut-input {
+        border: none;
+        background: transparent;
+        font-size: 28rpx;
+        
+        .nut-input__native {
+          font-size: 28rpx;
+        }
+      }
+    }
+
+    .filter-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 64rpx;
+      height: 64rpx;
+      border-radius: 12rpx;
+      background-color: #f8fafc;
+      border: 1rpx solid #e2e8f0;
+      transition: all 0.3s ease;
+      
+      // 触摸目标
+      min-width: 48rpx;
+      min-height: 48rpx;
+      touch-action: manipulation;
+
+      &:active {
+        transform: scale(0.95);
+        background-color: #e2e8f0;
+      }
+    }
+  }
+
+  // 筛选器
+  &__filters {
+    background: #ffffff;
+    border-radius: 16rpx;
+    padding: 24rpx;
+    margin-bottom: 24rpx;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+
+    .filter-row {
+      display: flex;
+      flex-direction: column;
+      gap: 24rpx;
+    }
+
+    .filter-chips {
+      .filter-label {
+        font-size: 28rpx;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 12rpx;
+        display: block;
+      }
+
+      .filter-chip-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12rpx;
+
+        .filter-chip {
+          padding: 12rpx 20rpx;
+          background: #f8fafc;
+          border: 1rpx solid #e2e8f0;
+          border-radius: 8rpx;
+          font-size: 26rpx;
+          color: #6b7280;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          
+          // 确保触摸目标
+          min-height: 48rpx;
+          display: flex;
+          align-items: center;
+          touch-action: manipulation;
+
+          &--active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: #ffffff;
+          }
+
+          &:active {
+            transform: scale(0.98);
+          }
+        }
+      }
+    }
+
+    .filter-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 24rpx;
+      padding-top: 24rpx;
+      border-top: 1rpx solid #e5e7eb;
+    }
+  }
+
+  // 内容区域
+  &__content {
+    .loading-state,
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120rpx 40rpx;
+      text-align: center;
+      background: #ffffff;
+      border-radius: 24rpx;
+      box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+
+      .empty-text {
+        font-size: 32rpx;
+        font-weight: 500;
+        color: #6b7280;
+        margin: 24rpx 0 12rpx;
+      }
+
+      .empty-desc {
+        font-size: 28rpx;
+        color: #9ca3af;
+        line-height: 1.4;
+      }
+    }
+
+    .task-list {
+      .load-more {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40rpx;
+        font-size: 28rpx;
+        color: #6b7280;
+      }
+    }
+  }
+}
+
+// 响应式优化
+@media (max-width: 375px) {
+  .package-task-page {
+    padding: 16rpx;
+
+    &__stats {
+      .stats-grid {
+        padding: 24rpx;
+        
+        .stat-item {
+          .stat-number {
+            font-size: 40rpx;
+          }
+          
+          .stat-label {
+            font-size: 22rpx;
+          }
+        }
+      }
+    }
+
+    &__search {
+      padding: 12rpx 16rpx;
+      
+      .search-input {
+        padding: 8rpx 12rpx;
+      }
+    }
+
+    &__filters {
+      padding: 16rpx;
+      
+      .filter-chips {
+        .filter-chip-group {
+          gap: 8rpx;
+          
+          .filter-chip {
+            padding: 8rpx 16rpx;
+            font-size: 24rpx;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 横屏适配
+@media (orientation: landscape) and (max-height: 500px) {
+  .package-task-page {
+    &__stats {
+      .stats-grid {
+        padding: 20rpx;
+        
+        .stat-item {
+          .stat-number {
+            font-size: 36rpx;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 触摸优化
+.package-task-page {
+  // 防止iOS Safari缩放
+  input, textarea {
+    font-size: 16px !important;
+  }
+  
+  // 优化滚动
+  .task-list {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
+  }
+  
+  // 硬件加速
+  &__stats,
+  &__search,
+  &__filters {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+} 

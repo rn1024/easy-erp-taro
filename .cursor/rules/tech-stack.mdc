@@ -1,0 +1,33 @@
+---
+alwaysApply: true
+---
+
+# Easy ERP Taro 技术规范
+
+## 核心技术栈
+- **框架**: Taro 4.1.2 + React 18 + TypeScript 4.7+
+- **UI库**: @nutui/nutui-react-taro 3.0.16 (主要UI组件)
+- **图标**: taro-icons MaterialIcons (严禁使用emoji或HTML图标)
+- **样式**: SCSS + CSS Variables
+- **状态管理**: Zustand 4.5.0
+- **包管理**: pnpm (默认)
+- **构建命令**: `pnpm run build:weapp` (微信小程序)
+
+## 平台支持
+支持多平台构建：微信小程序、支付宝小程序、H5、抖音小程序等
+
+## 依赖管理原则
+1. 优先使用 pnpm 管理依赖
+2. 严格控制依赖版本，避免自动更新
+3. 新增依赖必须评估对包大小的影响
+4. 禁止引入与 NutUI 功能重复的UI库
+
+## 开发环境
+- Node.js 16+
+- 推荐使用 VS Code + Taro 插件
+- 保存时自动格式化代码
+
+## 构建优化
+- 微信小程序包大小限制: 2MB主包 + 20MB分包
+- 使用分包策略优化加载性能
+- 图片资源使用CDN或本地压缩
