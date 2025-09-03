@@ -19,12 +19,23 @@ interface MobileLayoutProps {
   errorBoundary?: boolean
 }
 
+interface ErrorBoundaryProps {
+  children: React.ReactNode
+  fallback?: React.ReactNode
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean
+}
+
+interface ErrorInfo {
+  componentStack: string
+  [key: string]: unknown
+}
+
 // 错误边界组件
-class ErrorBoundary extends React.Component<
-  { children: React.ReactNode; fallback?: React.ReactNode },
-  { hasError: boolean; error?: Error }
-> {
-  constructor(props: any) {
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props)
     this.state = { hasError: false }
   }
@@ -33,23 +44,23 @@ class ErrorBoundary extends React.Component<
     return { hasError: true, error }
   }
 
-  componentDidCatch(error: Error, errorInfo: any) {
-    console.error('页面错误:', error, errorInfo)
+  componentDidCatch(_error: Error, _errorInfo: ErrorInfo) {
+    // 页面错误
   }
 
   render() {
     if (this.state.hasError) {
       return this.props.fallback || (
-        <View className="error-boundary">
-          <View className="error-boundary__icon">
-            <MaterialIcons name="error" size={48} color="#ef4444" />
+        <View className='error-boundary'>
+          <View className='error-boundary__icon'>
+            <MaterialIcons name='error' size={48} color='#ef4444' />
           </View>
-          <Text className="error-boundary__title">页面加载出错</Text>
-          <Text className="error-boundary__message">请稍后重试或联系管理员</Text>
+          <Text className='error-boundary__title'>页面加载出错</Text>
+          <Text className='error-boundary__message'>请稍后重试或联系管理员</Text>
           <View 
-            className="error-boundary__button"
+            className='error-boundary__button'
             onClick={() => {
-              this.setState({ hasError: false, error: undefined })
+              this.setState({ hasError: false })
               Taro.reLaunch({ url: '/pages/index/index' })
             }}
           >
@@ -105,32 +116,32 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
     'pages/index/index',
     'pages/query/scan/index',
     'pages/inventory/finished/index', 
-    'pages/warehouse/package/index',
-    'pages/products/index'
+    'pages/warehouse/index',
+    'pages/profile/index'
   ].includes(currentPage)
 
   const layoutContent = (
     <View className={`mobile-layout ${className} ${isTabBarPage ? 'mobile-layout--with-tabbar' : ''}`}>
-      {showSafeArea && <SafeArea position="top" />}
+      {showSafeArea && <SafeArea position='top' />}
       
       {/* 自定义导航栏 */}
       {(title || showBack || rightAction) && (
-        <View className="mobile-layout__header">
-          <View className="mobile-layout__nav">
+        <View className='mobile-layout__header'>
+          <View className='mobile-layout__nav'>
             {showBack && (
-              <View className="mobile-layout__nav-left" onClick={handleBack}>
-                <MaterialIcons name="arrow_back" size={24} color="#1a1a1a" />
+              <View className='mobile-layout__nav-left' onClick={handleBack}>
+                <MaterialIcons name='arrow_back' size={24} color='#1a1a1a' />
               </View>
             )}
             
             {title && (
-              <View className="mobile-layout__nav-title">
-                <Text className="mobile-layout__nav-title-text">{title}</Text>
+              <View className='mobile-layout__nav-title'>
+                <Text className='mobile-layout__nav-title-text'>{title}</Text>
               </View>
             )}
             
             {rightAction && (
-              <View className="mobile-layout__nav-right">
+              <View className='mobile-layout__nav-right'>
                 {rightAction}
               </View>
             )}
@@ -140,29 +151,29 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
 
       {/* 用户信息快速访问 */}
       {userInfo && currentPage === 'pages/index/index' && (
-        <View className="mobile-layout__user-info">
-          <Text className="mobile-layout__user-welcome">
+        <View className='mobile-layout__user-info'>
+          <Text className='mobile-layout__user-welcome'>
             欢迎，{userInfo.name}
           </Text>
-          <Text className="mobile-layout__user-role">
+          <Text className='mobile-layout__user-role'>
             {userInfo.role === 'admin' ? '管理员' : '操作员'}
           </Text>
         </View>
       )}
 
       {/* 页面内容 */}
-      <View className="mobile-layout__content">
+      <View className='mobile-layout__content'>
         {showLoading ? (
-          <View className="mobile-layout__loading">
+          <View className='mobile-layout__loading'>
             <Loading />
-            <Text className="mobile-layout__loading-text">{loadingText}</Text>
+            <Text className='mobile-layout__loading-text'>{loadingText}</Text>
           </View>
         ) : (
           children
         )}
       </View>
 
-      {showSafeArea && <SafeArea position="bottom" />}
+      {showSafeArea && <SafeArea position='bottom' />}
     </View>
   )
 
@@ -177,4 +188,4 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   return layoutContent
 }
 
-export default MobileLayout 
+export default MobileLayout

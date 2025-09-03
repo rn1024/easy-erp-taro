@@ -31,11 +31,11 @@ export interface FormField {
   required?: boolean
   placeholder?: string
   disabled?: boolean
-  options?: Array<{ label: string; value: any }>
+  options?: Array<{ label: string; value: string | number }>
   maxLength?: number
   precision?: number  // 数字精度
-  rules?: any[]
-  render?: (value: any, onChange: (value: any) => void, field: FormField) => React.ReactNode
+  rules?: Array<{ validator?: (value: unknown, formData: Record<string, unknown>) => boolean | string; message?: string }>
+  render?: (value: unknown, onChange: (value: unknown) => void, field: FormField) => React.ReactNode
 }
 
 // 表单模态框属性
@@ -44,21 +44,21 @@ interface FormModalProps {
   title?: string
   mode?: 'create' | 'edit'
   fields: FormField[]
-  initialValues?: Record<string, any>
+  initialValues?: Record<string, unknown>
   loading?: boolean
   confirmText?: string
   cancelText?: string
-  onSubmit?: (values: Record<string, any>) => void | Promise<void>
+  onSubmit?: (values: Record<string, unknown>) => void | Promise<void>
   onCancel?: () => void
-  onValuesChange?: (changedValues: Record<string, any>, allValues: Record<string, any>) => void
+  onValuesChange?: (changedValues: Record<string, unknown>, allValues: Record<string, unknown>) => void
 }
 
 // 表单方法
 export interface FormModalMethods {
   submit: () => void
   reset: () => void
-  setFieldsValue: (values: Record<string, any>) => void
-  getFieldsValue: () => Record<string, any>
+  setFieldsValue: (values: Record<string, unknown>) => void
+  getFieldsValue: () => Record<string, unknown>
 }
 
 const FormModal = forwardRef<FormModalMethods, FormModalProps>(({
@@ -74,7 +74,7 @@ const FormModal = forwardRef<FormModalMethods, FormModalProps>(({
   onCancel,
   onValuesChange
 }, ref) => {
-  const [formData, setFormData] = useState<Record<string, any>>({})
+  const [formData, setFormData] = useState<Record<string, unknown>>({})
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [showNumberKeyboard, setShowNumberKeyboard] = useState(false)
   const [currentNumberField, setCurrentNumberField] = useState('')
@@ -93,14 +93,14 @@ const FormModal = forwardRef<FormModalMethods, FormModalProps>(({
   useImperativeHandle(ref, () => ({
     submit: handleSubmit,
     reset: handleReset,
-    setFieldsValue: (values: Record<string, any>) => {
+    setFieldsValue: (values: Record<string, unknown>) => {
       setFormData(prev => ({ ...prev, ...values }))
     },
     getFieldsValue: () => formData
   }))
 
   // 字段值变化处理
-  const handleFieldChange = (fieldName: string, value: any) => {
+  const handleFieldChange = (fieldName: string, value: unknown): void => {
     const newFormData = { ...formData, [fieldName]: value }
     setFormData(newFormData)
     
@@ -131,7 +131,7 @@ const FormModal = forwardRef<FormModalMethods, FormModalProps>(({
       }
 
       // 数字验证
-      if (field.type === 'number' && value && isNaN(Number(value))) {
+      if (field.type === 'number' && value && Number.isNaN(Number(value))) {
         newErrors[field.name] = `${field.label}必须为数字`
         return
       }
@@ -168,8 +168,8 @@ const FormModal = forwardRef<FormModalMethods, FormModalProps>(({
 
     try {
       await onSubmit?.(formData)
-    } catch (error) {
-      console.error('表单提交错误:', error)
+    } catch (_error) {
+      // console.error('表单提交错误:', _error)
     }
   }
 
@@ -186,26 +186,20 @@ const FormModal = forwardRef<FormModalMethods, FormModalProps>(({
   }
 
   // 数字键盘处理
-  const handleNumberInput = (value: string) => {
+  const handleNumberInput = (event: React.FormEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLInputElement
+    const value = target.value || ''
     if (currentNumberField) {
       handleFieldChange(currentNumberField, value)
     }
   }
 
   // 日期选择处理
-  const handleDateChange = (value: Date | string) => {
-    if (currentDateField) {
-      const dateValue = value instanceof Date ? value.toISOString().split('T')[0] : value
-      handleFieldChange(currentDateField, dateValue)
-      setShowDatePicker(false)
-      setCurrentDateField('')
-    }
-  }
+
 
   // 渲染字段
-  const renderField = (field: FormField) => {
-    const value = formData[field.name] || ''
-    const error = errors[field.name]
+  const renderField = (field: FormField): React.ReactNode => {
+    const value = String(formData[field.name] || '')
 
     // 自定义渲染
     if (field.render) {
@@ -220,78 +214,86 @@ const FormModal = forwardRef<FormModalMethods, FormModalProps>(({
 
     const commonProps = {
       value,
-      onChange: (val: any) => handleFieldChange(field.name, val),
+      onInput: (e: { detail: { value: string } }) => handleFieldChange(field.name, e.detail.value),
       ...fieldProps
     }
 
     switch (field.type) {
-      case 'input':
-        return (
+    case 'input':
+      return (
+        <Input
+          {...commonProps}
+          maxLength={field.maxLength}
+        />
+      )
+
+    case 'textarea':
+      return (
+        <TextArea
+          {...commonProps}
+          maxLength={field.maxLength}
+          rows={3}
+        />
+      )
+
+    case 'number':
+      return (
+        <View className='form-modal__number-input'>
           <Input
-            {...commonProps}
-            maxLength={field.maxLength}
-          />
-        )
-
-      case 'textarea':
-        return (
-          <TextArea
-            {...commonProps}
-            maxLength={field.maxLength}
-            rows={3}
-          />
-        )
-
-      case 'number':
-        return (
-          <View className="form-modal__number-input">
-            <Input
-              {...commonProps}
-              readOnly
-              onClick={() => {
-                setCurrentNumberField(field.name)
-                setShowNumberKeyboard(true)
-              }}
-            />
-          </View>
-        )
-
-      case 'select':
-        return (
-          <Picker
-            options={[field.options || []]}
-            value={[value]}
-            onConfirm={(selectedOptions) => {
-              const selectedValue = selectedOptions[0]?.[0]?.value
-              handleFieldChange(field.name, selectedValue)
-            }}
-          >
-            <Input
-              {...fieldProps}
-              value={field.options?.find(opt => opt.value === value)?.label || ''}
-              readOnly
-              placeholder={field.placeholder || `请选择${field.label}`}
-            />
-          </Picker>
-        )
-
-      case 'date':
-        return (
-          <Input
-            {...commonProps}
+            value={value}
+            placeholder={fieldProps.placeholder}
+            disabled={fieldProps.disabled}
+            clearable={fieldProps.clearable}
             readOnly
-            onClick={() => {
-              setCurrentDateField(field.name)
-              setShowDatePicker(true)
+            onFocus={() => {
+              setCurrentNumberField(field.name)
+              setShowNumberKeyboard(true)
             }}
+          />
+        </View>
+      )
+
+    case 'select':
+      return (
+        <Picker
+          options={[field.options || []]}
+          value={[value]}
+          onConfirm={(selectedOptions) => {
+            const selectedValue = selectedOptions[0]?.[0]?.value
+            handleFieldChange(field.name, selectedValue)
+          }}
+        >
+          <Input
+            {...fieldProps}
+            value={field.options?.find(opt => opt.value === value)?.label || ''}
+            readOnly
             placeholder={field.placeholder || `请选择${field.label}`}
           />
-        )
+        </Picker>
+      )
 
-      default:
-        return (
-          <Input {...commonProps} />
-        )
+    case 'date':
+      return (
+        <View
+          onClick={() => {
+            setCurrentDateField(field.name)
+            setShowDatePicker(true)
+          }}
+        >
+          <Input
+            value={value}
+            placeholder={field.placeholder || `请选择${field.label}`}
+            disabled={fieldProps.disabled}
+            clearable={fieldProps.clearable}
+            readOnly
+          />
+        </View>
+      )
+
+    default:
+      return (
+        <Input {...commonProps} />
+      )
     }
   }
 
@@ -299,26 +301,26 @@ const FormModal = forwardRef<FormModalMethods, FormModalProps>(({
     <>
       <Popup
         visible={visible}
-        position="bottom"
+        position='bottom'
         round
         onClose={handleCancel}
         closeable
-        closeIcon="close"
+        closeIcon='close'
         style={{ height: '80vh' }}
       >
-        <View className="form-modal">
+        <View className='form-modal'>
           {/* 标题栏 */}
-          <View className="form-modal__header">
-            <View className="form-modal__title">
+          <View className='form-modal__header'>
+            <View className='form-modal__title'>
               <Text>{title || (mode === 'create' ? '新增' : '编辑')}</Text>
             </View>
-            <View className="form-modal__close" onClick={handleCancel}>
-              <MaterialIcons name="close" size={24} color="#6b7280" />
+            <View className='form-modal__close' onClick={handleCancel}>
+              <MaterialIcons name='close' size={24} color='#6b7280' />
             </View>
           </View>
 
           {/* 表单内容 */}
-          <View className="form-modal__content">
+          <View className='form-modal__content'>
             <Form>
               {fields.map((field) => (
                 <FormItem
@@ -333,17 +335,17 @@ const FormModal = forwardRef<FormModalMethods, FormModalProps>(({
           </View>
 
           {/* 操作按钮 */}
-          <View className="form-modal__footer">
+          <View className='form-modal__footer'>
             <Button
-              className="form-modal__cancel-btn"
+              className='form-modal__cancel-btn'
               onClick={handleCancel}
               disabled={loading}
             >
               {cancelText}
             </Button>
             <Button
-              type="primary"
-              className="form-modal__confirm-btn"
+              type='primary'
+              className='form-modal__confirm-btn'
               onClick={handleSubmit}
               loading={loading}
             >
@@ -356,7 +358,7 @@ const FormModal = forwardRef<FormModalMethods, FormModalProps>(({
       {/* 数字键盘 */}
       <NumberKeyboard
         visible={showNumberKeyboard}
-        type="rightColumn"
+        type='rightColumn'
         onInput={handleNumberInput}
         onClose={() => {
           setShowNumberKeyboard(false)
@@ -367,11 +369,15 @@ const FormModal = forwardRef<FormModalMethods, FormModalProps>(({
       {/* 日期选择器 */}
       <DatePicker
         visible={showDatePicker}
-        title="选择日期"
-        onConfirm={(selectedOptions, selectedValue) => {
+        title='选择日期'
+        onConfirm={(_selectedOptions, selectedValue) => {
           if (selectedValue && selectedValue.length > 0) {
             const dateStr = selectedValue.join('-')
-            handleDateChange(dateStr)
+            if (currentDateField) {
+              handleFieldChange(currentDateField, dateStr)
+              setShowDatePicker(false)
+              setCurrentDateField('')
+            }
           }
         }}
         onClose={() => {
@@ -385,4 +391,4 @@ const FormModal = forwardRef<FormModalMethods, FormModalProps>(({
 
 FormModal.displayName = 'FormModal'
 
-export default FormModal 
+export default FormModal

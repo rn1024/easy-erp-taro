@@ -109,45 +109,45 @@ const Index: React.FC = () => {
   }
 
   const handleQuickActionClick = (actionId: string) => {
-    console.log('点击快速操作:', actionId)
+    // 点击快速操作: actionId
     // 这里可以处理不同的快速操作
     switch (actionId) {
-      case 'create_workflow':
-        // 导航到创建工作流页面
-        break
-      case 'my_tasks':
-        // 导航到我的任务页面
-        break
-      case 'pending_approval':
-        // 导航到待审批页面
-        break
-      case 'analytics':
-        // 导航到数据分析页面
-        break
-      default:
-        break
+    case 'create_workflow':
+      // 导航到创建工作流页面
+      break
+    case 'my_tasks':
+      // 导航到我的任务页面
+      break
+    case 'pending_approval':
+      // 导航到待审批页面
+      break
+    case 'analytics':
+      // 导航到数据分析页面
+      break
+    default:
+      break
     }
   }
 
   return (
-    <MobileLayout className="index-page">
+    <MobileLayout className='index-page'>
       <PullToRefresh
         onRefresh={handleRefresh}
-        className="index-page__refresh"
+        className='index-page__refresh'
       >
-        <View className="index-page__content">
+        <View className='index-page__content'>
           {/* 工作流概览 */}
-          <View className="index-page__workflow-overview">
-            <View className="index-page__overview-container">
-              <View className="index-page__overview-card">
-                <Text className="index-page__overview-title">工作流概览</Text>
+          <View className='index-page__workflow-overview'>
+            <View className='index-page__overview-container'>
+              <View className='index-page__overview-card'>
+                <Text className='index-page__overview-title'>工作流概览</Text>
                 
                 {/* 统计卡片 */}
-                <View className="index-page__overview-stats">
+                <View className='index-page__overview-stats'>
                   {statItems.map((item, index) => (
-                    <View key={index} className="index-page__stat-item">
-                      <View className="index-page__stat-header">
-                        <View className="index-page__stat-icon" style={{ color: item.color }}>
+                    <View key={index} className='index-page__stat-item'>
+                      <View className='index-page__stat-header'>
+                        <View className='index-page__stat-icon' style={{ color: item.color }}>
                           <MaterialIcons 
                             name={item.iconName} 
                             size={24} 
@@ -155,44 +155,44 @@ const Index: React.FC = () => {
                           />
                         </View>
                         <Text 
-                          className="index-page__stat-value"
+                          className='index-page__stat-value'
                           style={{ color: item.color }}
                         >
                           {item.value}
                         </Text>
                       </View>
-                      <Text className="index-page__stat-label">{item.label}</Text>
+                      <Text className='index-page__stat-label'>{item.label}</Text>
                     </View>
                   ))}
                 </View>
 
                 {/* 其他指标 */}
-                <View className="index-page__metrics">
-                  <View className="index-page__metric-item">
-                    <View className="index-page__metric-header">
-                      <View className="index-page__metric-icon">
+                <View className='index-page__metrics'>
+                  <View className='index-page__metric-item'>
+                    <View className='index-page__metric-header'>
+                      <View className='index-page__metric-icon'>
                         <MaterialIcons 
-                          name="people" 
+                          name='people' 
                           size={20} 
-                          color="#6b7280" 
+                          color='#6b7280' 
                         />
                       </View>
-                      <Text className="index-page__metric-label">活跃用户</Text>
+                      <Text className='index-page__metric-label'>活跃用户</Text>
                     </View>
-                    <Text className="index-page__metric-value">{stats.activeUsers}</Text>
+                    <Text className='index-page__metric-value'>{stats.activeUsers}</Text>
                   </View>
-                  <View className="index-page__metric-item">
-                    <View className="index-page__metric-header">
-                      <View className="index-page__metric-icon">
+                  <View className='index-page__metric-item'>
+                    <View className='index-page__metric-header'>
+                      <View className='index-page__metric-icon'>
                         <MaterialIcons 
-                          name="timer" 
+                          name='timer' 
                           size={20} 
-                          color="#6b7280" 
+                          color='#6b7280' 
                         />
                       </View>
-                      <Text className="index-page__metric-label">平均完成时间</Text>
+                      <Text className='index-page__metric-label'>平均完成时间</Text>
                     </View>
-                    <Text className="index-page__metric-value">{stats.avgCompletionTime}</Text>
+                    <Text className='index-page__metric-value'>{stats.avgCompletionTime}</Text>
                   </View>
                 </View>
               </View>
@@ -200,19 +200,19 @@ const Index: React.FC = () => {
           </View>
 
           {/* 快速操作 */}
-          <View className="index-page__quick-actions">
-            <View className="index-page__actions-container">
-              <View className="index-page__actions-card">
-                <Text className="index-page__actions-title">快速操作</Text>
-                <View className="index-page__actions-grid">
+          <View className='index-page__quick-actions'>
+            <View className='index-page__actions-container'>
+              <View className='index-page__actions-card'>
+                <Text className='index-page__actions-title'>快速操作</Text>
+                <View className='index-page__actions-grid'>
                   {actions.map((action) => (
                     <View
                       key={action.id}
-                      className="index-page__action-item"
+                      className='index-page__action-item'
                       onClick={() => handleQuickActionClick(action.id)}
                     >
                       <View 
-                        className="index-page__action-icon"
+                        className='index-page__action-icon'
                         style={{ backgroundColor: action.bgColor, color: action.color }}
                       >
                         <MaterialIcons 
@@ -221,11 +221,11 @@ const Index: React.FC = () => {
                           color={action.color} 
                         />
                       </View>
-                      <View className="index-page__action-content">
-                        <Text className="index-page__action-title">
+                      <View className='index-page__action-content'>
+                        <Text className='index-page__action-title'>
                           {action.title}
                         </Text>
-                        <Text className="index-page__action-description">
+                        <Text className='index-page__action-description'>
                           {action.description}
                         </Text>
                       </View>

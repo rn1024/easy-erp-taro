@@ -17,6 +17,11 @@
     position: relative;
     overflow: hidden;
   }
+  
+  // 移动端卡片容器默认隐藏
+  &__mobile-cards {
+    display: none;
+  }
 
   // 横向滚动容器
   &__scroll {
@@ -51,6 +56,7 @@
     cursor: pointer;
     transition: background-color 0.2s ease;
     min-width: 120rpx;
+    min-height: 88rpx; /* 确保触摸目标足够大 */
     flex-shrink: 0;
 
     &:hover {
@@ -128,6 +134,7 @@
     color: #1e293b;
     white-space: nowrap;
     min-width: 120rpx;
+    min-height: 88rpx; /* 确保触摸目标足够大 */
     flex-shrink: 0;
 
     // 固定列
@@ -180,18 +187,20 @@
   }
 }
 
-// 移动端适配
+// 移动端适配 - 统一使用375px断点
 @media (max-width: 375px) {
   .data-table {
     &__header-cell,
     &__cell {
       padding: 16rpx 12rpx;
-      font-size: 24rpx;
+      font-size: 24rpx; /* 确保最小字体不低于24rpx */
       min-width: 100rpx;
+      /* 确保触摸目标足够大 */
+      min-height: 88rpx;
     }
 
     &__header-cell {
-      font-size: 22rpx;
+      font-size: 24rpx; /* 提升到24rpx */
     }
 
     &__search {
@@ -200,6 +209,51 @@
 
     &__pagination {
       padding: 16rpx;
+    }
+    
+    /* 移动端卡片式布局替代表格 */
+    &__container {
+      display: none; /* 隐藏表格 */
+    }
+    
+    &__mobile-cards {
+      display: block;
+      padding: 16rpx;
+    }
+  }
+  
+  /* 移动端卡片样式 */
+  .data-table-card {
+    background: #ffffff;
+    border-radius: 16rpx;
+    padding: 24rpx;
+    margin-bottom: 16rpx;
+    box-shadow: 0 2rpx 16rpx rgba(0, 0, 0, 0.06);
+    
+    &__row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8rpx 0;
+      border-bottom: 1rpx solid #f1f5f9;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+    
+    &__label {
+      font-size: 24rpx;
+      color: #6b7280;
+      font-weight: 500;
+    }
+    
+    &__value {
+      font-size: 26rpx;
+      color: #1e293b;
+      text-align: right;
+      flex: 1;
+      margin-left: 16rpx;
     }
   }
 }
@@ -301,4 +355,4 @@
     -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
     tap-highlight-color: rgba(59, 130, 246, 0.1);
   }
-} 
+}

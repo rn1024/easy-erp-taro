@@ -1,0 +1,69 @@
+@import '../../../styles/tokens.scss';
+
+.nut-search-bar-wrapper {
+  background: var(--bg-card);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 2rpx solid var(--border-lighter);
+  
+  &-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+  }
+  
+  &-input {
+    flex: 1;
+    
+    // 覆盖 NutUI 默认样式
+    .nut-searchbar {
+      background: var(--bg-body);
+      border-radius: var(--radius-full);
+      height: var(--input-height);
+      padding: 0 var(--spacing-3);
+      
+      &__input {
+        font-size: var(--font-size-base);
+        color: var(--text-primary);
+        
+        &::placeholder {
+          color: var(--text-placeholder);
+        }
+      }
+      
+      &__clear {
+        color: var(--text-secondary);
+      }
+      
+      &__search-icon {
+        color: var(--text-secondary);
+      }
+    }
+  }
+  
+  &-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+  }
+  
+  &-action-btn {
+    width: var(--btn-height-base);
+    height: var(--btn-height-base);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    
+    &:active {
+      background: var(--bg-hover);
+      color: var(--color-primary);
+    }
+    
+    .nutui-iconfont {
+      font-size: 40rpx;
+    }
+  }
+}

@@ -97,7 +97,7 @@ const Help: React.FC = () => {
       answer: '您可以在登录页面点击"忘记密码"，通过注册邮箱或手机号重置密码。',
       category: 'account',
       helpful: 18
-    },
+    }
 
   ]
 
@@ -113,8 +113,8 @@ const Help: React.FC = () => {
     setExpandedFAQ(expandedFAQ === faqId ? null : faqId)
   }
 
-  const handleHelpful = (faqId: string) => {
-    console.log('Marked as helpful:', faqId)
+  const handleHelpful = (_faqId: string) => {
+    // Marked as helpful
   }
 
   const supportContacts = [
@@ -142,12 +142,12 @@ const Help: React.FC = () => {
   ]
 
   return (
-    <MobileLayout className="help-page">
-      <View className="help-page__content">
+    <MobileLayout className='help-page'>
+      <View className='help-page__content'>
         {/* 搜索框 */}
-        <View className="help-page__search">
+        <View className='help-page__search'>
           <SearchBar
-            placeholder="搜索帮助内容..."
+            placeholder='搜索帮助内容...'
             value={searchQuery}
             onChange={setSearchQuery}
             onSearch={setSearchQuery}
@@ -155,57 +155,57 @@ const Help: React.FC = () => {
         </View>
 
         {/* 分类标签 */}
-        <View className="help-page__tabs">
-          <View className="help-page__tabs-container">
+        <View className='help-page__tabs'>
+          <View className='help-page__tabs-container'>
             <View
               className={`help-page__tab ${activeTab === 'all' ? 'help-page__tab--active' : ''}`}
               onClick={() => setActiveTab('all')}
             >
-              <Text className="help-page__tab-text">全部</Text>
+              <Text className='help-page__tab-text'>全部</Text>
             </View>
             <View
               className={`help-page__tab ${activeTab === 'faq' ? 'help-page__tab--active' : ''}`}
               onClick={() => setActiveTab('faq')}
             >
-              <Text className="help-page__tab-text">常见问题</Text>
+              <Text className='help-page__tab-text'>常见问题</Text>
             </View>
             <View
               className={`help-page__tab ${activeTab === 'workflow' ? 'help-page__tab--active' : ''}`}
               onClick={() => setActiveTab('workflow')}
             >
-              <Text className="help-page__tab-text">工作流程</Text>
+              <Text className='help-page__tab-text'>工作流程</Text>
             </View>
             <View
               className={`help-page__tab ${activeTab === 'task' ? 'help-page__tab--active' : ''}`}
               onClick={() => setActiveTab('task')}
             >
-              <Text className="help-page__tab-text">任务管理</Text>
+              <Text className='help-page__tab-text'>任务管理</Text>
             </View>
             <View
               className={`help-page__tab ${activeTab === 'account' ? 'help-page__tab--active' : ''}`}
               onClick={() => setActiveTab('account')}
             >
-              <Text className="help-page__tab-text">账户设置</Text>
+              <Text className='help-page__tab-text'>账户设置</Text>
             </View>
           </View>
         </View>
 
         {/* 全部页面 */}
         {activeTab === 'all' && (
-          <View className="help-page__all-content">
+          <View className='help-page__all-content'>
             {/* 帮助分类 */}
-            <View className="help-page__section">
-              <Text className="help-page__section-title">帮助分类</Text>
-              <View className="help-page__categories-grid">
+            <View className='help-page__section'>
+              <Text className='help-page__section-title'>帮助分类</Text>
+              <View className='help-page__categories-grid'>
                 {categories.map((category) => (
                   <View
                     key={category.id}
-                    className="help-page__category-card"
+                    className='help-page__category-card'
                     onClick={() => setActiveTab(category.id)}
                   >
-                    <View className="help-page__category-content">
+                    <View className='help-page__category-content'>
                       <View 
-                        className="help-page__category-icon"
+                        className='help-page__category-icon'
                         style={{ backgroundColor: `${category.color}15` }}
                       >
                         <MaterialIcons 
@@ -214,10 +214,10 @@ const Help: React.FC = () => {
                           color={category.color} 
                         />
                       </View>
-                      <View className="help-page__category-info">
-                        <Text className="help-page__category-name">{category.name}</Text>
-                        <Text className="help-page__category-desc">{category.description}</Text>
-                        <Text className="help-page__category-count">{category.count}个问题</Text>
+                      <View className='help-page__category-info'>
+                        <Text className='help-page__category-name'>{category.name}</Text>
+                        <Text className='help-page__category-desc'>{category.description}</Text>
+                        <Text className='help-page__category-count'>{category.count}个问题</Text>
                       </View>
                     </View>
                   </View>
@@ -225,86 +225,86 @@ const Help: React.FC = () => {
               </View>
             </View>
 
-                         {/* 联系支持 */}
-             <View className="help-page__section">
-               <Text className="help-page__section-title">联系支持</Text>
-               <View className="help-page__support-list">
-                 {supportContacts.map((contact) => (
-                   <View key={contact.id} className="help-page__support-item">
-                     <View 
-                       className="help-page__support-icon"
-                       style={{ backgroundColor: `${contact.color}15` }}
-                     >
-                       <MaterialIcons 
-                         name={contact.iconName} 
-                         size={20} 
-                         color={contact.color} 
-                       />
-                     </View>
-                     <View className="help-page__support-content">
-                       <Text className="help-page__support-title">{contact.title}</Text>
-                       <Text className="help-page__support-desc">{contact.description}</Text>
-                     </View>
-                     <MaterialIcons name="keyboard_arrow_right" size={20} color="#bbb" />
-                   </View>
-                 ))}
-               </View>
-             </View>
+            {/* 联系支持 */}
+            <View className='help-page__section'>
+              <Text className='help-page__section-title'>联系支持</Text>
+              <View className='help-page__support-list'>
+                {supportContacts.map((contact) => (
+                  <View key={contact.id} className='help-page__support-item'>
+                    <View 
+                      className='help-page__support-icon'
+                      style={{ backgroundColor: `${contact.color}15` }}
+                    >
+                      <MaterialIcons 
+                        name={contact.iconName} 
+                        size={20} 
+                        color={contact.color} 
+                      />
+                    </View>
+                    <View className='help-page__support-content'>
+                      <Text className='help-page__support-title'>{contact.title}</Text>
+                      <Text className='help-page__support-desc'>{contact.description}</Text>
+                    </View>
+                    <MaterialIcons name='keyboard_arrow_right' size={20} color='#bbb' />
+                  </View>
+                ))}
+              </View>
+            </View>
           </View>
         )}
 
-                 {/* FAQ页面和分类页面 */}
-         {(activeTab === 'faq' || categories.some(c => c.id === activeTab)) && (
-           <View className="help-page__faq-content">
-             <View className="help-page__faq-header">
-               <Text className="help-page__section-title">
-                 {activeTab === 'faq' 
-                   ? '常见问题' 
-                   : categories.find(c => c.id === activeTab)?.name
-                 }
-               </Text>
-               <View className="help-page__faq-count">
-                 <Text>
-                   {activeTab === 'faq' 
-                     ? `${filteredFAQs.length}个问题`
-                     : `${filteredFAQs.length}个问题`
-                   }
-                 </Text>
-               </View>
-             </View>
+        {/* FAQ页面和分类页面 */}
+        {(activeTab === 'faq' || categories.some(c => c.id === activeTab)) && (
+          <View className='help-page__faq-content'>
+            <View className='help-page__faq-header'>
+              <Text className='help-page__section-title'>
+                {activeTab === 'faq' 
+                  ? '常见问题' 
+                  : categories.find(c => c.id === activeTab)?.name
+                }
+              </Text>
+              <View className='help-page__faq-count'>
+                <Text>
+                  {activeTab === 'faq' 
+                    ? `${filteredFAQs.length}个问题`
+                    : `${filteredFAQs.length}个问题`
+                  }
+                </Text>
+              </View>
+            </View>
              
-             {filteredFAQs.length === 0 ? (
-               <View className="help-page__empty">
-                 <MaterialIcons name="help_outline" size={48} color="#d9d9d9" />
-                 <Text className="help-page__empty-text">没有找到相关问题</Text>
-               </View>
-             ) : (
-               <View className="help-page__faq-list">
-                 {filteredFAQs.map((faq) => (
-                  <View key={faq.id} className="help-page__faq-card">
+            {filteredFAQs.length === 0 ? (
+              <View className='help-page__empty'>
+                <MaterialIcons name='help_outline' size={48} color='#d9d9d9' />
+                <Text className='help-page__empty-text'>没有找到相关问题</Text>
+              </View>
+            ) : (
+              <View className='help-page__faq-list'>
+                {filteredFAQs.map((faq) => (
+                  <View key={faq.id} className='help-page__faq-card'>
                     <View 
-                      className="help-page__faq-header-item"
+                      className='help-page__faq-header-item'
                       onClick={() => handleFAQToggle(faq.id)}
                     >
-                      <Text className="help-page__faq-question">{faq.question}</Text>
+                      <Text className='help-page__faq-question'>{faq.question}</Text>
                       <MaterialIcons 
                         name={expandedFAQ === faq.id ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
                         size={20} 
-                        color="#999" 
+                        color='#999' 
                       />
                     </View>
                     {expandedFAQ === faq.id && (
-                      <View className="help-page__faq-answer">
-                        <Text className="help-page__faq-answer-text">{faq.answer}</Text>
-                        <View className="help-page__faq-footer">
-                          <View className="help-page__faq-meta">
-                            <View className="help-page__faq-tag">
+                      <View className='help-page__faq-answer'>
+                        <Text className='help-page__faq-answer-text'>{faq.answer}</Text>
+                        <View className='help-page__faq-footer'>
+                          <View className='help-page__faq-meta'>
+                            <View className='help-page__faq-tag'>
                               <Text>{categories.find(c => c.id === faq.category)?.name}</Text>
                             </View>
-                            <Text className="help-page__faq-helpful">{faq.helpful}人觉得有用</Text>
+                            <Text className='help-page__faq-helpful'>{faq.helpful}人觉得有用</Text>
                           </View>
                           <View 
-                            className="help-page__faq-helpful-btn"
+                            className='help-page__faq-helpful-btn'
                             onClick={() => handleHelpful(faq.id)}
                           >
                             <Text>有用</Text>

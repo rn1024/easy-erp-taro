@@ -1,0 +1,83 @@
+@import '../../../styles/tokens.scss';
+
+.nut-form-item {
+  margin-bottom: var(--spacing-4);
+  
+  // 水平布局
+  &.horizontal {
+    display: flex;
+    align-items: flex-start;
+    
+    .nut-form-item-label {
+      flex-shrink: 0;
+      text-align: right;
+      padding-right: var(--spacing-3);
+      line-height: var(--input-height);
+    }
+    
+    .nut-form-item-control {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+  
+  // 垂直布局
+  &.vertical {
+    .nut-form-item-label {
+      margin-bottom: var(--spacing-2);
+    }
+  }
+  
+  &-label {
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    font-weight: var(--font-weight-regular);
+  }
+  
+  &-required {
+    color: var(--color-error);
+    margin-right: 4rpx;
+  }
+  
+  &-control {
+    &-input {
+      // 确保输入框占满宽度
+      > view,
+      > input,
+      > textarea,
+      > picker,
+      > button,
+      > text,
+      > navigator {
+        width: 100%;
+      }
+    }
+  }
+  
+  &-error {
+    margin-top: var(--spacing-1);
+    font-size: var(--font-size-sm);
+    color: var(--color-error);
+    line-height: 1.4;
+  }
+  
+  &-help {
+    margin-top: var(--spacing-1);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+  
+  // 错误状态
+  &.has-error {
+    .nut-input,
+    .nut-textarea,
+    .nut-picker {
+      border-color: var(--color-error);
+      
+      &:focus {
+        box-shadow: 0 0 0 4rpx rgba(245, 63, 63, 0.1);
+      }
+    }
+  }
+}

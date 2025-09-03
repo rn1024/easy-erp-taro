@@ -115,20 +115,20 @@ export interface SearchFilters {
   tags?: string[]
 }
 
-// API响应类型
-export interface ApiResponse<T = any> {
-  success: boolean
-  data: T
-  message: string
-  code: number
+// API响应类型 - 适配easy-erp-web格式
+export interface ApiResponse<T = unknown> {
+  code: number    // 0: 成功, 非0: 失败
+  msg: string     // 响应消息
+  data: T         // 响应数据
 }
 
-export interface PaginatedResponse<T = any> {
-  items: T[]
-  total: number
-  page: number
-  pageSize: number
-  hasMore: boolean
+// 分页响应类型 - 适配easy-erp-web格式
+export interface PaginatedResponse<T = unknown> {
+  list: T[]           // 数据列表 (适配easy-erp-web的list字段)
+  total: number       // 总记录数
+  page: number        // 当前页码
+  pageSize: number    // 每页大小
+  totalPages: number  // 总页数
 }
 
 // 表单相关类型
@@ -139,7 +139,7 @@ export interface FormField {
   required: boolean
   options?: Array<{ label: string; value: string }>
   placeholder?: string
-  defaultValue?: any
+  defaultValue?: string | number | boolean
 }
 
 export interface FormConfig {
@@ -232,4 +232,4 @@ export interface Product {
 export interface ProductFilters {
   shop?: string
   category?: string
-} 
+}

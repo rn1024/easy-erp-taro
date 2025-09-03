@@ -5,6 +5,13 @@ export default definePageConfig({
   backgroundColor: '#f8f9fa'
 })
 
-function definePageConfig(config: any) {
+interface PageConfig {
+  navigationBarTitleText?: string
+  enablePullDownRefresh?: boolean
+  navigationStyle?: string
+  [key: string]: unknown
+}
+
+function definePageConfig(config: PageConfig) {
   return config
-} 
+}

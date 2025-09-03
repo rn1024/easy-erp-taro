@@ -4,6 +4,13 @@ export default definePageConfig({
   navigationStyle: 'default'
 })
 
-function definePageConfig(config: any) {
+interface PageConfig {
+  navigationBarTitleText?: string
+  enablePullDownRefresh?: boolean
+  navigationStyle?: string
+  [key: string]: unknown
+}
+
+function definePageConfig(config: PageConfig) {
   return config
-} 
+}

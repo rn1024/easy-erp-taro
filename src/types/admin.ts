@@ -54,66 +54,109 @@ export interface Product {
   remark: string        // 备注
 }
 
-// 成品库存模型 - 严格按照PRD定义
+// 成品库存模型 - 适配easy-erp-web API响应格式
 export interface FinishedInventory {
   id: string
+  shopId: string
+  categoryId: string  
   productId: string
-  shop: string          // 店铺
-  category: string      // 产品分类
-  productName: string   // 产品昵称
-  outerSize: string     // 外箱尺寸
-  cartonQty: number     // 装箱数量
-  weight: number        // 重量
-  location: string      // 货位
-  quantity: number      // 库存数量
+  boxSize?: string       // 外箱尺寸
+  packQuantity?: number  // 装箱数量
+  weight?: number        // 重量
+  location?: string      // 货位
+  stockQuantity: number  // 库存数量
+  // 关联对象 - 由API返回
+  shop: {
+    id: string
+    nickname: string
+  }
+  category: {
+    id: string
+    name: string
+  }
+  product: {
+    id: string
+    code: string
+    specification: string
+    sku: string
+  }
+  createdAt: string
+  updatedAt: string
 }
 
-// 散件库存模型 - 严格按照PRD定义
+// 散件库存模型 - 适配easy-erp-web API响应格式
 export interface SpareInventory {
   id: string
+  shopId: string
+  categoryId: string
   productId: string
-  shop: string          // 店铺
-  category: string      // 产品分类
-  productName: string   // 产品昵称
-  spareType: '套' | '个' // 散件类型
-  location: string      // 货位
+  spareType: string     // 散件类型
+  location?: string     // 货位
   quantity: number      // 数量
-}
-
-// 包装任务模型 - 严格按照PRD定义
-export interface PackageTask {
-  id: string
-  shop: string              // 店铺
-  category: string          // 分类
-  productName: string       // 产品昵称
-  totalQty: number         // 总数量
-  progress: number         // 进度 (0-100)
-  status: PackageStatus    // 状态
+  // 关联对象 - 由API返回
+  shop: {
+    id: string
+    nickname: string
+  }
+  category: {
+    id: string
+    name: string
+  }
+  product: {
+    id: string
+    code: string
+    specification: string
+    sku: string
+  }
   createdAt: string
   updatedAt: string
 }
 
-// 发货任务模型 - 严格按照PRD定义
-export interface ShipmentTask {
+// 仓库任务模型 - 适配easy-erp-web API响应格式
+export interface WarehouseTask {
   id: string
-  shop: string              // 店铺
-  category: string          // 产品分类
-  productName: string       // 产品昵称
-  totalBoxes: number        // 总箱数
-  fbaCode: string           // FBA件码
-  fbaWarehouse: string      // FBA仓编号
-  country: string           // 国家
-  channel: string           // 渠道
-  logistics: string         // 货代公司
-  trackingCode: string      // 运单编码
-  warehouseType: string     // 仓库发货类型
-  invoiceDeadline: string   // 截止发票
-  receiveDeadline: string   // 进仓收货期限
-  clearance: string         // 头程物流清关
-  date: string             // 日期
-  status: ShipmentStatus   // 状态
+  shopId: string
+  categoryId?: string
+  productId?: string
+  operatorId?: string
+  type: 'PACKAGE' | 'SHIPMENT'  // 任务类型
+  status: string                // 任务状态
+  totalQty?: number            // 总数量
+  progress?: number            // 进度 (0-100)
+  // 发货任务特有字段
+  totalBoxes?: number          // 总箱数
+  fbaCode?: string            // FBA件码
+  fbaWarehouse?: string       // FBA仓编号
+  country?: string            // 国家
+  channel?: string            // 渠道
+  logistics?: string          // 货代公司
+  trackingCode?: string       // 运单编码
+  warehouseType?: string      // 仓库发货类型
+  invoiceDeadline?: string    // 截止发票
+  receiveDeadline?: string    // 进仓收货期限
+  clearance?: string          // 头程物流清关
+  date?: string              // 日期
+  // 关联对象 - 由API返回
+  shop: {
+    id: string
+    nickname: string
+  }
+  operator?: {
+    id: string
+    name: string
+  }
   createdAt: string
   updatedAt: string
+}
+
+// 向后兼容的包装任务类型
+export interface PackageTask extends WarehouseTask {
+  type: 'PACKAGE'
+}
+
+// 向后兼容的发货任务类型  
+export interface ShipmentTask extends WarehouseTask {
+  type: 'SHIPMENT'
 }
 
 // 查询相关类型

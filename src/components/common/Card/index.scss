@@ -1,0 +1,93 @@
+@import '../../../styles/tokens.scss';
+
+.nut-card {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  margin: var(--spacing-4);
+  overflow: hidden;
+  transition: all var(--transition-fast) var(--easing-base);
+  
+  &.shadow-sm { box-shadow: var(--shadow-sm); }
+  &.shadow-base { box-shadow: var(--shadow-base); }
+  &.shadow-md { box-shadow: var(--shadow-md); }
+  &.shadow-lg { box-shadow: var(--shadow-lg); }
+  
+  &.clickable {
+    cursor: pointer;
+    
+    &:active {
+      transform: scale(0.99);
+      box-shadow: var(--shadow-sm);
+    }
+  }
+  
+  &-header {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-4);
+    border-bottom: 2rpx solid var(--border-lighter);
+    min-height: 96rpx;
+    
+    &-content {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    &-title {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+    
+    &-subtitle {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+      margin-top: var(--spacing-1);
+      line-height: 1.4;
+    }
+    
+    &-extra {
+      margin-left: var(--spacing-3);
+      flex-shrink: 0;
+      color: var(--text-secondary);
+      font-size: var(--font-size-sm);
+    }
+    
+    &-arrow {
+      margin-left: var(--spacing-2);
+      color: var(--text-placeholder);
+      font-size: 32rpx;
+    }
+  }
+  
+  &-body {
+    padding: var(--card-padding);
+    
+    &.no-padding {
+      padding: 0;
+    }
+  }
+  
+  &-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: var(--spacing-3) var(--spacing-4);
+    border-top: 2rpx solid var(--border-lighter);
+    background: var(--bg-hover);
+    
+    & > view + view,
+    & > button + button,
+    & > text + text,
+    & > navigator + navigator,
+    & > view + button,
+    & > button + view,
+    & > view + text,
+    & > text + view,
+    & > button + text,
+    & > text + button {
+      margin-left: var(--spacing-3);
+    }
+  }
+}

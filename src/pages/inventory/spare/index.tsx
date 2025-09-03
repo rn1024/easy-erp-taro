@@ -9,7 +9,7 @@ import FormModal from '@/components/FormModal'
 import withAuth from '@/components/AuthGuard'
 import { Permission } from '@/types/admin'
 import type { SpareInventory } from '@/types/admin'
-import type { FormField } from '@/components/FormModal'
+import type { FormField, FormModalMethods } from '@/components/FormModal'
 import './index.scss'
 
 const SpareInventoryPage: React.FC = () => {
@@ -34,70 +34,90 @@ const SpareInventoryPage: React.FC = () => {
   const [formLoading, setFormLoading] = useState(false)
   
   // 选项数据
-  const [shops, setShops] = useState<string[]>([
+  const [shops, _setShops] = useState<string[]>([
     '天猫旗舰店', '京东专卖店', '拼多多官店', '独立官网'
   ])
-  const [categories, setCategories] = useState<string[]>([
+  const [categories, _setCategories] = useState<string[]>([
     '电子产品', '服装配饰', '家居用品', '运动户外', '美妆护肤'
   ])
-  const [locations, setLocations] = useState<string[]>([
+  const [locations, _setLocations] = useState<string[]>([
     'A1-01', 'A1-02', 'A2-01', 'A2-02', 'B1-01', 'B1-02', 'B2-01', 'B2-02'
   ])
   const [spareTypes] = useState<('套' | '个')[]>(['套', '个'])
   
-  const formModalRef = useRef<any>(null)
+  const formModalRef = useRef<FormModalMethods | null>(null)
 
   // 模拟数据
   const mockData: SpareInventory[] = [
     {
       id: '1',
+      shopId: 'shop1',
+      categoryId: 'cat1',
       productId: 'P001',
-      shop: '天猫旗舰店',
-      category: '电子产品',
-      productName: 'iPhone 保护套配件包',
       spareType: '套',
       location: 'A1-01',
-      quantity: 85
+      quantity: 85,
+      shop: { id: 'shop1', nickname: '天猫旗舰店' },
+      category: { id: 'cat1', name: '电子产品' },
+      product: { id: 'P001', code: 'P001', specification: 'iPhone 保护套配件包', sku: 'SKU001' },
+      createdAt: '2024-01-01T00:00:00Z',
+      updatedAt: '2024-01-01T00:00:00Z'
     },
     {
       id: '2',
+      shopId: 'shop2',
+      categoryId: 'cat2',
       productId: 'P002',
-      shop: '京东专卖店',
-      category: '服装配饰',
-      productName: '羽绒服拉链头备用件',
       spareType: '个',
       location: 'B1-02',
-      quantity: 6
+      quantity: 6,
+      shop: { id: 'shop2', nickname: '京东专卖店' },
+      category: { id: 'cat2', name: '服装配饰' },
+      product: { id: 'P002', code: 'P002', specification: '羽绒服拉链头备用件', sku: 'SKU002' },
+      createdAt: '2024-01-01T00:00:00Z',
+      updatedAt: '2024-01-01T00:00:00Z'
     },
     {
       id: '3',
+      shopId: 'shop3',
+      categoryId: 'cat3',
       productId: 'P003',
-      shop: '拼多多官店',
-      category: '家居用品',
-      productName: '扫地机器人滤网组合',
       spareType: '套',
       location: 'A2-01',
-      quantity: 32
+      quantity: 32,
+      shop: { id: 'shop3', nickname: '拼多多官店' },
+      category: { id: 'cat3', name: '家居用品' },
+      product: { id: 'P003', code: 'P003', specification: '扫地机器人滤网组合', sku: 'SKU003' },
+      createdAt: '2024-01-01T00:00:00Z',
+      updatedAt: '2024-01-01T00:00:00Z'
     },
     {
       id: '4',
+      shopId: 'shop4',
+      categoryId: 'cat4',
       productId: 'P004',
-      shop: '独立官网',
-      category: '运动户外',
-      productName: '跑步鞋鞋带备用',
       spareType: '个',
       location: 'B2-01',
-      quantity: 120
+      quantity: 120,
+      shop: { id: 'shop4', nickname: '独立官网' },
+      category: { id: 'cat4', name: '运动户外' },
+      product: { id: 'P004', code: 'P004', specification: '跑步鞋鞋带备用', sku: 'SKU004' },
+      createdAt: '2024-01-01T00:00:00Z',
+      updatedAt: '2024-01-01T00:00:00Z'
     },
     {
       id: '5',
+      shopId: 'shop1',
+      categoryId: 'cat5',
       productId: 'P005',
-      shop: '天猫旗舰店',
-      category: '美妆护肤',
-      productName: '精华液滴管头',
       spareType: '个',
       location: 'A1-02',
-      quantity: 3
+      quantity: 3,
+      shop: { id: 'shop1', nickname: '天猫旗舰店' },
+      category: { id: 'cat5', name: '美妆护肤' },
+      product: { id: 'P005', code: 'P005', specification: '精华液滴管头', sku: 'SKU005' },
+      createdAt: '2024-01-01T00:00:00Z',
+      updatedAt: '2024-01-01T00:00:00Z'
     }
   ]
 
@@ -162,18 +182,18 @@ const SpareInventoryPage: React.FC = () => {
       // 应用搜索过滤
       if (searchKeyword) {
         filteredData = filteredData.filter(item =>
-          item.productName.includes(searchKeyword) ||
-          item.shop.includes(searchKeyword) ||
-          item.category.includes(searchKeyword)
+          item.product.specification.includes(searchKeyword) ||
+          item.shop.nickname.includes(searchKeyword) ||
+          item.category.name.includes(searchKeyword)
         )
       }
       
       if (selectedShop) {
-        filteredData = filteredData.filter(item => item.shop === selectedShop)
+        filteredData = filteredData.filter(item => item.shop.nickname === selectedShop)
       }
       
       if (selectedCategory) {
-        filteredData = filteredData.filter(item => item.category === selectedCategory)
+        filteredData = filteredData.filter(item => item.category.name === selectedCategory)
       }
       
       if (selectedSpareType) {
@@ -191,7 +211,7 @@ const SpareInventoryPage: React.FC = () => {
       setCurrentPage(page)
       
     } catch (error) {
-      console.error('加载散件库存失败:', error)
+      // 加载散件库存失败: error
       Taro.showToast({
         title: '加载失败，请重试',
         icon: 'error'
@@ -245,7 +265,7 @@ const SpareInventoryPage: React.FC = () => {
   const handleDelete = (item: SpareInventory) => {
     Taro.showModal({
       title: '删除确认',
-      content: `确定要删除"${item.productName}"吗？`,
+      content: `确定要删除"${item.product.specification}"吗？`,
       success: async (res) => {
         if (res.confirm) {
           try {
@@ -260,7 +280,7 @@ const SpareInventoryPage: React.FC = () => {
               icon: 'success'
             })
           } catch (error) {
-            console.error('删除失败:', error)
+            // 删除失败: error
             Taro.showToast({
               title: '删除失败，请重试',
               icon: 'error'
@@ -272,7 +292,7 @@ const SpareInventoryPage: React.FC = () => {
   }
 
   // 表单提交
-  const handleFormSubmit = async (formData: any) => {
+  const handleFormSubmit = async (formData: Record<string, unknown>) => {
     try {
       setFormLoading(true)
       
@@ -293,7 +313,17 @@ const SpareInventoryPage: React.FC = () => {
         // 新增模式
         const newItem: SpareInventory = {
           id: Date.now().toString(),
+          shopId: 'shop1',
+          categoryId: 'cat1',
           productId: `P${Date.now()}`,
+          spareType: '个',
+          location: 'A1-01',
+          quantity: 0,
+          shop: { id: 'shop1', nickname: '天猫旗舰店' },
+          category: { id: 'cat1', name: '电子产品' },
+          product: { id: `P${Date.now()}`, code: `P${Date.now()}`, specification: '新产品', sku: `SKU${Date.now()}` },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
           ...formData
         }
         setData(prev => [newItem, ...prev])
@@ -305,7 +335,7 @@ const SpareInventoryPage: React.FC = () => {
       
       setShowFormModal(false)
     } catch (error) {
-      console.error('保存失败:', error)
+      // 保存失败: error
       Taro.showToast({
         title: '保存失败，请重试',
         icon: 'error'
@@ -325,24 +355,24 @@ const SpareInventoryPage: React.FC = () => {
 
   return (
     <MobileLayout>
-      <View className="spare-inventory-page">
+      <View className='spare-inventory-page'>
         {/* 搜索栏 */}
-        <View className="spare-inventory-page__search">
-          <View className="search-input">
-            <MaterialIcons name="search" size={20} color="#6b7280" />
+        <View className='spare-inventory-page__search'>
+          <View className='search-input'>
+            <MaterialIcons name='search' size={20} color='#6b7280' />
             <Input
-              placeholder="搜索产品名称、店铺或分类"
+              placeholder='搜索产品名称、店铺或分类'
               value={searchKeyword}
               onChange={setSearchKeyword}
               clearable
             />
           </View>
           <View 
-            className="filter-btn"
+            className='filter-btn'
             onClick={() => setShowFilters(!showFilters)}
           >
             <MaterialIcons 
-              name="filter_list" 
+              name='filter_list' 
               size={20} 
               color={showFilters ? '#3b82f6' : '#6b7280'} 
             />
@@ -351,11 +381,11 @@ const SpareInventoryPage: React.FC = () => {
 
         {/* 筛选器 */}
         {showFilters && (
-          <View className="spare-inventory-page__filters">
-            <View className="filter-row">
-              <View className="filter-chips">
-                <Text className="filter-label">店铺筛选:</Text>
-                <View className="filter-chip-group">
+          <View className='spare-inventory-page__filters'>
+            <View className='filter-row'>
+              <View className='filter-chips'>
+                <Text className='filter-label'>店铺筛选:</Text>
+                <View className='filter-chip-group'>
                   <View 
                     className={`filter-chip ${!selectedShop ? 'filter-chip--active' : ''}`}
                     onClick={() => setSelectedShop('')}
@@ -374,9 +404,9 @@ const SpareInventoryPage: React.FC = () => {
                 </View>
               </View>
               
-              <View className="filter-chips">
-                <Text className="filter-label">分类筛选:</Text>
-                <View className="filter-chip-group">
+              <View className='filter-chips'>
+                <Text className='filter-label'>分类筛选:</Text>
+                <View className='filter-chip-group'>
                   <View 
                     className={`filter-chip ${!selectedCategory ? 'filter-chip--active' : ''}`}
                     onClick={() => setSelectedCategory('')}
@@ -395,9 +425,9 @@ const SpareInventoryPage: React.FC = () => {
                 </View>
               </View>
               
-              <View className="filter-chips">
-                <Text className="filter-label">散件类型:</Text>
-                <View className="filter-chip-group">
+              <View className='filter-chips'>
+                <Text className='filter-label'>散件类型:</Text>
+                <View className='filter-chip-group'>
                   <View 
                     className={`filter-chip ${!selectedSpareType ? 'filter-chip--active' : ''}`}
                     onClick={() => setSelectedSpareType('')}
@@ -418,10 +448,10 @@ const SpareInventoryPage: React.FC = () => {
             </View>
             
             {(selectedShop || selectedCategory || selectedSpareType) && (
-              <View className="filter-actions">
+              <View className='filter-actions'>
                 <Button 
-                  size="small" 
-                  fill="outline"
+                  size='small' 
+                  fill='outline'
                   onClick={handleClearFilters}
                 >
                   清空筛选
@@ -432,34 +462,34 @@ const SpareInventoryPage: React.FC = () => {
         )}
 
         {/* 工具栏 */}
-        <View className="spare-inventory-page__toolbar">
+        <View className='spare-inventory-page__toolbar'>
           <Button 
-            type="primary" 
-            size="small"
+            type='primary' 
+            size='small'
             onClick={handleAdd}
-            className="add-btn"
+            className='add-btn'
           >
-            <MaterialIcons name="add" size={16} color="#ffffff" />
+            <MaterialIcons name='add' size={16} color='#ffffff' />
             新增散件
           </Button>
         </View>
 
         {/* 库存列表 */}
-        <View className="spare-inventory-page__content">
+        <View className='spare-inventory-page__content'>
           {loading && data.length === 0 ? (
-            <View className="loading-state">
-              <MaterialIcons name="hourglass_empty" size={32} color="#6b7280" />
+            <View className='loading-state'>
+              <MaterialIcons name='hourglass_empty' size={32} color='#6b7280' />
               <Text>加载中...</Text>
             </View>
           ) : data.length === 0 ? (
-            <View className="empty-state">
-              <MaterialIcons name="build" size={48} color="#d1d5db" />
-              <Text className="empty-text">暂无散件库存数据</Text>
-              <Text className="empty-desc">点击上方按钮添加散件库存</Text>
+            <View className='empty-state'>
+              <MaterialIcons name='build' size={48} color='#d1d5db' />
+              <Text className='empty-text'>暂无散件库存数据</Text>
+              <Text className='empty-desc'>点击上方按钮添加散件库存</Text>
             </View>
           ) : (
             <ScrollView
-              className="inventory-list"
+              className='inventory-list'
               refresherEnabled
               refresherTriggered={refreshing}
               onRefresherRefresh={handleRefresh}
@@ -470,14 +500,14 @@ const SpareInventoryPage: React.FC = () => {
                 <InventoryCard
                   key={item.id}
                   item={item}
-                  type="spare"
+                  type='spare'
                   onEdit={handleEdit}
                   onDelete={handleDelete}
                 />
               ))}
               
               {hasMore && (
-                <View className="load-more">
+                <View className='load-more'>
                   <Text>上拉加载更多</Text>
                 </View>
               )}
@@ -491,7 +521,14 @@ const SpareInventoryPage: React.FC = () => {
           visible={showFormModal}
           title={editingItem ? '编辑散件库存' : '新增散件库存'}
           fields={formFields}
-          initialValues={editingItem || {}}
+          initialValues={editingItem ? {
+            shop: editingItem.shop.nickname,
+            category: editingItem.category.name,
+            productName: editingItem.product.specification,
+            spareType: editingItem.spareType,
+            location: editingItem.location,
+            quantity: editingItem.quantity
+          } : {}}
           loading={formLoading}
           onSubmit={handleFormSubmit}
           onCancel={() => setShowFormModal(false)}
@@ -503,4 +540,4 @@ const SpareInventoryPage: React.FC = () => {
 
 export default withAuth(SpareInventoryPage, {
   requiredPermissions: [Permission.INVENTORY_READ]
-}) 
+})

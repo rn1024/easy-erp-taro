@@ -7,6 +7,13 @@ export default definePageConfig({
   onReachBottomDistance: 50
 })
 
-function definePageConfig(config: any) {
+interface PageConfig {
+  navigationBarTitleText?: string
+  enablePullDownRefresh?: boolean
+  navigationStyle?: string
+  [key: string]: unknown
+}
+
+function definePageConfig(config: PageConfig) {
   return config
-} 
+}

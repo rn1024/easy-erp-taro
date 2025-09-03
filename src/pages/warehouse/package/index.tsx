@@ -1,41 +1,80 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, ScrollView } from '@tarojs/components'
-import { Button, Input, Tag } from '@nutui/nutui-react-taro'
+import React, { useState, useEffect } from 'react'
+import { View, Text } from '@tarojs/components'
+import { 
+  Button, 
+  Tag, 
+  Dialog
+} from '@nutui/nutui-react-taro'
 import { MaterialIcons } from 'taro-icons'
 import Taro from '@tarojs/taro'
 import MobileLayout from '@/components/MobileLayout'
-import TaskCard from '@/components/TaskCard'
-import withAuth from '@/components/AuthGuard'
-import { Permission, PackageStatus, PackageStatusLabels } from '@/types/admin'
-import type { PackageTask } from '@/types/admin'
-import type { Task } from '@/types'
+import SearchBar from '@/components/SearchBar'
 import './index.scss'
 
-const PackageTaskPage: React.FC = () => {
-  // 状态管理
-  const [data, setData] = useState<PackageTask[]>([])
-  const [loading, setLoading] = useState(false)
-  const [refreshing, setRefreshing] = useState(false)
-  const [hasMore, setHasMore] = useState(true)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize] = useState(10)
-  
-  // 搜索和筛选状态
-  const [searchText, setSearchText] = useState('')
-  const [selectedShop, setSelectedShop] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('')
-  const [selectedStatus, setSelectedStatus] = useState<PackageStatus | ''>('')
+// 包装任务状态枚举
+enum PackageStatus {
+  PENDING_ARRIVAL = 'pending_arrival',    // 待到货
+  WAITING_PACKAGE = 'waiting_package',    // 等待包装
+  IN_PACKAGING = 'in_packaging',          // 正在包装
+  COMPLETED = 'completed'                 // 已完成
+}
 
-  // 状态选项
-  const statusOptions: { label: string; value: PackageStatus; color: string }[] = [
-    { label: PackageStatusLabels[PackageStatus.PENDING_ARRIVAL], value: PackageStatus.PENDING_ARRIVAL, color: '#6b7280' },
-    { label: PackageStatusLabels[PackageStatus.WAITING_PACKAGE], value: PackageStatus.WAITING_PACKAGE, color: '#f59e0b' },
-    { label: PackageStatusLabels[PackageStatus.IN_PACKAGING], value: PackageStatus.IN_PACKAGING, color: '#3b82f6' },
-    { label: PackageStatusLabels[PackageStatus.COMPLETED], value: PackageStatus.COMPLETED, color: '#10b981' }
-  ]
+// 状态标签映射
+const StatusLabels = {
+  [PackageStatus.PENDING_ARRIVAL]: '待到货',
+  [PackageStatus.WAITING_PACKAGE]: '等待包装',
+  [PackageStatus.IN_PACKAGING]: '正在包装',
+  [PackageStatus.COMPLETED]: '已完成'
+}
+
+// 状态颜色映射
+const StatusColors = {
+  [PackageStatus.PENDING_ARRIVAL]: '#6b7280',
+  [PackageStatus.WAITING_PACKAGE]: '#f59e0b',
+  [PackageStatus.IN_PACKAGING]: '#3b82f6',
+  [PackageStatus.COMPLETED]: '#10b981'
+}
+
+// 包装任务接口
+interface PackageTask {
+  id: string
+  shop: string              // 店铺
+  category: string          // 分类
+  productName: string       // 产品昵称
+  totalQty: number         // 总数量
+  progress: number         // 进度 (0-100)
+  status: PackageStatus    // 状态
+  createdAt: string
+  updatedAt: string
+}
+
+// 统计数据接口
+interface PackageStats {
+  total: number
+  pendingArrival: number
+  waitingPackage: number
+  inPackaging: number
+  completed: number
+  completionRate: number
+}
+
+const PackageTaskPage: React.FC = () => {
+  const [data, setData] = useState<PackageTask[]>([])
+  const [_loading, setLoading] = useState(false)
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const [showStatusDialog, setShowStatusDialog] = useState(false)
+  const [currentTask, setCurrentTask] = useState<PackageTask | null>(null)
+  const [stats, setStats] = useState<PackageStats>({
+    total: 0,
+    pendingArrival: 0,
+    waitingPackage: 0,
+    inPackaging: 0,
+    completed: 0,
+    completionRate: 0
+  })
 
   // 模拟数据
-  const mockData: PackageTask[] = [
+  const mockTasks: PackageTask[] = [
     {
       id: '1',
       shop: '天猫旗舰店',
@@ -49,383 +88,292 @@ const PackageTaskPage: React.FC = () => {
     },
     {
       id: '2',
-      shop: '京东专卖店',
-      category: '服装配饰',
-      productName: '冬季羽绒服男款',
+      shop: '京东专营店',
+      category: '家居用品',
+      productName: '智能扫地机器人',
       totalQty: 80,
       progress: 100,
       status: PackageStatus.COMPLETED,
       createdAt: '2025-01-01T08:00:00Z',
-      updatedAt: '2025-01-01T15:00:00Z'
+      updatedAt: '2025-01-01T16:00:00Z'
     },
     {
       id: '3',
-      shop: '拼多多官店',
-      category: '家居用品',
-      productName: '智能扫地机器人',
-      totalQty: 50,
+      shop: '拼多多店铺',
+      category: '服装配件',
+      productName: '冬季保暖手套',
+      totalQty: 200,
       progress: 0,
-      status: PackageStatus.WAITING_PACKAGE,
+      status: PackageStatus.PENDING_ARRIVAL,
       createdAt: '2025-01-01T10:00:00Z',
       updatedAt: '2025-01-01T10:00:00Z'
     },
     {
       id: '4',
-      shop: '独立官网',
-      category: '运动户外',
-      productName: '专业跑步鞋系列',
-      totalQty: 200,
-      progress: 45,
-      status: PackageStatus.IN_PACKAGING,
-      createdAt: '2025-01-01T07:30:00Z',
-      updatedAt: '2025-01-01T13:20:00Z'
+      shop: '淘宝旗舰店',
+      category: '美妆护肤',
+      productName: '精华液套装',
+      totalQty: 120,
+      progress: 25,
+      status: PackageStatus.WAITING_PACKAGE,
+      createdAt: '2025-01-01T11:00:00Z',
+      updatedAt: '2025-01-01T13:00:00Z'
     },
     {
       id: '5',
       shop: '天猫旗舰店',
-      category: '美妆护肤',
-      productName: '精华液礼盒装',
-      totalQty: 120,
-      progress: 15,
-      status: PackageStatus.PENDING_ARRIVAL,
-      createdAt: '2025-01-01T11:00:00Z',
-      updatedAt: '2025-01-01T16:00:00Z'
+      category: '电子产品',
+      productName: 'MacBook Pro 电脑包',
+      totalQty: 95,
+      progress: 60,
+      status: PackageStatus.IN_PACKAGING,
+      createdAt: '2025-01-02T09:00:00Z',
+      updatedAt: '2025-01-02T11:30:00Z'
     }
   ]
 
-  // 转换为TaskCard需要的格式
-  const convertToTaskFormat = (packageTask: PackageTask): Task => {
-    const statusMap: Record<PackageStatus, 'pending' | 'in_progress' | 'completed'> = {
-      [PackageStatus.PENDING_ARRIVAL]: 'pending',
-      [PackageStatus.WAITING_PACKAGE]: 'pending', 
-      [PackageStatus.IN_PACKAGING]: 'in_progress',
-      [PackageStatus.COMPLETED]: 'completed'
-    }
-    
-    return {
-      id: packageTask.id,
-      title: packageTask.productName,
-      description: `${packageTask.shop} · ${packageTask.category} · 数量: ${packageTask.totalQty}`,
-      status: statusMap[packageTask.status],
-      priority: (packageTask.totalQty > 100 ? 'high' : packageTask.totalQty > 50 ? 'medium' : 'low') as 'high' | 'medium' | 'low',
-      assignee: {
-        id: '1',
-        name: '包装员',
-        avatar: '',
-        email: 'packer@company.com',
-        role: 'operator' as const,
-        department: '包装部门'
-      },
-      creator: {
-        id: '1',
-        name: '系统',
-        avatar: '',
-        email: 'system@company.com', 
-        role: 'admin' as const,
-        department: '系统'
-      },
-      dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-      createdAt: packageTask.createdAt,
-      updatedAt: packageTask.updatedAt,
-      progress: packageTask.progress,
-      tags: [packageTask.category],
-      workflow: {
-        currentStep: Math.floor(packageTask.progress / 25),
-        totalSteps: 4,
-        stepName: getStepName(packageTask.progress)
-      }
-    }
-  }
-
-  // 获取当前步骤名称
-  const getStepName = (progress: number): string => {
-    if (progress === 0) return '待开始'
-    if (progress <= 25) return '准备包装'
-    if (progress <= 50) return '包装中'
-    if (progress <= 75) return '质检中'
-    return '已完成'
-  }
-
-  // 统计信息
-  const getStatistics = () => {
-    const total = data.length
-    const pending = data.filter(t => 
-      t.status === PackageStatus.PENDING_ARRIVAL || t.status === PackageStatus.WAITING_PACKAGE
-    ).length
-    const inProgress = data.filter(t => t.status === PackageStatus.IN_PACKAGING).length
-    const completed = data.filter(t => t.status === PackageStatus.COMPLETED).length
-    
-    return { total, pending, inProgress, completed }
-  }
-
-  // 数据筛选
-  const getFilteredData = () => {
-    return data.filter(item => {
-      const matchSearch = !searchText || 
-        item.productName.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.shop.toLowerCase().includes(searchText.toLowerCase())
-      
-      const matchShop = !selectedShop || item.shop === selectedShop
-      const matchCategory = !selectedCategory || item.category === selectedCategory
-      const matchStatus = !selectedStatus || item.status === selectedStatus
-      
-      return matchSearch && matchShop && matchCategory && matchStatus
-    })
-  }
-
-  // 获取筛选选项
-  const getFilterOptions = () => {
-    const shops = Array.from(new Set(data.map(item => item.shop)))
-    const categories = Array.from(new Set(data.map(item => item.category)))
-    
-    return { shops, categories }
-  }
-
-  // 更新任务状态
-  const handleStatusUpdate = async (taskId: string, newStatus: PackageStatus) => {
-    try {
-      // 模拟API调用
-      await new Promise(resolve => setTimeout(resolve, 300))
-      
-      // 更新本地状态
-      setData(prev => prev.map(item => 
-        item.id === taskId 
-          ? { 
-              ...item, 
-              status: newStatus,
-              progress: newStatus === PackageStatus.COMPLETED ? 100 : 
-                       newStatus === PackageStatus.IN_PACKAGING ? 50 : 0,
-              updatedAt: new Date().toISOString()
-            }
-          : item
-      ))
-      
-      Taro.showToast({
-        title: '状态更新成功',
-        icon: 'success'
-      })
-    } catch (error) {
-      console.error('状态更新失败:', error)
-      Taro.showToast({
-        title: '状态更新失败',
-        icon: 'error'
-      })
-    }
-  }
-
-  // 状态选择
-  const handleTaskStatusSelect = (taskId: string) => {
-    Taro.showActionSheet({
-      itemList: statusOptions.map(option => option.label),
-      success: (res) => {
-        const selectedOption = statusOptions[res.tapIndex]
-        if (selectedOption) {
-          handleStatusUpdate(taskId, selectedOption.value)
-        }
-      }
-    })
-  }
-
-  // 页面初始化
   useEffect(() => {
     loadData()
   }, [])
 
-  // 加载数据
-  const loadData = async (refresh = false) => {
-    if (refresh) {
-      setRefreshing(true)
-      setCurrentPage(1)
-    } else {
-      setLoading(true)
-    }
+  useEffect(() => {
+    calculateStats()
+  }, [data])
 
-    try {
-      // 模拟API调用
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      if (refresh) {
-        setData(mockData)
-        setHasMore(true)
-        setRefreshing(false)
-      } else {
-        setData(mockData)
-        setLoading(false)
-      }
-    } catch (error) {
-      console.error('加载数据失败:', error)
+  const loadData = async () => {
+    setLoading(true)
+    // 模拟API请求
+    setTimeout(() => {
+      setData(mockTasks)
       setLoading(false)
-      setRefreshing(false)
+    }, 500)
+  }
+
+  // 计算统计数据
+  const calculateStats = () => {
+    const total = data.length
+    const pendingArrival = data.filter(item => item.status === PackageStatus.PENDING_ARRIVAL).length
+    const waitingPackage = data.filter(item => item.status === PackageStatus.WAITING_PACKAGE).length
+    const inPackaging = data.filter(item => item.status === PackageStatus.IN_PACKAGING).length
+    const completed = data.filter(item => item.status === PackageStatus.COMPLETED).length
+    const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0
+
+    setStats({
+      total,
+      pendingArrival,
+      waitingPackage,
+      inPackaging,
+      completed,
+      completionRate
+    })
+  }
+
+  // 筛选数据
+  const getFilteredData = () => {
+    return data.filter(item => {
+      const matchSearch = !searchKeyword || 
+        item.productName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+        item.shop.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+        item.category.toLowerCase().includes(searchKeyword.toLowerCase())
       
-      Taro.showToast({
-        title: '加载失败，请重试',
-        icon: 'error'
-      })
-    }
+      return matchSearch
+    })
   }
 
-  // 加载更多
-  const loadMore = async () => {
-    if (!hasMore || loading) return
+  // 更新任务状态
+  const handleStatusChange = (task: PackageTask, newStatus: PackageStatus) => {
+    setData(prev => prev.map(t => 
+      t.id === task.id 
+        ? { ...t, status: newStatus, updatedAt: new Date().toISOString() }
+        : t
+    ))
+    setShowStatusDialog(false)
+    setCurrentTask(null)
     
-    setCurrentPage(prev => prev + 1)
-    // 模拟没有更多数据
-    setHasMore(false)
+    Taro.showToast({
+      title: '状态更新成功',
+      icon: 'success'
+    })
   }
 
-  // 下拉刷新
-  const handlePullRefresh = () => {
-    loadData(true)
+  // 处理任务卡片点击
+  const handleTaskClick = (task: PackageTask) => {
+    setCurrentTask(task)
+    setShowStatusDialog(true)
   }
 
-  // 清除筛选
-  const clearFilters = () => {
-    setSelectedShop('')
-    setSelectedCategory('')
-    setSelectedStatus('')
-  }
-
-  const { shops, categories } = getFilterOptions()
   const filteredData = getFilteredData()
-  const statistics = getStatistics()
 
   return (
     <MobileLayout>
-      <View className="package-task-page">
-        {/* 统计卡片 */}
-        <View className="package-task-page__stats">
-          <View className="stats-grid">
-            <View className="stat-item">
-              <Text className="stat-number">{statistics.total}</Text>
-              <Text className="stat-label">总任务</Text>
-            </View>
-            <View className="stat-item">
-              <Text className="stat-number">{statistics.pending}</Text>
-              <Text className="stat-label">待包装</Text>
-            </View>
-            <View className="stat-item">
-              <Text className="stat-number">{statistics.inProgress}</Text>
-              <Text className="stat-label">进行中</Text>
-            </View>
-            <View className="stat-item">
-              <Text className="stat-number">{statistics.completed}</Text>
-              <Text className="stat-label">已完成</Text>
-            </View>
-          </View>
+      <View className='package-task-page'>
+        {/* 搜索框 */}
+        <View className='package-task-page__search'>
+          <SearchBar
+            placeholder='搜索产品名称、店铺或分类...'
+            value={searchKeyword}
+            onChange={setSearchKeyword}
+            onSearch={setSearchKeyword}
+          />
         </View>
 
-        {/* 搜索栏 */}
-        <View className="package-task-page__search">
-          <View className="search-input">
-            <MaterialIcons name="search" size={20} color="#9ca3af" />
-            <Input
-              placeholder="搜索任务或店铺..."
-              value={searchText}
-              onChange={(value) => setSearchText(value)}
-              clearable
-            />
-          </View>
-        </View>
-
-        {/* 筛选器 */}
-        <View className="package-task-page__filters">
-          <ScrollView scrollX className="filter-scroll">
-            <View className="filter-chips">
-              {/* 店铺筛选 */}
-              {shops.map(shop => (
-                <Tag
-                  key={shop}
-                  type={selectedShop === shop ? 'primary' : 'default'}
-                  onClick={() => setSelectedShop(selectedShop === shop ? '' : shop)}
-                >
-                  {shop}
-                </Tag>
-              ))}
-              
-              {/* 分类筛选 */}
-              {categories.map(category => (
-                <Tag
-                  key={category}
-                  type={selectedCategory === category ? 'primary' : 'default'}
-                  onClick={() => setSelectedCategory(selectedCategory === category ? '' : category)}
-                >
-                  {category}
-                </Tag>
-              ))}
-              
-              {/* 状态筛选 */}
-              {statusOptions.map(option => (
-                <Tag
-                  key={option.value}
-                  type={selectedStatus === option.value ? 'primary' : 'default'}
-                  onClick={() => setSelectedStatus(selectedStatus === option.value ? '' : option.value)}
-                >
-                  {option.label}
-                </Tag>
-              ))}
-              
-              {/* 清除筛选 */}
-              {(selectedShop || selectedCategory || selectedStatus) && (
-                <Button
-                  size="small"
-                  fill="none"
-                  onClick={clearFilters}
-                >
-                  <MaterialIcons name="clear" size={16} />
-                  清除
-                </Button>
-              )}
-            </View>
-          </ScrollView>
-        </View>
-
-        {/* 任务列表 */}
-        <View className="package-task-page__content">
-          <ScrollView
-            scrollY
-            refresherEnabled
-            refresherTriggered={refreshing}
-            onRefresherRefresh={handlePullRefresh}
-            onScrollToLower={loadMore}
-            className="task-scroll"
-          >
-            {loading ? (
-              <View className="loading-state">
-                <MaterialIcons name="autorenew" size={32} color="#3b82f6" />
-                <Text>加载中...</Text>
+        {/* 统计概览 */}
+        <View className='package-task-page__stats'>
+          <View className='stats-grid'>
+            <View className='stat-card stat-card--primary'>
+              <View className='stat-card__icon'>
+                <MaterialIcons name='inventory' size={32} color='#3b82f6' />
               </View>
-            ) : filteredData.length > 0 ? (
-              <>
-                {filteredData.map(task => (
-                  <TaskCard
-                    key={task.id}
-                    task={convertToTaskFormat(task)}
-                    onClick={() => handleTaskStatusSelect(task.id)}
-                  />
-                ))}
-                {!hasMore && (
-                  <View className="end-tip">
-                    <Text>没有更多数据了</Text>
+              <View className='stat-card__content'>
+                <Text className='stat-card__value'>{stats.total}</Text>
+                <Text className='stat-card__label'>总任务</Text>
+              </View>
+            </View>
+            
+            <View className='stat-card stat-card--warning'>
+              <View className='stat-card__icon'>
+                <MaterialIcons name='schedule' size={32} color='#f59e0b' />
+              </View>
+              <View className='stat-card__content'>
+                <Text className='stat-card__value'>{stats.pendingArrival}</Text>
+                <Text className='stat-card__label'>待到货</Text>
+              </View>
+            </View>
+            
+            <View className='stat-card stat-card--info'>
+              <View className='stat-card__icon'>
+                <MaterialIcons name='hourglass_empty' size={32} color='#6b7280' />
+              </View>
+              <View className='stat-card__content'>
+                <Text className='stat-card__value'>{stats.waitingPackage}</Text>
+                <Text className='stat-card__label'>等待包装</Text>
+              </View>
+            </View>
+            
+            <View className='stat-card stat-card--processing'>
+              <View className='stat-card__icon'>
+                <MaterialIcons name='build' size={32} color='#3b82f6' />
+              </View>
+              <View className='stat-card__content'>
+                <Text className='stat-card__value'>{stats.inPackaging}</Text>
+                <Text className='stat-card__label'>正在包装</Text>
+              </View>
+            </View>
+          </View>
+          
+          {/* 完成率展示 */}
+          <View className='completion-card'>
+            <View className='completion-header'>
+              <Text className='completion-title'>整体完成率</Text>
+              <Text className='completion-value'>{stats.completionRate}%</Text>
+            </View>
+            <View className='completion-bar'>
+              <View 
+                className='completion-fill'
+                style={{ width: `${stats.completionRate}%` }}
+              />
+            </View>
+            <Text className='completion-detail'>
+              已完成 {stats.completed} / {stats.total} 个任务
+            </Text>
+          </View>
+        </View>
+
+        {/* 任务卡片列表 */}
+        <View className='package-task-page__content'>
+          {filteredData.length > 0 ? (
+            <View className='task-list'>
+              {filteredData.map(task => (
+                <View key={task.id} className='task-card' onClick={() => handleTaskClick(task)}>
+                  {/* 卡片头部 */}
+                  <View className='task-card__header'>
+                    <View className='task-card__info'>
+                      <Text className='task-card__title'>{task.productName}</Text>
+                      <Text className='task-card__meta'>{task.shop} · {task.category}</Text>
+                    </View>
+                    <Tag 
+                      type='primary' 
+                      style={{ backgroundColor: StatusColors[task.status] }}
+                    >
+                      {StatusLabels[task.status]}
+                    </Tag>
                   </View>
-                )}
-              </>
-            ) : (
-              <View className="empty-state">
-                <MaterialIcons name="inventory_2" size={64} color="#d1d5db" />
-                <Text className="empty-title">暂无包装任务</Text>
-                <Text className="empty-desc">当前筛选条件下没有找到任务</Text>
-                <Button size="small" onClick={clearFilters}>
-                  清除筛选条件
-                </Button>
-              </View>
-            )}
-          </ScrollView>
+
+                  {/* 数量信息 */}
+                  <View className='task-card__quantity'>
+                    <MaterialIcons name='inventory_2' size={20} color='#6b7280' />
+                    <Text className='quantity-text'>总数量: {task.totalQty}</Text>
+                  </View>
+
+                  {/* 进度条 */}
+                  <View className='task-card__progress'>
+                    <View className='progress-header'>
+                      <Text className='progress-label'>完成进度</Text>
+                      <Text className='progress-value'>{task.progress}%</Text>
+                    </View>
+                    <View className='progress-bar'>
+                      <View 
+                        className='progress-fill'
+                        style={{ 
+                          width: `${task.progress}%`,
+                          backgroundColor: StatusColors[task.status]
+                        }}
+                      />
+                    </View>
+                  </View>
+
+                  {/* 卡片底部 */}
+                  <View className='task-card__footer'>
+                    <View className='task-card__time'>
+                      <MaterialIcons name='schedule' size={16} color='#9ca3af' />
+                      <Text className='time-text'>
+                        更新: {new Date(task.updatedAt).toLocaleDateString()}
+                      </Text>
+                    </View>
+                    <MaterialIcons name='chevron_right' size={20} color='#6b7280' />
+                  </View>
+                </View>
+              ))}
+            </View>
+          ) : (
+            <View className='empty-state'>
+              <MaterialIcons name='inventory_2' size={64} color='#d1d5db' />
+              <Text className='empty-text'>暂无包装任务</Text>
+            </View>
+          )}
         </View>
+        
+        {/* 状态更新对话框 */}
+        <Dialog
+          visible={showStatusDialog}
+          title='更新任务状态'
+          onClose={() => setShowStatusDialog(false)}
+          footer={
+            <View className='dialog-footer'>
+              <Button onClick={() => setShowStatusDialog(false)}>取消</Button>
+            </View>
+          }
+        >
+          <View className='status-dialog'>
+            {Object.entries(StatusLabels).map(([status, label]) => (
+              <View
+                key={status}
+                className={`status-option ${currentTask?.status === status ? 'status-option--current' : ''}`}
+                onClick={() => currentTask && handleStatusChange(currentTask, status as PackageStatus)}
+              >
+                <MaterialIcons 
+                  name='radio_button_checked' 
+                  size={20} 
+                  color={currentTask?.status === status ? StatusColors[status as PackageStatus] : '#d1d5db'} 
+                />
+                <Text className='status-option__text'>{label}</Text>
+              </View>
+            ))}
+          </View>
+        </Dialog>
       </View>
     </MobileLayout>
   )
 }
 
-export default withAuth(PackageTaskPage, {
-  requiredPermissions: [Permission.TASK_READ]
-}) 
+export default PackageTaskPage
