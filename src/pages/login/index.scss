@@ -1,513 +1,296 @@
-@use "@nutui/nutui-react-taro/dist/styles/variables.scss" as *;
+@import '../../styles/tokens.scss';
 
 .login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-4);
+}
+
+.login-container {
+  width: 100%;
+  max-width: 750rpx;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  min-height: 100dvh; // 动态视口高度
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 0 48rpx;
-  box-sizing: border-box;
-  position: relative;
+  align-items: center;
+}
 
-  // 硬件加速优化
-  transform: translateZ(0);
-  will-change: scroll-position;
-
-  // Logo和标题区域
-  &__header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 120rpx 0 80rpx;
-    text-align: center;
-  }
-
-  &__logo {
-    display: flex;
+// Logo区域
+.login-header {
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+  
+  .login-logo {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 128rpx;
-    height: 128rpx;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 32rpx;
-    margin-bottom: 32rpx;
-    backdrop-filter: blur(10px);
-    border: 1rpx solid rgba(255, 255, 255, 0.2);
+    margin-bottom: var(--spacing-4);
     
-    // 触摸反馈
-    transition: all 0.3s ease;
-    
-    &:active {
-      transform: scale(0.95);
-      background-color: rgba(255, 255, 255, 0.15);
+    &-icon {
+      width: 120rpx;
+      height: 120rpx;
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-primary);
+      box-shadow: var(--shadow-lg);
     }
   }
-
-  &__title {
-    font-size: 48rpx;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 16rpx;
-    text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
-  }
-
-  &__subtitle {
-    font-size: 28rpx;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 400;
-  }
-
-  // 表单区域
-  &__form {
-    flex: 1;
-    background-color: #ffffff;
-    border-radius: 24rpx 24rpx 0 0;
-    padding: 48rpx 32rpx 32rpx;
-    box-shadow: 0 -4rpx 24rpx rgba(0, 0, 0, 0.1);
-    position: relative;
-    
-    // 防止内容超出
-    overflow: hidden;
-  }
-
-  &__form-item {
-    margin-bottom: 32rpx;
-    
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    &--error {
-      .login-page__input-wrapper {
-        border-color: #ef4444;
-        
-        &:focus-within {
-          border-color: #ef4444;
-          box-shadow: 0 0 0 3rpx rgba(239, 68, 68, 0.1);
-        }
-      }
-    }
-  }
-
-  &__input-wrapper {
-    display: flex;
-    align-items: center;
-    height: 96rpx;
-    background-color: #f8fafc;
-    border: 2rpx solid #e2e8f0;
-    border-radius: 16rpx;
-    padding: 0 24rpx;
-    transition: all 0.2s ease;
-    position: relative;
-
-    &:focus-within {
-      border-color: #3b82f6;
-      background-color: #ffffff;
-      box-shadow: 0 0 0 3rpx rgba(59, 130, 246, 0.1);
-    }
-  }
-
-  &__input {
-    flex: 1;
-    height: 100%;
-    border: none;
-    background: transparent;
-    font-size: 28rpx;
-    color: #1f2937;
-    margin-left: 16rpx;
-    margin-right: 16rpx;
-
-    &::placeholder {
-      color: #9ca3af;
-    }
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  &__password-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48rpx;
-    height: 48rpx;
-    border-radius: 8rpx;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    
-    // 确保触摸目标足够大
-    min-width: 48rpx;
-    min-height: 48rpx;
-    
-    &:active {
-      background-color: rgba(156, 163, 175, 0.1);
-      transform: scale(0.95);
-    }
-  }
-
-  &__error-text {
-    display: block;
-    font-size: 24rpx;
-    color: #ef4444;
-    margin-top: 12rpx;
-    margin-left: 8rpx;
-    line-height: 1.4;
-  }
-
-  &__error-banner {
-    display: flex;
-    align-items: center;
-    background-color: #fef2f2;
-    border: 1rpx solid #fecaca;
-    border-radius: 12rpx;
-    padding: 16rpx 20rpx;
-    margin-bottom: 32rpx;
-  }
-
-  &__error-banner-text {
-    font-size: 26rpx;
-    color: #dc2626;
-    margin-left: 12rpx;
-    line-height: 1.4;
-  }
-
-  &__login-btn {
-    width: 100%;
-    height: 96rpx;
-    background-color: #3b82f6;
-    border: none;
-    border-radius: 16rpx;
-    font-size: 32rpx;
-    font-weight: 600;
-    color: #ffffff;
-    margin-bottom: 32rpx;
-    transition: all 0.2s ease;
-    
-    // 硬件加速
-    transform: translateZ(0);
-    
-    &:not(:disabled):active {
-      transform: scale(0.98);
-      background-color: #2563eb;
-    }
-
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    &.loading {
-      background-color: #6b7280;
-    }
-  }
-
-  // 快速登录区域
-  &__quick-login {
-    text-align: center;
-    margin-bottom: 40rpx;
-  }
-
-  &__quick-login-label {
-    font-size: 26rpx;
-    color: #6b7280;
-    margin-bottom: 20rpx;
+  
+  .login-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-white);
+    margin-bottom: var(--spacing-2);
     display: block;
   }
-
-  &__quick-login-buttons {
-    display: flex;
-    gap: 20rpx;
-    justify-content: center;
-  }
-
-  &__quick-btn {
-    height: 64rpx;
-    padding: 0 24rpx;
-    background-color: #f1f5f9;
-    border: 1rpx solid #e2e8f0;
-    border-radius: 12rpx;
-    font-size: 24rpx;
-    color: #475569;
-    transition: all 0.2s ease;
-    
-    // 确保触摸目标足够大
-    min-height: 48rpx;
-    
-    &:active {
-      background-color: #e2e8f0;
-      transform: scale(0.95);
-    }
-
-    &:disabled {
-      opacity: 0.5;
-    }
-  }
-
-  // 页脚信息
-  &__footer {
-    text-align: center;
-    padding: 32rpx 0;
-    padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
-  }
-
-  &__footer-text {
-    font-size: 24rpx;
-    color: #64748b;
-    margin-bottom: 8rpx;
+  
+  .login-subtitle {
+    font-size: var(--font-size-base);
+    color: rgba(255, 255, 255, 0.9);
     display: block;
-  }
-
-  &__footer-version {
-    font-size: 22rpx;
-    color: #94a3b8;
   }
 }
 
-// NutUI组件样式重写
+// 登录卡片
+.login-card {
+  width: 100%;
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  margin: 0;
+}
+
+.login-form {
+  padding: var(--spacing-6);
+  
+  // 输入框样式
+  .login-input-wrapper {
+    display: flex;
+    align-items: center;
+    background: var(--bg-body);
+    border-radius: var(--radius-base);
+    padding: 0 var(--spacing-3);
+    height: var(--input-height-lg);
+    border: 2rpx solid var(--border-lighter);
+    transition: all var(--transition-fast) var(--easing-base);
+    
+    &:focus-within {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 4rpx var(--color-primary-bg);
+    }
+  }
+  
+  .login-input-icon {
+    color: var(--text-secondary);
+    font-size: 36rpx;
+    margin-right: var(--spacing-2);
+  }
+  
+  .login-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    height: 100%;
+    
+    // 覆盖NutUI默认样式
+    .nut-input-native {
+      background: transparent;
+      font-size: var(--font-size-base);
+      color: var(--text-primary);
+      
+      &::placeholder {
+        color: var(--text-placeholder);
+      }
+    }
+  }
+  
+  .login-password-toggle {
+    color: var(--text-secondary);
+    font-size: 36rpx;
+    padding: 0 var(--spacing-2);
+    cursor: pointer;
+    
+    &:active {
+      color: var(--color-primary);
+    }
+  }
+  
+  // 登录按钮
+  .login-btn {
+    margin-top: var(--spacing-6);
+    height: var(--btn-height-lg);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    border-radius: var(--radius-base);
+    
+    &:active:not([disabled]) {
+      background: var(--color-primary-dark);
+      border-color: var(--color-primary-dark);
+    }
+    
+    &[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+  
+  // 快速登录区域
+  .login-quick {
+    margin-top: var(--spacing-6);
+    padding-top: var(--spacing-4);
+    border-top: 2rpx solid var(--border-lighter);
+    
+    &-label {
+      display: block;
+      text-align: center;
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-3);
+    }
+    
+    &-buttons {
+      display: flex;
+      gap: var(--spacing-3);
+    }
+    
+    &-btn {
+      flex: 1;
+      height: var(--btn-height-base);
+      font-size: var(--font-size-base);
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+      background: transparent;
+      
+      &:active:not([disabled]) {
+        background: var(--color-primary-bg);
+      }
+    }
+  }
+}
+
+// 页脚
+.login-footer {
+  margin-top: var(--spacing-8);
+  text-align: center;
+  
+  &-text {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: var(--spacing-1);
+  }
+  
+  &-version {
+    font-size: var(--font-size-xs);
+    color: rgba(255, 255, 255, 0.6);
+    display: block;
+  }
+}
+
+// NutUI 组件样式覆盖
 .login-page {
+  // 表单样式
   .nut-form {
     .nut-form-item {
       margin-bottom: 0;
-      
-      .nut-form-item__label {
-        display: none; // 隐藏label，使用placeholder
-      }
-
-      .nut-form-item__body {
-        margin: 0;
-      }
     }
   }
-
+  
+  // 输入框样式
   .nut-input {
-    border: none;
     background: transparent;
-    height: auto;
+    border: none;
     padding: 0;
     
-    .nut-input__input {
-      border: none;
+    &-native {
       background: transparent;
-      font-size: 28rpx;
-      color: #1f2937;
-      
-      &::placeholder {
-        color: #9ca3af;
-      }
+      border: none;
+      height: 100%;
+      font-size: var(--font-size-base);
     }
-  }
-
-  .nut-button {
-    border: none;
     
-    &.nut-button--primary {
-      background-color: #3b82f6;
+    &-clear {
+      color: var(--text-secondary);
+    }
+  }
+  
+  // 按钮样式
+  .nut-button {
+    &--primary {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
       
-      &:active {
-        background-color: #2563eb;
+      &:active:not(.nut-button--disabled) {
+        background: var(--color-primary-dark);
+        border-color: var(--color-primary-dark);
       }
     }
-
-    &.nut-button--default {
-      background-color: #f1f5f9;
-      color: #475569;
+    
+    &--outline {
+      background: transparent;
+      color: var(--color-primary);
+      border-color: var(--color-primary);
       
-      &:active {
-        background-color: #e2e8f0;
+      &:active:not(.nut-button--disabled) {
+        background: var(--color-primary-bg);
       }
+    }
+    
+    &--block {
+      width: 100%;
     }
   }
 }
 
-// 小屏适配 (iPhone SE等)
-@media (max-width: 375px) {
-  .login-page {
-    padding: 0 32rpx;
-
-    &__header {
-      padding: 80rpx 0 60rpx;
-    }
-
-    &__logo {
-      width: 96rpx;
-      height: 96rpx;
-      border-radius: 24rpx;
-      margin-bottom: 24rpx;
-    }
-
-    &__title {
-      font-size: 40rpx;
-      margin-bottom: 12rpx;
-    }
-
-    &__subtitle {
-      font-size: 24rpx;
-    }
-
-    &__form {
-      padding: 32rpx 24rpx 24rpx;
-    }
-
-    &__input-wrapper {
-      height: 80rpx;
-      padding: 0 20rpx;
-    }
-
-    &__input {
-      font-size: 26rpx;
-      margin-left: 12rpx;
-      margin-right: 12rpx;
-    }
-
-    &__login-btn {
-      height: 80rpx;
-      font-size: 28rpx;
-    }
-
-    &__quick-btn {
-      height: 56rpx;
-      font-size: 22rpx;
-      padding: 0 20rpx;
-    }
-
-    &__error-text {
-      font-size: 22rpx;
-    }
-
-    &__error-banner-text {
-      font-size: 24rpx;
-    }
-  }
-}
-
-// 横屏适配
-@media (orientation: landscape) and (max-height: 500px) {
-  .login-page {
-    &__header {
-      padding: 40rpx 0 32rpx;
-    }
-
-    &__logo {
+// 响应式适配
+@media (max-height: 600px) {
+  .login-header {
+    margin-bottom: var(--spacing-4);
+    
+    .login-logo-icon {
       width: 80rpx;
       height: 80rpx;
-      margin-bottom: 16rpx;
+      font-size: var(--font-size-xl);
     }
-
-    &__title {
-      font-size: 36rpx;
-      margin-bottom: 8rpx;
+    
+    .login-title {
+      font-size: var(--font-size-xl);
     }
-
-    &__subtitle {
-      font-size: 22rpx;
-    }
-
-    &__form {
-      padding: 32rpx 24rpx 24rpx;
-    }
-
-    &__form-item {
-      margin-bottom: 24rpx;
-    }
-
-    &__input-wrapper {
-      height: 72rpx;
-    }
-
-    &__input {
-      font-size: 24rpx;
-    }
-
-    &__login-btn {
-      height: 72rpx;
-      font-size: 28rpx;
-      margin-bottom: 24rpx;
-    }
-
-    &__quick-login {
-      margin-bottom: 24rpx;
-    }
-
-    &__footer {
-      padding: 20rpx 0;
-    }
+  }
+  
+  .login-form {
+    padding: var(--spacing-4);
+  }
+  
+  .login-footer {
+    margin-top: var(--spacing-4);
   }
 }
 
-// 深色模式
-@media (prefers-color-scheme: dark) {
-  .login-page {
-    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-
-    &__form {
-      background-color: #1f2937;
-    }
-
-    &__input-wrapper {
-      background-color: #374151;
-      border-color: #4b5563;
-      
-      &:focus-within {
-        background-color: #4b5563;
-        border-color: #3b82f6;
-      }
-    }
-
-    &__input {
-      color: #f9fafb;
-      
-      &::placeholder {
-        color: #6b7280;
-      }
-    }
-
-    &__error-banner {
-      background-color: #431a1a;
-      border-color: #991b1b;
-    }
-
-    &__quick-btn {
-      background-color: #374151;
-      border-color: #4b5563;
-      color: #d1d5db;
-      
-      &:active {
-        background-color: #4b5563;
-      }
-    }
-
-    &__footer-text {
-      color: #9ca3af;
-    }
-
-    &__footer-version {
-      color: #6b7280;
-    }
+// 小屏幕适配
+@media (max-width: 375px) {
+  .login-container {
+    padding: 0 var(--spacing-3);
+  }
+  
+  .login-form {
+    padding: var(--spacing-4);
+  }
+  
+  .login-input-wrapper {
+    height: 80rpx;
+  }
+  
+  .login-btn {
+    height: 80rpx;
+    font-size: var(--font-size-base);
   }
 }
-
-// 可访问性优化
-@media (prefers-reduced-motion: reduce) {
-  .login-page {
-    &__logo,
-    &__login-btn,
-    &__quick-btn,
-    &__password-toggle,
-    &__input-wrapper {
-      transition: none;
-    }
-  }
-}
-
-// 触摸反馈优化
-.login-page {
-  &__logo,
-  &__login-btn,
-  &__quick-btn,
-  &__password-toggle {
-    -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
-    tap-highlight-color: rgba(59, 130, 246, 0.1);
-  }
-} 

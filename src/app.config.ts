@@ -6,7 +6,8 @@ export default defineAppConfig({
     'pages/query/sku/index',                // SKU搜索
     'pages/inventory/finished/index',       // 成品库存 - TabBar
     'pages/inventory/spare/index',          // 散件库存
-    'pages/warehouse/package/index',        // 包装任务 - TabBar
+    'pages/warehouse/index',                // 任务管理 - TabBar
+    'pages/warehouse/package/index',        // 包装任务
     'pages/warehouse/shipment/index',       // 发货任务
     'pages/products/index',                 // 产品管理
     'pages/profile/index',                  // 个人中心 - TabBar
@@ -46,7 +47,7 @@ export default defineAppConfig({
         selectedIconPath: 'assets/icons/task-active.png'
       },
       {
-        pagePath: 'pages/warehouse/package/index',
+        pagePath: 'pages/warehouse/index',
         text: '任务',
         iconPath: 'assets/icons/message.png',       // 临时使用现有图标
         selectedIconPath: 'assets/icons/message-active.png'
@@ -61,6 +62,30 @@ export default defineAppConfig({
   }
 })
 
-function defineAppConfig(config: any) {
+interface AppConfig {
+  pages: string[]
+  window?: {
+    backgroundTextStyle?: string
+    navigationBarBackgroundColor?: string
+    navigationBarTitleText?: string
+    navigationBarTextStyle?: string
+    backgroundColor?: string
+  }
+  tabBar?: {
+    color?: string
+    selectedColor?: string
+    backgroundColor?: string
+    borderStyle?: string
+    list: Array<{
+      pagePath: string
+      text: string
+      iconPath: string
+      selectedIconPath: string
+    }>
+  }
+  [key: string]: unknown
+}
+
+function defineAppConfig(config: AppConfig) {
   return config
-} 
+}

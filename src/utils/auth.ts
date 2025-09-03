@@ -10,14 +10,14 @@ export function isLoggedIn(): boolean {
 
 // 检查用户权限
 export function hasPermission(permission: Permission): boolean {
-  const { hasPermission } = useUserStore.getState()
-  return hasPermission(permission)
+  const { hasPermission: storeHasPermission } = useUserStore.getState()
+  return storeHasPermission(permission)
 }
 
 // 检查用户角色
 export function checkRole(role: UserRole): boolean {
-  const { checkRole } = useUserStore.getState()
-  return checkRole(role)
+  const { checkRole: storeCheckRole } = useUserStore.getState()
+  return storeCheckRole(role)
 }
 
 // 重定向到登录页

@@ -18,6 +18,11 @@ module.exports = defineConfig((merge, { command, mode }) => {
     outputRoot: 'dist',
     plugins: [],
     defineConstants: {
+      'process.env.API_BASE_URL': JSON.stringify(
+        process.env.NODE_ENV === 'production' 
+          ? 'https://erp.samuelcn.com/api/v1'
+          : '/api/v1'
+      )
     },
     alias: {
       '@': require('path').resolve(__dirname, '..', 'src')

@@ -1,0 +1,42 @@
+@import '../../../styles/tokens.scss';
+
+.icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  
+  .icon-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.icon-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  user-select: none;
+  
+  // 确保emoji在不同平台显示一致
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+// 可点击状态
+.icon-wrapper,
+.icon-text {
+  &[onclick] {
+    cursor: pointer;
+    transition: opacity var(--transition-fast) var(--easing-base);
+    
+    &:active {
+      opacity: 0.7;
+    }
+  }
+}

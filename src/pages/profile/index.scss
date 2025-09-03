@@ -32,7 +32,7 @@
   }
 
   &__avatar-edit {
-    position: absolute;
+      position: absolute;
     bottom: -4rpx;
     right: -4rpx;
     width: 48rpx;
@@ -40,9 +40,9 @@
     background: #fff;
     border: 2rpx solid #f0f0f0;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     cursor: pointer;
     touch-action: manipulation;
     transition: all 0.2s ease;
@@ -51,10 +51,10 @@
       transform: scale(0.95);
       background: #f8f9fa;
     }
-  }
+      }
 
   &__user-info {
-    flex: 1;
+        flex: 1;
     min-width: 0;
   }
 
@@ -62,8 +62,8 @@
     display: flex;
     align-items: center;
     gap: 16rpx;
-    margin-bottom: 8rpx;
-  }
+          margin-bottom: 8rpx;
+        }
 
   &__user-name {
     font-size: 36rpx;
@@ -88,7 +88,7 @@
       transform: scale(0.95);
       background: #e8e8e8;
     }
-  }
+        }
 
   &__user-position {
     font-size: 28rpx;
@@ -99,22 +99,22 @@
   &__user-department {
     font-size: 24rpx;
     color: #999;
-  }
+      }
 
   &__user-details {
-    display: flex;
-    flex-direction: column;
+        display: flex;
+        flex-direction: column;
     gap: 16rpx;
-  }
+      }
 
   &__detail-row {
     display: flex;
     gap: 32rpx;
-  }
+    }
 
   &__detail-item {
     flex: 1;
-    display: flex;
+      display: flex;
     align-items: center;
     gap: 12rpx;
     color: #666;
@@ -130,8 +130,8 @@
   }
 
   &__section-title {
-    font-size: 32rpx;
-    font-weight: 600;
+          font-size: 32rpx;
+          font-weight: 600;
     color: #1a1a1a;
     margin-bottom: 24rpx;
   }
@@ -171,11 +171,11 @@
     font-size: 40rpx;
     font-weight: 600;
     color: #1a1a1a;
-    margin-bottom: 8rpx;
-  }
+          margin-bottom: 8rpx;
+        }
 
   &__stat-label {
-    font-size: 24rpx;
+          font-size: 24rpx;
     color: #666;
   }
 
@@ -260,33 +260,36 @@
     height: 80rpx;
     background: #f5f5f5;
     border-radius: 20rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     flex-shrink: 0;
-  }
+    }
 
   &__menu-content {
-    flex: 1;
+      flex: 1;
     min-width: 0;
-  }
+    }
 
   &__menu-title {
     font-size: 32rpx;
     font-weight: 500;
-    color: #1a1a1a;
+      color: #1a1a1a;
     margin-bottom: 8rpx;
-  }
+    }
 
   &__menu-desc {
-    font-size: 24rpx;
+      font-size: 24rpx;
     color: #999;
-  }
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.4;
+    }
 
   &__menu-arrow {
-    color: #ccc;
+    color: #999;
     flex-shrink: 0;
-  }
+    }
 
   &__menu-divider {
     height: 1rpx;
@@ -320,16 +323,16 @@
     &__user-card,
     &__section {
       margin-bottom: 24rpx;
-    }
+      }
 
     &__user-header {
       gap: 20rpx;
       margin-bottom: 20rpx;
-    }
+      }
 
     &__user-name {
       font-size: 32rpx;
-    }
+  }
 
     &__edit-btn,
     &__avatar-edit {
@@ -355,7 +358,7 @@
     &__stat-icon {
       width: 56rpx;
       height: 56rpx;
-    }
+        }
 
     &__stat-value {
       font-size: 36rpx;
@@ -382,11 +385,11 @@
 
     &__menu-divider {
       margin-left: 84rpx;
-    }
+      }
 
     &__logout-btn {
       min-height: 88rpx;
       font-size: 30rpx;
     }
   }
-} 
+}

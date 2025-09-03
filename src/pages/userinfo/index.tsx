@@ -50,7 +50,7 @@ const UserInfoPage: React.FC = () => {
   const handleSave = () => {
     setProfile(tempProfile)
     setIsEditing(false)
-    console.log('个人信息已更新')
+    // 个人信息已更新
   }
 
   const handleCancel = () => {
@@ -83,9 +83,9 @@ const UserInfoPage: React.FC = () => {
     { name: '取消', value: 'cancel' }
   ]
 
-  const handleAvatarSelect = (option: any) => {
+  const handleAvatarSelect = (option: { name: string; value: string }) => {
     if (option.value === 'camera' || option.value === 'album') {
-      console.log('头像上传功能开发中')
+      // 头像上传功能开发中
     }
     setShowAvatarSheet(false)
   }
@@ -107,23 +107,23 @@ const UserInfoPage: React.FC = () => {
   }
 
   return (
-    <MobileLayout className="userinfo-page">
+    <MobileLayout className='userinfo-page'>
       {/* 编辑按钮区域 */}
-      <View className="userinfo-page__header-actions">
+      <View className='userinfo-page__header-actions'>
         {isEditing ? (
-          <View className="userinfo-page__edit-actions">
+          <View className='userinfo-page__edit-actions'>
             <Button 
-              size="small" 
-              fill="none" 
-              className="userinfo-page__cancel-btn"
+              size='small' 
+              fill='none' 
+              className='userinfo-page__cancel-btn'
               onClick={handleCancel}
             >
               取消
             </Button>
             <Button 
-              size="small" 
-              type="primary"
-              className="userinfo-page__save-btn"
+              size='small' 
+              type='primary'
+              className='userinfo-page__save-btn'
               onClick={handleSave}
             >
               保存
@@ -131,10 +131,10 @@ const UserInfoPage: React.FC = () => {
           </View>
         ) : (
           <Button 
-            size="small" 
-            type="primary" 
-            fill="outline"
-            className="userinfo-page__edit-btn"
+            size='small' 
+            type='primary' 
+            fill='outline'
+            className='userinfo-page__edit-btn'
             onClick={() => setIsEditing(true)}
           >
             编辑
@@ -142,101 +142,101 @@ const UserInfoPage: React.FC = () => {
         )}
       </View>
 
-      <View className="userinfo-page__content">
+      <View className='userinfo-page__content'>
         {/* 头像和基本信息区域 */}
-        <View className="userinfo-page__avatar-section">
-          <View className="userinfo-page__avatar-container">
+        <View className='userinfo-page__avatar-section'>
+          <View className='userinfo-page__avatar-container'>
             <Avatar
-              size="160"
+              size='160'
               src={profile.avatar}
-              className="userinfo-page__avatar"
+              className='userinfo-page__avatar'
             />
             {isEditing && (
               <View 
-                className="userinfo-page__avatar-edit"
+                className='userinfo-page__avatar-edit'
                 onClick={handleAvatarChange}
               >
-                <MaterialIcons name="edit" size={32} color="#fff" />
+                <MaterialIcons name='edit' size={32} color='#fff' />
               </View>
             )}
           </View>
-          <View className="userinfo-page__user-info">
-            <View className="userinfo-page__user-name">{profile.name}</View>
-            <View className="userinfo-page__user-meta">
-              <View className="userinfo-page__user-id">员工编号: {profile.employeeId}</View>
-              <View className="userinfo-page__join-date">入职时间: {profile.joinDate}</View>
+          <View className='userinfo-page__user-info'>
+            <View className='userinfo-page__user-name'>{profile.name}</View>
+            <View className='userinfo-page__user-meta'>
+              <View className='userinfo-page__user-id'>员工编号: {profile.employeeId}</View>
+              <View className='userinfo-page__join-date'>入职时间: {profile.joinDate}</View>
             </View>
           </View>
         </View>
 
         {/* 基本信息 */}
-        <CellGroup title="基本信息" className="userinfo-page__group">
+        <CellGroup title='基本信息' className='userinfo-page__group'>
           <Cell
-            title="姓名"
+            title='姓名'
             description={profile.name}
             onClick={() => isEditing && handleEditField('name')}
             className={isEditing ? 'userinfo-page__editable-cell' : ''}
-            extra={isEditing ? <MaterialIcons name="keyboard_arrow_right" size={32} color="#ccc" /> : undefined}
+            extra={isEditing ? <MaterialIcons name='keyboard_arrow_right' size={32} color='#ccc' /> : undefined}
           />
           <Cell
-            title="员工编号"
+            title='员工编号'
             description={profile.employeeId}
-            className="userinfo-page__readonly-cell"
+            className='userinfo-page__readonly-cell'
           />
           <Cell
-            title="个人简介"
+            title='个人简介'
             description={profile.bio}
             onClick={() => isEditing && handleEditField('bio')}
             className={isEditing ? 'userinfo-page__editable-cell' : ''}
-            extra={isEditing ? <MaterialIcons name="keyboard_arrow_right" size={32} color="#ccc" /> : undefined}
+            extra={isEditing ? <MaterialIcons name='keyboard_arrow_right' size={32} color='#ccc' /> : undefined}
           />
         </CellGroup>
 
         {/* 联系信息 */}
-        <CellGroup title="联系信息" className="userinfo-page__group">
+        <CellGroup title='联系信息' className='userinfo-page__group'>
           <Cell
-            title="邮箱地址"
+            title='邮箱地址'
             description={profile.email}
             onClick={() => isEditing && handleEditField('email')}
             className={isEditing ? 'userinfo-page__editable-cell' : ''}
-            extra={isEditing ? <MaterialIcons name="keyboard_arrow_right" size={32} color="#ccc" /> : undefined}
+            extra={isEditing ? <MaterialIcons name='keyboard_arrow_right' size={32} color='#ccc' /> : undefined}
           />
           <Cell
-            title="手机号码"
+            title='手机号码'
             description={profile.phone}
             onClick={() => isEditing && handleEditField('phone')}
             className={isEditing ? 'userinfo-page__editable-cell' : ''}
-            extra={isEditing ? <MaterialIcons name="keyboard_arrow_right" size={32} color="#ccc" /> : undefined}
+            extra={isEditing ? <MaterialIcons name='keyboard_arrow_right' size={32} color='#ccc' /> : undefined}
           />
           <Cell
-            title="办公地点"
+            title='办公地点'
             description={profile.location}
             onClick={() => isEditing && handleEditField('location')}
             className={isEditing ? 'userinfo-page__editable-cell' : ''}
-            extra={isEditing ? <MaterialIcons name="keyboard_arrow_right" size={32} color="#ccc" /> : undefined}
+            extra={isEditing ? <MaterialIcons name='keyboard_arrow_right' size={32} color='#ccc' /> : undefined}
           />
         </CellGroup>
 
         {/* 工作信息 */}
-        <CellGroup title="工作信息" className="userinfo-page__group">
+        <CellGroup title='工作信息' className='userinfo-page__group'>
           <Cell
-            title="所属部门"
+            title='所属部门'
             description={profile.department}
             onClick={() => isEditing && handleEditField('department')}
             className={isEditing ? 'userinfo-page__editable-cell' : ''}
-            extra={isEditing ? <MaterialIcons name="keyboard_arrow_right" size={32} color="#ccc" /> : undefined}
+            extra={isEditing ? <MaterialIcons name='keyboard_arrow_right' size={32} color='#ccc' /> : undefined}
           />
           <Cell
-            title="职位"
+            title='职位'
             description={profile.position}
             onClick={() => isEditing && handleEditField('position')}
             className={isEditing ? 'userinfo-page__editable-cell' : ''}
-            extra={isEditing ? <MaterialIcons name="keyboard_arrow_right" size={32} color="#ccc" /> : undefined}
+            extra={isEditing ? <MaterialIcons name='keyboard_arrow_right' size={32} color='#ccc' /> : undefined}
           />
           <Cell
-            title="入职日期"
+            title='入职日期'
             description={profile.joinDate}
-            className="userinfo-page__readonly-cell"
+            className='userinfo-page__readonly-cell'
           />
         </CellGroup>
       </View>
@@ -255,13 +255,13 @@ const UserInfoPage: React.FC = () => {
         title={`编辑${getFieldTitle(editingField as keyof UserProfile)}`}
         onClose={() => setShowEditDialog(false)}
         footer={
-          <View className="userinfo-page__dialog-footer">
+          <View className='userinfo-page__dialog-footer'>
             <Button onClick={() => setShowEditDialog(false)}>取消</Button>
-            <Button type="primary" onClick={handleSaveField}>确定</Button>
+            <Button type='primary' onClick={handleSaveField}>确定</Button>
           </View>
         }
       >
-        <View className="userinfo-page__edit-form">
+        <View className='userinfo-page__edit-form'>
           <Input
             value={editValue}
             onChange={setEditValue}
@@ -273,4 +273,4 @@ const UserInfoPage: React.FC = () => {
   )
 }
 
-export default UserInfoPage 
+export default UserInfoPage

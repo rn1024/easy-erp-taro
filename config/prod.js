@@ -1,4 +1,7 @@
 module.exports = {
+  defineConstants: {
+    'process.env.API_BASE_URL': JSON.stringify('https://erp.samuelcn.com/api/v1')
+  },
   mini: {
     miniCssExtractPluginOption: {
       ignoreOrder: true

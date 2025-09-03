@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { View, Input } from '@tarojs/components'
+import type { BaseEventOrig } from '@tarojs/components'
 import { MaterialIcons } from 'taro-icons'
 import './index.scss'
 
@@ -23,7 +24,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const [inputValue, setInputValue] = useState(value)
   const [isFocused, setIsFocused] = useState(false)
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: BaseEventOrig<{ value: string }>) => {
     const val = e.detail.value
     setInputValue(val)
     onChange?.(val)
@@ -37,7 +38,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setIsFocused(false)
   }
 
-  const handleInputConfirm = (e: any) => {
+  const handleInputConfirm = (e: BaseEventOrig<{ value: string }>) => {
     const val = e.detail.value
     onSearch?.(val)
   }
@@ -50,14 +51,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <View className={`search-bar ${className}`}>
-      <View className="search-bar__wrapper">
+      <View className='search-bar__wrapper'>
         {/* 搜索输入框 */}
         <View className={`search-bar__input-wrapper ${isFocused ? 'focused' : ''}`}>
-          <View className="search-bar__search-icon">
-            <MaterialIcons name="search" size={16} color="#666" />
+          <View className='search-bar__search-icon'>
+            <MaterialIcons name='search' size={16} color='#666' />
           </View>
           <Input
-            className="search-bar__input"
+            className='search-bar__input'
             placeholder={placeholder}
             value={inputValue}
             onInput={handleInputChange}
@@ -65,12 +66,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
             onBlur={handleInputBlur}
             onConfirm={handleInputConfirm}
             disabled={disabled}
-            confirmType="search"
-            placeholderClass="search-bar__placeholder"
+            confirmType='search'
+            placeholderClass='search-bar__placeholder'
           />
           {inputValue && (
-            <View className="search-bar__clear-icon" onClick={handleClear}>
-              <MaterialIcons name="close" size={16} color="#666" />
+            <View className='search-bar__clear-icon' onClick={handleClear}>
+              <MaterialIcons name='close' size={16} color='#666' />
             </View>
           )}
         </View>
@@ -79,4 +80,4 @@ const SearchBar: React.FC<SearchBarProps> = ({
   )
 }
 
-export default SearchBar 
+export default SearchBar

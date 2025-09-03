@@ -4,7 +4,7 @@ import { View, Text } from '@tarojs/components'
 import { Button, Input, Loading } from '@nutui/nutui-react-taro'
 import { MaterialIcons } from 'taro-icons'
 import MobileLayout from '@/components/MobileLayout'
-import { ProductsAPI } from '@/services/products'
+// import { ProductsAPI } from '@/services/products'
 import { mockProducts } from '@/constants/mockData'
 import type { Product } from '@/types/admin'
 import './index.scss'
@@ -70,7 +70,7 @@ const SKUSearchPage: React.FC = () => {
       setState(prev => ({ ...prev, searchHistory: newHistory }))
       await Taro.setStorage({ key: 'sku_search_history', data: newHistory })
     } catch (error) {
-      console.error('保存搜索历史失败:', error)
+      // 保存搜索历史失败: error
     }
   }
 
@@ -144,7 +144,7 @@ const SKUSearchPage: React.FC = () => {
       }
 
     } catch (error) {
-      console.error('搜索失败:', error)
+      // 搜索失败: error
       Taro.showToast({ title: '搜索失败，请重试', icon: 'error' })
     } finally {
       setState(prev => ({ ...prev, isSearching: false }))
@@ -159,8 +159,9 @@ const SKUSearchPage: React.FC = () => {
       })
       setState(prev => ({ ...prev, keyword: result.result }))
       await performSearch(result.result)
-    } catch (error: any) {
-      if (error.errMsg && !error.errMsg.includes('cancel')) {
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'errMsg' in error && 
+          typeof error.errMsg === 'string' && !error.errMsg.includes('cancel')) {
         Taro.showToast({ title: '扫码失败', icon: 'error' })
       }
     }
@@ -217,35 +218,24 @@ const SKUSearchPage: React.FC = () => {
   }
 
   // 查看产品详情
-  const handleViewDetail = (product: Product) => {
+  const handleViewDetail = (_product: Product) => {
     Taro.showToast({ title: '查看产品详情功能待开发', icon: 'none' })
-  }
-
-  // 高亮显示关键词
-  const highlightKeyword = (text: string, keyword: string) => {
-    if (!keyword) return text
-    const regex = new RegExp(`(${keyword})`, 'gi')
-    return text.replace(regex, '<span class="highlight">$1</span>')
   }
 
   // 获取唯一的店铺和分类选项
   const shopOptions = useMemo(() => 
     Array.from(new Set(mockProducts.map(p => p.shop))), []
   )
-  
-  const categoryOptions = useMemo(() => 
-    Array.from(new Set(mockProducts.map(p => p.category))), []
-  )
 
   return (
-    <MobileLayout title="SKU搜索">
-      <View className="sku-search-page">
+    <MobileLayout title='SKU搜索'>
+      <View className='sku-search-page'>
         {/* 搜索栏 */}
-        <View className="sku-search-page__search-bar">
-          <View className="sku-search-page__search-bar-field">
+        <View className='sku-search-page__search-bar'>
+          <View className='sku-search-page__search-bar-field'>
             <Input
-              className="sku-search-page__search-bar-field-input"
-              placeholder="输入SKU、产品名称或条码"
+              className='sku-search-page__search-bar-field-input'
+              placeholder='输入SKU、产品名称或条码'
               value={state.keyword}
               onChange={(value) => setState(prev => ({ ...prev, keyword: value }))}
               onConfirm={() => performSearch()}
@@ -262,16 +252,16 @@ const SKUSearchPage: React.FC = () => {
               }}
             />
             <View 
-              className="sku-search-page__search-bar-field-scan"
+              className='sku-search-page__search-bar-field-scan'
               onClick={handleScanSearch}
             >
-              <MaterialIcons name="qr_code_scanner" size={16} />
+              <MaterialIcons name='qr_code_scanner' size={16} />
               <Text>扫码</Text>
             </View>
           </View>
 
           {/* 筛选条件 */}
-          <View className="sku-search-page__search-bar-filters">
+          <View className='sku-search-page__search-bar-filters'>
             {shopOptions.map(shop => (
               <View
                 key={shop}
@@ -288,21 +278,21 @@ const SKUSearchPage: React.FC = () => {
 
         {/* 搜索建议 */}
         {state.showSuggestions && state.suggestions.length > 0 && (
-          <View className="sku-search-page__suggestions">
-            <View className="sku-search-page__suggestions-header">
-              <Text className="sku-search-page__suggestions-header-title">搜索建议</Text>
+          <View className='sku-search-page__suggestions'>
+            <View className='sku-search-page__suggestions-header'>
+              <Text className='sku-search-page__suggestions-header-title'>搜索建议</Text>
             </View>
             {state.suggestions.map((suggestion, index) => (
               <View
                 key={index}
-                className="sku-search-page__suggestions-item"
+                className='sku-search-page__suggestions-item'
                 onClick={() => handleSelectSuggestion(suggestion)}
               >
-                <MaterialIcons name="search" size={20} className="sku-search-page__suggestions-item-icon" />
-                <Text className="sku-search-page__suggestions-item-text">
+                <MaterialIcons name='search' size={20} className='sku-search-page__suggestions-item-icon' />
+                <Text className='sku-search-page__suggestions-item-text'>
                   {suggestion}
                 </Text>
-                <Text className="sku-search-page__suggestions-item-type">
+                <Text className='sku-search-page__suggestions-item-type'>
                   {suggestion.startsWith('SKU') ? 'SKU' : '产品'}
                 </Text>
               </View>
@@ -312,77 +302,77 @@ const SKUSearchPage: React.FC = () => {
 
         {/* 搜索结果 */}
         {state.hasSearched && (
-          <View className="sku-search-page__results">
-            <View className="sku-search-page__results-header">
-              <Text className="sku-search-page__results-header-title">搜索结果</Text>
-              <Text className="sku-search-page__results-header-count">
+          <View className='sku-search-page__results'>
+            <View className='sku-search-page__results-header'>
+              <Text className='sku-search-page__results-header-title'>搜索结果</Text>
+              <Text className='sku-search-page__results-header-count'>
                 共{state.results.length}个结果
               </Text>
             </View>
             
-            <View className="sku-search-page__results-grid">
+            <View className='sku-search-page__results-grid'>
               {state.results.map(product => (
-                <View key={product.id} className="sku-search-page__result-card">
-                  <View className="sku-search-page__result-card-header">
-                    <View className="sku-search-page__result-card-header-info">
+                <View key={product.id} className='sku-search-page__result-card'>
+                  <View className='sku-search-page__result-card-header'>
+                    <View className='sku-search-page__result-card-header-info'>
                       <View 
                         className={`sku-search-page__result-card-header-sku ${
                           product.sku.toLowerCase().includes(state.keyword.toLowerCase()) ? 
-                          'sku-search-page__result-card-header-sku--highlight' : ''
+                            'sku-search-page__result-card-header-sku--highlight' : ''
                         }`}
                       >
                         {product.sku}
                       </View>
-                      <View className="sku-search-page__result-card-header-name">
+                      <View className='sku-search-page__result-card-header-name'>
                         {product.name}
                       </View>
                     </View>
-                    <View className="sku-search-page__result-card-header-actions">
+                    <View className='sku-search-page__result-card-header-actions'>
                       <MaterialIcons 
-                        name="content_copy" 
+                        name='content_copy' 
                         size={20} 
-                        color="#6b7280"
+                        color='#6b7280'
                         onClick={() => handleCopySku(product.sku)}
                       />
                     </View>
                   </View>
 
-                  <View className="sku-search-page__result-card-content">
-                    <View className="sku-search-page__result-card-content-row">
-                      <Text className="sku-search-page__result-card-content-label">店铺:</Text>
-                      <Text className="sku-search-page__result-card-content-value sku-search-page__result-card-content-value--shop">
+                  <View className='sku-search-page__result-card-content'>
+                    <View className='sku-search-page__result-card-content-row'>
+                      <Text className='sku-search-page__result-card-content-label'>店铺:</Text>
+                      <Text className='sku-search-page__result-card-content-value sku-search-page__result-card-content-value--shop'>
                         {product.shop}
                       </Text>
                     </View>
-                    <View className="sku-search-page__result-card-content-row">
-                      <Text className="sku-search-page__result-card-content-label">分类:</Text>
-                      <Text className="sku-search-page__result-card-content-value sku-search-page__result-card-content-value--category">
+                    <View className='sku-search-page__result-card-content-row'>
+                      <Text className='sku-search-page__result-card-content-label'>分类:</Text>
+                      <Text className='sku-search-page__result-card-content-value sku-search-page__result-card-content-value--category'>
                         {product.category}
                       </Text>
                     </View>
-                    <View className="sku-search-page__result-card-content-row">
-                      <Text className="sku-search-page__result-card-content-label">条码:</Text>
-                      <Text className="sku-search-page__result-card-content-value">
+                    <View className='sku-search-page__result-card-content-row'>
+                      <Text className='sku-search-page__result-card-content-label'>条码:</Text>
+                      <Text className='sku-search-page__result-card-content-value'>
                         {product.label}
                       </Text>
                     </View>
-                    <View className="sku-search-page__result-card-content-row">
-                      <Text className="sku-search-page__result-card-content-label">包装:</Text>
-                      <Text className="sku-search-page__result-card-content-value">
+                    <View className='sku-search-page__result-card-content-row'>
+                      <Text className='sku-search-page__result-card-content-label'>包装:</Text>
+                      <Text className='sku-search-page__result-card-content-value'>
                         {product.packageInfo}
                       </Text>
                     </View>
                   </View>
 
-                  <View className="sku-search-page__result-card-footer">
+                  <View className='sku-search-page__result-card-footer'>
                     <Button 
-                      className="sku-search-page__result-card-footer-button sku-search-page__result-card-footer-button--secondary"
+                      className='sku-search-page__result-card-footer-button sku-search-page__result-card-footer-button--secondary'
                       onClick={() => handleCopySku(product.sku)}
                     >
                       复制SKU
                     </Button>
                     <Button 
-                      className="sku-search-page__result-card-footer-button sku-search-page__result-card-footer-button--primary"
+                      className='sku-search-page__result-card-footer-button sku-search-page__result-card-footer-button--primary'
                       onClick={() => handleViewDetail(product)}
                     >
                       查看详情
@@ -394,12 +384,12 @@ const SKUSearchPage: React.FC = () => {
 
             {/* 空结果状态 */}
             {state.results.length === 0 && (
-              <View className="sku-search-page__empty">
-                <View className="sku-search-page__empty-icon">
-                  <MaterialIcons name="search_off" size={80} color="#d1d5db" />
+              <View className='sku-search-page__empty'>
+                <View className='sku-search-page__empty-icon'>
+                  <MaterialIcons name='search_off' size={80} color='#d1d5db' />
                 </View>
-                <View className="sku-search-page__empty-title">未找到相关产品</View>
-                <View className="sku-search-page__empty-desc">
+                <View className='sku-search-page__empty-title'>未找到相关产品</View>
+                <View className='sku-search-page__empty-desc'>
                   请尝试使用其他关键词<br />或调整筛选条件
                 </View>
               </View>
@@ -409,21 +399,21 @@ const SKUSearchPage: React.FC = () => {
 
         {/* 搜索历史 */}
         {!state.hasSearched && state.searchHistory.length > 0 && (
-          <View className="sku-search-page__history">
-            <View className="sku-search-page__history-header">
-              <Text className="sku-search-page__history-header-title">搜索历史</Text>
+          <View className='sku-search-page__history'>
+            <View className='sku-search-page__history-header'>
+              <Text className='sku-search-page__history-header-title'>搜索历史</Text>
               <Text 
-                className="sku-search-page__history-header-clear"
+                className='sku-search-page__history-header-clear'
                 onClick={handleClearHistory}
               >
                 清除
               </Text>
             </View>
-            <View className="sku-search-page__history-tags">
+            <View className='sku-search-page__history-tags'>
               {state.searchHistory.map((keyword, index) => (
                 <View
                   key={index}
-                  className="sku-search-page__history-tags-item"
+                  className='sku-search-page__history-tags-item'
                   onClick={() => handleSelectHistory(keyword)}
                 >
                   {keyword}
@@ -435,16 +425,16 @@ const SKUSearchPage: React.FC = () => {
 
         {/* 热门搜索 */}
         {!state.hasSearched && (
-          <View className="sku-search-page__hot-searches">
-            <View className="sku-search-page__hot-searches-header">
-              <MaterialIcons name="whatshot" size={24} className="sku-search-page__hot-searches-header-icon" />
+          <View className='sku-search-page__hot-searches'>
+            <View className='sku-search-page__hot-searches-header'>
+              <MaterialIcons name='whatshot' size={24} className='sku-search-page__hot-searches-header-icon' />
               <Text>热门搜索</Text>
             </View>
-            <View className="sku-search-page__hot-searches-grid">
+            <View className='sku-search-page__hot-searches-grid'>
               {state.hotSearches.map((keyword, index) => (
                 <View
                   key={index}
-                  className="sku-search-page__hot-searches-grid-item"
+                  className='sku-search-page__hot-searches-grid-item'
                   onClick={() => handleSelectHotSearch(keyword)}
                 >
                   {keyword}
@@ -456,9 +446,9 @@ const SKUSearchPage: React.FC = () => {
 
         {/* 加载状态 */}
         {state.isSearching && (
-          <View className="sku-search-page__loading">
+          <View className='sku-search-page__loading'>
             <Loading />
-            <Text className="sku-search-page__loading-text">搜索中...</Text>
+            <Text className='sku-search-page__loading-text'>搜索中...</Text>
           </View>
         )}
       </View>
@@ -466,4 +456,4 @@ const SKUSearchPage: React.FC = () => {
   )
 }
 
-export default SKUSearchPage 
+export default SKUSearchPage

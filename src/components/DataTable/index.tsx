@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState } from 'react'
 import { View, Text } from '@tarojs/components'
-import { Table, Pagination, Empty, Button, Input } from '@nutui/nutui-react-taro'
+import { Pagination, Empty, Input } from '@nutui/nutui-react-taro'
 import { MaterialIcons } from 'taro-icons'
 import './index.scss'
 
@@ -14,7 +14,7 @@ export interface DataTableColumn {
   fixed?: 'left' | 'right'
   sortable?: boolean
   filterable?: boolean
-  render?: (value: any, record: any, index: number) => React.ReactNode
+  render?: (value: unknown, record: Record<string, unknown>, index: number) => React.ReactNode
 }
 
 // 排序配置
@@ -25,7 +25,7 @@ export interface SortConfig {
 
 // 筛选配置
 export interface FilterConfig {
-  [key: string]: any
+  [key: string]: unknown
 }
 
 // 分页配置
@@ -40,7 +40,7 @@ export interface PaginationConfig {
 // DataTable属性
 interface DataTableProps {
   columns: DataTableColumn[]
-  dataSource: any[]
+  dataSource: Record<string, unknown>[]
   loading?: boolean
   pagination?: false | PaginationConfig
   showHeader?: boolean
@@ -52,9 +52,9 @@ interface DataTableProps {
   onFilter?: (filterConfig: FilterConfig) => void
   onSearch?: (keyword: string) => void
   onPageChange?: (page: number, pageSize: number) => void
-  onRow?: (record: any, index: number) => {
+  onRow?: (record: Record<string, unknown>, index: number) => {
     onClick?: () => void
-    [key: string]: any
+    [key: string]: unknown
   }
 }
 
@@ -69,17 +69,17 @@ const DataTable: React.FC<DataTableProps> = ({
   emptyText = '暂无数据',
   className = '',
   onSort,
-  onFilter,
+  onFilter: _onFilter,
   onSearch,
   onPageChange,
   onRow
 }) => {
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(null)
-  const [filterConfig, setFilterConfig] = useState<FilterConfig>({})
+  const [_filterConfig, _setFilterConfig] = useState<FilterConfig>({})
   const [searchKeyword, setSearchKeyword] = useState('')
 
   // 处理排序
-  const handleSort = (column: DataTableColumn) => {
+  const handleSort = (column: DataTableColumn): void => {
     if (!column.sortable) return
 
     let newSortConfig: SortConfig | null = null
@@ -100,27 +100,27 @@ const DataTable: React.FC<DataTableProps> = ({
   }
 
   // 处理搜索
-  const handleSearch = (value: string) => {
+  const handleSearch = (value: string): void => {
     setSearchKeyword(value)
     onSearch?.(value)
   }
 
   // 渲染排序图标
-  const renderSortIcon = (column: DataTableColumn) => {
+  const renderSortIcon = (column: DataTableColumn): React.ReactElement | null => {
     if (!column.sortable) return null
 
     const isActive = sortConfig?.field === column.dataIndex
     const order = isActive ? sortConfig.order : null
 
     return (
-      <View className="data-table__sort-icon">
+      <View className='data-table__sort-icon'>
         <MaterialIcons 
-          name="keyboard_arrow_up" 
+          name='keyboard_arrow_up' 
           size={16} 
           color={order === 'asc' ? '#3b82f6' : '#9ca3af'} 
         />
         <MaterialIcons 
-          name="keyboard_arrow_down" 
+          name='keyboard_arrow_down' 
           size={16} 
           color={order === 'desc' ? '#3b82f6' : '#9ca3af'} 
         />
@@ -129,11 +129,11 @@ const DataTable: React.FC<DataTableProps> = ({
   }
 
   // 渲染表头
-  const renderHeader = () => {
+  const renderHeader = (): React.ReactElement | null => {
     if (!showHeader) return null
 
     return (
-      <View className="data-table__header">
+      <View className='data-table__header'>
         {columns.map((column) => (
           <View
             key={column.key}
@@ -145,8 +145,8 @@ const DataTable: React.FC<DataTableProps> = ({
             }}
             onClick={() => handleSort(column)}
           >
-            <View className="data-table__header-content">
-              <Text className="data-table__header-title">{column.title}</Text>
+            <View className='data-table__header-content'>
+              <Text className='data-table__header-title'>{column.title}</Text>
               {renderSortIcon(column)}
             </View>
           </View>
@@ -156,13 +156,13 @@ const DataTable: React.FC<DataTableProps> = ({
   }
 
   // 渲染数据行
-  const renderRow = (record: any, index: number) => {
+  const renderRow = (record: Record<string, unknown>, index: number): React.ReactElement => {
     const rowProps = onRow?.(record, index) || {}
     
     return (
       <View
-        key={record.id || index}
-        className="data-table__row"
+        key={(record.id as string | number) || index}
+        className='data-table__row'
         {...rowProps}
       >
         {columns.map((column) => {
@@ -184,9 +184,9 @@ const DataTable: React.FC<DataTableProps> = ({
               }}
             >
               {typeof cellValue === 'string' || typeof cellValue === 'number' ? (
-                <Text className="data-table__cell-text">{cellValue}</Text>
+                <Text className='data-table__cell-text'>{cellValue}</Text>
               ) : (
-                cellValue
+                cellValue as React.ReactNode
               )}
             </View>
           )
@@ -195,17 +195,52 @@ const DataTable: React.FC<DataTableProps> = ({
     )
   }
 
+  // 渲染移动端卡片
+  const renderMobileCard = (record: Record<string, unknown>, index: number): React.ReactElement => {
+    const rowProps = onRow?.(record, index) || {}
+    
+    return (
+      <View
+        key={(record.id as string | number) || index}
+        className='data-table-card touch-target'
+        {...rowProps}
+      >
+        {columns.map((column) => {
+          let cellValue = record[column.dataIndex]
+          
+          // 自定义渲染
+          if (column.render) {
+            cellValue = column.render(cellValue, record, index)
+          }
+
+          return (
+            <View key={column.key} className='data-table-card__row'>
+              <Text className='data-table-card__label'>{column.title}</Text>
+              <View className='data-table-card__value'>
+                {typeof cellValue === 'string' || typeof cellValue === 'number' ? (
+                  <Text>{cellValue}</Text>
+                ) : (
+                  cellValue as React.ReactNode
+                )}
+              </View>
+            </View>
+          )
+        })}
+      </View>
+    )
+  }
+
   // 渲染分页
-  const renderPagination = () => {
+  const renderPagination = (): React.ReactElement | null => {
     if (!pagination) return null
 
     return (
-      <View className="data-table__pagination">
+      <View className='data-table__pagination'>
         <Pagination
           total={pagination.total}
           value={pagination.current}
           pageSize={pagination.pageSize}
-          onChange={(page: number) => {
+          onChange={(page: number): void => {
             onPageChange?.(page, pagination.pageSize)
           }}
         />
@@ -217,7 +252,7 @@ const DataTable: React.FC<DataTableProps> = ({
     <View className={`data-table ${className}`}>
       {/* 搜索框 */}
       {showSearch && (
-        <View className="data-table__search">
+        <View className='data-table__search'>
           <Input
             placeholder={searchPlaceholder}
             value={searchKeyword}
@@ -228,22 +263,37 @@ const DataTable: React.FC<DataTableProps> = ({
       )}
 
       {/* 表格容器 */}
-      <View className="data-table__container">
+      <View className='data-table__container'>
         {loading ? (
-          <View className="data-table__loading">
+          <View className='data-table__loading'>
             <Text>加载中...</Text>
           </View>
         ) : dataSource.length === 0 ? (
-          <View className="data-table__empty">
+          <View className='data-table__empty'>
             <Empty description={emptyText} />
           </View>
         ) : (
-          <View className="data-table__scroll">
+          <View className='data-table__scroll'>
             {renderHeader()}
-            <View className="data-table__body">
+            <View className='data-table__body'>
               {dataSource.map((record, index) => renderRow(record, index))}
             </View>
           </View>
+        )}
+      </View>
+
+      {/* 移动端卡片容器 */}
+      <View className='data-table__mobile-cards'>
+        {loading ? (
+          <View className='data-table__loading'>
+            <Text>加载中...</Text>
+          </View>
+        ) : dataSource.length === 0 ? (
+          <View className='data-table__empty'>
+            <Empty description={emptyText} />
+          </View>
+        ) : (
+          dataSource.map((record, index) => renderMobileCard(record, index))
         )}
       </View>
 
@@ -253,4 +303,4 @@ const DataTable: React.FC<DataTableProps> = ({
   )
 }
 
-export default DataTable 
+export default DataTable

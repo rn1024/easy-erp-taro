@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 import Taro from '@tarojs/taro'
 import type { AuthUser, LoginForm, UserRole } from '@/types/admin'
 import { Permission } from '@/types/admin'
+import { AuthAPI } from '@/services/auth'
 
 interface UserState {
   // 状态
@@ -34,64 +35,42 @@ export const useUserStore = create<UserState>()(
       loading: false,
       error: null,
 
-      // 登录
-      login: async (credentials: LoginForm) => {
+      // 登录 - 对接真实API
+      login: async (credentials: LoginForm): Promise<void> => {
         set({ loading: true, error: null })
         
         try {
-          // TODO: 替换为实际的登录API调用
-          // 模拟登录请求
-          const response = await new Promise<{ user: AuthUser }>((resolve, reject) => {
-            setTimeout(() => {
-              if (credentials.username === 'admin' && credentials.password === '123456') {
-                resolve({
-                  user: {
-                    id: '1',
-                    username: 'admin',
-                    name: '管理员',
-                    role: 'admin',
-                    permissions: ['*'],
-                    token: 'mock-token-' + Date.now()
-                  }
-                })
-              } else if (credentials.username === 'operator' && credentials.password === '123456') {
-                resolve({
-                  user: {
-                    id: '2',
-                    username: 'operator',
-                    name: '操作员',
-                    role: 'operator',
-                    permissions: [
-                      'query:read',
-                      'inventory:read',
-                      'inventory:create',
-                      'inventory:update',
-                      'inventory:delete',
-                      'task:read',
-                      'task:update'
-                    ],
-                    token: 'mock-token-' + Date.now()
-                  }
-                })
-              } else {
-                reject(new Error('用户名或密码错误'))
-              }
-            }, 1000)
-          })
+          // 调用真实的登录API
+          const response = await AuthAPI.login(credentials.username, credentials.password)
+          
+          if (response.code !== 0) {
+            throw new Error(response.msg || '登录失败')
+          }
 
-          const { user } = response
+          const { token, refreshToken, user, roles, permissions } = response.data
+          
+          // 适配用户数据格式
+          const authUser: AuthUser = {
+            id: user.id,
+            username: user.name,  // easy-erp-web返回的是name字段
+            name: user.name,
+            role: roles.length > 0 ? (roles[0].name === '管理员' ? 'admin' : 'operator') as UserRole : 'operator',
+            permissions,
+            token
+          }
           
           set({
-            userInfo: user,
-            token: user.token,
+            userInfo: authUser,
+            token,
             isLoggedIn: true,
-            permissions: user.permissions as Permission[],
+            permissions: permissions as Permission[],
             loading: false,
             error: null
           })
 
           // 存储token到Taro storage
-          Taro.setStorageSync('token', user.token)
+          Taro.setStorageSync('token', token)
+          Taro.setStorageSync('refreshToken', refreshToken)
           
           // 跳转到首页
           Taro.switchTab({
@@ -108,7 +87,7 @@ export const useUserStore = create<UserState>()(
       },
 
       // 登出
-      logout: () => {
+      logout: (): void => {
         set({
           userInfo: null,
           token: null,
@@ -127,7 +106,7 @@ export const useUserStore = create<UserState>()(
       },
 
       // 更新用户信息
-      updateUserInfo: (info: Partial<AuthUser>) => {
+      updateUserInfo: (info: Partial<AuthUser>): void => {
         const { userInfo } = get()
         if (userInfo) {
           set({
@@ -137,12 +116,12 @@ export const useUserStore = create<UserState>()(
       },
 
       // 设置加载状态
-      setLoading: (loading: boolean) => {
+      setLoading: (loading: boolean): void => {
         set({ loading })
       },
 
       // 设置错误信息
-      setError: (error: string | null) => {
+      setError: (error: string | null): void => {
         set({ error })
       },
 
@@ -167,18 +146,18 @@ export const useUserStore = create<UserState>()(
     {
       name: 'user-storage',
       storage: createJSONStorage(() => ({
-        getItem: (name: string) => {
+        getItem: (name: string): string | null => {
           return Taro.getStorageSync(name)
         },
-        setItem: (name: string, value: string) => {
+        setItem: (name: string, value: string): void => {
           Taro.setStorageSync(name, value)
         },
-        removeItem: (name: string) => {
+        removeItem: (name: string): void => {
           Taro.removeStorageSync(name)
         }
       })),
       // 只持久化关键信息
-      partialize: (state) => ({
+      partialize: (state): Partial<UserState> => ({
         userInfo: state.userInfo,
         token: state.token,
         isLoggedIn: state.isLoggedIn,
@@ -186,4 +165,4 @@ export const useUserStore = create<UserState>()(
       })
     }
   )
-) 
+)

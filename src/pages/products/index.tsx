@@ -4,7 +4,7 @@ import { View, Text } from '@tarojs/components'
 import { PullToRefresh } from '@nutui/nutui-react-taro'
 import { MaterialIcons } from 'taro-icons'
 import MobileLayout from '@/components/MobileLayout'
-import DataTable from '@/components/DataTable'
+import DataTable, { DataTableColumn } from '@/components/DataTable'
 import SearchBar from '@/components/SearchBar'
 import { useUserStore } from '@/stores/userStore'
 import { getProducts } from '@/services/products'
@@ -39,7 +39,7 @@ const ProductsPage: React.FC = () => {
     searchQuery: '',
     filters: {
       shop: '',
-      category: '',
+      category: ''
     },
     pagination: {
       page: 1,
@@ -72,10 +72,10 @@ const ProductsPage: React.FC = () => {
         filters: state.filters
       })
 
-      if (response.success) {
-        const newProducts = reset 
-          ? response.data.items 
-          : [...state.products, ...response.data.items]
+      if (response.code === 0) {
+        const newProducts: Product[] = reset 
+          ? response.data.list 
+          : [...state.products, ...response.data.list]
 
         setState(prev => ({
           ...prev,
@@ -86,15 +86,15 @@ const ProductsPage: React.FC = () => {
             ...prev.pagination,
             page: page,
             total: response.data.total,
-            hasMore: response.data.hasMore
+            hasMore: response.data.page < response.data.totalPages
           },
           stats: response.data.stats || prev.stats
         }))
       } else {
-        throw new Error(response.message)
+        throw new Error(response.msg)
       }
     } catch (error) {
-      console.error('加载产品数据失败:', error)
+      // 加载产品数据失败: error
       setState(prev => ({ 
         ...prev, 
         loading: false, 
@@ -149,15 +149,7 @@ const ProductsPage: React.FC = () => {
     await loadProducts(true)
   }, [loadProducts])
 
-  // 加载更多
-  const handleLoadMore = useCallback(() => {
-    if (!state.loading && state.pagination.hasMore) {
-      setState(prev => ({
-        ...prev,
-        pagination: { ...prev.pagination, page: prev.pagination.page + 1 }
-      }))
-    }
-  }, [state.loading, state.pagination.hasMore])
+
 
   // 加载更多执行
   useEffect(() => {
@@ -196,7 +188,7 @@ const ProductsPage: React.FC = () => {
       fixed: 'left' as const,
       render: (value: string, record: Product) => (
         <View 
-          className="data-table__body-cell--highlight"
+          className='data-table__body-cell--highlight'
           onClick={() => handleViewProduct(record)}
         >
           {value}
@@ -226,7 +218,8 @@ const ProductsPage: React.FC = () => {
           overflow: 'hidden', 
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap'
-        }}>
+        }}
+        >
           {value || '-'}
         </View>
       )
@@ -256,7 +249,8 @@ const ProductsPage: React.FC = () => {
           overflow: 'hidden', 
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap'
-        }}>
+        }}
+        >
           {value || '-'}
         </View>
       )
@@ -272,7 +266,8 @@ const ProductsPage: React.FC = () => {
           overflow: 'hidden', 
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap'
-        }}>
+        }}
+        >
           {value || '-'}
         </View>
       )
@@ -286,9 +281,9 @@ const ProductsPage: React.FC = () => {
   if (!userInfo) {
     return (
       <MobileLayout>
-        <View className="products-page">
-          <View className="products-page__loading">
-            <Text className="products-page__loading-text">加载中...</Text>
+        <View className='products-page'>
+          <View className='products-page__loading'>
+            <Text className='products-page__loading-text'>加载中...</Text>
           </View>
         </View>
       </MobileLayout>
@@ -298,40 +293,40 @@ const ProductsPage: React.FC = () => {
   return (
     <MobileLayout>
       <PullToRefresh onRefresh={handleRefresh}>
-        <View className="products-page">
+        <View className='products-page'>
           {/* 头部统计 */}
-          <View className="products-page__header">
-            <View className="products-page__header-title">产品管理</View>
-            <View className="products-page__header-desc">查看和管理所有产品信息</View>
-            <View className="products-page__header-stats">
-              <View className="products-page__header-stats-item">
-                <View className="products-page__header-stats-item-value">{state.stats.total}</View>
-                <View className="products-page__header-stats-item-label">总产品</View>
+          <View className='products-page__header'>
+            <View className='products-page__header-title'>产品管理</View>
+            <View className='products-page__header-desc'>查看和管理所有产品信息</View>
+            <View className='products-page__header-stats'>
+              <View className='products-page__header-stats-item'>
+                <View className='products-page__header-stats-item-value'>{state.stats.total}</View>
+                <View className='products-page__header-stats-item-label'>总产品</View>
               </View>
-              <View className="products-page__header-stats-item">
-                <View className="products-page__header-stats-item-value">{state.stats.shops}</View>
-                <View className="products-page__header-stats-item-label">店铺数</View>
+              <View className='products-page__header-stats-item'>
+                <View className='products-page__header-stats-item-value'>{state.stats.shops}</View>
+                <View className='products-page__header-stats-item-label'>店铺数</View>
               </View>
-              <View className="products-page__header-stats-item">
-                <View className="products-page__header-stats-item-value">{state.stats.categories}</View>
-                <View className="products-page__header-stats-item-label">分类数</View>
+              <View className='products-page__header-stats-item'>
+                <View className='products-page__header-stats-item-value'>{state.stats.categories}</View>
+                <View className='products-page__header-stats-item-label'>分类数</View>
               </View>
             </View>
           </View>
 
           {/* 搜索栏 */}
-          <View className="products-page__search">
+          <View className='products-page__search'>
             <SearchBar
               value={state.searchQuery}
-              placeholder="搜索产品昵称或SKU"
+              placeholder='搜索产品昵称或SKU'
               onSearch={handleSearch}
               onChange={handleSearch}
             />
           </View>
 
           {/* 筛选器 */}
-          <View className="products-page__filters">
-            <View className="products-page__filters-row">
+          <View className='products-page__filters'>
+            <View className='products-page__filters-row'>
               {shopOptions.map(shop => (
                 <View
                   key={shop}
@@ -346,7 +341,7 @@ const ProductsPage: React.FC = () => {
                 </View>
               ))}
             </View>
-            <View className="products-page__filters-row products-page__filters-row--second">
+            <View className='products-page__filters-row products-page__filters-row--second'>
               {categoryOptions.map(category => (
                 <View
                   key={category}
@@ -362,11 +357,11 @@ const ProductsPage: React.FC = () => {
               ))}
               {(state.filters.shop || state.filters.category || state.searchQuery) && (
                 <View
-                  className="products-page__filters-chip"
+                  className='products-page__filters-chip'
                   onClick={handleClearFilters}
                   style={{ background: '#ef4444', color: '#ffffff', border: 'none' }}
                 >
-                  <MaterialIcons name="clear" size={16} style={{ marginRight: '4rpx' }} />
+                  <MaterialIcons name='clear' size={16} style={{ marginRight: '4rpx' }} />
                   清除
                 </View>
               )}
@@ -374,24 +369,24 @@ const ProductsPage: React.FC = () => {
           </View>
 
           {/* 内容区域 */}
-          <View className="products-page__content">
+          <View className='products-page__content'>
             {state.loading && state.products.length === 0 ? (
-              <View className="products-page__loading">
-                <MaterialIcons name="hourglass_empty" size={40} className="products-page__loading-icon" />
-                <Text className="products-page__loading-text">加载中...</Text>
+              <View className='products-page__loading'>
+                <MaterialIcons name='hourglass_empty' size={40} className='products-page__loading-icon' />
+                <Text className='products-page__loading-text'>加载中...</Text>
               </View>
             ) : state.products.length === 0 ? (
-              <View className="products-page__empty">
-                <MaterialIcons name="inventory_2" size={80} className="products-page__empty-icon" />
-                <Text className="products-page__empty-text">暂无产品数据</Text>
-                <Text className="products-page__empty-desc">请检查筛选条件或稍后重试</Text>
+              <View className='products-page__empty'>
+                <MaterialIcons name='inventory_2' size={80} className='products-page__empty-icon' />
+                <Text className='products-page__empty-text'>暂无产品数据</Text>
+                <Text className='products-page__empty-desc'>请检查筛选条件或稍后重试</Text>
               </View>
             ) : (
               <DataTable
-                columns={columns}
-                dataSource={state.products}
+                columns={columns as DataTableColumn[]}
+                dataSource={state.products as unknown as Record<string, unknown>[]}
                 loading={state.loading}
-                emptyText="暂无产品数据"
+                emptyText='暂无产品数据'
                 pagination={{
                   current: state.pagination.page,
                   pageSize: state.pagination.pageSize,
@@ -412,4 +407,4 @@ const ProductsPage: React.FC = () => {
   )
 }
 
-export default ProductsPage 
+export default ProductsPage

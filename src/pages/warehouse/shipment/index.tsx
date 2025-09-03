@@ -1,519 +1,576 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, ScrollView } from '@tarojs/components'
-import { Button, Input, Tag } from '@nutui/nutui-react-taro'
+import React, { useState, useEffect } from 'react'
+import { View, Text } from '@tarojs/components'
+import type { ITouchEvent } from '@tarojs/components'
+import { 
+  Button, 
+  Tag, 
+  Popup
+} from '@nutui/nutui-react-taro'
 import { MaterialIcons } from 'taro-icons'
 import Taro from '@tarojs/taro'
 import MobileLayout from '@/components/MobileLayout'
-import TaskCard from '@/components/TaskCard'
-import withAuth from '@/components/AuthGuard'
-import { Permission, ShipmentStatus, ShipmentStatusLabels } from '@/types/admin'
-import type { ShipmentTask } from '@/types/admin'
-import type { Task } from '@/types'
+import SearchBar from '@/components/SearchBar'
 import './index.scss'
 
+// 发货任务状态枚举
+enum ShipmentStatus {
+  WAREHOUSE_PENDING = 'warehouse_pending',      // 仓库待发货
+  WAREHOUSE_SHIPPED = 'warehouse_shipped',      // 仓库已发货
+  IN_TRANSIT = 'in_transit',                    // 在途
+  ARRIVED_PORT = 'arrived_port',                // 到港
+  DELIVERED = 'delivered',                      // 交付
+  WAITING_RECEIVE = 'waiting_receive',          // 等待接收
+  IN_RECEIVING = 'in_receiving',                // 正在接收
+  COMPLETED = 'completed'                       // 已完成
+}
+
+// 状态标签映射
+const StatusLabels = {
+  [ShipmentStatus.WAREHOUSE_PENDING]: '仓库待发货',
+  [ShipmentStatus.WAREHOUSE_SHIPPED]: '仓库已发货',
+  [ShipmentStatus.IN_TRANSIT]: '在途',
+  [ShipmentStatus.ARRIVED_PORT]: '到港',
+  [ShipmentStatus.DELIVERED]: '交付',
+  [ShipmentStatus.WAITING_RECEIVE]: '等待接收',
+  [ShipmentStatus.IN_RECEIVING]: '正在接收',
+  [ShipmentStatus.COMPLETED]: '已完成'
+}
+
+// 状态颜色映射
+const StatusColors = {
+  [ShipmentStatus.WAREHOUSE_PENDING]: '#f59e0b',
+  [ShipmentStatus.WAREHOUSE_SHIPPED]: '#3b82f6',
+  [ShipmentStatus.IN_TRANSIT]: '#6366f1',
+  [ShipmentStatus.ARRIVED_PORT]: '#8b5cf6',
+  [ShipmentStatus.DELIVERED]: '#06b6d4',
+  [ShipmentStatus.WAITING_RECEIVE]: '#f59e0b',
+  [ShipmentStatus.IN_RECEIVING]: '#3b82f6',
+  [ShipmentStatus.COMPLETED]: '#10b981'
+}
+
+// 发货任务接口 - 根据PRD定义
+interface ShipmentTask {
+  id: string
+  shop: string                    // 店铺
+  category: string                // 产品分类
+  productName: string             // 产品昵称
+  totalBoxes: number              // 总箱数
+  fbaCode: string                 // FBA件码
+  fbaWarehouse: string            // FBA仓编号
+  country: string                 // 国家
+  channel: string                 // 渠道
+  logistics: string               // 货代公司
+  trackingCode: string            // 运单编码
+  warehouseType: string           // 仓库发货类型
+  invoiceDeadline: string         // 截止发票
+  receiveDeadline: string         // 进仓收货期限
+  clearance: string               // 头程物流清关
+  date: string                    // 日期
+  status: ShipmentStatus          // 状态
+  createdAt: string
+  updatedAt: string
+}
+
+// 统计数据接口
+interface ShipmentStats {
+  total: number
+  totalBoxes: number
+  warehousePending: number
+  warehouseShipped: number
+  inTransit: number
+  arrivedPort: number
+  delivered: number
+  waitingReceive: number
+  inReceiving: number
+  completed: number
+}
+
 const ShipmentTaskPage: React.FC = () => {
-  // 状态管理
   const [data, setData] = useState<ShipmentTask[]>([])
-  const [loading, setLoading] = useState(false)
-  const [refreshing, setRefreshing] = useState(false)
-  const [hasMore, setHasMore] = useState(true)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize] = useState(20)
-  
-  // 搜索和筛选状态
-  const [searchText, setSearchText] = useState('')
-  const [showFilters, setShowFilters] = useState(false)
-  const [selectedShop, setSelectedShop] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('')
-  const [selectedStatus, setSelectedStatus] = useState<ShipmentStatus | ''>('')
-  
-  // 页面引用
-  const scrollViewRef = useRef<any>(null)
+  const [_loading, setLoading] = useState(false)
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const [showStatusDialog, setShowStatusDialog] = useState(false)
+  const [currentTask, setCurrentTask] = useState<ShipmentTask | null>(null)
+  const [expandedTasks, setExpandedTasks] = useState<Set<string>>(new Set())
+  const [stats, setStats] = useState<ShipmentStats>({
+    total: 0,
+    totalBoxes: 0,
+    warehousePending: 0,
+    warehouseShipped: 0,
+    inTransit: 0,
+    arrivedPort: 0,
+    delivered: 0,
+    waitingReceive: 0,
+    inReceiving: 0,
+    completed: 0
+  })
 
-  // 状态选项配置
-  const statusOptions: { label: string; value: ShipmentStatus; color: string }[] = [
-    { label: ShipmentStatusLabels[ShipmentStatus.WAREHOUSE_PENDING], value: ShipmentStatus.WAREHOUSE_PENDING, color: '#f59e0b' },
-    { label: ShipmentStatusLabels[ShipmentStatus.WAREHOUSE_SHIPPED], value: ShipmentStatus.WAREHOUSE_SHIPPED, color: '#3b82f6' },
-    { label: ShipmentStatusLabels[ShipmentStatus.IN_TRANSIT], value: ShipmentStatus.IN_TRANSIT, color: '#6366f1' },
-    { label: ShipmentStatusLabels[ShipmentStatus.ARRIVED_PORT], value: ShipmentStatus.ARRIVED_PORT, color: '#8b5cf6' },
-    { label: ShipmentStatusLabels[ShipmentStatus.DELIVERED], value: ShipmentStatus.DELIVERED, color: '#06b6d4' },
-    { label: ShipmentStatusLabels[ShipmentStatus.WAITING_RECEIVE], value: ShipmentStatus.WAITING_RECEIVE, color: '#f59e0b' },
-    { label: ShipmentStatusLabels[ShipmentStatus.IN_RECEIVING], value: ShipmentStatus.IN_RECEIVING, color: '#3b82f6' },
-    { label: ShipmentStatusLabels[ShipmentStatus.COMPLETED], value: ShipmentStatus.COMPLETED, color: '#10b981' }
-  ]
-
-  // 模拟数据 - 基于PRD中的ShipmentTask字段
-  const mockData: ShipmentTask[] = [
+  // 模拟数据
+  const mockTasks: ShipmentTask[] = [
     {
       id: '1',
       shop: '天猫旗舰店',
       category: '电子产品',
-      productName: 'iPhone 15 Pro 保护壳套装',
-      totalBoxes: 15,
-      fbaCode: 'FBA15PRO2025',
-      fbaWarehouse: 'LAX8',
+      productName: 'iPhone 15 Pro 手机壳',
+      totalBoxes: 25,
+      fbaCode: 'FBA15X7YN000001',
+      fbaWarehouse: 'LAX9',
       country: '美国',
       channel: 'Amazon',
       logistics: '顺丰国际',
       trackingCode: 'SF1234567890',
-      warehouseType: '海外仓',
-      invoiceDeadline: '2025-01-05',
-      receiveDeadline: '2025-01-15',
-      clearance: '双清包税',
-      date: '2025-01-01',
+      warehouseType: '海运',
+      invoiceDeadline: '2025-01-15',
+      receiveDeadline: '2025-01-20',
+      clearance: '自主清关',
+      date: '2025-01-10',
       status: ShipmentStatus.IN_TRANSIT,
       createdAt: '2025-01-01T09:00:00Z',
-      updatedAt: '2025-01-01T14:30:00Z'
+      updatedAt: '2025-01-10T14:30:00Z'
     },
     {
       id: '2',
-      shop: '京东专卖店',
-      category: '服装配饰',
-      productName: '冬季羽绒服男款',
-      totalBoxes: 8,
-      fbaCode: 'FBA-JD-COAT',
-      fbaWarehouse: 'LHR2',
-      country: '英国',
-      channel: 'eBay',
-      logistics: '中通国际',
-      trackingCode: 'YTO9876543210',
-      warehouseType: '直发',
-      invoiceDeadline: '2025-01-03',
-      receiveDeadline: '2025-01-10',
-      clearance: '自助清关',
-      date: '2025-01-01',
-      status: ShipmentStatus.COMPLETED,
+      shop: '京东专营店',
+      category: '家居用品',
+      productName: '智能扫地机器人',
+      totalBoxes: 15,
+      fbaCode: 'FBA15X7YN000002',
+      fbaWarehouse: 'PHX7',
+      country: '美国',
+      channel: 'Amazon',
+      logistics: '中外运',
+      trackingCode: 'ZWY9876543210',
+      warehouseType: '空运',
+      invoiceDeadline: '2025-01-12',
+      receiveDeadline: '2025-01-18',
+      clearance: '代理清关',
+      date: '2025-01-08',
+      status: ShipmentStatus.DELIVERED,
       createdAt: '2025-01-01T08:00:00Z',
-      updatedAt: '2025-01-01T15:00:00Z'
+      updatedAt: '2025-01-12T16:00:00Z'
     },
     {
       id: '3',
-      shop: '拼多多官店',
-      category: '家居用品',
-      productName: '智能扫地机器人',
-      totalBoxes: 5,
-      fbaCode: 'FBA-PDD-ROBOT',
-      fbaWarehouse: 'FRA1',
-      country: '德国',
-      channel: 'Shopify',
-      logistics: '递四方',
-      trackingCode: '',
-      warehouseType: '海外仓',
-      invoiceDeadline: '2025-01-08',
-      receiveDeadline: '2025-01-20',
-      clearance: '双清包税',
-      date: '2025-01-01',
+      shop: '淘宝店铺',
+      category: '服装配件',
+      productName: '冬季保暖手套',
+      totalBoxes: 40,
+      fbaCode: 'FBA15X7YN000003',
+      fbaWarehouse: 'DFW8',
+      country: '美国',
+      channel: 'Amazon',
+      logistics: '邮政速递',
+      trackingCode: 'EMS1122334455',
+      warehouseType: '快递',
+      invoiceDeadline: '2025-01-18',
+      receiveDeadline: '2025-01-25',
+      clearance: '自主清关',
+      date: '2025-01-05',
       status: ShipmentStatus.WAREHOUSE_PENDING,
       createdAt: '2025-01-01T10:00:00Z',
-      updatedAt: '2025-01-01T10:00:00Z'
+      updatedAt: '2025-01-05T10:00:00Z'
     },
     {
       id: '4',
-      shop: '独立官网',
-      category: '运动户外',
-      productName: '专业跑步鞋系列',
-      totalBoxes: 20,
-      fbaCode: 'FBA-SHOE-RUN',
-      fbaWarehouse: 'CDG1',
-      country: '法国',
-      channel: '独立站',
-      logistics: 'DHL',
-      trackingCode: 'DHL5555666677',
-      warehouseType: '海外仓',
-      invoiceDeadline: '2025-01-04',
-      receiveDeadline: '2025-01-12',
-      clearance: '税务代理',
-      date: '2025-01-01',
-      status: ShipmentStatus.ARRIVED_PORT,
-      createdAt: '2025-01-01T07:30:00Z',
-      updatedAt: '2025-01-01T13:20:00Z'
-    },
-    {
-      id: '5',
-      shop: '天猫旗舰店',
+      shop: '拼多多店铺',
       category: '美妆护肤',
-      productName: '精华液礼盒装',
-      totalBoxes: 12,
-      fbaCode: 'FBA-BEAUTY-SET',
-      fbaWarehouse: 'NRT1',
-      country: '日本',
-      channel: 'Rakuten',
-      logistics: 'EMS',
-      trackingCode: 'EMS8888999900',
-      warehouseType: '直发',
-      invoiceDeadline: '2025-01-06',
-      receiveDeadline: '2025-01-18',
-      clearance: '双清包税',
-      date: '2025-01-01',
-      status: ShipmentStatus.DELIVERED,
-      createdAt: '2025-01-01T11:00:00Z',
-      updatedAt: '2025-01-01T16:00:00Z'
+      productName: '护肤品套装',
+      totalBoxes: 30,
+      fbaCode: 'FBA15X7YN000004',
+      fbaWarehouse: 'ATL2',
+      country: '美国',
+      channel: 'Amazon',
+      logistics: '华南物流',
+      trackingCode: 'HN5566778899',
+      warehouseType: '海运',
+      invoiceDeadline: '2025-01-20',
+      receiveDeadline: '2025-01-28',
+      clearance: '代理清关',
+      date: '2025-01-12',
+      status: ShipmentStatus.COMPLETED,
+      createdAt: '2025-01-02T09:00:00Z',
+      updatedAt: '2025-01-20T17:30:00Z'
     }
   ]
 
-  // 获取唯一的店铺和分类列表
-  const shops = Array.from(new Set(mockData.map(item => item.shop)))
-  const categories = Array.from(new Set(mockData.map(item => item.category)))
-
-  // 转换为TaskCard需要的格式
-  const convertToTaskFormat = (shipmentTask: ShipmentTask): Task => {
-    const statusMap: Record<ShipmentStatus, 'pending' | 'in_progress' | 'completed'> = {
-      [ShipmentStatus.WAREHOUSE_PENDING]: 'pending',
-      [ShipmentStatus.WAREHOUSE_SHIPPED]: 'in_progress',
-      [ShipmentStatus.IN_TRANSIT]: 'in_progress',
-      [ShipmentStatus.ARRIVED_PORT]: 'in_progress',
-      [ShipmentStatus.DELIVERED]: 'in_progress',
-      [ShipmentStatus.WAITING_RECEIVE]: 'pending',
-      [ShipmentStatus.IN_RECEIVING]: 'in_progress',
-      [ShipmentStatus.COMPLETED]: 'completed'
-    }
-    
-    // 根据状态计算进度
-    const getProgressByStatus = (status: ShipmentStatus): number => {
-      switch (status) {
-        case ShipmentStatus.WAREHOUSE_PENDING: return 0
-        case ShipmentStatus.WAREHOUSE_SHIPPED: return 15
-        case ShipmentStatus.IN_TRANSIT: return 40
-        case ShipmentStatus.ARRIVED_PORT: return 60
-        case ShipmentStatus.DELIVERED: return 80
-        case ShipmentStatus.WAITING_RECEIVE: return 85
-        case ShipmentStatus.IN_RECEIVING: return 95
-        case ShipmentStatus.COMPLETED: return 100
-        default: return 0
-      }
-    }
-    
-    const progress = getProgressByStatus(shipmentTask.status)
-    
-    return {
-      id: shipmentTask.id,
-      title: shipmentTask.productName,
-      description: `${shipmentTask.shop} · ${shipmentTask.category} · 箱数: ${shipmentTask.totalBoxes} · 目的地: ${shipmentTask.country} · FBA: ${shipmentTask.fbaWarehouse}`,
-      status: statusMap[shipmentTask.status] || 'pending',
-      priority: (shipmentTask.totalBoxes > 15 ? 'high' : shipmentTask.totalBoxes > 8 ? 'medium' : 'low') as 'high' | 'medium' | 'low',
-      assignee: {
-        id: '1',
-        name: '发货员',
-        email: 'shipper@company.com',
-        avatar: '',
-        role: 'shipper',
-        department: '仓储部'
-      },
-      creator: {
-        id: '1',
-        name: '系统',
-        email: 'system@company.com',
-        avatar: '',
-        role: 'system',
-        department: '系统'
-      },
-      dueDate: shipmentTask.receiveDeadline,
-      createdAt: shipmentTask.createdAt,
-      updatedAt: shipmentTask.updatedAt,
-      progress: progress,
-      tags: [shipmentTask.category, shipmentTask.country, shipmentTask.channel],
-      workflow: {
-        currentStep: Math.floor(progress / 12.5), // 8个步骤
-        totalSteps: 8,
-        stepName: getStepName(progress)
-      }
-    }
-  }
-
-  // 根据进度获取步骤名称
-  const getStepName = (progress: number): string => {
-    if (progress === 0) return '待发货'
-    if (progress <= 12.5) return '已发货'
-    if (progress <= 25) return '运输中'
-    if (progress <= 37.5) return '到达港口'
-    if (progress <= 50) return '清关中'
-    if (progress <= 62.5) return '配送中'
-    if (progress <= 87.5) return '待收货'
-    return '已完成'
-  }
-
-  // 统计信息
-  const getStatistics = () => {
-    const total = data.length
-    const pending = data.filter(t => 
-      t.status === ShipmentStatus.WAREHOUSE_PENDING || 
-      t.status === ShipmentStatus.WAITING_RECEIVE
-    ).length
-    const inProgress = data.filter(t => 
-      t.status === ShipmentStatus.WAREHOUSE_SHIPPED || 
-      t.status === ShipmentStatus.IN_TRANSIT ||
-      t.status === ShipmentStatus.ARRIVED_PORT ||
-      t.status === ShipmentStatus.DELIVERED ||
-      t.status === ShipmentStatus.IN_RECEIVING
-    ).length
-    const completed = data.filter(t => t.status === ShipmentStatus.COMPLETED).length
-    
-    return { total, pending, inProgress, completed }
-  }
-
-  // 数据筛选
-  const getFilteredData = () => {
-    return data.filter(item => {
-      const matchesSearch = !searchText || 
-        item.productName.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.shop.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.trackingCode.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.country.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.fbaCode.toLowerCase().includes(searchText.toLowerCase())
-      
-      const matchesShop = !selectedShop || item.shop === selectedShop
-      const matchesCategory = !selectedCategory || item.category === selectedCategory
-      const matchesStatus = !selectedStatus || item.status === selectedStatus
-      
-      return matchesSearch && matchesShop && matchesCategory && matchesStatus
-    })
-  }
-
-  // 初始化数据
   useEffect(() => {
     loadData()
   }, [])
 
-  // 加载数据
-  const loadData = async (refresh = false) => {
-    if (refresh) {
-      setRefreshing(true)
-      setCurrentPage(1)
-    } else {
-      setLoading(true)
-    }
+  useEffect(() => {
+    calculateStats()
+  }, [data])
 
-    try {
-      // 模拟API调用
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      if (refresh) {
-        setData(mockData)
-        setHasMore(true)
-      } else {
-        setData(prev => currentPage === 1 ? mockData : [...prev, ...mockData])
-        setHasMore(mockData.length >= pageSize)
-      }
-      
-      setCurrentPage(prev => prev + 1)
-    } catch (error) {
-      console.error('加载数据失败:', error)
-      Taro.showToast({
-        title: '加载失败',
-        icon: 'error'
-      })
-    } finally {
+  const loadData = async () => {
+    setLoading(true)
+    // 模拟API请求
+    setTimeout(() => {
+      setData(mockTasks)
       setLoading(false)
-      setRefreshing(false)
-    }
+    }, 500)
   }
 
-  // 处理状态更新
-  const handleStatusUpdate = async (taskId: string, newStatus: ShipmentStatus) => {
-    try {
-      // 模拟API调用
-      await new Promise(resolve => setTimeout(resolve, 500))
-      
-      // 更新本地状态
-      setData(prev => prev.map(item => 
-        item.id === taskId 
-          ? { 
-              ...item, 
-              status: newStatus,
-              updatedAt: new Date().toISOString()
-            }
-          : item
-      ))
-      
-      Taro.showToast({
-        title: '状态更新成功',
-        icon: 'success'
-      })
-    } catch (error) {
-      console.error('状态更新失败:', error)
-      Taro.showToast({
-        title: '更新失败',
-        icon: 'error'
-      })
-    }
-  }
+  // 计算统计数据
+  const calculateStats = () => {
+    const total = data.length
+    const totalBoxes = data.reduce((sum, item) => sum + item.totalBoxes, 0)
+    const warehousePending = data.filter(item => item.status === ShipmentStatus.WAREHOUSE_PENDING).length
+    const warehouseShipped = data.filter(item => item.status === ShipmentStatus.WAREHOUSE_SHIPPED).length
+    const inTransit = data.filter(item => item.status === ShipmentStatus.IN_TRANSIT).length
+    const arrivedPort = data.filter(item => item.status === ShipmentStatus.ARRIVED_PORT).length
+    const delivered = data.filter(item => item.status === ShipmentStatus.DELIVERED).length
+    const waitingReceive = data.filter(item => item.status === ShipmentStatus.WAITING_RECEIVE).length
+    const inReceiving = data.filter(item => item.status === ShipmentStatus.IN_RECEIVING).length
+    const completed = data.filter(item => item.status === ShipmentStatus.COMPLETED).length
 
-  // 处理任务点击
-  const handleTaskClick = (task: Task) => {
-    // 显示状态选择
-    Taro.showActionSheet({
-      itemList: statusOptions.map(option => option.label),
-      success: (res) => {
-        const selectedOption = statusOptions[res.tapIndex]
-        if (selectedOption) {
-          handleStatusUpdate(task.id, selectedOption.value)
-        }
-      }
+    setStats({
+      total,
+      totalBoxes,
+      warehousePending,
+      warehouseShipped,
+      inTransit,
+      arrivedPort,
+      delivered,
+      waitingReceive,
+      inReceiving,
+      completed
     })
   }
 
-  // 下拉刷新
-  const onScrollToUpper = () => {
-    if (!refreshing) {
-      loadData(true)
-    }
+  // 获取状态进度百分比
+  const getStatusProgress = (status: ShipmentStatus): number => {
+    const statusOrder = [
+      ShipmentStatus.WAREHOUSE_PENDING,
+      ShipmentStatus.WAREHOUSE_SHIPPED,
+      ShipmentStatus.IN_TRANSIT,
+      ShipmentStatus.ARRIVED_PORT,
+      ShipmentStatus.DELIVERED,
+      ShipmentStatus.WAITING_RECEIVE,
+      ShipmentStatus.IN_RECEIVING,
+      ShipmentStatus.COMPLETED
+    ]
+    
+    const currentIndex = statusOrder.indexOf(status)
+    return Math.round(((currentIndex + 1) / statusOrder.length) * 100)
   }
 
-  // 上拉加载更多
-  const onScrollToLower = () => {
-    if (!loading && hasMore) {
-      loadData()
+  // 筛选数据
+  const getFilteredData = () => {
+    return data.filter(item => {
+      const matchSearch = !searchKeyword || 
+        item.productName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+        item.shop.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+        item.fbaCode.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+        item.trackingCode.toLowerCase().includes(searchKeyword.toLowerCase())
+      
+      return matchSearch
+    })
+  }
+
+  // 更新任务状态
+  const handleStatusChange = (task: ShipmentTask, newStatus: ShipmentStatus) => {
+    setData(prev => prev.map(t => 
+      t.id === task.id 
+        ? { ...t, status: newStatus, updatedAt: new Date().toISOString() }
+        : t
+    ))
+    setShowStatusDialog(false)
+    setCurrentTask(null)
+      
+    Taro.showToast({
+      title: '状态更新成功',
+      icon: 'success'
+    })
+  }
+
+  // 处理任务卡片点击
+  const handleTaskClick = (task: ShipmentTask) => {
+    setCurrentTask(task)
+    setShowStatusDialog(true)
+  }
+
+  // 切换详情展开
+  const toggleTaskExpand = (taskId: string, e: ITouchEvent) => {
+    e.stopPropagation() // 阻止事件冒泡
+    const newExpanded = new Set(expandedTasks)
+    if (newExpanded.has(taskId)) {
+      newExpanded.delete(taskId)
+    } else {
+      newExpanded.add(taskId)
     }
+    setExpandedTasks(newExpanded)
   }
 
   const filteredData = getFilteredData()
-  const statistics = getStatistics()
 
   return (
     <MobileLayout>
-      <View className="shipment-task-page">
-        {/* 统计卡片 */}
-        <View className="shipment-task-page__stats">
-          <View className="stats-grid">
-            <View className="stat-item">
-              <Text className="stat-number">{statistics.total}</Text>
-              <Text className="stat-label">总任务</Text>
+      <View className='shipment-task-page'>
+        {/* 搜索框 */}
+        <View className='shipment-task-page__search'>
+          <SearchBar
+            placeholder='搜索产品名称、FBA件码、运单号...'
+            value={searchKeyword}
+            onChange={setSearchKeyword}
+            onSearch={setSearchKeyword}
+          />
+        </View>
+
+        {/* 统计概览 */}
+        <View className='shipment-task-page__stats'>
+          <View className='overview-cards'>
+            <View className='overview-card overview-card--primary'>
+              <View className='overview-card__icon'>
+                <MaterialIcons name='local_shipping' size={32} color='#3b82f6' />
+              </View>
+              <View className='overview-card__content'>
+                <Text className='overview-card__value'>{stats.total}</Text>
+                <Text className='overview-card__label'>总发货任务</Text>
+              </View>
             </View>
-            <View className="stat-item">
-              <Text className="stat-number">{statistics.pending}</Text>
-              <Text className="stat-label">待处理</Text>
+            
+            <View className='overview-card overview-card--success'>
+              <View className='overview-card__icon'>
+                <MaterialIcons name='inventory' size={32} color='#10b981' />
+              </View>
+              <View className='overview-card__content'>
+                <Text className='overview-card__value'>{stats.totalBoxes}</Text>
+                <Text className='overview-card__label'>总箱数</Text>
+              </View>
             </View>
-            <View className="stat-item">
-              <Text className="stat-number">{statistics.inProgress}</Text>
-              <Text className="stat-label">进行中</Text>
-            </View>
-            <View className="stat-item">
-              <Text className="stat-number">{statistics.completed}</Text>
-              <Text className="stat-label">已完成</Text>
+          </View>
+          
+          {/* 状态分布 */}
+          <View className='status-distribution'>
+            <Text className='status-distribution__title'>状态分布</Text>
+            <View className='status-grid'>
+              <View className='status-item'>
+                <Text className='status-item__count'>{stats.warehousePending}</Text>
+                <Text className='status-item__label'>仓库待发货</Text>
+              </View>
+              <View className='status-item'>
+                <Text className='status-item__count'>{stats.warehouseShipped}</Text>
+                <Text className='status-item__label'>仓库已发货</Text>
+              </View>
+              <View className='status-item'>
+                <Text className='status-item__count'>{stats.inTransit}</Text>
+                <Text className='status-item__label'>在途</Text>
+              </View>
+              <View className='status-item'>
+                <Text className='status-item__count'>{stats.arrivedPort}</Text>
+                <Text className='status-item__label'>到港</Text>
+              </View>
+              <View className='status-item'>
+                <Text className='status-item__count'>{stats.delivered}</Text>
+                <Text className='status-item__label'>交付</Text>
+              </View>
+              <View className='status-item'>
+                <Text className='status-item__count'>{stats.waitingReceive}</Text>
+                <Text className='status-item__label'>等待接收</Text>
+              </View>
+              <View className='status-item'>
+                <Text className='status-item__count'>{stats.inReceiving}</Text>
+                <Text className='status-item__label'>正在接收</Text>
+              </View>
+              <View className='status-item'>
+                <Text className='status-item__count'>{stats.completed}</Text>
+                <Text className='status-item__label'>已完成</Text>
+              </View>
             </View>
           </View>
         </View>
 
-        {/* 搜索栏 */}
-        <View className="shipment-task-page__search">
-          <View className="search-input">
-            <MaterialIcons name="search" size={20} color="#6b7280" />
-            <Input
-              placeholder="搜索产品名称、店铺、运单号、FBA码..."
-              value={searchText}
-              onChange={(value) => setSearchText(value)}
-              clearable
-            />
-          </View>
-          <Button
-            type="default"
-            size="small"
-            className="filter-btn"
-            onClick={() => setShowFilters(!showFilters)}
-          >
-            <MaterialIcons 
-              name={showFilters ? "filter_alt_off" : "filter_alt"} 
-              size={16} 
-              color="#6b7280" 
-            />
-          </Button>
-        </View>
-
-        {/* 筛选器 */}
-        {showFilters && (
-          <View className="shipment-task-page__filters">
-            <ScrollView scrollX className="filter-scroll">
-              {/* 店铺筛选 */}
-              {shops.map(shop => (
-                <Tag
-                  key={shop}
-                  type={selectedShop === shop ? 'primary' : 'default'}
-                  onClick={() => setSelectedShop(selectedShop === shop ? '' : shop)}
-                >
-                  {shop}
-                </Tag>
-              ))}
-              
-              {/* 分类筛选 */}
-              {categories.map(category => (
-                <Tag
-                  key={category}
-                  type={selectedCategory === category ? 'primary' : 'default'}
-                  onClick={() => setSelectedCategory(selectedCategory === category ? '' : category)}
-                >
-                  {category}
-                </Tag>
-              ))}
-              
-              {/* 状态筛选 */}
-              {statusOptions.map(option => (
-                <Tag
-                  key={option.value}
-                  type={selectedStatus === option.value ? 'primary' : 'default'}
-                  onClick={() => setSelectedStatus(selectedStatus === option.value ? '' : option.value)}
-                >
-                  {option.label}
-                </Tag>
-              ))}
-            </ScrollView>
-          </View>
-        )}
-
-        {/* 任务列表 */}
-        <ScrollView
-          ref={scrollViewRef}
-          className="shipment-task-page__list"
-          scrollY
-          enhanced
-          showScrollbar={false}
-          enablePassive
-          onScrollToUpper={onScrollToUpper}
-          onScrollToLower={onScrollToLower}
-          refresherEnabled
-          refresherTriggered={refreshing}
-          onRefresherRefresh={onScrollToUpper}
-        >
+        {/* 发货任务列表 */}
+        <View className='shipment-task-page__content'>
           {filteredData.length > 0 ? (
-            <>
+            <View className='shipment-list'>
               {filteredData.map(task => (
-                <TaskCard
-                  key={task.id}
-                  task={convertToTaskFormat(task)}
-                  onClick={handleTaskClick}
-                />
+                <View key={task.id} className='shipment-card'>
+                  {/* 卡片头部 - 关键信息 */}
+                  <View className='shipment-card__header' onClick={() => handleTaskClick(task)}>
+                    <View className='shipment-card__info'>
+                      <Text className='shipment-card__title'>{task.productName}</Text>
+                      <Text className='shipment-card__meta'>
+                        {task.shop} · {task.category}
+                      </Text>
+                      <Text className='shipment-card__fba'>
+                        FBA: {task.fbaCode}
+                      </Text>
+                    </View>
+                    <View className='shipment-card__status'>
+                      <Tag 
+                        type='primary' 
+                        style={{ backgroundColor: StatusColors[task.status] }}
+                      >
+                        {StatusLabels[task.status]}
+                      </Tag>
+                    </View>
+                  </View>
+                  
+                  {/* 进度条 */}
+                  <View className='shipment-card__progress'>
+                    <View className='progress-header'>
+                      <Text className='progress-label'>配送进度</Text>
+                      <Text className='progress-value'>{getStatusProgress(task.status)}%</Text>
+                    </View>
+                    <View className='progress-bar'>
+                      <View 
+                        className='progress-fill'
+                        style={{ 
+                          width: `${getStatusProgress(task.status)}%`,
+                          backgroundColor: StatusColors[task.status]
+                        }}
+                      />
+                    </View>
+                  </View>
+                  
+                  {/* 关键信息简览 */}
+                  <View className='shipment-card__summary'>
+                    <View className='summary-item'>
+                      <Text className='summary-label'>总箱数</Text>
+                      <Text className='summary-value'>{task.totalBoxes}</Text>
+                    </View>
+                    <View className='summary-item'>
+                      <Text className='summary-label'>目的地</Text>
+                      <Text className='summary-value'>{task.country}</Text>
+                    </View>
+                    <View className='summary-item'>
+                      <Text className='summary-label'>运输方式</Text>
+                      <Text className='summary-value'>{task.warehouseType}</Text>
+                    </View>
+                    <View className='summary-item'>
+                      <Text className='summary-label'>货代</Text>
+                      <Text className='summary-value'>{task.logistics}</Text>
+                    </View>
+                  </View>
+                  
+                  {/* 详情切换按钮 */}
+                  <View className='shipment-card__toggle'>
+                    <View 
+                      className='toggle-btn'
+                      onClick={(e) => toggleTaskExpand(task.id, e)}
+                    >
+                      <Text className='toggle-text'>
+                        {expandedTasks.has(task.id) ? '收起详情' : '展开详情'}
+                      </Text>
+                      <MaterialIcons 
+                        name={expandedTasks.has(task.id) ? 'expand_less' : 'expand_more'} 
+                        size={20} 
+                        color='#6b7280'
+                      />
+                    </View>
+                    <View 
+                      className='status-btn'
+                      onClick={() => handleTaskClick(task)}
+                    >
+                      <MaterialIcons name='edit' size={16} color='#3b82f6' />
+                      <Text className='status-btn-text'>更新状态</Text>
+                    </View>
+                  </View>
+
+                  {/* 详细信息 - 可展开 */}
+                  {expandedTasks.has(task.id) && (
+                    <View className='shipment-card__details'>
+                      <View className='details-section'>
+                        <Text className='section-title'>物流信息</Text>
+                        <View className='detail-grid'>
+                          <View className='detail-item'>
+                            <Text className='detail-label'>FBA仓编号</Text>
+                            <Text className='detail-value'>{task.fbaWarehouse}</Text>
+                          </View>
+                          <View className='detail-item'>
+                            <Text className='detail-label'>渠道</Text>
+                            <Text className='detail-value'>{task.channel}</Text>
+                          </View>
+                          <View className='detail-item'>
+                            <Text className='detail-label'>运单编码</Text>
+                            <Text className='detail-value'>{task.trackingCode}</Text>
+                          </View>
+                          <View className='detail-item'>
+                            <Text className='detail-label'>清关方式</Text>
+                            <Text className='detail-value'>{task.clearance}</Text>
+                          </View>
+                        </View>
+                      </View>
+                      
+                      <View className='details-section'>
+                        <Text className='section-title'>时间节点</Text>
+                        <View className='detail-grid'>
+                          <View className='detail-item'>
+                            <Text className='detail-label'>发货日期</Text>
+                            <Text className='detail-value'>{task.date}</Text>
+                          </View>
+                          <View className='detail-item'>
+                            <Text className='detail-label'>截止发票</Text>
+                            <Text className='detail-value'>{task.invoiceDeadline}</Text>
+                          </View>
+                          <View className='detail-item'>
+                            <Text className='detail-label'>收货期限</Text>
+                            <Text className='detail-value'>{task.receiveDeadline}</Text>
+                          </View>
+                          <View className='detail-item'>
+                            <Text className='detail-label'>更新时间</Text>
+                            <Text className='detail-value'>{new Date(task.updatedAt).toLocaleString()}</Text>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  )}
+                </View>
               ))}
-              
-              {/* 加载更多指示器 */}
-              {loading && (
-                <View className="loading-indicator">
-                  <Text>加载中...</Text>
-                </View>
-              )}
-              
-              {!hasMore && filteredData.length > 0 && (
-                <View className="no-more">
-                  <Text>已显示全部任务</Text>
-                </View>
-              )}
-            </>
+            </View>
           ) : (
-            <View className="empty-state">
-              <MaterialIcons name="inventory_2" size={64} color="#d1d5db" />
-              <Text className="empty-text">暂无发货任务</Text>
-              <Text className="empty-desc">
-                {searchText || selectedShop || selectedCategory || selectedStatus 
-                  ? '没有符合筛选条件的任务' 
-                  : '还没有发货任务，请稍后再试'
-                }
-              </Text>
+            <View className='empty-state'>
+              <MaterialIcons name='local_shipping' size={64} color='#d1d5db' />
+              <Text className='empty-text'>暂无发货任务</Text>
             </View>
           )}
-        </ScrollView>
+        </View>
+        
+        {/* 状态更新弹出层 */}
+        <Popup
+          visible={showStatusDialog}
+          position='bottom'
+          onClose={() => setShowStatusDialog(false)}
+          round
+          style={{ padding: '20rpx' }}
+        >
+          <View className='status-selector'>
+            <View className='status-selector__title'>
+              <Text>更新发货状态</Text>
+            </View>
+            
+            <View className='status-options'>
+              {Object.entries(StatusLabels).map(([status, label]) => (
+                <View
+                  key={status}
+                  className={`status-option ${currentTask?.status === status ? 'status-option--current' : ''}`}
+                  onClick={() => currentTask && handleStatusChange(currentTask, status as ShipmentStatus)}
+                >
+                  <MaterialIcons 
+                    name={currentTask?.status === status ? 'radio_button_checked' : 'radio_button_unchecked'}
+                    size={20} 
+                    color={currentTask?.status === status ? StatusColors[status as ShipmentStatus] : '#d1d5db'} 
+                  />
+                  <Text className='status-option__text'>{label}</Text>
+                </View>
+              ))}
+            </View>
+
+            <Button 
+              block 
+              size='large'
+              type='default'
+              onClick={() => setShowStatusDialog(false)}
+              style={{ marginTop: '20rpx' }}
+            >
+              取消
+            </Button>
+          </View>
+        </Popup>
       </View>
     </MobileLayout>
   )
 }
 
-export default withAuth(ShipmentTaskPage, {
-  requiredPermissions: [Permission.TASK_READ]
-}) 
+export default ShipmentTaskPage

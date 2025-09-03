@@ -1,0 +1,225 @@
+// Design Tokens - 设计系统核心变量
+// 基于 docs/design.md 的设计规范
+
+// ==========================================
+// 1. 基础令牌 (Primitives)
+// ==========================================
+
+// 色彩系统
+:root {
+  // 品牌色
+  --color-primary: #478EF2;        // 企业蓝
+  --color-primary-light: #6BA4F5;
+  --color-primary-dark: #1A73E8;
+  --color-primary-bg: rgba(71, 142, 242, 0.1);
+  
+  // 中性色
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-gray-50: #FAFBFC;
+  --color-gray-100: #F5F7FA;       // 背景色
+  --color-gray-200: #EBEEF3;
+  --color-gray-300: #E0E6ED;       // 边框色
+  --color-gray-400: #C0C4CC;
+  --color-gray-500: #A0A6B0;
+  --color-gray-600: #86909C;       // 次要文字
+  --color-gray-700: #606266;
+  --color-gray-800: #404450;
+  --color-gray-900: #303133;       // 主要文字
+  
+  // 功能色
+  --color-success: #00B578;
+  --color-success-light: #E5F7F0;
+  --color-warning: #FF9F00;
+  --color-warning-light: #FFF4E5;
+  --color-error: #F53F3F;
+  --color-error-light: #FFECE8;
+  --color-info: #478EF2;
+  --color-info-light: #E6F2FF;
+  
+  // ==========================================
+  // 2. 语义令牌 (Semantic)
+  // ==========================================
+  
+  // 背景色
+  --bg-primary: var(--color-primary);
+  --bg-body: var(--color-gray-100);
+  --bg-card: var(--color-white);
+  --bg-modal: var(--color-white);
+  --bg-hover: var(--color-gray-50);
+  --bg-active: var(--color-primary-bg);
+  --bg-disabled: var(--color-gray-100);
+  
+  // 文本色
+  --text-primary: var(--color-gray-900);
+  --text-regular: var(--color-gray-800);
+  --text-secondary: var(--color-gray-600);
+  --text-placeholder: var(--color-gray-400);
+  --text-disabled: var(--color-gray-300);
+  --text-link: var(--color-primary-dark);
+  --text-white: var(--color-white);
+  
+  // 边框色
+  --border-base: var(--color-gray-300);
+  --border-light: var(--color-gray-200);
+  --border-lighter: var(--color-gray-100);
+  --border-dark: var(--color-gray-400);
+  
+  // ==========================================
+  // 3. 字体系统
+  // ==========================================
+  
+  --font-family-base: "PingFang SC", "Helvetica Neue", Arial, "Microsoft YaHei", sans-serif;
+  --font-family-mono: "SF Mono", Monaco, Consolas, "Courier New", monospace;
+  
+  // 字号 (移动端优化，使用rpx)
+  --font-size-xs: 24rpx;    // 12px
+  --font-size-sm: 26rpx;    // 13px
+  --font-size-base: 28rpx;  // 14px - 基准字号
+  --font-size-md: 30rpx;    // 15px
+  --font-size-lg: 32rpx;    // 16px
+  --font-size-xl: 36rpx;    // 18px
+  --font-size-2xl: 40rpx;   // 20px
+  --font-size-3xl: 48rpx;   // 24px
+  
+  // 字重
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  // 行高
+  --line-height-tight: 1.25;
+  --line-height-base: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  // ==========================================
+  // 4. 间距系统 (8px基准栅格)
+  // ==========================================
+  
+  --spacing-0: 0;
+  --spacing-1: 8rpx;    // 4px
+  --spacing-2: 16rpx;   // 8px
+  --spacing-3: 24rpx;   // 12px
+  --spacing-4: 32rpx;   // 16px
+  --spacing-5: 40rpx;   // 20px
+  --spacing-6: 48rpx;   // 24px
+  --spacing-8: 64rpx;   // 32px
+  --spacing-10: 80rpx;  // 40px
+  --spacing-12: 96rpx;  // 48px
+  --spacing-16: 128rpx; // 64px
+  
+  // ==========================================
+  // 5. 圆角系统
+  // ==========================================
+  
+  --radius-none: 0;
+  --radius-sm: 8rpx;    // 4px
+  --radius-base: 12rpx; // 6px
+  --radius-md: 16rpx;   // 8px
+  --radius-lg: 24rpx;   // 12px
+  --radius-xl: 32rpx;   // 16px
+  --radius-full: 9999px;
+  
+  // ==========================================
+  // 6. 阴影系统
+  // ==========================================
+  
+  --shadow-none: none;
+  --shadow-sm: 0 2rpx 4rpx rgba(0, 0, 0, 0.04);
+  --shadow-base: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16rpx 48rpx rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 24rpx 64rpx rgba(0, 0, 0, 0.16);
+  
+  // ==========================================
+  // 7. 动画系统
+  // ==========================================
+  
+  --transition-fast: 150ms;
+  --transition-base: 250ms;
+  --transition-slow: 350ms;
+  --easing-base: cubic-bezier(0.4, 0, 0.2, 1);
+  --easing-in: cubic-bezier(0.4, 0, 1, 1);
+  --easing-out: cubic-bezier(0, 0, 0.2, 1);
+  --easing-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  // ==========================================
+  // 8. 层级系统
+  // ==========================================
+  
+  --z-index-normal: 1;
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+  --z-index-notification: 2000;
+  
+  // ==========================================
+  // 9. 组件令牌 (Component Tokens)
+  // ==========================================
+  
+  // 按钮
+  --btn-height-sm: 64rpx;     // 32px
+  --btn-height-base: 72rpx;   // 36px
+  --btn-height-lg: 88rpx;     // 44px - 符合移动端最小触控区域
+  --btn-padding-x: var(--spacing-4);
+  --btn-font-size: var(--font-size-base);
+  --btn-radius: var(--radius-base);
+  
+  // 输入框
+  --input-height-sm: 64rpx;
+  --input-height-base: 72rpx;
+  --input-height-lg: 88rpx;
+  --input-padding-x: var(--spacing-3);
+  --input-border-color: var(--border-base);
+  --input-radius: var(--radius-base);
+  
+  // 卡片
+  --card-padding: var(--spacing-4);
+  --card-radius: var(--radius-lg);
+  --card-shadow: var(--shadow-base);
+  --card-bg: var(--bg-card);
+  
+  // 表格
+  --table-header-bg: var(--color-gray-100);
+  --table-header-text: var(--text-secondary);
+  --table-row-hover-bg: var(--color-gray-50);
+  --table-border-color: var(--border-lighter);
+  --table-cell-padding: var(--spacing-3) var(--spacing-4);
+  
+  // 导航
+  --nav-height: 96rpx;        // 48px
+  --nav-bg: var(--bg-card);
+  --nav-shadow: var(--shadow-sm);
+  --nav-item-padding: var(--spacing-3) var(--spacing-4);
+  
+  // 标签
+  --tag-height: 48rpx;        // 24px
+  --tag-padding: var(--spacing-1) var(--spacing-2);
+  --tag-font-size: var(--font-size-xs);
+  --tag-radius: var(--radius-sm);
+  
+  // 徽标
+  --badge-size: 36rpx;        // 18px
+  --badge-font-size: var(--font-size-xs);
+  --badge-radius: var(--radius-full);
+  
+  // ==========================================
+  // 10. 栅格系统
+  // ==========================================
+  
+  --grid-columns: 12;
+  --grid-gutter: var(--spacing-4);
+  --container-padding: var(--spacing-4);
+  
+  // 断点 (Breakpoints)
+  --screen-xs: 320px;
+  --screen-sm: 480px;
+  --screen-md: 768px;
+  --screen-lg: 1024px;
+  --screen-xl: 1280px;
+}

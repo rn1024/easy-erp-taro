@@ -85,29 +85,29 @@ const SecurityPage: React.FC = () => {
 
   const handleSecurityChange = (key: keyof SecurityConfig, value: boolean | number) => {
     setSecurityConfig(prev => ({ ...prev, [key]: value }))
-    console.log('设置已更新')
+    // 设置已更新
   }
 
   const handlePasswordChange = () => {
     if (!passwordForm.currentPassword) {
-      console.log('请输入当前密码')
+      // 请输入当前密码
       return
     }
     if (!passwordForm.newPassword) {
-      console.log('请输入新密码')
+      // 请输入新密码
       return
     }
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      console.log('两次输入的密码不一致')
+      // 两次输入的密码不一致
       return
     }
     if (passwordForm.newPassword.length < 6) {
-      console.log('密码长度不能少于6位')
+      // 密码长度不能少于6位
       return
     }
 
     // 模拟密码修改
-    console.log('密码修改成功')
+    // 密码修改成功
     setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
     setShowPasswordDialog(false)
   }
@@ -123,8 +123,8 @@ const SecurityPage: React.FC = () => {
   }
 
   const handleDeviceRemove = (deviceId: string) => {
-    console.log('移除设备:', deviceId)
-    console.log('设备已移除')
+    // 移除设备: deviceId
+    // 设备已移除
   }
 
   const formatLastActive = (dateString: string) => {
@@ -140,45 +140,45 @@ const SecurityPage: React.FC = () => {
 
   const getDeviceIcon = (type: string) => {
     switch (type) {
-      case 'mobile':
-        return 'smartphone'
-      case 'desktop':
-        return 'computer'
-      case 'tablet':
-        return 'tablet'
-      default:
-        return 'device_unknown'
+    case 'mobile':
+      return 'smartphone'
+    case 'desktop':
+      return 'computer'
+    case 'tablet':
+      return 'tablet'
+    default:
+      return 'device_unknown'
     }
   }
 
   return (
-    <MobileLayout className="security-page">
-      <View className="security-page__content">
+    <MobileLayout className='security-page'>
+      <View className='security-page__content'>
         {/* 密码管理 */}
-        <CellGroup title="密码管理" className="security-page__group">
+        <CellGroup title='密码管理' className='security-page__group'>
           <Cell
-            title="修改密码"
-            description="定期修改密码以保护账户安全"
+            title='修改密码'
+            description='定期修改密码以保护账户安全'
             onClick={() => setShowPasswordDialog(true)}
-            className="security-page__cell"
-            extra={<MaterialIcons name="keyboard_arrow_right" size={32} color="#ccc" />}
+            className='security-page__cell'
+            extra={<MaterialIcons name='keyboard_arrow_right' size={32} color='#ccc' />}
           />
           <Cell
-            title="密码有效期"
+            title='密码有效期'
             description={`当前密码将在${securityConfig.passwordExpiry}天后过期`}
-            className="security-page__cell"
-            extra={<View className="security-page__info">
+            className='security-page__cell'
+            extra={<View className='security-page__info'>
               {securityConfig.passwordExpiry}天
             </View>}
           />
         </CellGroup>
 
         {/* 登录安全 */}
-        <CellGroup title="登录安全" className="security-page__group">
+        <CellGroup title='登录安全' className='security-page__group'>
           <Cell
-            title="双重认证"
-            description="开启后登录需要验证手机短信"
-            className="security-page__cell"
+            title='双重认证'
+            description='开启后登录需要验证手机短信'
+            className='security-page__cell'
             extra={
               <Switch
                 checked={securityConfig.twoFactorEnabled}
@@ -187,9 +187,9 @@ const SecurityPage: React.FC = () => {
             }
           />
           <Cell
-            title="登录通知"
-            description="新设备登录时发送通知"
-            className="security-page__cell"
+            title='登录通知'
+            description='新设备登录时发送通知'
+            className='security-page__cell'
             extra={
               <Switch
                 checked={securityConfig.loginNotification}
@@ -198,17 +198,17 @@ const SecurityPage: React.FC = () => {
             }
           />
           <Cell
-            title="会话超时"
-            description="无操作自动退出登录的时间"
-            className="security-page__cell"
-            extra={<View className="security-page__info">
+            title='会话超时'
+            description='无操作自动退出登录的时间'
+            className='security-page__cell'
+            extra={<View className='security-page__info'>
               {securityConfig.sessionTimeout}分钟
             </View>}
           />
           <Cell
-            title="允许远程登录"
-            description="允许在其他设备上登录"
-            className="security-page__cell"
+            title='允许远程登录'
+            description='允许在其他设备上登录'
+            className='security-page__cell'
             extra={
               <Switch
                 checked={securityConfig.allowRemoteLogin}
@@ -219,49 +219,49 @@ const SecurityPage: React.FC = () => {
         </CellGroup>
 
         {/* 最近登录记录 */}
-        <CellGroup title="最近登录记录" className="security-page__group">
+        <CellGroup title='最近登录记录' className='security-page__group'>
           <Cell
-            title="上次登录时间"
+            title='上次登录时间'
             description={lastLoginInfo.lastLoginTime}
-            className="security-page__cell"
-            extra={<View className="security-page__status">
-              <MaterialIcons name="check_circle" size={32} color="#52c41a" />
+            className='security-page__cell'
+            extra={<View className='security-page__status'>
+              <MaterialIcons name='check_circle' size={32} color='#52c41a' />
             </View>}
           />
           <Cell
-            title="登录位置"
+            title='登录位置'
             description={lastLoginInfo.lastLoginLocation}
-            className="security-page__cell"
-            extra={<View className="security-page__info">
+            className='security-page__cell'
+            extra={<View className='security-page__info'>
               {lastLoginInfo.lastLoginIP}
             </View>}
           />
           <Cell
-            title="登录设备"
+            title='登录设备'
             description={lastLoginInfo.loginDevice}
-            className="security-page__cell"
+            className='security-page__cell'
           />
         </CellGroup>
 
         {/* 设备管理 */}
-        <CellGroup title="设备管理" className="security-page__group">
+        <CellGroup title='设备管理' className='security-page__group'>
           {loginDevices.map((device) => (
-            <View key={device.id} className="security-page__device-item">
-              <View className="security-page__device-info">
-                <View className="security-page__device-header">
-                  <View className="security-page__device-icon">
-                    <MaterialIcons name={getDeviceIcon(device.type)} size={40} color="#666" />
+            <View key={device.id} className='security-page__device-item'>
+              <View className='security-page__device-info'>
+                <View className='security-page__device-header'>
+                  <View className='security-page__device-icon'>
+                    <MaterialIcons name={getDeviceIcon(device.type)} size={40} color='#666' />
                   </View>
-                  <View className="security-page__device-details">
-                    <View className="security-page__device-name">
+                  <View className='security-page__device-details'>
+                    <View className='security-page__device-name'>
                       {device.name}
                       {device.isCurrent && (
-                        <View className="security-page__current-badge">当前设备</View>
+                        <View className='security-page__current-badge'>当前设备</View>
                       )}
                     </View>
-                    <View className="security-page__device-meta">
-                      <View className="security-page__device-location">{device.location}</View>
-                      <View className="security-page__device-time">
+                    <View className='security-page__device-meta'>
+                      <View className='security-page__device-location'>{device.location}</View>
+                      <View className='security-page__device-time'>
                         {formatLastActive(device.lastActive)}
                       </View>
                     </View>
@@ -270,10 +270,10 @@ const SecurityPage: React.FC = () => {
               </View>
               {!device.isCurrent && (
                 <View 
-                  className="security-page__device-remove"
+                  className='security-page__device-remove'
                   onClick={() => handleDeviceRemove(device.id)}
                 >
-                  <MaterialIcons name="close" size={32} color="#ff4d4f" />
+                  <MaterialIcons name='close' size={32} color='#ff4d4f' />
                 </View>
               )}
             </View>
@@ -284,80 +284,80 @@ const SecurityPage: React.FC = () => {
       {/* 修改密码对话框 */}
       <Dialog
         visible={showPasswordDialog}
-        title="修改密码"
+        title='修改密码'
         onConfirm={handlePasswordChange}
         onCancel={resetPasswordForm}
-        confirmText="确认修改"
-        cancelText="取消"
+        confirmText='确认修改'
+        cancelText='取消'
       >
-        <View className="security-page__password-dialog">
-          <View className="security-page__password-field">
-            <View className="security-page__field-label">当前密码</View>
-            <View className="security-page__password-input-container">
+        <View className='security-page__password-dialog'>
+          <View className='security-page__password-field'>
+            <View className='security-page__field-label'>当前密码</View>
+            <View className='security-page__password-input-container'>
               <Input
                 type={showPasswords.current ? 'text' : 'password'}
                 value={passwordForm.currentPassword}
                 onChange={(value) => setPasswordForm(prev => ({ ...prev, currentPassword: value }))}
-                placeholder="请输入当前密码"
-                className="security-page__password-input"
+                placeholder='请输入当前密码'
+                className='security-page__password-input'
               />
               <View 
-                className="security-page__password-toggle"
+                className='security-page__password-toggle'
                 onClick={() => togglePasswordVisibility('current')}
               >
                 <MaterialIcons 
                   name={showPasswords.current ? 'visibility_off' : 'visibility'} 
                   size={32} 
-                  color="#666" 
+                  color='#666' 
                 />
               </View>
             </View>
           </View>
 
-          <View className="security-page__password-field">
-            <View className="security-page__field-label">新密码</View>
-            <View className="security-page__password-input-container">
+          <View className='security-page__password-field'>
+            <View className='security-page__field-label'>新密码</View>
+            <View className='security-page__password-input-container'>
               <Input
                 type={showPasswords.new ? 'text' : 'password'}
                 value={passwordForm.newPassword}
                 onChange={(value) => setPasswordForm(prev => ({ ...prev, newPassword: value }))}
-                placeholder="请输入新密码"
-                className="security-page__password-input"
+                placeholder='请输入新密码'
+                className='security-page__password-input'
               />
               <View 
-                className="security-page__password-toggle"
+                className='security-page__password-toggle'
                 onClick={() => togglePasswordVisibility('new')}
               >
                 <MaterialIcons 
                   name={showPasswords.new ? 'visibility_off' : 'visibility'} 
                   size={32} 
-                  color="#666" 
+                  color='#666' 
                 />
               </View>
             </View>
-            <View className="security-page__password-hint">
+            <View className='security-page__password-hint'>
               密码长度至少6位，建议包含字母、数字和特殊字符
             </View>
           </View>
 
-          <View className="security-page__password-field">
-            <View className="security-page__field-label">确认新密码</View>
-            <View className="security-page__password-input-container">
+          <View className='security-page__password-field'>
+            <View className='security-page__field-label'>确认新密码</View>
+            <View className='security-page__password-input-container'>
               <Input
                 type={showPasswords.confirm ? 'text' : 'password'}
                 value={passwordForm.confirmPassword}
                 onChange={(value) => setPasswordForm(prev => ({ ...prev, confirmPassword: value }))}
-                placeholder="请再次输入新密码"
-                className="security-page__password-input"
+                placeholder='请再次输入新密码'
+                className='security-page__password-input'
               />
               <View 
-                className="security-page__password-toggle"
+                className='security-page__password-toggle'
                 onClick={() => togglePasswordVisibility('confirm')}
               >
                 <MaterialIcons 
                   name={showPasswords.confirm ? 'visibility_off' : 'visibility'} 
                   size={32} 
-                  color="#666" 
+                  color='#666' 
                 />
               </View>
             </View>

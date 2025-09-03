@@ -16,32 +16,32 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
         text: '待处理', 
         color: '#f59e0b',
         bgColor: 'rgba(245, 158, 11, 0.1)',
-        icon: <MaterialIcons name="schedule" size={12} color="#f59e0b" />
+        icon: <MaterialIcons name='schedule' size={12} color='#f59e0b' />
       },
       in_progress: { 
         text: '进行中', 
         color: '#3b82f6',
         bgColor: 'rgba(59, 130, 246, 0.1)',
-        icon: <MaterialIcons name="notifications" size={12} color="#3b82f6" />
+        icon: <MaterialIcons name='notifications' size={12} color='#3b82f6' />
       },
       completed: { 
         text: '已完成', 
         color: '#10b981',
         bgColor: 'rgba(16, 185, 129, 0.1)',
-        icon: <MaterialIcons name="check" size={12} color="#10b981" />
+        icon: <MaterialIcons name='check' size={12} color='#10b981' />
       },
       cancelled: { 
         text: '已拒绝', 
         color: '#ef4444',
         bgColor: 'rgba(239, 68, 68, 0.1)',
-        icon: <MaterialIcons name="warning" size={12} color="#ef4444" />
+        icon: <MaterialIcons name='warning' size={12} color='#ef4444' />
       }
     }
     return statusMap[status] || { 
       text: '未知', 
       color: '#6b7280',
       bgColor: 'rgba(107, 114, 128, 0.1)',
-      icon: <MaterialIcons name="schedule" size={12} color="#6b7280" />
+      icon: <MaterialIcons name='schedule' size={12} color='#6b7280' />
     }
   }
 
@@ -70,63 +70,63 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
   const progressPercentage = Math.round((task.workflow.currentStep / task.workflow.totalSteps) * 100)
 
   return (
-    <View className="task-card" onClick={handleCardClick}>
+    <View className='task-card' onClick={handleCardClick}>
       {/* 卡片头部 */}
-      <View className="task-card__header">
-        <View className="task-card__left">
-          <Text className="task-card__title">{task.title}</Text>
-          <View className="task-card__meta">
+      <View className='task-card__header'>
+        <View className='task-card__left'>
+          <Text className='task-card__title'>{task.title}</Text>
+          <View className='task-card__meta'>
             <View 
-              className="task-card__status"
+              className='task-card__status'
               style={{
                 color: statusInfo.color,
                 backgroundColor: statusInfo.bgColor
               }}
             >
               {statusInfo.icon}
-              <Text className="task-card__status-text">{statusInfo.text}</Text>
+              <Text className='task-card__status-text'>{statusInfo.text}</Text>
             </View>
             <Text 
-              className="task-card__priority"
+              className='task-card__priority'
               style={{ color: priorityInfo.color }}
             >
               {priorityInfo.text}优先级
             </Text>
           </View>
         </View>
-        <View className="task-card__right">
+        <View className='task-card__right'>
           <Image
             src={task.assignee.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face'}
-            className="task-card__avatar"
-            mode="aspectFill"
+            className='task-card__avatar'
+            mode='aspectFill'
           />
         </View>
       </View>
 
       {/* 任务描述 */}
-      <Text className="task-card__description">{task.description}</Text>
+      <Text className='task-card__description'>{task.description}</Text>
 
       {/* 工作流程进度 */}
-      <View className="task-card__progress-section">
-        <View className="task-card__progress-info">
-          <Text className="task-card__progress-text">
+      <View className='task-card__progress-section'>
+        <View className='task-card__progress-info'>
+          <Text className='task-card__progress-text'>
             {task.workflow.stepName} ({task.workflow.currentStep}/{task.workflow.totalSteps})
           </Text>
         </View>
-        <View className="task-card__progress-bar">
+        <View className='task-card__progress-bar'>
           <View 
-            className="task-card__progress-fill"
+            className='task-card__progress-fill'
             style={{ width: `${progressPercentage}%` }}
           />
         </View>
       </View>
 
       {/* 卡片底部 */}
-      <View className="task-card__footer">
-        <Text className="task-card__due-date">
+      <View className='task-card__footer'>
+        <Text className='task-card__due-date'>
           截止：{formatDate(task.dueDate)}
         </Text>
-        <Text className="task-card__assignee-name">
+        <Text className='task-card__assignee-name'>
           {task.assignee.name}
         </Text>
       </View>

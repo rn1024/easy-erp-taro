@@ -1,23 +1,30 @@
 // API服务统一导出入口
 
+import type { ApiResponse } from '@/types'
+
 // 基础API服务
+// 导入用于统一API对象
+import { ApiService } from './api'
+import { InventoryAPI } from './inventory'
+import { TasksAPI } from './tasks'
+import { getProducts, getProductById, searchProductsBySku } from './products'
+
 export { ApiService } from './api'
+
+// 认证相关API
+export { AuthAPI } from './auth'
 
 // 库存相关API  
 export { InventoryAPI, FinishedInventoryAPI, SpareInventoryAPI } from './inventory'
 
 // 任务相关API
-export { TasksAPI, PackageTaskAPI, ShipmentTaskAPI } from './tasks'
+export { TasksAPI, WarehouseTaskAPI, PackageTaskAPI, ShipmentTaskAPI } from './tasks'
 
 // 产品和查询相关API
-export { ProductsAPI, ProductAPI, QueryAPI } from './products'
+export { getProducts, getProductById, searchProductsBySku } from './products'
 
-// 导入用于统一API对象
-import { ApiService } from './api'
-import { InventoryAPI } from './inventory'
-import { TasksAPI } from './tasks'
-import { ProductsAPI } from './products'
-import type { ApiResponse, PaginatedResponse } from '@/types'
+// 基础数据API
+export { BasicDataAPI, type Shop, type ProductCategory } from './basic'
 
 // 统一的API对象，方便在组件中使用
 export const API = {
@@ -31,14 +38,18 @@ export const API = {
   tasks: TasksAPI,
   
   // 产品管理
-  products: ProductsAPI,
+  products: {
+    getList: getProducts,
+    getById: getProductById,
+    searchBySku: searchProductsBySku
+  }
 }
 
 // 类型导出
 export type {
   // 基础类型
   ApiResponse,
-  PaginatedResponse,
+  PaginatedResponse
 } from '@/types'
 
 export type {
@@ -53,13 +64,13 @@ export type {
   PackageTask,
   ShipmentTask,
   PackageStatus,
-  ShipmentStatus,
+  ShipmentStatus
 } from '@/types/admin'
 
 // 常用工具方法
 export const APIUtils = {
   // 构建查询参数
-  buildQuery: (params: Record<string, any>): string => {
+  buildQuery: (params: Record<string, unknown>): string => {
     const searchParams = new URLSearchParams()
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== '') {
@@ -69,13 +80,22 @@ export const APIUtils = {
     return searchParams.toString()
   },
 
-  // 处理API错误
-  handleError: (error: any): string => {
-    if (error?.message) {
-      return error.message
+  // 处理API错误 - 适配easy-erp-web格式
+  handleError: (error: unknown): string => {
+    if (error && typeof error === 'object' && 'msg' in error) {
+      return String((error as { msg: unknown }).msg)
     }
-    if (error?.response?.data?.message) {
-      return error.response.data.message
+    if (error && typeof error === 'object' && 'message' in error) {
+      return String((error as { message: unknown }).message)
+    }
+    if (error && typeof error === 'object' && 'response' in error) {
+      const response = (error as { response: unknown }).response
+      if (response && typeof response === 'object' && 'data' in response) {
+        const data = (response as { data: unknown }).data
+        if (data && typeof data === 'object' && 'msg' in data) {
+          return String((data as { msg: unknown }).msg)
+        }
+      }
     }
     if (typeof error === 'string') {
       return error
@@ -83,23 +103,23 @@ export const APIUtils = {
     return '操作失败，请重试'
   },
 
-  // 格式化响应数据
-  formatResponse: <T>(response: any): ApiResponse<T> => {
+  // 格式化响应数据 - 适配easy-erp-web格式
+  formatResponse: <T>(response: unknown): ApiResponse<T> => {
+    const obj = response && typeof response === 'object' ? response as Record<string, unknown> : {}
     return {
-      success: response?.success || false,
-      data: response?.data || null,
-      message: response?.message || '',
-      code: response?.code || 0
+      code: (obj.code as number) || (obj.success === false ? 1 : 0),
+      msg: String(obj.msg || obj.message || ''),
+      data: (obj.data as T) ?? null as T
     }
   },
 
-  // 检查是否为成功响应
-  isSuccess: (response: any): boolean => {
-    return response?.success === true
+  // 检查是否为成功响应 - 适配easy-erp-web格式
+  isSuccess: (response: unknown): response is ApiResponse<unknown> => {
+    return Boolean(response && typeof response === 'object' && 'code' in response && (response as { code: unknown }).code === 0)
   },
 
   // 提取响应数据
   extractData: <T>(response: ApiResponse<T>): T | null => {
-    return APIUtils.isSuccess(response) ? response.data : null
+    return response.code === 0 ? response.data : null
   }
-} 
+}
