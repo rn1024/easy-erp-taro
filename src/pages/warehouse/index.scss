@@ -163,21 +163,19 @@
 
 
 // 移动端优化
-@media (max-width: 750rpx) {
-  .warehouse-page {
-    &__content {
-      padding: 24rpx;
-    }
-    
-    &__cards {
-      gap: 24rpx;
-    }
-    
-    &__card {
-      padding: 24rpx;
-    }
+.warehouse-page.mobile-layout--compact {
+  &__content {
+    padding: 24rpx;
   }
   
+  &__cards {
+    gap: 24rpx;
+  }
+  
+  &__card {
+    padding: 24rpx;
+  }
+
   .task-card {
     &__title {
       font-size: 32rpx;
@@ -201,4 +199,4 @@
       font-size: 22rpx;
     }
   }
-} 
+}

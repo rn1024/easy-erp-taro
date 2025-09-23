@@ -262,22 +262,20 @@
 }
 
 // 响应式优化
-@media (max-width: 375px) {
-  .products-page {
-    &__header {
-      padding: 24rpx 16rpx 32rpx;
-      
-      &-title {
-        font-size: 40rpx;
-      }
-    }
+.mobile-layout--compact .products-page {
+  &__header {
+    padding: 24rpx 16rpx 32rpx;
     
-    &__search,
-    &__filters,
-    &__content {
-      margin-left: 16rpx;
-      margin-right: 16rpx;
+    &-title {
+      font-size: 40rpx;
     }
+  }
+  
+  &__search,
+  &__filters,
+  &__content {
+    margin-left: 16rpx;
+    margin-right: 16rpx;
   }
 }
 

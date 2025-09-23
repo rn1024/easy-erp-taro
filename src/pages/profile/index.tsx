@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text } from '@tarojs/components'
-import { Button, Avatar } from '@nutui/nutui-react-taro'
+import { Avatar } from '@nutui/nutui-react-taro'
+// @ts-ignore
 import { MaterialIcons } from 'taro-icons'
 import Taro from '@tarojs/taro'
 import MobileLayout from '@/components/MobileLayout'
@@ -12,7 +13,6 @@ interface UserStats {
   createdWorkflows: number
   completedTasks: number
   pendingTasks: number
-  totalWorkingDays: number
   completionRate: number
   averageResponseTime: string
 }
@@ -23,71 +23,59 @@ const Profile: React.FC = () => {
     createdWorkflows: 15,
     completedTasks: 48,
     pendingTasks: 6,
-    totalWorkingDays: 365,
     completionRate: 89,
     averageResponseTime: '2.3小时'
   })
-
-  const formatJoinDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString('zh-CN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
-  }
-
-  const calculateWorkingDays = () => {
-    const today = new Date()
-    const joinDate = new Date('2023-01-15')
-    const diffTime = Math.abs(today.getTime() - joinDate.getTime())
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    return diffDays
-  }
 
   const statsCards = [
     {
       title: '创建流程',
       value: userStats.createdWorkflows,
-      iconName: 'add',
-      color: '#1890ff'
+      icon: 'trending-up',
+      color: '#5B8FF9'
     },
     {
       title: '完成任务',
       value: userStats.completedTasks,
-      iconName: 'done',
-      color: '#52c41a'
+      icon: 'check-circle',
+      color: '#5AD8A6'
     },
     {
       title: '待办任务',
       value: userStats.pendingTasks,
-      iconName: 'schedule',
-      color: '#fa8c16'
+      icon: 'schedule',
+      color: '#FF9D4D'
     },
     {
       title: '完成率',
       value: `${userStats.completionRate}%`,
-      iconName: 'star',
-      color: '#722ed1'
+      icon: 'star',
+      color: '#8E7EF3'
     }
   ]
 
-  const menuItems = [
+  const settingItems = [
     {
       title: '账户设置',
-      iconName: 'person',
+      icon: 'person-outline',
       description: '编辑个人信息',
       onClick: () => Taro.navigateTo({ url: '/pages/userinfo/index' })
     },
     {
+      title: '通知设置',
+      icon: 'notifications-none',
+      description: '管理推送通知',
+      onClick: () => Taro.showToast({ title: '功能开发中', icon: 'none' })
+    },
+    {
       title: '安全设置',
-      iconName: 'security',
+      icon: 'shield',
       description: '密码和安全选项',
       onClick: () => Taro.navigateTo({ url: '/pages/security/index' })
     },
     {
       title: '帮助中心',
-      iconName: 'help',
+      icon: 'help-outline',
       description: '常见问题和支持',
       onClick: () => Taro.navigateTo({ url: '/pages/help/index' })
     }
@@ -95,165 +83,144 @@ const Profile: React.FC = () => {
 
   return (
     <MobileLayout className='profile-page'>
-      <View className='profile-page__content'>
+      <View className='profile-container'>
         {/* 用户信息卡片 */}
-        <View className='profile-page__user-card'>
-          <View className='profile-page__user-header'>
-            <View className='profile-page__avatar-container'>
+        <View className='user-card'>
+          <View className='user-header'>
+            <View className='avatar-wrapper'>
               <Avatar
-                size='64'
+                size='80'
                 src={user.avatar}
-                className='profile-page__avatar'
+                className='user-avatar'
               >
                 {user.name.charAt(0)}
               </Avatar>
-              <View className='profile-page__avatar-edit' onClick={() => {/* 更换头像 */}}>
-                <MaterialIcons name='edit' size={12} />
+              <View className='camera-icon' onClick={() => Taro.showToast({ title: '更换头像', icon: 'none' })}>
+                <MaterialIcons name='photo-camera' size={18} color='#666' />
               </View>
             </View>
-            
-            <View className='profile-page__user-info'>
-              <View className='profile-page__user-name-row'>
-                <Text className='profile-page__user-name'>{user.name}</Text>
-                <View 
-                  className='profile-page__edit-btn'
-                  onClick={() => {/* 编辑个人信息 */}}
-                >
-                  <MaterialIcons name='edit' size={12} />
-                </View>
+
+            <View className='user-info'>
+              <View className='name-row'>
+                <Text className='user-name'>张三</Text>
+                <MaterialIcons
+                  name='edit'
+                  size={18}
+                  color='#999'
+                  onClick={() => Taro.navigateTo({ url: '/pages/userinfo/index' })}
+                />
               </View>
-              <Text className='profile-page__user-position'>{user.role}</Text>
-              <Text className='profile-page__user-department'>{user.department}</Text>
+              <Text className='user-role'>产品经理</Text>
+              <Text className='user-dept'>产品部</Text>
             </View>
           </View>
 
-          <View className='profile-page__user-details'>
-            <View className='profile-page__detail-row'>
-              <View className='profile-page__detail-item'>
-                <MaterialIcons name='email' size={16} />
-                <Text className='profile-page__detail-text'>{user.email}</Text>
-              </View>
-              <View className='profile-page__detail-item'>
-                <MaterialIcons name='phone' size={16} />
-                <Text className='profile-page__detail-text'>138****8888</Text>
-              </View>
+          <View className='user-contact'>
+            <Text className='contact-info'>zhangsan@company.com</Text>
+            <Text className='contact-info'>📞 138****8888</Text>
+          </View>
+
+          <View className='user-meta'>
+            <View className='meta-item'>
+              <MaterialIcons name='location-on' size={14} color='#999' />
+              <Text className='meta-text'>入职: 2023年1月15日</Text>
             </View>
-            <View className='profile-page__detail-row'>
-              <View className='profile-page__detail-item'>
-                <MaterialIcons name='location_on' size={16} />
-                <Text className='profile-page__detail-text'>入职: {formatJoinDate('2023-01-15')}</Text>
-              </View>
-              <View className='profile-page__detail-item'>
-                <MaterialIcons name='schedule' size={16} />
-                <Text className='profile-page__detail-text'>工作 {calculateWorkingDays()} 天</Text>
-              </View>
+            <View className='meta-item'>
+              <MaterialIcons name='schedule' size={14} color='#999' />
+              <Text className='meta-text'>工作 983 天</Text>
             </View>
           </View>
         </View>
 
-        {/* 统计数据 */}
-        <View className='profile-page__section'>
-          <Text className='profile-page__section-title'>我的统计</Text>
-          <View className='profile-page__stats-grid'>
-            {statsCards.map((card, index) => {
-              return (
-                <View key={index} className='profile-page__stat-card'>
-                  <View className='profile-page__stat-content'>
-                    <View className='profile-page__stat-header'>
-                      <View className='profile-page__stat-icon'>
-                        <MaterialIcons 
-                          name={card.iconName} 
-                          size={20} 
-                        />
-                      </View>
-                    </View>
-                    <Text className='profile-page__stat-value'>{card.value}</Text>
-                    <Text className='profile-page__stat-label'>{card.title}</Text>
-                  </View>
+        {/* 我的统计 */}
+        <View className='section'>
+          <Text className='section-title'>我的统计</Text>
+          <View className='stats-grid'>
+            {statsCards.map((stat, index) => (
+              <View key={index} className='stat-card'>
+                <View className={`stat-icon icon-${stat.icon}`}>
+                  <MaterialIcons name={stat.icon} size={24} color={stat.color} />
                 </View>
-              )
-            })}
+                <Text className='stat-value'>{stat.value}</Text>
+                <Text className='stat-label'>{stat.title}</Text>
+              </View>
+            ))}
           </View>
         </View>
 
         {/* 工作表现 */}
-        <View className='profile-page__section'>
-          <Text className='profile-page__section-title'>工作表现</Text>
-          <View className='profile-page__performance-card'>
-            <View className='profile-page__performance-item'>
-              <View className='profile-page__performance-header'>
-                <Text className='profile-page__performance-label'>任务完成率</Text>
-                <Text className='profile-page__performance-value'>{userStats.completionRate}%</Text>
+        <View className='section'>
+          <Text className='section-title'>工作表现</Text>
+          <View className='performance-card'>
+            <View className='performance-item'>
+              <View className='performance-header'>
+                <Text className='performance-label'>任务完成率</Text>
+                <Text className='performance-value'>{userStats.completionRate}%</Text>
               </View>
-              <View className='profile-page__progress-container'>
-                <View 
-                  className='profile-page__progress-bar'
-                  style={{ width: `${userStats.completionRate}%` }}
-                />
+              <View className='progress-wrapper'>
+                <View className='progress-bg'>
+                  <View
+                    className='progress-fill'
+                    style={{ width: `${userStats.completionRate}%` }}
+                  />
+                </View>
               </View>
             </View>
 
-            <View className='profile-page__performance-item'>
-              <View className='profile-page__performance-header'>
-                <Text className='profile-page__performance-label'>平均响应时间</Text>
-                <View className='profile-page__performance-badge'>
-                  {userStats.averageResponseTime}
-                </View>
+            <View className='performance-item'>
+              <View className='performance-header'>
+                <Text className='performance-label'>平均响应时间</Text>
+                <Text className='performance-time'>{userStats.averageResponseTime}</Text>
               </View>
             </View>
           </View>
         </View>
 
-        {/* 设置菜单 */}
-        <View className='profile-page__section'>
-          <Text className='profile-page__section-title'>设置</Text>
-          <View className='profile-page__menu-card'>
-            {menuItems.map((item, index) => {
-              return (
-                <View key={index}>
-                  <View 
-                    className='profile-page__menu-item'
-                    onClick={item.onClick}
-                  >
-                    <View className='profile-page__menu-icon'>
-                      <MaterialIcons name={item.iconName} size={20} />
+        {/* 设置 */}
+        <View className='section'>
+          <Text className='section-title'>设置</Text>
+          <View className='settings-list'>
+            {settingItems.map((item, index) => (
+              <View key={index}>
+                <View className='setting-item' onClick={item.onClick}>
+                  <View className='setting-left'>
+                    <View className='setting-icon'>
+                      <MaterialIcons name={item.icon} size={20} color='#666' />
                     </View>
-                    <View className='profile-page__menu-content'>
-                      <Text className='profile-page__menu-title'>{item.title}</Text>
-                      <Text className='profile-page__menu-desc' style={{display: 'block', whiteSpace: 'normal', wordWrap: 'break-word'}}>{item.description}</Text>
-                    </View>
-                    <View className='profile-page__menu-arrow'>
-                      <MaterialIcons name='keyboard-arrow-right' size={16} />
+                    <View className='setting-content'>
+                      <Text className='setting-title'>{item.title}</Text>
+                      <Text className='setting-desc'>{item.description}</Text>
                     </View>
                   </View>
-                  {index < menuItems.length - 1 && (
-                    <View className='profile-page__menu-divider' />
-                  )}
+                  <MaterialIcons name='chevron-right' size={20} color='#999' />
                 </View>
-              )
-            })}
+                {index < settingItems.length - 1 && <View className='setting-divider' />}
+              </View>
+            ))}
           </View>
         </View>
 
         {/* 退出登录 */}
-        <View className='profile-page__section'>
-          <Button
-            className='profile-page__logout-btn'
-            fill='outline'
+        <View className='logout-section'>
+          <View
+            className='logout-button'
             onClick={() => {
               Taro.showModal({
-                title: '确认退出',
+                title: '提示',
                 content: '确定要退出登录吗？',
+                confirmText: '确定',
+                cancelText: '取消',
                 success: (res) => {
                   if (res.confirm) {
-                    // 用户点击确定
+                    Taro.reLaunch({ url: '/pages/login/index' })
                   }
                 }
               })
             }}
           >
-            退出登录
-          </Button>
+            <MaterialIcons name='logout' size={20} color='#ff4d4f' />
+            <Text className='logout-text'>退出登录</Text>
+          </View>
         </View>
       </View>
     </MobileLayout>

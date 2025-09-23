@@ -1,395 +1,323 @@
 .profile-page {
+  background-color: #f5f6fa;
   min-height: 100vh;
-  background-color: #f8f9fa;
-  padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
 
-  &__content {
-    padding: 32rpx;
+  .profile-container {
+    padding: 32rpx 32rpx 0 32rpx;
   }
 
-  &__user-card {
+  // 用户信息卡片
+  .user-card {
     background: #fff;
     border-radius: 24rpx;
     padding: 32rpx;
     margin-bottom: 32rpx;
-    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+
+    .user-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 32rpx;
+      margin-bottom: 32rpx;
+
+      .avatar-wrapper {
+        position: relative;
+
+        .user-avatar {
+          border: 4rpx solid #fff;
+          box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+        }
+
+        .camera-icon {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 36rpx;
+          height: 36rpx;
+          background: #fff;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.12);
+          border: 2rpx solid #fff;
+        }
+      }
+
+      .user-info {
+        flex: 1;
+        padding-top: 8rpx;
+
+        .name-row {
+          display: flex;
+          align-items: center;
+          gap: 16rpx;
+          margin-bottom: 12rpx;
+
+          .user-name {
+            font-size: 36rpx;
+            font-weight: 600;
+            color: #1a1a1a;
+          }
+        }
+
+        .user-role {
+          display: block;
+          font-size: 28rpx;
+          color: #333;
+          margin-bottom: 8rpx;
+        }
+
+        .user-dept {
+          display: block;
+          font-size: 26rpx;
+          color: #666;
+        }
+      }
+    }
+
+    .user-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 16rpx;
+      margin-bottom: 24rpx;
+      padding: 24rpx 0;
+      border-bottom: 2rpx solid #f0f0f0;
+
+      .contact-info {
+        font-size: 28rpx;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 12rpx;
+      }
+    }
+
+    .user-meta {
+      display: flex;
+      gap: 48rpx;
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 12rpx;
+
+        .meta-text {
+          font-size: 26rpx;
+          color: #999;
+        }
+      }
+    }
   }
 
-  &__user-header {
-    display: flex;
-    align-items: center;
+  // 通用区块样式
+  .section {
+    margin-bottom: 32rpx;
+
+    .section-title {
+      display: block;
+      font-size: 32rpx;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 24rpx;
+      padding-left: 8rpx;
+    }
+  }
+
+  // 统计网格
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 24rpx;
-    margin-bottom: 24rpx;
-  }
 
-  &__avatar-container {
-    position: relative;
-  }
+    .stat-card {
+      background: #fff;
+      border-radius: 24rpx;
+      padding: 32rpx;
+      box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-  &__avatar {
-    border-radius: 50%;
-    overflow: hidden;
-  }
-
-  &__avatar-edit {
-      position: absolute;
-    bottom: -4rpx;
-    right: -4rpx;
-    width: 48rpx;
-    height: 48rpx;
-    background: #fff;
-    border: 2rpx solid #f0f0f0;
-    border-radius: 50%;
+      .stat-icon {
+        width: 72rpx;
+        height: 72rpx;
+        margin-bottom: 24rpx;
         display: flex;
         align-items: center;
         justify-content: center;
-    cursor: pointer;
-    touch-action: manipulation;
-    transition: all 0.2s ease;
+        border-radius: 16rpx;
 
-    &:active {
-      transform: scale(0.95);
-      background: #f8f9fa;
-    }
-      }
-
-  &__user-info {
-        flex: 1;
-    min-width: 0;
-  }
-
-  &__user-name-row {
-    display: flex;
-    align-items: center;
-    gap: 16rpx;
-          margin-bottom: 8rpx;
+        &.icon-trending-up {
+          background: #e6f4ff;
         }
 
-  &__user-name {
-    font-size: 36rpx;
-    font-weight: 600;
-    color: #1a1a1a;
-    flex: 1;
-  }
-
-  &__edit-btn {
-    width: 48rpx;
-    height: 48rpx;
-    background: #f5f5f5;
-    border-radius: 12rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    touch-action: manipulation;
-    transition: all 0.2s ease;
-
-    &:active {
-      transform: scale(0.95);
-      background: #e8e8e8;
-    }
+        &.icon-check-circle {
+          background: #e6ffed;
         }
 
-  &__user-position {
-    font-size: 28rpx;
-    color: #666;
-    margin-bottom: 4rpx;
-  }
+        &.icon-schedule {
+          background: #fff7e6;
+        }
 
-  &__user-department {
-    font-size: 24rpx;
-    color: #999;
+        &.icon-star {
+          background: #f9f0ff;
+        }
       }
 
-  &__user-details {
+      .stat-value {
+        display: block;
+        font-size: 48rpx;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 8rpx;
+      }
+
+      .stat-label {
+        display: block;
+        font-size: 26rpx;
+        color: #999;
+      }
+    }
+  }
+
+  // 工作表现卡片
+  .performance-card {
+    background: #fff;
+    border-radius: 24rpx;
+    padding: 32rpx;
+    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+
+    .performance-item {
+      &:not(:last-child) {
+        margin-bottom: 32rpx;
+      }
+
+      .performance-header {
         display: flex;
-        flex-direction: column;
-    gap: 16rpx;
-      }
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16rpx;
 
-  &__detail-row {
-    display: flex;
-    gap: 32rpx;
-    }
-
-  &__detail-item {
-    flex: 1;
-      display: flex;
-    align-items: center;
-    gap: 12rpx;
-    color: #666;
-  }
-
-  &__detail-text {
-    font-size: 24rpx;
-    color: #666;
-  }
-
-  &__section {
-    margin-bottom: 32rpx;
-  }
-
-  &__section-title {
-          font-size: 32rpx;
-          font-weight: 600;
-    color: #1a1a1a;
-    margin-bottom: 24rpx;
-  }
-
-  &__stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24rpx;
-  }
-
-  &__stat-card {
-    background: #fff;
-    border-radius: 24rpx;
-    padding: 32rpx;
-    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
-  }
-
-  &__stat-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  &__stat-header {
-    margin-bottom: 24rpx;
-  }
-
-  &__stat-icon {
-    width: 64rpx;
-    height: 64rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  &__stat-value {
-    font-size: 40rpx;
-    font-weight: 600;
-    color: #1a1a1a;
-          margin-bottom: 8rpx;
+        .performance-label {
+          font-size: 28rpx;
+          color: #666;
         }
 
-  &__stat-label {
-          font-size: 24rpx;
-    color: #666;
-  }
+        .performance-value {
+          font-size: 36rpx;
+          font-weight: 600;
+          color: #52c41a;
+        }
 
-  &__performance-card {
-    background: #fff;
-    border-radius: 24rpx;
-    padding: 32rpx;
-    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
-  }
+        .performance-time {
+          font-size: 28rpx;
+          color: #1a1a1a;
+          font-weight: 500;
+        }
+      }
 
-  &__performance-item {
-    &:not(:last-child) {
-      margin-bottom: 24rpx;
-      padding-bottom: 4rpx;
+      .progress-wrapper {
+        .progress-bg {
+          height: 16rpx;
+          background: #f0f0f0;
+          border-radius: 8rpx;
+          overflow: hidden;
+
+          .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #52c41a 0%, #95de64 100%);
+            border-radius: 8rpx;
+            transition: width 0.3s ease;
+          }
+        }
+      }
     }
   }
 
-  &__performance-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12rpx;
-  }
-
-  &__performance-label {
-    font-size: 30rpx;
-    color: #666;
-    font-weight: normal;
-  }
-
-  &__performance-value {
-    font-size: 36rpx;
-    font-weight: 600;
-    color: #1a1a1a;
-  }
-
-  &__performance-badge {
-    color: #666;
-    font-size: 30rpx;
-    font-weight: normal;
-    white-space: nowrap;
-  }
-
-  &__progress-container {
-    width: 100%;
-    height: 12rpx;
-    background: #f0f0f0;
-    border-radius: 6rpx;
-    overflow: hidden;
-  }
-
-  &__progress-bar {
-    height: 100%;
-    background: #52c41a;
-    border-radius: 6rpx;
-    transition: width 0.3s ease;
-  }
-
-  &__menu-card {
+  // 设置列表
+  .settings-list {
     background: #fff;
     border-radius: 24rpx;
     overflow: hidden;
-    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
-  }
+    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
 
-  &__menu-item {
-    display: flex;
-    align-items: center;
-    gap: 24rpx;
-    padding: 32rpx;
-    cursor: pointer;
-    touch-action: manipulation;
-    transition: all 0.2s ease;
+    .setting-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32rpx;
+      transition: background-color 0.2s;
 
-    &:active {
-      background: #f8f9fa;
+      &:active {
+        background-color: #f5f5f5;
+      }
+
+      .setting-left {
+        display: flex;
+        align-items: center;
+        flex: 1;
+
+        .setting-icon {
+          width: 80rpx;
+          height: 80rpx;
+          background: #f5f5f5;
+          border-radius: 16rpx;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 24rpx;
+        }
+
+        .setting-content {
+          .setting-title {
+            display: block;
+            font-size: 30rpx;
+            color: #1a1a1a;
+            margin-bottom: 8rpx;
+          }
+
+          .setting-desc {
+            display: block;
+            font-size: 26rpx;
+            color: #999;
+          }
+        }
+      }
+    }
+
+    .setting-divider {
+      height: 2rpx;
+      background: #f0f0f0;
+      margin-left: 136rpx;
     }
   }
 
-  &__menu-icon {
-    width: 80rpx;
-    height: 80rpx;
-    background: #f5f5f5;
-    border-radius: 20rpx;
+  // 退出登录
+  .logout-section {
+    margin-top: 32rpx;
+    padding: 0 32rpx 32rpx;
+
+    .logout-button {
       display: flex;
       align-items: center;
       justify-content: center;
-    flex-shrink: 0;
-    }
-
-  &__menu-content {
-      flex: 1;
-    min-width: 0;
-    }
-
-  &__menu-title {
-    font-size: 32rpx;
-    font-weight: 500;
-      color: #1a1a1a;
-    margin-bottom: 8rpx;
-    }
-
-  &__menu-desc {
-      font-size: 24rpx;
-    color: #999;
-    white-space: normal;
-    word-wrap: break-word;
-    line-height: 1.4;
-    }
-
-  &__menu-arrow {
-    color: #999;
-    flex-shrink: 0;
-    }
-
-  &__menu-divider {
-    height: 1rpx;
-    background: #f0f0f0;
-    margin-left: 104rpx;
-  }
-
-  &__logout-btn {
-    width: 100%;
-    min-height: 96rpx;
-    border-radius: 24rpx;
-    border: 2rpx solid #ff4d4f;
-    color: #ff4d4f;
-    font-size: 32rpx;
-    font-weight: 500;
-    background: transparent;
-    touch-action: manipulation;
-
-    &:active {
-      transform: scale(0.98);
-      background: rgba(255, 77, 79, 0.02);
-    }
-  }
-
-  // 响应式断点
-  @media (max-width: 750rpx) {
-    &__content {
-      padding: 24rpx;
-    }
-
-    &__user-card,
-    &__section {
-      margin-bottom: 24rpx;
-      }
-
-    &__user-header {
-      gap: 20rpx;
-      margin-bottom: 20rpx;
-      }
-
-    &__user-name {
-      font-size: 32rpx;
-  }
-
-    &__edit-btn,
-    &__avatar-edit {
-      width: 40rpx;
-      height: 40rpx;
-    }
-
-    &__section-title {
-      font-size: 28rpx;
-      margin-bottom: 20rpx;
-    }
-
-    &__stats-grid {
       gap: 16rpx;
-    }
-
-    &__stat-card,
-    &__performance-card,
-    &__menu-card {
+      background: #fff;
+      border: 2rpx solid #ff4d4f;
+      border-radius: 24rpx;
       padding: 24rpx;
-    }
+      transition: all 0.2s;
 
-    &__stat-icon {
-      width: 56rpx;
-      height: 56rpx;
-        }
-
-    &__stat-value {
-      font-size: 36rpx;
-    }
-
-    &__menu-item {
-      padding: 24rpx;
-      gap: 20rpx;
-    }
-
-    &__menu-icon {
-      width: 64rpx;
-      height: 64rpx;
-      background: #f5f5f5;
-    }
-
-    &__menu-title {
-      font-size: 28rpx;
-    }
-
-    &__menu-desc {
-      font-size: 22rpx;
-    }
-
-    &__menu-divider {
-      margin-left: 84rpx;
+      &:active {
+        background: rgba(255, 77, 79, 0.05);
       }
 
-    &__logout-btn {
-      min-height: 88rpx;
-      font-size: 30rpx;
+      .logout-text {
+        font-size: 32rpx;
+        color: #ff4d4f;
+        font-weight: 500;
+      }
     }
   }
 }

@@ -84,6 +84,7 @@
     color: #1a1a1a;
     margin-bottom: 24rpx;
     white-space: nowrap;
+    display: block;
   }
 
   // 帮助分类网格
@@ -390,7 +391,7 @@
   }
 
   // 响应式适配
-  @media (max-width: 750rpx) {
+  &.mobile-layout--compact {
     &__content {
       padding: 0 24rpx 20rpx;
     }
@@ -402,6 +403,7 @@
 
     &__section-title {
       font-size: 32rpx;
+    display: block;
     }
 
     &__categories-grid {
@@ -469,4 +471,4 @@
       gap: 12rpx;
     }
   }
-} 
+}

@@ -250,8 +250,8 @@
   }
 }
 
-// 响应式适配
-@media (max-height: 600px) {
+// 高度受限适配
+.login-page--short {
   .login-header {
     margin-bottom: var(--spacing-4);
     
@@ -276,7 +276,7 @@
 }
 
 // 小屏幕适配
-@media (max-width: 375px) {
+.login-page--compact {
   .login-container {
     padding: 0 var(--spacing-3);
   }

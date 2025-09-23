@@ -379,25 +379,21 @@
 }
 
 // 响应式适配
-@media (max-width: 375px) {
-  .sku-search-page {
+.mobile-layout--compact .sku-search-page {
+  padding: 16rpx;
+
+  &__search-bar {
     padding: 16rpx;
+  }
 
-    &__search-bar {
-      padding: 16rpx;
-    }
-
-    &__result-card {
-      padding: 16rpx;
-    }
+  &__result-card {
+    padding: 16rpx;
   }
 }
 
 // 横屏适配
-@media (orientation: landscape) and (max-height: 500px) {
-  .sku-search-page {
-    &__suggestions {
-      max-height: 200rpx;
-    }
+.mobile-layout--landscape.mobile-layout--short .sku-search-page {
+  &__suggestions {
+    max-height: 200rpx;
   }
-} 
+}

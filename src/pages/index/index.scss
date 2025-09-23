@@ -8,7 +8,7 @@
   }
 
   &__content {
-    padding-bottom: 20px;
+    padding-bottom: 40rpx;
   }
 
   // 工作流概览样式
@@ -215,90 +215,88 @@
 }
 
 // 移动端适配
-@media (max-width: 750rpx) {
-  .index-page {
-    // 工作流概览
-    &__overview-container {
-      padding: 0 24rpx;
-    }
+.mobile-layout--compact.index-page {
+  // 工作流概览
+  &__overview-container {
+    padding: 0 24rpx;
+  }
 
-    &__overview-card {
-      padding: 24rpx;
-      border-radius: 20rpx;
-    }
+  &__overview-card {
+    padding: 24rpx;
+    border-radius: 20rpx;
+  }
 
-    &__overview-title {
-      font-size: 32rpx;
-      margin-bottom: 24rpx;
-    }
+  &__overview-title {
+    font-size: 32rpx;
+    margin-bottom: 24rpx;
+  }
 
-    &__overview-stats {
-      gap: 16rpx;
-      margin-bottom: 24rpx;
-    }
+  &__overview-stats {
+    gap: 16rpx;
+    margin-bottom: 24rpx;
+  }
 
-    &__stat-item {
-      padding: 20rpx;
-    }
+  &__stat-item {
+    padding: 20rpx;
+  }
 
-    &__stat-value {
-      font-size: 44rpx;
-    }
+  &__stat-value {
+    font-size: 44rpx;
+  }
 
-    &__stat-label {
-      font-size: 22rpx;
-    }
+  &__stat-label {
+    font-size: 22rpx;
+  }
 
-    &__metrics {
-      gap: 16rpx;
-    }
+  &__metrics {
+    gap: 16rpx;
+  }
 
-    &__metric-item {
-      padding: 20rpx;
-    }
+  &__metric-item {
+    padding: 20rpx;
+  }
 
-    // 快速操作
-    &__quick-actions {
-      margin: 24rpx 0;
-    }
+  // 快速操作
+  &__quick-actions {
+    margin: 24rpx 0;
+  }
 
-    &__actions-container {
-      padding: 0 24rpx;
-    }
+  &__actions-container {
+    padding: 0 24rpx;
+  }
 
-    &__actions-card {
-      padding: 24rpx;
-      border-radius: 20rpx;
-    }
+  &__actions-card {
+    padding: 24rpx;
+    border-radius: 20rpx;
+  }
 
-    &__actions-title {
-      font-size: 30rpx;
-      margin-bottom: 20rpx;
-    }
+  &__actions-title {
+    font-size: 30rpx;
+    margin-bottom: 20rpx;
+  }
 
-    &__actions-grid {
-      gap: 16rpx;
-    }
+  &__actions-grid {
+    gap: 16rpx;
+  }
 
-    &__action-item {
-      padding: 20rpx;
-      min-height: 100rpx;
-      gap: 12rpx;
-    }
+  &__action-item {
+    padding: 20rpx;
+    min-height: 100rpx;
+    gap: 12rpx;
+  }
 
-    &__action-icon {
-      width: 40rpx;
-      height: 40rpx;
-      border-radius: 20rpx;
-    }
+  &__action-icon {
+    width: 40rpx;
+    height: 40rpx;
+    border-radius: 20rpx;
+  }
 
-    &__action-title {
-      font-size: 26rpx;
-    }
+  &__action-title {
+    font-size: 26rpx;
+  }
 
-    &__action-description {
-      font-size: 22rpx;
-    }
+  &__action-description {
+    font-size: 22rpx;
   }
 }
 

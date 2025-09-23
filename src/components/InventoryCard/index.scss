@@ -190,59 +190,55 @@
 }
 
 // 移动端适配
-@media (max-width: 375px) {
-  .inventory-card {
-    padding: 24rpx;
-    margin-bottom: 16rpx;
+.mobile-layout--compact .inventory-card {
+  padding: 24rpx;
+  margin-bottom: 16rpx;
 
-    &__title {
-      font-size: 28rpx;
-    }
+  &__title {
+    font-size: 28rpx;
+  }
 
-    &__quantity {
-      font-size: 32rpx;
-    }
+  &__quantity {
+    font-size: 32rpx;
+  }
 
-    &__status-text,
-    &__unit {
-      font-size: 20rpx;
-    }
+  &__status-text,
+  &__unit {
+    font-size: 20rpx;
+  }
 
-    &__category,
-    &__label,
-    &__value,
-    &__action-text {
-      font-size: 22rpx;
-    }
+  &__category,
+  &__label,
+  &__value,
+  &__action-text {
+    font-size: 22rpx;
+  }
 
-    &__row {
-      gap: 16rpx;
-      margin-bottom: 12rpx;
-    }
+  &__row {
+    gap: 16rpx;
+    margin-bottom: 12rpx;
+  }
 
-    &__actions {
-      gap: 12rpx;
-      padding-top: 16rpx;
-    }
+  &__actions {
+    gap: 12rpx;
+    padding-top: 16rpx;
+  }
 
-    &__action-btn {
-      padding: 14rpx 16rpx;
-      gap: 6rpx;
-    }
+  &__action-btn {
+    padding: 14rpx 16rpx;
+    gap: 6rpx;
   }
 }
 
 // 横屏适配
-@media (orientation: landscape) and (max-height: 500px) {
-  .inventory-card {
+.mobile-layout--landscape.mobile-layout--short .inventory-card {
+  margin-bottom: 16rpx;
+  
+  &__content {
     margin-bottom: 16rpx;
-    
-    &__content {
-      margin-bottom: 16rpx;
-    }
-    
-    &__row {
-      margin-bottom: 12rpx;
-    }
   }
-} 
+  
+  &__row {
+    margin-bottom: 12rpx;
+  }
+}

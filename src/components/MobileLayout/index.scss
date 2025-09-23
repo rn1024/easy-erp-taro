@@ -2,7 +2,6 @@
 
 .mobile-layout {
   min-height: 100vh;
-  min-height: 100dvh; // 动态视口高度
   background-color: #f5f5f7; // 微信小程序背景色
   display: flex;
   flex-direction: column;
@@ -193,67 +192,61 @@
 // 确保内容区域不会被TabBar遮挡
 .mobile-layout--with-tabbar {
   .mobile-layout__content {
-    padding-bottom: 120rpx; // TabBar高度
+    padding-bottom: calc(env(safe-area-inset-bottom));
   }
 }
 
 // 移动端适配
-@media (max-width: 375px) {
-  .mobile-layout {
-    font-size: 13px;
-    
-    &__nav {
-      height: 80rpx;
-      padding: 0 24rpx;
-    }
-    
-    &__nav-title-text {
-      font-size: 28rpx;
-    }
-    
-    &__user-info {
-      margin: 12rpx 16rpx;
-      padding: 24rpx;
-    }
+.mobile-layout--compact.mobile-layout {
+  font-size: 26rpx;
+
+  .mobile-layout__nav {
+    height: 80rpx;
+    padding: 0 24rpx;
   }
-  
-  .wechat-container {
-    max-width: 100%;
+
+  .mobile-layout__nav-title-text {
+    font-size: 28rpx;
+  }
+
+  .mobile-layout__user-info {
+    margin: 12rpx 16rpx;
+    padding: 24rpx;
   }
 }
 
-@media (min-width: 376px) and (max-width: 414px) {
-  .mobile-layout {
-    font-size: 15px;
-  }
+.mobile-layout--compact .wechat-container {
+  max-width: 100%;
+}
+
+.mobile-layout--medium:not(.mobile-layout--compact).mobile-layout {
+  font-size: 30rpx;
 }
 
 // 横屏适配
-@media (orientation: landscape) and (max-height: 500px) {
-  .mobile-layout {
-    font-size: 12px;
-    
-    &__user-info {
-      margin: 8rpx 16rpx;
-      padding: 16rpx 24rpx;
-    }
-    
-    &__user-welcome {
-      font-size: 28rpx;
-    }
-    
-    &__user-role {
-      font-size: 22rpx;
-    }
+.mobile-layout--landscape.mobile-layout--short.mobile-layout {
+  font-size: 24rpx;
+
+  .mobile-layout__user-info {
+    margin: 8rpx 16rpx;
+    padding: 16rpx 24rpx;
   }
-  
-  .wechat-container {
-    max-width: 100%;
+
+  .mobile-layout__user-welcome {
+    font-size: 28rpx;
   }
-  
-  .mobile-landscape-hide {
-    display: none;
+
+  .mobile-layout__user-role {
+    font-size: 22rpx;
   }
+}
+
+.mobile-layout--landscape .wechat-container {
+  max-width: 100%;
+}
+
+.mobile-layout--landscape .mobile-landscape-hide {
+  display: none;
 }
 
 // 键盘弹起时的适配

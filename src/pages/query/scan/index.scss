@@ -290,25 +290,21 @@
 }
 
 // 响应式适配
-@media (max-width: 375px) {
-  .scan-page {
-    padding: 16rpx;
+.mobile-layout--compact .scan-page {
+  padding: 16rpx;
 
-    &__camera-area {
-      padding: 32rpx 16rpx;
-    }
+  &__camera-area {
+    padding: 32rpx 16rpx;
   }
 }
 
 // 横屏适配
-@media (orientation: landscape) and (max-height: 500px) {
-  .scan-page {
-    &__camera-area {
-      padding: 24rpx 16rpx;
+.mobile-layout--landscape.mobile-layout--short .scan-page {
+  &__camera-area {
+    padding: 24rpx 16rpx;
 
-      &-desc {
-        margin-bottom: 24rpx;
-      }
+    &-desc {
+      margin-bottom: 24rpx;
     }
   }
 }

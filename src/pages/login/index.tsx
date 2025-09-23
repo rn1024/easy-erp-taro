@@ -5,10 +5,12 @@ import Taro from '@tarojs/taro'
 import { useUserStore } from '@/stores/userStore'
 import { FormItem, Card, Icon } from '@/components/common'
 import type { LoginForm } from '@/types/admin'
+import useResponsive from '@/hooks/useResponsive'
 import './index.scss'
 
 const LoginPage: React.FC = () => {
   const { login, loading, error, isLoggedIn } = useUserStore()
+  const responsive = useResponsive()
   const [formData, setFormData] = useState<LoginForm>({
     username: '',
     password: ''
@@ -92,8 +94,16 @@ const LoginPage: React.FC = () => {
     setFormData(credentials[type])
   }
 
+  const pageClass = [
+    'login-page',
+    responsive.isCompact ? 'login-page--compact' : '',
+    responsive.isMedium ? 'login-page--medium' : '',
+    responsive.isShort ? 'login-page--short' : '',
+    responsive.isLandscape ? 'login-page--landscape' : ''
+  ].filter(Boolean).join(' ')
+
   return (
-    <View className='login-page'>
+    <View className={pageClass}>
       <View className='login-container'>
         {/* Logo区域 */}
         <View className='login-header'>

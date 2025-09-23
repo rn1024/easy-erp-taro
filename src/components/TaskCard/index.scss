@@ -154,58 +154,56 @@
 }
 
 // 移动端适配 (参考首页组件的750rpx断点)
-@media (max-width: 750rpx) {
-  .task-card {
-    padding: 24rpx;
-    margin-bottom: 20rpx;
-    border-radius: 20rpx;
-    
-    &__title {
-      font-size: 28rpx;
-      margin-bottom: 10rpx;
-    }
-    
-    &__meta {
-      gap: 16rpx;
-    }
-    
-    &__status {
-      padding: 6rpx 12rpx;
-      font-size: 22rpx;
-      min-height: 44rpx;
-    }
-    
-    &__status-text {
-      font-size: 22rpx;
-    }
-    
-    &__priority {
-      font-size: 22rpx;
-    }
-    
-    &__description {
-      font-size: 24rpx;
-      margin-bottom: 16rpx;
-    }
-    
-    &__progress-text,
-    &__due-date,
-    &__assignee-name {
-      font-size: 22rpx;
-    }
-    
-    &__avatar {
-      width: 56rpx;
-      height: 56rpx;
-    }
-    
-    &__progress-bar {
-      height: 6rpx;
-    }
-    
-    &__footer {
-      padding-top: 16rpx;
-    }
+.mobile-layout--compact .task-card {
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  border-radius: 20rpx;
+  
+  &__title {
+    font-size: 28rpx;
+    margin-bottom: 10rpx;
+  }
+  
+  &__meta {
+    gap: 16rpx;
+  }
+  
+  &__status {
+    padding: 6rpx 12rpx;
+    font-size: 22rpx;
+    min-height: 44rpx;
+  }
+  
+  &__status-text {
+    font-size: 22rpx;
+  }
+  
+  &__priority {
+    font-size: 22rpx;
+  }
+  
+  &__description {
+    font-size: 24rpx;
+    margin-bottom: 16rpx;
+  }
+  
+  &__progress-text,
+  &__due-date,
+  &__assignee-name {
+    font-size: 22rpx;
+  }
+  
+  &__avatar {
+    width: 56rpx;
+    height: 56rpx;
+  }
+  
+  &__progress-bar {
+    height: 6rpx;
+  }
+  
+  &__footer {
+    padding-top: 16rpx;
   }
 }
 

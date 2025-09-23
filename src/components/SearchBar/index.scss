@@ -78,20 +78,19 @@
 }
 
 // 小屏幕适配
-@media screen and (max-width: 375px) {
-  .search-bar {
-    &__input-wrapper {
-      height: 64rpx;
-      padding: 0 20rpx;
-      border-radius: 16rpx;
-    }
-
-    &__input {
-      font-size: 28rpx;
-    }
-
-    &__placeholder {
-      font-size: 28rpx;
-    }
+.mobile-layout--compact .search-bar,
+.search-bar--compact {
+  &__input-wrapper {
+    height: 64rpx;
+    padding: 0 20rpx;
+    border-radius: 16rpx;
   }
-} 
+
+  &__input {
+    font-size: 28rpx;
+  }
+
+  &__placeholder {
+    font-size: 28rpx;
+  }
+}

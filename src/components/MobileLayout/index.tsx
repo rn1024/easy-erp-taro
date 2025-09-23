@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, createContext } from 'react'
 import { View, Text } from '@tarojs/components'
 import { SafeArea, Loading } from '@nutui/nutui-react-taro'
 import { MaterialIcons } from 'taro-icons'
 import Taro from '@tarojs/taro'
 import { useUserStore } from '@/stores/userStore'
+import useResponsive, { type ResponsiveState } from '@/hooks/useResponsive'
 import './index.scss'
 
 interface MobileLayoutProps {
@@ -32,6 +33,17 @@ interface ErrorInfo {
   componentStack: string
   [key: string]: unknown
 }
+
+export const ResponsiveContext = createContext<ResponsiveState>({
+  width: 375,
+  height: 667,
+  pixelRatio: 2,
+  isCompact: true,
+  isMedium: true,
+  isLarge: false,
+  isLandscape: false,
+  isShort: false
+})
 
 // 错误边界组件
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
@@ -87,6 +99,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   errorBoundary = true
 }) => {
   const { userInfo } = useUserStore()
+  const responsive = useResponsive()
   const [currentPage, setCurrentPage] = useState<string>('')
 
   useEffect(() => {
@@ -120,8 +133,27 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
     'pages/profile/index'
   ].includes(currentPage)
 
+  const responsiveClassNames = [
+    responsive.isCompact ? 'mobile-layout--compact' : '',
+    responsive.isMedium ? 'mobile-layout--medium' : '',
+    responsive.isLarge ? 'mobile-layout--large' : '',
+    responsive.isLandscape ? 'mobile-layout--landscape' : '',
+    responsive.isShort ? 'mobile-layout--short' : ''
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   const layoutContent = (
-    <View className={`mobile-layout ${className} ${isTabBarPage ? 'mobile-layout--with-tabbar' : ''}`}>
+    <View
+      className={[
+        'mobile-layout',
+        className,
+        responsiveClassNames,
+        isTabBarPage ? 'mobile-layout--with-tabbar' : ''
+      ].filter(Boolean).join(' ')}
+      data-responsive-width={responsive.width}
+      data-responsive-height={responsive.height}
+    >
       {showSafeArea && <SafeArea position='top' />}
       
       {/* 自定义导航栏 */}
@@ -179,13 +211,19 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
 
   if (errorBoundary) {
     return (
-      <ErrorBoundary>
-        {layoutContent}
-      </ErrorBoundary>
+      <ResponsiveContext.Provider value={responsive}>
+        <ErrorBoundary>
+          {layoutContent}
+        </ErrorBoundary>
+      </ResponsiveContext.Provider>
     )
   }
 
-  return layoutContent
+  return (
+    <ResponsiveContext.Provider value={responsive}>
+      {layoutContent}
+    </ResponsiveContext.Provider>
+  )
 }
 
 export default MobileLayout

@@ -187,8 +187,8 @@
   }
 }
 
-// 移动端适配 - 统一使用375px断点
-@media (max-width: 375px) {
+// 移动端适配 - 统一使用紧凑模式
+.mobile-layout--compact {
   .data-table {
     &__header-cell,
     &__cell {
@@ -259,7 +259,7 @@
 }
 
 // 横屏适配
-@media (orientation: landscape) and (max-height: 500px) {
+.mobile-layout--landscape.mobile-layout--short {
   .data-table {
     &__header-cell,
     &__cell {

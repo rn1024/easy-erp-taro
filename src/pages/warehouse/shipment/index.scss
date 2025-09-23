@@ -55,15 +55,15 @@
   }
   
   &__value {
-    font-size: 36rpx;
+    font-size: 44rpx;
     font-weight: 700;
     color: #1a1a1a;
-    margin-bottom: 4rpx;
+    margin-bottom: 8rpx;
     display: block;
   }
   
   &__label {
-    font-size: 24rpx;
+    font-size: 32rpx;
     color: #6b7280;
     display: block;
   }
@@ -85,10 +85,10 @@
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
   
   &__title {
-    font-size: 28rpx;
+    font-size: 36rpx;
     font-weight: 600;
     color: #1a1a1a;
-    margin-bottom: 20rpx;
+    margin-bottom: 24rpx;
     display: block;
   }
 }
@@ -106,18 +106,18 @@
   border-radius: 12rpx;
   
   &__count {
-    font-size: 28rpx;
+    font-size: 36rpx;
     font-weight: 700;
           color: #1a1a1a;
-          margin-bottom: 8rpx;
+          margin-bottom: 12rpx;
     display: block;
         }
         
   &__label {
-    font-size: 22rpx;
+    font-size: 30rpx;
           color: #6b7280;
     display: block;
-          line-height: 1.2;
+          line-height: 1.3;
         }
       }
 
@@ -156,23 +156,23 @@
   }
   
   &__title {
-    font-size: 32rpx;
+    font-size: 40rpx;
     font-weight: 600;
     color: #1a1a1a;
-    margin-bottom: 8rpx;
+    margin-bottom: 12rpx;
     display: block;
     line-height: 1.4;
   }
   
   &__meta {
-    font-size: 26rpx;
+    font-size: 34rpx;
     color: #6b7280;
-    margin-bottom: 8rpx;
+    margin-bottom: 12rpx;
     display: block;
   }
   
   &__fba {
-    font-size: 24rpx;
+    font-size: 32rpx;
     color: #3b82f6;
     font-weight: 500;
     display: block;
@@ -194,21 +194,21 @@
     }
     
     .progress-label {
-      font-size: 26rpx;
+      font-size: 34rpx;
       color: #6b7280;
     }
     
     .progress-value {
-      font-size: 26rpx;
+      font-size: 34rpx;
       font-weight: 600;
       color: #1a1a1a;
     }
     
     .progress-bar {
       width: 100%;
-      height: 8rpx;
+      height: 12rpx;
       background: #e5e7eb;
-      border-radius: 4rpx;
+      border-radius: 6rpx;
       overflow: hidden;
       
       .progress-fill {
@@ -252,14 +252,14 @@
       text-align: center;
   
   .summary-label {
-    font-size: 24rpx;
+    font-size: 32rpx;
       color: #6b7280;
-    margin-bottom: 8rpx;
+    margin-bottom: 12rpx;
     display: block;
   }
   
   .summary-value {
-      font-size: 28rpx;
+      font-size: 36rpx;
     font-weight: 600;
     color: #1a1a1a;
     display: block;
@@ -274,7 +274,7 @@
   touch-action: manipulation;
   
   .toggle-text {
-    font-size: 26rpx;
+    font-size: 34rpx;
     color: #6b7280;
     margin-right: 8rpx;
   }
@@ -302,7 +302,7 @@
   }
   
   .status-btn-text {
-    font-size: 24rpx;
+    font-size: 32rpx;
     color: #3b82f6;
     margin-left: 8rpx;
   }
@@ -317,10 +317,10 @@
   }
   
   .section-title {
-    font-size: 30rpx;
+    font-size: 38rpx;
     font-weight: 600;
     color: #1a1a1a;
-    margin-bottom: 24rpx;
+    margin-bottom: 28rpx;
     display: block;
   }
 }
@@ -333,14 +333,14 @@
 
 .detail-item {
   .detail-label {
-    font-size: 24rpx;
+    font-size: 32rpx;
     color: #6b7280;
-    margin-bottom: 8rpx;
+    margin-bottom: 12rpx;
     display: block;
   }
   
   .detail-value {
-    font-size: 26rpx;
+    font-size: 34rpx;
     color: #1a1a1a;
     font-weight: 500;
     display: block;
@@ -358,7 +358,7 @@
       text-align: center;
       
       .empty-text {
-    font-size: 28rpx;
+    font-size: 36rpx;
     color: #9ca3af;
     margin-top: 24rpx;
   }
@@ -373,7 +373,7 @@
     margin-bottom: 32rpx;
     
     text {
-      font-size: 32rpx;
+      font-size: 40rpx;
       font-weight: 600;
       color: #1a1a1a;
     }
@@ -388,10 +388,10 @@
 .status-option {
   display: flex;
   align-items: center;
-  padding: 24rpx 16rpx;
+  padding: 28rpx 20rpx;
   margin-bottom: 16rpx;
   border-radius: 12rpx;
-  min-height: 88rpx; // 移动端触摸目标
+  min-height: 96rpx; // 移动端触摸目标
   transition: all 0.3s ease;
   
   &:active {
@@ -410,7 +410,7 @@
   }
   
   &__text {
-    font-size: 32rpx;
+    font-size: 40rpx;
     color: #1a1a1a;
     margin-left: 20rpx;
     flex: 1;
@@ -419,165 +419,109 @@
 
 
 
-// 移动端优化
-@media (max-width: 750rpx) {
-  .shipment-task-page {
-    padding: 16rpx;
+// 移动端优化 - 保持大字体
+.mobile-layout--compact .shipment-task-page {
+  padding: 20rpx;
+}
+
+.mobile-layout--compact .overview-cards {
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.mobile-layout--compact .overview-card {
+  padding: 24rpx;
+
+  &__icon {
+    width: 64rpx;
+    height: 64rpx;
   }
-  
-  .overview-cards {
-    gap: 12rpx;
-    margin-bottom: 16rpx;
-  }
-  
-  .overview-card {
-    padding: 20rpx;
-    
-    &__icon {
-      width: 56rpx;
-      height: 56rpx;
-    }
-    
-    &__value {
-      font-size: 32rpx;
-        }
-        
-    &__label {
-          font-size: 22rpx;
-        }
-      }
-  
-  .status-distribution {
-    padding: 20rpx;
-    
-    &__title {
-      font-size: 26rpx;
-    }
-  }
-  
-  .status-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12rpx;
-  }
-  
-  .status-item {
-    padding: 12rpx 8rpx;
-    
-    &__count {
-      font-size: 26rpx;
-    }
-    
-    &__label {
-      font-size: 20rpx;
-    }
-  }
-  
-  .shipment-card {
-    padding: 24rpx;
-    
-    &__title {
-      font-size: 30rpx;
-    }
-    
-    &__meta {
-      font-size: 24rpx;
-    }
-    
-    &__fba {
-      font-size: 22rpx;
-    }
-    
-    &__summary {
-      grid-template-columns: 1fr;
-      gap: 12rpx;
-      padding: 20rpx;
-    }
-  }
-  
-  .summary-item {
-    .summary-label {
-      font-size: 22rpx;
-    }
-    
-    .summary-value {
-      font-size: 26rpx;
-    }
-  }
-  
-  .detail-grid {
+}
+
+.mobile-layout--compact .status-distribution {
+  padding: 24rpx;
+}
+
+.mobile-layout--compact .status-grid {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+}
+
+.mobile-layout--compact .status-item {
+  padding: 16rpx 12rpx;
+}
+
+.mobile-layout--compact .shipment-card {
+  padding: 28rpx;
+
+  &__summary {
     grid-template-columns: 1fr;
     gap: 16rpx;
+    padding: 24rpx;
   }
-  
-  .toggle-btn .toggle-text {
-    font-size: 24rpx;
-  }
-  
-  .status-btn .status-btn-text {
-    font-size: 22rpx;
-  }
+}
+
+.mobile-layout--compact .detail-grid {
+  grid-template-columns: 1fr;
+  gap: 20rpx;
 }
 
 // 横屏适配
-@media (orientation: landscape) and (max-height: 500rpx) {
-  .shipment-task-page {
-    padding: 12rpx;
-    
-    &__search,
-    &__stats {
-      margin-bottom: 16rpx;
-    }
-  }
-  
-  .overview-cards {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .status-grid {
-    grid-template-columns: repeat(8, 1fr);
-      }
-      
-  .shipment-card {
-    padding: 20rpx;
-    
-    &__summary {
-      grid-template-columns: repeat(4, 1fr);
-    }
-    
-    &__details {
-      .detail-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-      }
-      
-  .status-options {
-    max-height: 40vh;
+.mobile-layout--landscape.mobile-layout--short .shipment-task-page {
+  padding: 12rpx;
+
+  &__search,
+  &__stats {
+    margin-bottom: 16rpx;
   }
 }
 
-// 平板适配
-@media (min-width: 750rpx) {
-  .status-grid {
-    grid-template-columns: repeat(8, 1fr);
-      }
-  
-  .shipment-card {
-    &__summary {
-      grid-template-columns: repeat(4, 1fr);
-    }
-    
-    &__details {
-      .detail-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-      }
-      
-  .shipment-task-page {
-    &__content {
-      max-width: 1200rpx;
-      margin: 0 auto;
+.mobile-layout--landscape.mobile-layout--short .overview-cards {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.mobile-layout--landscape.mobile-layout--short .status-grid {
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.mobile-layout--landscape.mobile-layout--short .shipment-card {
+  padding: 20rpx;
+
+  &__summary {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &__details {
+    .detail-grid {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
-} 
+}
+
+.mobile-layout--landscape.mobile-layout--short .status-options {
+  max-height: 40vh;
+}
+
+// 平板适配
+.mobile-layout--large .status-grid {
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.mobile-layout--large .shipment-card {
+  &__summary {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &__details {
+    .detail-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+.mobile-layout--large .shipment-task-page {
+  &__content {
+    max-width: 1200rpx;
+    margin: 0 auto;
+  }
+}

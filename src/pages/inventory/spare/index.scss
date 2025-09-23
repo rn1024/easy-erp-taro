@@ -202,95 +202,91 @@
 }
 
 // 移动端优化
-@media (max-width: 375px) {
-  .spare-inventory-page {
+.spare-inventory-page.mobile-layout--compact {
+  padding: 16rpx;
+
+  &__search {
+    padding: 12rpx 16rpx;
+    margin-bottom: 12rpx;
+
+    .search-input {
+      padding: 10rpx 14rpx;
+
+      .nut-input {
+        .nut-input__native {
+          font-size: 26rpx;
+        }
+      }
+    }
+
+    .filter-btn {
+      width: 44rpx;
+      height: 44rpx;
+    }
+  }
+
+  &__filters {
     padding: 16rpx;
+    margin-bottom: 12rpx;
 
-    &__search {
-      padding: 12rpx 16rpx;
-      margin-bottom: 12rpx;
-
-      .search-input {
-        padding: 10rpx 14rpx;
-
-        .nut-input {
-          .nut-input__native {
-            font-size: 26rpx;
-          }
-        }
-      }
-
-      .filter-btn {
-        width: 44rpx;
-        height: 44rpx;
-      }
-    }
-
-    &__filters {
-      padding: 16rpx;
-      margin-bottom: 12rpx;
-
-      .filter-chips {
-        .filter-label {
-          font-size: 24rpx;
-        }
-
-        .filter-chip {
-          padding: 10rpx 16rpx;
-          min-height: 44rpx;
-
-          Text {
-            font-size: 22rpx;
-          }
-        }
-      }
-    }
-
-    &__toolbar {
-      margin-bottom: 16rpx;
-
-      .add-btn {
-        height: 56rpx;
-        padding: 0 20rpx;
+    .filter-chips {
+      .filter-label {
         font-size: 24rpx;
-        gap: 6rpx;
       }
-    }
 
-    &__content {
-      .loading-state,
-      .empty-state {
-        padding: 60rpx 20rpx;
+      .filter-chip {
+        padding: 10rpx 16rpx;
+        min-height: 44rpx;
 
         Text {
-          font-size: 26rpx;
-
-          &.empty-text {
-            font-size: 28rpx;
-          }
-
-          &.empty-desc {
-            font-size: 22rpx;
-          }
+          font-size: 22rpx;
         }
       }
+    }
+  }
 
-      .inventory-list {
-        height: calc(100vh - 280rpx);
+  &__toolbar {
+    margin-bottom: 16rpx;
+
+    .add-btn {
+      height: 56rpx;
+      padding: 0 20rpx;
+      font-size: 24rpx;
+      gap: 6rpx;
+    }
+  }
+
+  &__content {
+    .loading-state,
+    .empty-state {
+      padding: 60rpx 20rpx;
+
+      Text {
+        font-size: 26rpx;
+
+        &.empty-text {
+          font-size: 28rpx;
+        }
+
+        &.empty-desc {
+          font-size: 22rpx;
+        }
       }
+    }
+
+    .inventory-list {
+      height: calc(100vh - 280rpx);
     }
   }
 }
 
 // 横屏适配
-@media (orientation: landscape) and (max-height: 500px) {
-  .spare-inventory-page {
-    padding: 16rpx;
+.spare-inventory-page.mobile-layout--landscape.mobile-layout--short {
+  padding: 16rpx;
 
-    &__content {
-      .inventory-list {
-        height: calc(100vh - 200rpx);
-      }
+  &__content {
+    .inventory-list {
+      height: calc(100vh - 200rpx);
     }
   }
-} 
+}
