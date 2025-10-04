@@ -1,73 +1,74 @@
 // NutUI 主题定制
-// 基于设计系统覆盖 NutUI 默认变量
+// 基于 ui/ 设计系统，通过 tokens.scss 统一管理
+// 参考: docs/ui-style-migration-6A.md#NutUI-主题变量完整映射表
 // 参考: https://nutui.jd.com/h5/react/2.x/#/zh-CN/component/configprovider
 
 // ==========================================
-// NutUI 主题变量覆盖
+// NutUI 主题变量覆盖 - 全部绑定到 tokens.scss
 // ==========================================
 
 // 主题色
-$primary-color: #478EF2;                    // 企业蓝
-$primary-color-start: #6BA4F5;              // 渐变起始色
-$primary-color-end: #1A73E8;                // 渐变结束色
-$primary-text-color: #478EF2;
+$primary-color: var(--color-brand);                      // 品牌蓝（已确认 #3b82f6）
+$primary-color-start: var(--color-primary-light);        // 渐变起始色
+$primary-color-end: var(--color-primary-dark);           // 渐变结束色
+$primary-text-color: var(--color-brand);
 
 // 辅助色
-$help-color: #86909C;                       // 科技灰
-$success-color: #00B578;
-$danger-color: #F53F3F;
-$warning-color: #FF9F00;
-$info-color: #478EF2;
+$help-color: var(--text-secondary);
+$success-color: var(--color-success);
+$danger-color: var(--color-error);
+$warning-color: var(--color-warning);
+$info-color: var(--color-info);
 
 // 中性色
-$white: #FFFFFF;
-$black: #000000;
-$title-color: #303133;                      // 标题色
-$title-color-2: #404450;                    // 次标题
-$text-color: #606266;                       // 主文本
-$text-color-2: #86909C;                     // 次要文本
-$text-color-3: #C0C4CC;                     // 辅助文本
-$disable-color: #E0E6ED;                    // 禁用色
-$background-color: #F5F7FA;                 // 页面背景
-$background-color-2: #FAFBFC;               // 组件背景
+$white: var(--color-white);
+$black: var(--color-black);
+$title-color: var(--text-primary);
+$title-color-2: var(--text-regular);
+$text-color: var(--text-regular);
+$text-color-2: var(--text-secondary);
+$text-color-3: var(--text-placeholder);
+$disable-color: var(--text-disabled);
+$background-color: var(--bg-body);
+$background-color-2: var(--bg-section);
 
 // 边框色
-$border-color: #E0E6ED;
+$border-color: var(--border-base);
 
-// 字体
-$font-family: "PingFang SC", "Helvetica Neue", Arial, "Microsoft YaHei", sans-serif;
+// 字体 - 对齐 ui/ system font stack
+$font-family: var(--font-family-base);
 
-// 字号系统
-$font-size-0: 20rpx;    // 10px
-$font-size-1: 24rpx;    // 12px
-$font-size-2: 28rpx;    // 14px - 基准
-$font-size-3: 32rpx;    // 16px
-$font-size-4: 36rpx;    // 18px
-$font-size-5: 40rpx;    // 20px
-$font-size-large: 36rpx;
-$font-size-base: 28rpx;
-$font-size-small: 24rpx;
+// 字号系统 - 绑定到 tokens，对齐 ui/ 基准字号 (16px)
+$font-size-0: 20rpx;               // 10px
+$font-size-1: var(--font-size-xs); // 12px
+$font-size-2: var(--font-size-sm); // 14px
+$font-size-3: var(--font-size-base); // 16px - 基准（对齐 ui/）
+$font-size-4: var(--font-size-lg); // 18px
+$font-size-5: var(--font-size-xl); // 20px
+$font-size-large: var(--font-size-lg);
+$font-size-base: var(--font-size-sm);  // 14px for NutUI components
+$font-size-small: var(--font-size-xs);
 
 // ==========================================
 // 组件定制
 // ==========================================
 
-// Button 按钮
+// Button 按钮 - 绑定到 tokens，对齐 ui/ 触控标准
 $button-primary-background-color: $primary-color;
 $button-primary-border-color: $primary-color;
-$button-default-height: 88rpx;              // 44px - 符合移动端最小触控区域
-$button-default-border-radius: 12rpx;
+$button-default-height: var(--btn-height-base);      // 44px 最小触控
+$button-default-border-radius: var(--btn-radius);    // 12px
 $button-default-font-size: $font-size-2;
-$button-small-height: 64rpx;
-$button-large-height: 96rpx;
+$button-small-height: var(--btn-height-sm);
+$button-large-height: var(--btn-height-lg);
 $button-loading-color: rgba(255, 255, 255, 0.5);
 $button-disabled-opacity: 0.5;
 
-// Cell 单元格
+// Cell 单元格 - 绑定到 tokens
 $cell-background: $white;
-$cell-border-radius: 16rpx;
-$cell-padding-v: 24rpx;
-$cell-padding-h: 32rpx;
+$cell-border-radius: var(--radius-md);
+$cell-padding-v: var(--spacing-3);
+$cell-padding-h: var(--spacing-4);
 $cell-font-size: $font-size-2;
 $cell-title-color: $title-color;
 $cell-title-font-size: $font-size-2;
@@ -75,37 +76,37 @@ $cell-sub-title-color: $text-color-2;
 $cell-sub-title-font-size: $font-size-1;
 $cell-value-color: $text-color;
 
-// Input 输入框
-$input-height: 88rpx;
-$input-border-radius: 12rpx;
+// Input 输入框 - 绑定到 tokens
+$input-height: var(--input-height-base);         // 44px 触控标准
+$input-border-radius: var(--input-radius);       // 12px
 $input-border: 2rpx solid $border-color;
 $input-background: $white;
-$input-padding: 0 24rpx;
+$input-padding: 0 var(--input-padding-x);
 $input-font-size: $font-size-2;
 $input-placeholder-color: $text-color-3;
 $input-disabled-color: $disable-color;
 $input-focus-border-color: $primary-color;
-$input-focus-box-shadow: 0 0 0 4rpx rgba(71, 142, 242, 0.1);
+$input-focus-box-shadow: 0 0 0 4rpx var(--color-primary-bg);
 
-// Form 表单
-$form-item-margin-bottom: 32rpx;
+// Form 表单 - 绑定到 tokens
+$form-item-margin-bottom: var(--spacing-4);
 $form-label-font-size: $font-size-2;
 $form-label-width: 200rpx;
-$form-label-margin-right: 24rpx;
+$form-label-margin-right: var(--spacing-3);
 $form-label-text-align: right;
 $form-label-required-color: $danger-color;
 
 // Table 表格
 $table-border-color: $border-color;
 $table-background: $white;
-$table-header-background: #F5F7FA;
+$table-header-background: var(--bg-body);
 $table-header-font-weight: 600;
 $table-header-color: $text-color-2;
 $table-header-font-size: $font-size-2;
 $table-body-font-size: $font-size-2;
 $table-cell-padding: 24rpx 32rpx;
-$table-striped-background: #FAFBFC;
-$table-hover-background: #F5F7FA;
+$table-striped-background: var(--bg-section);
+$table-hover-background: var(--bg-body);
 
 // Dialog 对话框
 $dialog-width: 600rpx;
@@ -128,13 +129,13 @@ $tag-font-size: $font-size-1;
 $tag-border-radius: 8rpx;
 $tag-background-color: $background-color;
 $tag-color: $text-color;
-$tag-primary-background-color: rgba(71, 142, 242, 0.1);
+$tag-primary-background-color: var(--color-primary-bg);
 $tag-primary-color: $primary-color;
-$tag-success-background-color: rgba(0, 181, 120, 0.1);
+$tag-success-background-color: var(--color-success-light);
 $tag-success-color: $success-color;
-$tag-danger-background-color: rgba(245, 63, 63, 0.1);
+$tag-danger-background-color: var(--color-error-light);
 $tag-danger-color: $danger-color;
-$tag-warning-background-color: rgba(255, 159, 0, 0.1);
+$tag-warning-background-color: var(--color-warning-light);
 $tag-warning-color: $warning-color;
 
 // Tabs 标签页
@@ -154,10 +155,10 @@ $searchbar-font-size: $font-size-2;
 $searchbar-placeholder-color: $text-color-3;
 $searchbar-padding: 0 24rpx;
 
-// Navbar 导航栏
-$navbar-height: 96rpx;
-$navbar-background: $white;
-$navbar-box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+// Navbar 导航栏 - 绑定到 tokens，对齐 ui/ mobile-header-height
+$navbar-height: var(--nav-height);              // 44px
+$navbar-background: var(--nav-bg);
+$navbar-box-shadow: var(--nav-shadow);
 $navbar-title-font-size: $font-size-3;
 $navbar-title-font-weight: 600;
 $navbar-title-color: $title-color;
@@ -177,11 +178,11 @@ $list-item-padding: 24rpx 32rpx;
 $list-item-border-bottom: 2rpx solid $border-color;
 $list-item-font-size: $font-size-2;
 
-// Card 卡片
-$card-background: $white;
-$card-border-radius: 24rpx;
-$card-box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
-$card-padding: 32rpx;
+// Card 卡片 - 绑定到 tokens，对齐 ui/ card style
+$card-background: var(--card-bg);
+$card-border-radius: var(--card-radius);         // 8px
+$card-box-shadow: var(--card-shadow);
+$card-padding: var(--card-padding);
 $card-header-font-size: $font-size-3;
 $card-header-font-weight: 600;
 $card-body-font-size: $font-size-2;
@@ -260,5 +261,10 @@ $toast-padding: 24rpx 32rpx;
 $loading-color: $primary-color;
 
 // Skeleton 骨架屏
-$skeleton-background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+$skeleton-background: linear-gradient(
+  90deg,
+  var(--color-gray-100) 25%,
+  var(--color-gray-200) 37%,
+  var(--color-gray-100) 63%
+);
 $skeleton-animation-duration: 1.4s;

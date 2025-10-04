@@ -1,0 +1,278 @@
+{
+  "project": "easy-erp-taro",
+  "repo": ".",
+  "branch": "current",
+  "stage": "Align",
+  "active_task_ids": [
+    "TASK-UI_STYLE-002"
+  ],
+  "tasks": [
+    {
+      "task_id": "TASK-UI_STYLE-001",
+      "title": "品牌色确认（--color-brand 别名策略）",
+      "stage": "Approve",
+      "status": "Done",
+      "owner": "CURRENT_AGENT",
+      "depends_on": [],
+      "spec_refs": [
+        "docs/architecture.md#contract-design-tokens",
+        "docs/ui-style-migration-6A.md#色彩体系冲突解决方案（细化）"
+      ],
+      "artifacts": [
+        "docs/charter.align.yaml",
+        "docs/ui-style-migration-6A.md",
+        "docs/approvals/brand-color-confirmation.md"
+      ],
+      "coverage": "主色/链接色/按钮态",
+      "next_actions": [
+        "记录产品/设计签字时间（如需），其余事项交由 TASK-UI_STYLE-002"
+      ],
+      "evidence_pack": [
+        "docs/approvals/brand-color-confirmation.md"
+      ],
+      "handoff": null,
+      "approved_by": "USER",
+      "approved_at": "2025-10-05T00:00:00Z"
+    },
+    {
+      "task_id": "TASK-QA_BASELINE-001",
+      "title": "截图基线建立",
+      "stage": "Archive",
+      "status": "Superseded",
+      "owner": "QA/FE",
+      "depends_on": [],
+      "spec_refs": [
+        "docs/ui-style-migration-6A.md#截图基线规范（执行前建立）"
+      ],
+      "artifacts": [
+        "docs/baseline/",
+        "docs/baseline/README.md",
+        "docs/baseline/pages.weapp.before.yaml",
+        "docs/baseline/shots.weapp.query-scan.yaml",
+        "docs/baseline/shots.weapp.spare-inventory.yaml",
+        "docs/baseline/scripts.weapp.query-scan.result.md",
+        "docs/baseline/scripts.weapp.spare-inventory.form-modal.md",
+        "docs/checklists/baseline.checklist.md",
+        ".github/PULL_REQUEST_TEMPLATE/migration-baseline.md"
+      ],
+      "coverage": "覆盖列表/详情/表单/弹层/结果与组件态（核心 5 页优先）",
+      "next_actions": [
+        "由 TASK-UI_STYLE-002 合并执行"
+      ],
+      "evidence_pack": [],
+      "handoff": null,
+      "approved_by": "USER",
+      "approved_at": "2025-10-05T00:06:00Z"
+    },
+    {
+      "task_id": "TASK-OKLCH-001",
+      "title": "OKLCH 兼容性验证",
+      "stage": "Archive",
+      "status": "Superseded",
+      "owner": "FE",
+      "depends_on": [],
+      "spec_refs": [
+        "docs/ui-style-migration-6A.md#oklch-兼容性验证与用例（详细）"
+      ],
+      "artifacts": [
+        "docs/ui-style-migration-6A.md",
+        "docs/compatibility/oklch-validation.md",
+        "docs/checklists/oklch.checklist.md",
+        ".github/PULL_REQUEST_TEMPLATE/migration-oklch.md"
+      ],
+      "coverage": "背景/文本/边框三类用法",
+      "next_actions": [
+        "由 TASK-UI_STYLE-002 合并执行"
+      ],
+      "evidence_pack": [],
+      "handoff": null,
+      "approved_by": "USER",
+      "approved_at": "2025-10-05T00:06:00Z"
+    },
+    {
+      "task_id": "TASK-TOKENS-001",
+      "title": "令牌映射审查（差异矩阵）",
+      "stage": "Archive",
+      "status": "Superseded",
+      "owner": "FE",
+      "depends_on": [
+        "TASK-UI_STYLE-001"
+      ],
+      "spec_refs": [
+        "docs/architecture.md#contract-design-tokens"
+      ],
+      "artifacts": [
+        "docs/ui-style-migration-6A.md"
+      ],
+      "coverage": "全类 token 覆盖",
+      "next_actions": [
+        "由 TASK-UI_STYLE-002 合并执行"
+      ],
+      "evidence_pack": [],
+      "handoff": null
+    },
+    {
+      "task_id": "TASK-THEME_NUTUI-001",
+      "title": "NutUI 变量映射审查",
+      "stage": "Archive",
+      "status": "Superseded",
+      "owner": "FE",
+      "depends_on": [
+        "TASK-TOKENS-001"
+      ],
+      "spec_refs": [
+        "docs/architecture.md#contract-nutui-theme-map"
+      ],
+      "artifacts": [
+        "docs/ui-style-migration-6A.md"
+      ],
+      "coverage": "核心组件≥90%",
+      "next_actions": [
+        "由 TASK-UI_STYLE-002 合并执行"
+      ],
+      "evidence_pack": [],
+      "handoff": null
+    },
+    {
+      "task_id": "TASK-APPROVE-001",
+      "title": "审批与门禁（进入 Automate）",
+      "stage": "Archive",
+      "status": "Superseded",
+      "owner": "FE Lead",
+      "depends_on": [
+        "TASK-UI_STYLE-001",
+        "TASK-QA_BASELINE-001",
+        "TASK-OKLCH-001"
+      ],
+      "spec_refs": [
+        "docs/charter.align.yaml"
+      ],
+      "artifacts": [],
+      "coverage": "门禁项全覆盖",
+      "next_actions": [
+        "由 TASK-UI_STYLE-002 合并执行"
+      ],
+      "evidence_pack": [],
+      "handoff": null
+    },
+    {
+      "task_id": "TASK-UI_STYLE-002",
+      "title": "核心样式迁移执行（合并卡）",
+      "stage": "Assess",
+      "status": "Ready for Review",
+      "owner": "CURRENT_AGENT",
+      "depends_on": [
+        "TASK-UI_STYLE-001"
+      ],
+      "spec_refs": [
+        "docs/architecture.md#contract-design-tokens",
+        "docs/architecture.md#contract-nutui-theme-map",
+        "docs/ui-style-migration-6A.md"
+      ],
+      "artifacts": [
+        "src/styles/tokens.scss",
+        "src/styles/nutui-theme.scss",
+        "docs/baseline/README.md",
+        "docs/baseline/screenshot-checklist.md",
+        "docs/baseline/pages.weapp.before.yaml",
+        "docs/baseline/scripts.weapp.query-scan.result.md",
+        "docs/baseline/scripts.weapp.spare-inventory.form-modal.md",
+        "docs/baseline/shots.weapp.query-scan.yaml",
+        "docs/baseline/shots.weapp.spare-inventory.yaml",
+        "docs/compatibility/oklch-validation.md",
+        "docs/pr/template-task-ui_style_002.md",
+        "docs/tasks.atomize.md",
+        "docs/ui-style-migration-6A.md",
+        "docs/verification/build.log",
+        "docs/verification/lint.log"
+      ],
+      "coverage": "tokens 与 NutUI 主题覆盖 ≥90%，OKLCH 验证完成，lint/build 通过",
+      "completed_items": [
+        "✅ OKLCH 兼容性验证完成（结论：不支持，使用 sRGB）",
+        "✅ tokens.scss 对齐 ui/ 设计系统（品牌色、字体、间距、圆角、阴影）",
+        "✅ nutui-theme.scss 绑定语义 tokens（所有组件变量）",
+        "✅ lint 验证通过（无错误）",
+        "✅ build 验证通过（构建成功）",
+        "✅ 截图采集清单已准备（docs/baseline/screenshot-checklist.md）",
+        "✅ PR 模板已更新（docs/pr/template-task-ui_style_002.md）"
+      ],
+      "next_actions": [
+        "⏸️ 待用户采集核心 5 页 before/after 截图（需真机设备）",
+        "⏸️ 上传截图到 docs/baseline/weapp/{before,after}/",
+        "⏸️ 在 PR 中引用截图对比并说明视觉差异",
+        "⏸️ 提交 PR 并申请 Review"
+      ],
+      "evidence_pack": [
+        "docs/verification/lint.log",
+        "docs/verification/build.log",
+        "docs/baseline/README.md",
+        "docs/baseline/screenshot-checklist.md",
+        "docs/compatibility/oklch-validation.md",
+        "docs/pr/template-task-ui_style_002.md"
+      ],
+      "handoff": {
+        "to": "USER",
+        "reason": "需真机设备采集截图基线",
+        "instructions": "参考 docs/baseline/screenshot-checklist.md 采集核心 5 页 before/after 截图"
+      },
+      "approved_by": "USER",
+      "approved_at": "2025-10-04T19:30:26Z",
+      "updated_at": "2025-10-05T04:00:00Z"
+    }
+  ],
+  "agent": {
+    "name": "codex-cli-agent",
+    "session_ttl_minutes": 270
+  },
+  "context_digest": "UI 样式迁移完成：tokens 与 NutUI 主题已对齐 ui/ 设计系统，待采集截图并提交 PR",
+  "open_questions": [],
+  "resolved_questions": [
+    {
+      "question": "OKLCH 验证若仍不兼容是否接受"仅离线"策略",
+      "resolution": "已验证不支持，采用 sRGB 回退策略，仅在注释中保留 OKLCH 参考",
+      "resolved_at": "2025-10-05T03:30:00Z"
+    }
+  ],
+  "blocks": [
+    {
+      "blocker": "需真机设备采集核心 5 页 before/after 截图",
+      "impact": "无法提交完整 PR",
+      "mitigation": "已准备截图采集清单 docs/baseline/screenshot-checklist.md，待用户执行"
+    }
+  ],
+  "artifacts": [
+    "docs/charter.align.yaml",
+    "docs/architecture.md",
+    "docs/tasks.atomize.md",
+    "docs/ui-style-migration-6A.md"
+  ],
+  "gates": {
+    "contracts": [
+      "docs/architecture.md#contract-design-tokens",
+      "docs/architecture.md#contract-nutui-theme-map"
+    ],
+    "coverage": "基线截图 + 组件态回归",
+    "evidence_pack": []
+  },
+  "handoff": {
+    "required": false
+  },
+  "timestamp": "2025-10-05T04:00:00Z",
+  "summary": {
+    "stage": "Assess - Ready for Screenshot Collection",
+    "progress": "90%",
+    "key_achievements": [
+      "✅ 品牌色固定为蓝色 #3b82f6（已确认）",
+      "✅ tokens.scss 对齐 ui/ 设计系统（色彩、字体、间距、圆角、阴影）",
+      "✅ nutui-theme.scss 全部绑定到 tokens（无硬编码）",
+      "✅ OKLCH 验证完成（不支持，使用 sRGB）",
+      "✅ lint 和 build 验证通过",
+      "✅ 准备截图采集清单和 PR 模板"
+    ],
+    "pending_user_actions": [
+      "采集核心 5 页 before/after 截图（参考 docs/baseline/screenshot-checklist.md）",
+      "上传截图到 docs/baseline/weapp/",
+      "提交 PR（使用 docs/pr/template-task-ui_style_002.md）"
+    ]
+  }
+}

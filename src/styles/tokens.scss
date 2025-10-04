@@ -1,66 +1,72 @@
 // Design Tokens - 设计系统核心变量
-// 基于 docs/design.md 的设计规范
+// 基于 ui/ 设计系统，品牌色使用已确认的蓝色 #478EF2
+// 参考：docs/ui-style-migration-6A.md, ui/src/docs/design-system.json
 
 // ==========================================
 // 1. 基础令牌 (Primitives)
 // ==========================================
 
 // 色彩系统
-:root {
-  // 品牌色
-  --color-primary: #478EF2;        // 企业蓝
-  --color-primary-light: #6BA4F5;
-  --color-primary-dark: #1A73E8;
-  --color-primary-bg: rgba(71, 142, 242, 0.1);
-  
-  // 中性色
-  --color-white: #FFFFFF;
+// 微信小程序使用page代替:root
+page {
+  // 品牌色 - 已确认使用蓝色（TASK-UI_STYLE-001）
+  // OKLCH 原始值参考（运行时不使用）: oklch(0.65 0.15 234)
+  --color-primary: #3b82f6;        // 品牌蓝 blue-500 (from ui)
+  --color-primary-light: #93C5FD;  // 蓝 300
+  --color-primary-dark: #2563eb;   // 蓝 600 (from ui)
+  --color-primary-darker: #1d4ed8; // 蓝 700 (from ui)
+  --color-primary-bg: rgba(59, 130, 246, 0.1);
+  --color-brand: var(--color-primary);
+
+  // 中性色 - 对齐 ui/ 的 gray 色板
+  --color-white: #ffffff;
   --color-black: #000000;
-  --color-gray-50: #FAFBFC;
-  --color-gray-100: #F5F7FA;       // 背景色
-  --color-gray-200: #EBEEF3;
-  --color-gray-300: #E0E6ED;       // 边框色
-  --color-gray-400: #C0C4CC;
-  --color-gray-500: #A0A6B0;
-  --color-gray-600: #86909C;       // 次要文字
-  --color-gray-700: #606266;
-  --color-gray-800: #404450;
-  --color-gray-900: #303133;       // 主要文字
-  
-  // 功能色
-  --color-success: #00B578;
-  --color-success-light: #E5F7F0;
-  --color-warning: #FF9F00;
-  --color-warning-light: #FFF4E5;
-  --color-error: #F53F3F;
-  --color-error-light: #FFECE8;
-  --color-info: #478EF2;
-  --color-info-light: #E6F2FF;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;       // 背景色
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;       // 边框色
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;       // 次要文字
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;       // 主要文字
+
+  // 功能色 - 对齐 ui/ semantic 色板
+  --color-success: #10b981;
+  --color-success-light: rgba(16, 185, 129, 0.1);
+  --color-warning: #f59e0b;
+  --color-warning-light: rgba(245, 158, 11, 0.1);
+  --color-error: #ef4444;
+  --color-error-light: rgba(239, 68, 68, 0.1);
+  --color-info: #06b6d4;
+  --color-info-light: rgba(6, 182, 212, 0.1);
   
   // ==========================================
   // 2. 语义令牌 (Semantic)
   // ==========================================
-  
-  // 背景色
+
+  // 背景色 - 对齐 ui/ globals.css
   --bg-primary: var(--color-primary);
-  --bg-body: var(--color-gray-100);
-  --bg-card: var(--color-white);
+  --bg-body: #fafafa;              // from ui: --background
+  --bg-card: var(--color-white);   // from ui: --card
   --bg-modal: var(--color-white);
   --bg-hover: var(--color-gray-50);
   --bg-active: var(--color-primary-bg);
   --bg-disabled: var(--color-gray-100);
+  --bg-section: #f8fafc;           // from ui: --wechat-section-bg
   
-  // 文本色
-  --text-primary: var(--color-gray-900);
+  // 文本色 - 对齐 ui/ globals.css
+  --text-primary: var(--color-gray-900);   // from ui: --foreground
   --text-regular: var(--color-gray-800);
-  --text-secondary: var(--color-gray-600);
+  --text-secondary: var(--color-gray-600); // from ui: --muted-foreground
   --text-placeholder: var(--color-gray-400);
   --text-disabled: var(--color-gray-300);
-  --text-link: var(--color-primary-dark);
+  --text-link: var(--color-primary);
   --text-white: var(--color-white);
-  
-  // 边框色
-  --border-base: var(--color-gray-300);
+
+  // 边框色 - 对齐 ui/ globals.css
+  --border-base: #e4e4e7;              // from ui: --border
   --border-light: var(--color-gray-200);
   --border-lighter: var(--color-gray-100);
   --border-dark: var(--color-gray-400);
@@ -68,29 +74,30 @@
   // ==========================================
   // 3. 字体系统
   // ==========================================
-  
-  --font-family-base: "PingFang SC", "Helvetica Neue", Arial, "Microsoft YaHei", sans-serif;
+
+  // 字体族 - 对齐 ui/ globals.css (system-ui for native feel)
+  --font-family-base: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, "Segoe UI", Arial, Roboto, "PingFang SC", "miui", "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
   --font-family-mono: "SF Mono", Monaco, Consolas, "Courier New", monospace;
-  
-  // 字号 (移动端优化，使用rpx)
-  --font-size-xs: 24rpx;    // 12px
-  --font-size-sm: 26rpx;    // 13px
-  --font-size-base: 28rpx;  // 14px - 基准字号
-  --font-size-md: 30rpx;    // 15px
-  --font-size-lg: 32rpx;    // 16px
-  --font-size-xl: 36rpx;    // 18px
-  --font-size-2xl: 40rpx;   // 20px
-  --font-size-3xl: 48rpx;   // 24px
-  
-  // 字重
-  --font-weight-regular: 400;
+
+  // 字号 (移动端优化，使用rpx) - 对齐 ui/ design-system.json
+  --font-size-xs: 24rpx;    // 12px - 0.75rem
+  --font-size-sm: 28rpx;    // 14px - 0.875rem
+  --font-size-base: 32rpx;  // 16px - 1rem (基准字号，对齐 ui/)
+  --font-size-md: 32rpx;    // 16px
+  --font-size-lg: 36rpx;    // 18px - 1.125rem
+  --font-size-xl: 40rpx;    // 20px - 1.25rem
+  --font-size-2xl: 48rpx;   // 24px - 1.5rem
+  --font-size-3xl: 56rpx;   // 28px
+
+  // 字重 - 对齐 ui/ design-system.json
+  --font-weight-regular: 400;   // normal
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  
-  // 行高
+
+  // 行高 - 对齐 ui/ design-system.json
   --line-height-tight: 1.25;
-  --line-height-base: 1.5;
+  --line-height-base: 1.5;     // normal
   --line-height-relaxed: 1.75;
   
   // ==========================================
@@ -112,37 +119,42 @@
   // ==========================================
   // 5. 圆角系统
   // ==========================================
-  
+
+  // 对齐 ui/ design-system.json wechatStyle
   --radius-none: 0;
-  --radius-sm: 8rpx;    // 4px
-  --radius-base: 12rpx; // 6px
-  --radius-md: 16rpx;   // 8px
-  --radius-lg: 24rpx;   // 12px
-  --radius-xl: 32rpx;   // 16px
+  --radius-sm: 4rpx;    // 2px - 0.125rem
+  --radius-base: 12rpx; // 6px - 0.375rem (input/button)
+  --radius-md: 16rpx;   // 8px - 0.5rem (card)
+  --radius-lg: 24rpx;   // 12px - 0.75rem (button)
+  --radius-xl: 32rpx;   // 16px - 1rem (modal)
+  --radius-2xl: 40rpx;  // 20px
   --radius-full: 9999px;
   
   // ==========================================
   // 6. 阴影系统
   // ==========================================
-  
+
+  // 对齐 ui/ design-system.json shadows
   --shadow-none: none;
-  --shadow-sm: 0 2rpx 4rpx rgba(0, 0, 0, 0.04);
-  --shadow-base: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 16rpx 48rpx rgba(0, 0, 0, 0.12);
-  --shadow-xl: 0 24rpx 64rpx rgba(0, 0, 0, 0.16);
+  --shadow-sm: 0 2rpx 4rpx 0 rgba(0, 0, 0, 0.05);              // from ui
+  --shadow-base: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);              // wechat card style
+  --shadow-md: 0 8rpx 12rpx -2rpx rgba(0, 0, 0, 0.1);          // from ui
+  --shadow-lg: 0 20rpx 30rpx -6rpx rgba(0, 0, 0, 0.1);         // from ui
+  --shadow-xl: 0 40rpx 50rpx -10rpx rgba(0, 0, 0, 0.1);        // from ui
+  --shadow-2xl: 0 50rpx 100rpx -24rpx rgba(0, 0, 0, 0.25);     // from ui
   
   // ==========================================
   // 7. 动画系统
   // ==========================================
-  
-  --transition-fast: 150ms;
-  --transition-base: 250ms;
-  --transition-slow: 350ms;
-  --easing-base: cubic-bezier(0.4, 0, 0.2, 1);
-  --easing-in: cubic-bezier(0.4, 0, 1, 1);
-  --easing-out: cubic-bezier(0, 0, 0.2, 1);
-  --easing-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  // 对齐 ui/ design-system.json animation
+  --transition-fast: 150ms;    // from ui: fast
+  --transition-base: 300ms;    // from ui: normal
+  --transition-slow: 500ms;    // from ui: slow
+  --easing-base: ease-in-out;
+  --easing-in: ease-in;
+  --easing-out: ease-out;
+  --easing-in-out: ease-in-out;
   
   // ==========================================
   // 8. 层级系统
@@ -161,48 +173,49 @@
   // ==========================================
   // 9. 组件令牌 (Component Tokens)
   // ==========================================
-  
-  // 按钮
+
+  // 按钮 - 对齐移动端触控标准 (44px+ min)
   --btn-height-sm: 64rpx;     // 32px
-  --btn-height-base: 72rpx;   // 36px
-  --btn-height-lg: 88rpx;     // 44px - 符合移动端最小触控区域
+  --btn-height-base: 88rpx;   // 44px - 最小触控区域 (from ui: --mobile-touch-target-min)
+  --btn-height-lg: 96rpx;     // 48px
   --btn-padding-x: var(--spacing-4);
-  --btn-font-size: var(--font-size-base);
-  --btn-radius: var(--radius-base);
-  
+  --btn-font-size: var(--font-size-sm);
+  --btn-radius: var(--radius-lg);  // 对齐 ui wechatStyle.button 0.75rem
+
   // 输入框
   --input-height-sm: 64rpx;
-  --input-height-base: 72rpx;
-  --input-height-lg: 88rpx;
+  --input-height-base: 88rpx;  // 44px 最小触控
+  --input-height-lg: 96rpx;
   --input-padding-x: var(--spacing-3);
   --input-border-color: var(--border-base);
-  --input-radius: var(--radius-base);
-  
+  --input-radius: var(--radius-lg);  // 对齐 ui wechatStyle.input 0.75rem
+  --input-bg: #f8fafc;              // from ui: --input-background
+
   // 卡片
   --card-padding: var(--spacing-4);
-  --card-radius: var(--radius-lg);
+  --card-radius: var(--radius-md);   // 对齐 ui wechatStyle.card 0.5rem
   --card-shadow: var(--shadow-base);
   --card-bg: var(--bg-card);
-  
+
   // 表格
   --table-header-bg: var(--color-gray-100);
   --table-header-text: var(--text-secondary);
   --table-row-hover-bg: var(--color-gray-50);
   --table-border-color: var(--border-lighter);
   --table-cell-padding: var(--spacing-3) var(--spacing-4);
-  
+
   // 导航
-  --nav-height: 96rpx;        // 48px
+  --nav-height: 88rpx;        // 44px (from ui: --mobile-header-height)
   --nav-bg: var(--bg-card);
   --nav-shadow: var(--shadow-sm);
   --nav-item-padding: var(--spacing-3) var(--spacing-4);
-  
+
   // 标签
   --tag-height: 48rpx;        // 24px
   --tag-padding: var(--spacing-1) var(--spacing-2);
   --tag-font-size: var(--font-size-xs);
   --tag-radius: var(--radius-sm);
-  
+
   // 徽标
   --badge-size: 36rpx;        // 18px
   --badge-font-size: var(--font-size-xs);

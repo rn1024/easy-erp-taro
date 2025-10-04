@@ -1,0 +1,53 @@
+project: easy-erp-taro
+stage: Align
+owner: CURRENT_AGENT
+last_updated: 2025-10-05T00:00:00Z
+
+goal:
+  one_line: "仅更新样式，统一设计风格与设计语言，保持布局与图标不变"
+  detail:
+    - 从 ui/ 同步设计风格（色彩/字体/间距/圆角/阴影/动效）
+    - 通过 tokens 与 NutUI 主题变量实现统一，不引入硬编码
+    - 不修改任何 TS/TSX/DOM 结构，不变更 icon 资源
+
+scope:
+  in:
+    - src/styles/tokens.scss 设计令牌值与语义绑定
+    - src/styles/nutui-theme.scss 主题变量绑定
+    - src/app.scss 全局工具类仅引用语义变量
+    - docs 迁移方案/架构/任务与验证文档
+  out:
+    - 业务逻辑/数据流/接口/路由/状态管理
+    - 图标与媒体资源替换
+    - 新依赖或构建链修改
+
+constraints:
+  - 只改样式，不改结构与交互
+  - 颜色/尺寸必须来源于 tokens 或主题变量
+  - rpx 标尺与 8px 栅格
+  - PR 必须附对比截图并通过 lint/build
+
+definition_of_done:
+  - 视觉与 ui/ 规范一致（色/字/距/角/影/态）
+  - 对比度 AA：正文≥4.5:1，次要≥3:1
+  - 关键流程冒烟通过（Weapp）
+  - 无样式硬编码；仅 tokens/主题变量
+
+references:
+  - docs/ui-style-migration-6A.md
+  - .workflow/README.md
+
+open_questions:
+  - 品牌主色确定（蓝 #478EF2 或绿 #07C160）：需产品/设计书面确认
+  - OKLCH 在目标基础库版本支持矩阵：允许/禁用/仅离线
+  - 截图基线设备与基础库最小版本：是否锁定到 2.x 最低版本
+
+risks:
+  - 主题变量覆盖不全导致局部偏差 → 先映射表审查后实施
+  - 基础库差异导致色彩渲染差异 → 以 sRGB 为运行时基线
+
+next_actions:
+  - 提交 M0 品牌色确认单并走审
+  - 搭建截图基线目录并产出基线
+  - 完成 OKLCH 兼容性验证记录
+

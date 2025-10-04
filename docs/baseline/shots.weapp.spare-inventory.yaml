@@ -1,0 +1,86 @@
+# Weapp 精细截图点位清单 — 散件库存（/pages/inventory/spare/index）
+
+meta:
+  page_id: spare-inventory
+  route: /pages/inventory/spare/index
+  selector: .spare-inventory
+  device: iPhone13@iOS17 / Android@13
+  lib: latest & min-supported
+
+framing:
+  full: true
+  status_bar: include
+  scale: 100%
+
+states:
+  - id: list
+    reproduce:
+      - 进入页面，默认条件下加载完成
+    shots:
+      - id: stats-grid
+        area: component
+        selector: .index-page__stat-grid, .spare-inventory__stats
+        include:
+          - 统计卡（总量/低库存/店铺/分类）四项可见
+        save_as: weapp/before/spare-list-stats-<device>-<lib>.png
+      - id: list-top
+        area: full
+        include:
+          - 顶部筛选条（SearchBar/FilterChips）
+          - 列表前两张卡片完整可见
+        save_as: weapp/before/spare-list-top-<device>-<lib>.png
+
+  - id: low-stock
+    reproduce:
+      - 使用筛选，或输入关键词触发低库存（quantity < 10）
+    shots:
+      - id: low-stock-card
+        area: component
+        selector: .spare-inventory__list .inventory-card
+        include:
+          - 显示低库存标识/色条/文案清晰
+        save_as: weapp/before/spare-lowstock-card-<device>-<lib>.png
+
+  - id: empty
+    reproduce:
+      - 设置无匹配的筛选条件
+    shots:
+      - id: empty-full
+        area: full
+        include:
+          - 空态图标/标题/说明文案完整可见
+        save_as: weapp/before/spare-empty-<device>-<lib>.png
+
+  - id: loading
+    reproduce:
+      - 首次进入或切换筛选时，捕获加载中态
+    shots:
+      - id: loading-inline
+        area: component
+        selector: .spare-inventory__loading, .nut-loading
+        include:
+          - 旋转动画与“加载中”文案（如有）
+        save_as: weapp/before/spare-loading-<device>-<lib>.png
+
+  - id: form-modal
+    reproduce:
+      - 点击“新增库存”或编辑现有一条，打开表单弹层
+    shots:
+      - id: form-modal-full
+        area: component
+        selector: .nut-popup, .nut-dialog, .form-modal
+        include:
+          - 标题、必填标识、输入项、操作区
+        save_as: weapp/before/spare-form-<device>-<lib>.png
+
+  - id: filters
+    reproduce:
+      - 展开筛选条，打开店铺/分类/散件类型等选项
+    shots:
+      - id: filters-open
+        area: component
+        selector: .spare-inventory__filters
+        include:
+          - 至少一组选项展开、选中高亮清晰
+        save_as: weapp/before/spare-filters-<device>-<lib>.png
+

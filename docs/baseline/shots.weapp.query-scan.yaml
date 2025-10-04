@@ -1,0 +1,99 @@
+# Weapp 精细截图点位清单 — 扫码查询（/pages/query/scan/index）
+
+meta:
+  page_id: query-scan
+  route: /pages/query/scan/index
+  selector: .scan-page
+  device: iPhone13@iOS17 / Android@13
+  lib: latest & min-supported
+
+framing:
+  full: true          # 建议全屏截图，包含导航栏与安全区
+  status_bar: include # 包含状态栏更贴近真实用户视图
+  scale: 100%         # 不缩放，避免锯齿
+
+states:
+  - id: placeholder
+    reproduce:
+      - 进入页面，确保未扫描、未输入
+    shots:
+      - id: placeholder-full
+        area: full
+        include:
+          - 图标（qr_code_scanner，灰色）
+          - 标题：等待扫描或查询
+          - 描述：可以扫描条码或输入SKU手动查询
+        save_as: weapp/before/scan-placeholder-<device>-<lib>.png
+
+  - id: loading
+    reproduce:
+      - 在输入框中输入任意 SKU 后点击“查询”，或调用扫码后等待查询
+    shots:
+      - id: loading-full
+        area: full
+        include:
+          - Loading 旋转动画
+          - 加载文案“查询中...”
+        save_as: weapp/before/scan-loading-<device>-<lib>.png
+
+  - id: not-found
+    reproduce:
+      - 输入不存在的 SKU（如 SKU-NOEXIST）后查询
+    shots:
+      - id: not-found-full
+        area: full
+        include:
+          - 占位图标（inventory_2，红色）
+          - 标题：未找到相关产品
+          - 文案：尝试核对条码或稍后重试
+        save_as: weapp/before/scan-not-found-<device>-<lib>.png
+
+  - id: result
+    reproduce:
+      - 输入存在的 SKU（示例：SKU001）后查询
+    shots:
+      - id: result-card
+        area: component
+        selector: .scan-page__result-card
+        include:
+          - 标题：商品名称
+          - 副标题：SKU
+          - 关键信息区（InfoList）
+        save_as: weapp/before/scan-result-card-<device>-<lib>.png
+      - id: result-full
+        area: full
+        include:
+          - “查询结果”SectionCard 整体
+        save_as: weapp/before/scan-result-<device>-<lib>.png
+
+  - id: history-empty
+    reproduce:
+      - 清空本地历史，进入页面
+    shots:
+      - id: history-empty-full
+        area: full
+        include:
+          - 历史记录区占位图标与文案
+        save_as: weapp/before/scan-history-empty-<device>-<lib>.png
+
+  - id: history-list
+    reproduce:
+      - 至少完成 1 次查询成功后，进入页面
+    shots:
+      - id: history-list-full
+        area: full
+        include:
+          - 历史记录列表至少 3 条
+        save_as: weapp/before/scan-history-list-<device>-<lib>.png
+
+  - id: history-dialog
+    reproduce:
+      - 打开“历史记录”弹窗（点击入口或按钮）
+    shots:
+      - id: history-dialog-component
+        area: component
+        selector: .nut-dialog
+        include:
+          - 弹窗标题、内容、操作按钮
+        save_as: weapp/before/scan-history-dialog-<device>-<lib>.png
+

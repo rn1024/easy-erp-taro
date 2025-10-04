@@ -1,0 +1,205 @@
+# Weapp 截图基线页面清单（before）
+
+meta:
+  version: v1
+  brand: blue-#478EF2
+  note: 仅样式迁移基线，页面/布局不做调整
+
+pages:
+  - id: index-page
+    route: /pages/index/index
+    file: src/pages/index/index.tsx
+    selector: .index-page
+    states:
+      - id: normal
+        reproduce: 打开首页，展示统计卡片和操作宫格
+        save_as: weapp/before/index-normal-<device>-<lib>.png
+        save_as_after: weapp/after/index-normal-<device>-<lib>.png
+
+  - id: login-page
+    route: /pages/login/index
+    file: src/pages/login/index.tsx
+    selector: .login-page
+    states:
+      - id: normal
+        reproduce: 默认登录表单展示
+        save_as: weapp/before/login-normal-<device>-<lib>.png
+        save_as_after: weapp/after/login-normal-<device>-<lib>.png
+      - id: error
+        reproduce: 输入错误账号密码后提交，展示错误提示
+        save_as: weapp/before/login-error-<device>-<lib>.png
+        save_as_after: weapp/after/login-error-<device>-<lib>.png
+
+  - id: products-page
+    route: /pages/products/index
+    file: src/pages/products/index.tsx
+    selector: .products-page
+    states:
+      - id: loading
+        reproduce: 初次进入或主动刷新，显示“加载中...”
+        save_as: weapp/before/products-loading-<device>-<lib>.png
+        save_as_after: weapp/after/products-loading-<device>-<lib>.png
+      - id: list
+        reproduce: 正常数据列表 + 筛选区域
+        save_as: weapp/before/products-list-<device>-<lib>.png
+        save_as_after: weapp/after/products-list-<device>-<lib>.png
+      - id: empty
+        reproduce: 应用无匹配筛选条件，出现空态
+        save_as: weapp/before/products-empty-<device>-<lib>.png
+        save_as_after: weapp/after/products-empty-<device>-<lib>.png
+
+  - id: spare-inventory
+    route: /pages/inventory/spare/index
+    file: src/pages/inventory/spare/index.tsx
+    selector: .spare-inventory
+    states:
+      - id: list
+        reproduce: 正常数据列表，包含卡片与统计
+        save_as: weapp/before/spare-inventory-list-<device>-<lib>.png
+        save_as_after: weapp/after/spare-inventory-list-<device>-<lib>.png
+      - id: low-stock
+        reproduce: 应用“低库存”条件或筛选，展示醒目标识
+        save_as: weapp/before/spare-inventory-low-<device>-<lib>.png
+        save_as_after: weapp/after/spare-inventory-low-<device>-<lib>.png
+      - id: empty
+        reproduce: 条件无匹配数据
+        save_as: weapp/before/spare-inventory-empty-<device>-<lib>.png
+        save_as_after: weapp/after/spare-inventory-empty-<device>-<lib>.png
+      - id: loading
+        reproduce: 数据加载中/翻页加载
+        save_as: weapp/before/spare-inventory-loading-<device>-<lib>.png
+        save_as_after: weapp/after/spare-inventory-loading-<device>-<lib>.png
+      - id: form-modal
+        reproduce: 打开“新增/编辑库存”表单弹层
+        save_as: weapp/before/spare-inventory-form-<device>-<lib>.png
+        save_as_after: weapp/after/spare-inventory-form-<device>-<lib>.png
+
+  - id: finished-inventory
+    route: /pages/inventory/finished/index
+    file: src/pages/inventory/finished/index.tsx
+    selector: .finished-inventory
+    states:
+      - id: list
+        reproduce: 正常数据列表
+        save_as: weapp/before/finished-inventory-list-<device>-<lib>.png
+        save_as_after: weapp/after/finished-inventory-list-<device>-<lib>.png
+      - id: empty
+        reproduce: 无数据空态
+        save_as: weapp/before/finished-inventory-empty-<device>-<lib>.png
+        save_as_after: weapp/after/finished-inventory-empty-<device>-<lib>.png
+
+  - id: query-scan
+    route: /pages/query/scan/index
+    file: src/pages/query/scan/index.tsx
+    selector: .scan-page
+    states:
+      - id: placeholder
+        reproduce: 初次进入，显示占位指引
+        save_as: weapp/before/scan-placeholder-<device>-<lib>.png
+        save_as_after: weapp/after/scan-placeholder-<device>-<lib>.png
+      - id: loading
+        reproduce: 输入 SKU 或扫码后查询中
+        save_as: weapp/before/scan-loading-<device>-<lib>.png
+        save_as_after: weapp/after/scan-loading-<device>-<lib>.png
+      - id: not-found
+        reproduce: 查询无结果
+        save_as: weapp/before/scan-not-found-<device>-<lib>.png
+        save_as_after: weapp/after/scan-not-found-<device>-<lib>.png
+      - id: result
+        reproduce: 查询成功，显示商品信息
+        save_as: weapp/before/scan-result-<device>-<lib>.png
+        save_as_after: weapp/after/scan-result-<device>-<lib>.png
+      - id: history-empty
+        reproduce: 无历史记录
+        save_as: weapp/before/scan-history-empty-<device>-<lib>.png
+        save_as_after: weapp/after/scan-history-empty-<device>-<lib>.png
+      - id: history-list
+        reproduce: 有历史记录
+        save_as: weapp/before/scan-history-list-<device>-<lib>.png
+        save_as_after: weapp/after/scan-history-list-<device>-<lib>.png
+      - id: history-dialog
+        reproduce: 打开“历史记录”弹窗
+        save_as: weapp/before/scan-history-dialog-<device>-<lib>.png
+        save_as_after: weapp/after/scan-history-dialog-<device>-<lib>.png
+
+  - id: profile-page
+    route: /pages/profile/index
+    file: src/pages/profile/index.tsx
+    selector: .profile-page
+    states:
+      - id: normal
+        reproduce: 用户信息与绩效/设置列表
+        save_as: weapp/before/profile-normal-<device>-<lib>.png
+        save_as_after: weapp/after/profile-normal-<device>-<lib>.png
+
+  - id: help-page
+    route: /pages/help/index
+    file: src/pages/help/index.tsx
+    selector: .help-page
+    states:
+      - id: categories
+        reproduce: 展示帮助分类网格
+        save_as: weapp/before/help-categories-<device>-<lib>.png
+        save_as_after: weapp/after/help-categories-<device>-<lib>.png
+      - id: faq-expanded
+        reproduce: 展开一条常见问题
+        save_as: weapp/before/help-faq-expanded-<device>-<lib>.png
+        save_as_after: weapp/after/help-faq-expanded-<device>-<lib>.png
+
+  - id: warehouse-index
+    route: /pages/warehouse/index
+    file: src/pages/warehouse/index.tsx
+    selector: .warehouse-page
+    states:
+      - id: normal
+        reproduce: 展示包装/发货两块任务卡与统计
+        save_as: weapp/before/warehouse-index-normal-<device>-<lib>.png
+        save_as_after: weapp/after/warehouse-index-normal-<device>-<lib>.png
+
+  - id: warehouse-package
+    route: /pages/warehouse/package/index
+    file: src/pages/warehouse/package/index.tsx
+    selector: .package-task
+    states:
+      - id: list
+        reproduce: 展示多状态任务卡
+        save_as: weapp/before/warehouse-package-list-<device>-<lib>.png
+        save_as_after: weapp/after/warehouse-package-list-<device>-<lib>.png
+      - id: empty
+        reproduce: 筛选无匹配，显示空态
+        save_as: weapp/before/warehouse-package-empty-<device>-<lib>.png
+        save_as_after: weapp/after/warehouse-package-empty-<device>-<lib>.png
+      - id: dialog
+        reproduce: 打开“状态变更”对话框
+        save_as: weapp/before/warehouse-package-dialog-<device>-<lib>.png
+        save_as_after: weapp/after/warehouse-package-dialog-<device>-<lib>.png
+
+  - id: warehouse-shipment
+    route: /pages/warehouse/shipment/index
+    file: src/pages/warehouse/shipment/index.tsx
+    selector: .shipment-task
+    states:
+      - id: list
+        reproduce: 展示发货任务卡不同状态
+        save_as: weapp/before/warehouse-shipment-list-<device>-<lib>.png
+        save_as_after: weapp/after/warehouse-shipment-list-<device>-<lib>.png
+
+  - id: security-page
+    route: /pages/security/index
+    file: src/pages/security/index.tsx
+    selector: .security-page
+    states:
+      - id: toggles
+        reproduce: 展示安全开关（部分 on/off）
+        save_as: weapp/before/security-toggles-<device>-<lib>.png
+        save_as_after: weapp/after/security-toggles-<device>-<lib>.png
+
+  - id: userinfo-page
+    route: /pages/userinfo/index
+    file: src/pages/userinfo/index.tsx
+    selector: .userinfo-page
+    states:
+      - id: normal
+        reproduce: 账户设置页常规视图
+        save_as: weapp/before/userinfo-normal-<device>-<lib>.png
+        save_as_after: weapp/after/userinfo-normal-<device>-<lib>.png
