@@ -1,6 +1,6 @@
 # Easy ERP Taro 组件库文档
 
-**组件库版本**: v1.0  
+**组件库版本**: v2.0  
 **基于**: NutUI React Taro 3.0.16  
 **更新时间**: 2025年1月3日  
 
@@ -649,6 +649,790 @@ describe('SearchBar', () => {
 })
 ```
 
+---
+
+## 🆕 新增通用组件 (v2.0)
+
+### SectionCard 卡片容器
+**文件位置**: `src/components/common/SectionCard/index.tsx`
+
+**功能描述**: 提供统一的卡片容器，支持标题、描述、操作按钮等，适用于各种内容展示场景。
+
+**Props接口**:
+```typescript
+interface SectionCardProps {
+  title?: string                    // 卡片标题
+  description?: string              // 卡片描述
+  titleIcon?: React.ReactNode       // 标题图标
+  meta?: React.ReactNode           // 元信息（如时间、状态等）
+  actions?: React.ReactNode | React.ReactNode[]  // 操作按钮
+  footer?: React.ReactNode         // 底部内容
+  children?: React.ReactNode       // 主要内容
+  className?: string              // 自定义样式类
+  contentClassName?: string       // 内容区域样式类
+  compact?: boolean               // 紧凑模式（减小间距）
+  flat?: boolean                  // 平铺模式（无边框阴影）
+  clickable?: boolean             // 可点击（显示交互样式）
+  onClick?: () => void           // 点击事件
+}
+```
+
+**使用示例**:
+```tsx
+import { SectionCard, Icon } from '@/components/common'
+
+// 基础使用
+<SectionCard title="用户信息" description="管理个人资料和设置">
+  <p>这里是卡片内容</p>
+</SectionCard>
+
+// 带图标和操作按钮
+<SectionCard
+  title="库存统计"
+  titleIcon={<Icon name="inventory_2" size={16} />}
+  meta={<Text>更新时间: 2025-01-03</Text>}
+  actions={[
+    <Button key="edit" size="small">编辑</Button>,
+    <Button key="refresh" size="small" type="primary">刷新</Button>
+  ]}
+  clickable
+  onClick={() => console.log('clicked')}
+>
+  <StatsGrid data={statsData} />
+</SectionCard>
+
+// 紧凑模式
+<SectionCard title="快速操作" compact>
+  <InfoList items={quickActions} />
+</SectionCard>
+```
+
+### StatsGrid 统计网格
+**文件位置**: `src/components/common/StatsGrid/index.tsx`
+
+**功能描述**: 响应式统计数据展示网格，自动适配单列/双列布局，支持图标、颜色自定义。
+
+**Props接口**:
+```typescript
+interface StatItem {
+  label: string                   // 统计项标签
+  value: string | number          // 统计值
+  icon?: string                   // 图标名称
+  color?: string                  // 主题色
+  trend?: 'up' | 'down' | 'flat'  // 趋势（可选）
+  trendValue?: string             // 趋势值（如 +5.2%）
+  onClick?: () => void           // 点击事件
+}
+
+interface StatsGridProps {
+  data: StatItem[]               // 统计数据
+  columns?: 1 | 2 | 3 | 4       // 列数（默认响应式）
+  gap?: 'small' | 'medium' | 'large'  // 间距大小
+  showTrend?: boolean            // 显示趋势
+  className?: string             // 自定义样式类
+}
+```
+
+**使用示例**:
+```tsx
+import { StatsGrid } from '@/components/common'
+
+const statsData = [
+  {
+    label: '总库存',
+    value: '1,234',
+    icon: 'inventory_2',
+    color: '#3b82f6',
+    trend: 'up',
+    trendValue: '+12.5%',
+    onClick: () => navigateTo('/inventory')
+  },
+  {
+    label: '待发货',
+    value: '56',
+    icon: 'local_shipping',
+    color: '#f59e0b',
+    trend: 'down',
+    trendValue: '-3.2%'
+  },
+  {
+    label: '今日销售',
+    value: '￥23,456',
+    icon: 'trending_up',
+    color: '#10b981'
+  }
+]
+
+// 基础使用
+<StatsGrid data={statsData} />
+
+// 固定列数
+<StatsGrid data={statsData} columns={3} showTrend />
+
+// 大间距
+<StatsGrid data={statsData} gap="large" />
+```
+
+### InfoList 信息列表
+**文件位置**: `src/components/common/InfoList/index.tsx`
+
+**功能描述**: 统一的信息展示列表，支持图标、标签、值的组合显示，常用于详情页面。
+
+**Props接口**:
+```typescript
+interface InfoItem {
+  label: string                  // 标签文本
+  value: React.ReactNode        // 值内容
+  icon?: string                 // 图标名称
+  color?: string                // 图标颜色
+  onClick?: () => void         // 点击事件
+  extra?: React.ReactNode      // 额外内容（如箭头、开关等）
+}
+
+interface InfoListProps {
+  items: InfoItem[]            // 信息项列表
+  layout?: 'vertical' | 'horizontal'  // 布局方向
+  divider?: boolean            // 显示分割线
+  clickable?: boolean          // 可点击样式
+  className?: string           // 自定义样式类
+}
+```
+
+**使用示例**:
+```tsx
+import { InfoList, Icon } from '@/components/common'
+
+const userInfo = [
+  {
+    label: '姓名',
+    value: '张三',
+    icon: 'person',
+    color: '#3b82f6'
+  },
+  {
+    label: '电话',
+    value: '138****8888',
+    icon: 'phone',
+    color: '#10b981',
+    onClick: () => Taro.makePhoneCall({ phoneNumber: '13800138888' })
+  },
+  {
+    label: '邮箱',
+    value: 'zhangsan@example.com',
+    icon: 'email',
+    color: '#f59e0b'
+  },
+  {
+    label: '设置',
+    value: '账户安全',
+    icon: 'security',
+    extra: <Icon name="chevron_right" size={16} />,
+    onClick: () => navigateTo('/security')
+  }
+]
+
+// 垂直布局（默认）
+<InfoList items={userInfo} divider clickable />
+
+// 水平布局
+<InfoList items={userInfo} layout="horizontal" />
+```
+
+### FilterChips 筛选器
+**文件位置**: `src/components/common/FilterChips/index.tsx`
+
+**功能描述**: 统一的筛选标签组件，支持单选/多选模式，横向滚动适配。
+
+**Props接口**:
+```typescript
+interface FilterOption {
+  label: string                 // 选项标签
+  value: string                // 选项值
+  count?: number               // 选项数量（可选）
+  disabled?: boolean           // 是否禁用
+}
+
+interface FilterChipsProps {
+  options: FilterOption[]      // 筛选选项
+  value?: string | string[]    // 当前值
+  multiple?: boolean           // 多选模式
+  clearable?: boolean          // 显示清除按钮
+  onChange?: (value: string | string[]) => void  // 值变化回调
+  onClear?: () => void        // 清除回调
+  className?: string          // 自定义样式类
+  size?: 'small' | 'medium' | 'large'  // 尺寸
+}
+```
+
+**使用示例**:
+```tsx
+import { FilterChips } from '@/components/common'
+
+const categoryOptions = [
+  { label: '全部', value: 'all', count: 123 },
+  { label: '电子产品', value: 'electronics', count: 45 },
+  { label: '服装鞋帽', value: 'clothing', count: 32 },
+  { label: '食品饮料', value: 'food', count: 18 },
+  { label: '图书音像', value: 'books', count: 28, disabled: true }
+]
+
+const [selectedCategory, setSelectedCategory] = useState('all')
+const [selectedTags, setSelectedTags] = useState<string[]>([])
+
+// 单选模式
+<FilterChips
+  options={categoryOptions}
+  value={selectedCategory}
+  clearable
+  onChange={(value) => setSelectedCategory(value as string)}
+  onClear={() => setSelectedCategory('all')}
+/>
+
+// 多选模式
+<FilterChips
+  options={categoryOptions}
+  value={selectedTags}
+  multiple
+  clearable
+  size="small"
+  onChange={(value) => setSelectedTags(value as string[])}
+/>
+```
+
+### ProgressBar 进度条
+**文件位置**: `src/components/common/ProgressBar/index.tsx`
+
+**功能描述**: 统一的进度条组件，支持多种样式和动画效果。
+
+**Props接口**:
+```typescript
+interface ProgressBarProps {
+  percentage: number           // 进度百分比 (0-100)
+  showText?: boolean          // 显示百分比文本
+  color?: string              // 进度条颜色
+  backgroundColor?: string    // 背景色
+  height?: number             // 高度 (px)
+  animated?: boolean          // 动画效果
+  striped?: boolean           // 条纹样式
+  className?: string          // 自定义样式类
+  textInside?: boolean        // 文本在进度条内部
+  format?: (percentage: number) => string  // 自定义文本格式
+}
+```
+
+**使用示例**:
+```tsx
+import { ProgressBar } from '@/components/common'
+
+// 基础使用
+<ProgressBar percentage={75} showText />
+
+// 自定义样式
+<ProgressBar
+  percentage={60}
+  color="#10b981"
+  backgroundColor="#f3f4f6"
+  height={8}
+  animated
+  striped
+/>
+
+// 自定义文本格式
+<ProgressBar
+  percentage={85}
+  showText
+  textInside
+  format={(percent) => `已完成 ${percent}%`}
+/>
+
+// 任务进度示例
+<div className="task-progress">
+  <Text>包装进度</Text>
+  <ProgressBar
+    percentage={taskProgress}
+    showText
+    color={taskProgress === 100 ? '#10b981' : '#3b82f6'}
+    animated
+  />
+</div>
+```
+
+### PageHeader 页面标题
+**文件位置**: `src/components/common/PageHeader/index.tsx`
+
+**功能描述**: 统一的页面标题组件，支持副标题、操作按钮和统计信息。
+
+**Props接口**:
+```typescript
+interface PageHeaderProps {
+  title: string                // 主标题
+  subtitle?: string           // 副标题
+  description?: string        // 描述文本
+  avatar?: React.ReactNode    // 头像或图标
+  extra?: React.ReactNode     // 额外内容（操作按钮等）
+  tags?: React.ReactNode      // 标签区域
+  breadcrumb?: React.ReactNode // 面包屑导航
+  onBack?: () => void         // 返回按钮回调
+  className?: string          // 自定义样式类
+}
+```
+
+**使用示例**:
+```tsx
+import { PageHeader, Icon } from '@/components/common'
+
+// 基础使用
+<PageHeader
+  title="库存管理"
+  subtitle="成品库存总览"
+  description="查看和管理所有库存商品"
+/>
+
+// 带操作按钮
+<PageHeader
+  title="产品详情"
+  subtitle="iPhone 14 Pro Max"
+  avatar={<Icon name="smartphone" size={24} />}
+  extra={[
+    <Button key="edit" size="small">编辑</Button>,
+    <Button key="delete" size="small" type="danger">删除</Button>
+  ]}
+  onBack={() => Taro.navigateBack()}
+/>
+
+// 带统计信息
+<PageHeader
+  title="今日概览"
+  extra={
+    <StatsGrid
+      data={[
+        { label: '销售额', value: '￥12,345' },
+        { label: '订单数', value: '123' }
+      ]}
+      columns={2}
+    />
+  }
+/>
+```
+
+---
+
+## 🎣 新增 Hooks
+
+### useListQuery 列表查询
+**文件位置**: `src/hooks/useListQuery.ts`
+
+**功能描述**: 提供列表数据查询、分页、刷新等功能的通用 Hook，支持过滤条件和状态管理。
+
+**接口定义**:
+```typescript
+interface UseListQueryOptions<TItem, TResponse, TFilters> {
+  fetcher: (params: ListFetcherParams<TFilters>) => Promise<TResponse>
+  transform: (response: TResponse, previousItems: TItem[], params: ListFetcherParams<TFilters>) => UseListQueryTransformResult<TItem>
+  initialItems?: TItem[]
+  initialFilters?: TFilters
+  pageSize?: number
+  autoFetch?: boolean
+  toastError?: boolean
+}
+
+interface UseListQueryReturn<TItem, TFilters> {
+  items: TItem[]                // 列表数据
+  loading: boolean              // 加载状态
+  refreshing: boolean           // 刷新状态
+  loadingMore: boolean          // 加载更多状态
+  error: Error | null           // 错误信息
+  hasMore: boolean              // 是否有更多数据
+  filters: TFilters             // 当前过滤条件
+  totalCount: number            // 总数量
+  currentPage: number           // 当前页码
+  refresh: () => Promise<void>  // 刷新方法
+  loadMore: () => Promise<void> // 加载更多方法
+  setFilters: (filters: Partial<TFilters>) => void  // 设置过滤条件
+  retry: () => Promise<void>    // 重试方法
+}
+```
+
+**使用示例**:
+```tsx
+import { useListQuery } from '@/hooks/useListQuery'
+import { getProducts } from '@/services/products'
+
+interface Product {
+  id: string
+  name: string
+  price: number
+  category: string
+}
+
+interface ProductFilters {
+  keyword?: string
+  category?: string
+  shop?: string
+}
+
+const ProductList: React.FC = () => {
+  const {
+    items: products,
+    loading,
+    refreshing,
+    loadingMore,
+    hasMore,
+    filters,
+    refresh,
+    loadMore,
+    setFilters
+  } = useListQuery<Product, any, ProductFilters>({
+    fetcher: getProducts,
+    transform: (response, previousItems, params) => ({
+      items: params.refresh ? response.data : [...previousItems, ...response.data],
+      total: response.total,
+      page: params.page,
+      hasMore: response.data.length === params.pageSize
+    }),
+    initialFilters: { keyword: '', category: 'all' },
+    pageSize: 20,
+    autoFetch: true,
+    toastError: true
+  })
+
+  return (
+    <View>
+      {/* 搜索和筛选 */}
+      <SearchBar
+        value={filters.keyword}
+        onSearch={(keyword) => setFilters({ keyword })}
+      />
+      
+      <FilterChips
+        options={categoryOptions}
+        value={filters.category}
+        onChange={(category) => setFilters({ category })}
+      />
+
+      {/* 列表内容 */}
+      <PullToRefresh refreshing={refreshing} onRefresh={refresh}>
+        {products.map(product => (
+          <ProductCard key={product.id} data={product} />
+        ))}
+        
+        {loadingMore && <Loading />}
+        {hasMore && (
+          <Button onClick={loadMore} loading={loadingMore}>
+            加载更多
+          </Button>
+        )}
+      </PullToRefresh>
+    </View>
+  )
+}
+```
+
+### useFilters 筛选管理
+**文件位置**: `src/hooks/useFilters.ts`
+
+**功能描述**: 提供筛选状态管理和操作的通用 Hook，支持多种筛选类型。
+
+**接口定义**:
+```typescript
+interface UseFiltersOptions<T extends Record<string, any>> {
+  initialFilters?: T            // 初始筛选值
+  onChange?: (filters: T) => void  // 筛选变化回调
+}
+
+interface UseFiltersReturn<T> {
+  filters: T                    // 当前筛选值
+  setFilter: (key: keyof T, value: T[keyof T]) => void  // 设置单个筛选
+  setFilters: (filters: Partial<T>) => void  // 设置多个筛选
+  resetFilters: () => void      // 重置筛选
+  clearFilter: (key: keyof T) => void  // 清除单个筛选
+  hasActiveFilters: boolean     // 是否有活跃筛选
+  getChipProps: () => FilterChipsProps  // 获取筛选器组件属性
+}
+```
+
+**使用示例**:
+```tsx
+import { useFilters } from '@/hooks/useFilters'
+
+interface InventoryFilters {
+  category: string
+  shop: string
+  status: string
+  priceRange: [number, number]
+}
+
+const InventoryPage: React.FC = () => {
+  const {
+    filters,
+    setFilter,
+    setFilters,
+    resetFilters,
+    hasActiveFilters,
+    getChipProps
+  } = useFilters<InventoryFilters>({
+    initialFilters: {
+      category: 'all',
+      shop: 'all',
+      status: 'all',
+      priceRange: [0, 10000]
+    },
+    onChange: (newFilters) => {
+      // 筛选变化时重新查询数据
+      refetchProducts(newFilters)
+    }
+  })
+
+  return (
+    <View>
+      {/* 快速筛选 */}
+      <FilterChips
+        {...getChipProps()}
+        options={categoryOptions}
+        value={filters.category}
+        onChange={(value) => setFilter('category', value)}
+      />
+
+      {/* 高级筛选 */}
+      <View className="advanced-filters">
+        <Picker
+          value={filters.shop}
+          options={shopOptions}
+          onChange={(value) => setFilter('shop', value)}
+        />
+        
+        <Range
+          value={filters.priceRange}
+          min={0}
+          max={10000}
+          onChange={(value) => setFilter('priceRange', value)}
+        />
+      </View>
+
+      {/* 重置按钮 */}
+      {hasActiveFilters && (
+        <Button onClick={resetFilters}>重置筛选</Button>
+      )}
+    </View>
+  )
+}
+```
+
+---
+
+## 🎨 样式系统 (v2.0)
+
+### Partials 结构
+```
+src/styles/partials/
+├── _cards.scss         # 卡片样式
+├── _stats.scss         # 统计组件样式  
+├── _filters.scss       # 筛选器样式
+├── _layouts.scss       # 布局样式
+├── _interactions.scss  # 交互元素样式
+├── _mixins.scss        # 通用混入
+└── _utilities.scss     # 工具类
+```
+
+### 布局 Mixins (_layouts.scss)
+```scss
+// 页面布局
+@mixin page-wrapper {
+  background: var(--bg-body);
+  min-height: 100vh;
+}
+
+@mixin page-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
+  padding-bottom: calc(var(--spacing-6) + 40rpx);
+}
+
+@mixin page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-4);
+  background: var(--bg-white);
+  border-bottom: 2rpx solid var(--border-light);
+}
+
+// 安全区域适配
+@mixin safe-area-top {
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+}
+
+@mixin safe-area-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+```
+
+### 交互 Mixins (_interactions.scss)
+```scss
+// 触摸反馈
+@mixin touch-active {
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+  }
+}
+
+@mixin touch-active-scale($scale: 0.95) {
+  transition: transform 0.15s ease;
+  
+  &:active {
+    transform: scale($scale);
+  }
+}
+
+// 操作项样式
+@mixin action-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  @include touch-active;
+}
+
+// 头像 + 操作布局
+@mixin avatar-with-action {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  
+  .avatar {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  
+  .content {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .action {
+    flex-shrink: 0;
+  }
+}
+```
+
+### 工具类 (_utilities.scss)
+```scss
+// 间距工具类
+.safe-bottom {
+  @include safe-area-bottom;
+}
+
+// 滚动优化
+.scroll-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// 文本截断
+.line-clamp-1 {
+  @include line-clamp(1);
+}
+
+.line-clamp-2 {
+  @include line-clamp(2);
+}
+
+.line-clamp-3 {
+  @include line-clamp(3);
+}
+
+// 触摸优化
+.touch-active {
+  @include touch-active;
+}
+```
+
+### 使用示例
+```scss
+// 在页面 SCSS 中使用
+@use '@/styles/partials/layouts';
+@use '@/styles/partials/interactions';
+
+.inventory-page {
+  @include layouts.page-wrapper;
+
+  &__content {
+    @include layouts.page-content;
+  }
+
+  &__action-button {
+    @include interactions.action-item;
+    @include interactions.touch-active-scale(0.96);
+  }
+}
+```
+
+---
+
+## 📋 最佳实践
+
+### 组件使用原则
+
+1. **组件组合**: 优先使用组件组合而非创建新组件
+2. **响应式设计**: 所有组件都应支持移动端适配
+3. **无障碍访问**: 提供合适的 aria 标签和语义化结构
+4. **性能优化**: 避免不必要的重渲染，合理使用 memo
+
+### 代码示例
+
+```tsx
+// ✅ 推荐：组件组合
+<SectionCard title="用户统计" compact>
+  <StatsGrid data={userStats} columns={2} />
+</SectionCard>
+
+// ❌ 不推荐：创建专门的 UserStatsCard 组件
+
+// ✅ 推荐：响应式使用
+<StatsGrid 
+  data={stats} 
+  columns={windowWidth > 414 ? 3 : 2} 
+/>
+
+// ✅ 推荐：无障碍优化
+<InfoList
+  items={[
+    {
+      label: '电话',
+      value: phoneNumber,
+      onClick: () => Taro.makePhoneCall({ phoneNumber }),
+      extra: <Icon name="phone" aria-label="拨打电话" />
+    }
+  ]}
+/>
+```
+
+### 性能优化建议
+
+1. **列表渲染**: 使用 `useListQuery` 实现虚拟滚动和分页
+2. **图片优化**: 使用合适的图片尺寸和格式
+3. **状态管理**: 避免过度使用全局状态
+4. **代码分割**: 按页面和功能模块分割代码
+
+---
+
+*更新时间: 2025-10-05*  
+*版本: v2.0*
+
 ## 📚 使用指南
 
 ### 组件引入方式
@@ -711,14 +1495,224 @@ import {
 - ✨ 新增 AuthGuard 权限守卫组件
 - 🎨 建立完整的设计系统和主题体系
 
+## 🎨 样式partials系统
+
+### 样式分层架构
+在完成页面重构后，我们建立了系统化的样式partials架构：
+
+```
+src/styles/partials/
+├── _layouts.scss      # 页面布局mixins
+├── _interactions.scss # 交互元素mixins
+├── _mixins.scss      # 通用工具mixins
+├── _utilities.scss   # 工具类
+├── _cards.scss       # 卡片样式
+├── _stats.scss       # 统计组件样式
+└── _filters.scss     # 筛选组件样式
+```
+
+### 布局Mixins (_layouts.scss)
+```scss
+@use '../../styles/partials/layouts' as layouts;
+
+// 标准页面包装器
+.page {
+  @include layouts.page-wrapper;
+}
+
+// 页面内容容器
+.page-content {
+  @include layouts.page-content;
+}
+
+// 操作网格布局
+.actions-grid {
+  @include layouts.action-grid;
+}
+
+// 页面标题头部
+.page-header {
+  @include layouts.page-header;
+  
+  &__content {
+    @include layouts.page-header-content;
+  }
+  
+  &__back-button {
+    @include layouts.header-back-button;
+  }
+  
+  &__title {
+    @include layouts.page-title;
+  }
+}
+```
+
+### 交互Mixins (_interactions.scss)
+```scss
+@use '../../styles/partials/interactions' as interactions;
+
+// 可点击操作项
+.action-item {
+  @include interactions.action-item;
+  
+  &__icon {
+    @include interactions.action-icon;
+  }
+}
+
+// 头像加操作按钮
+.avatar-section {
+  @include interactions.avatar-with-action(128rpx);
+}
+
+// 信息行布局
+.info-row {
+  @include interactions.info-row;
+}
+
+// 可点击行
+.clickable-row {
+  @include interactions.clickable-row;
+}
+
+// Tab导航
+.tab-nav {
+  @include interactions.tab-navigation;
+}
+
+// 搜索输入框
+.search-input {
+  @include interactions.search-input;
+}
+```
+
+### 通用工具Mixins (_mixins.scss)
+```scss
+@use '../../styles/partials/mixins' as mixins;
+
+// 触摸反馈
+.touch-active {
+  @include mixins.touch-active;
+}
+
+// 可缩放触摸反馈
+.touch-scale {
+  @include mixins.touch-active-scale(0.98);
+}
+
+// 文本截断
+.text-ellipsis {
+  @include mixins.text-ellipsis;
+}
+
+// 多行截断
+.line-clamp-2 {
+  @include mixins.line-clamp(2);
+}
+
+// 安全区域适配
+.safe-bottom {
+  @include mixins.safe-area-bottom;
+}
+
+// 水平滚动
+.scroll-x {
+  @include mixins.scroll-x;
+}
+```
+
+### 使用指南
+
+#### 1. 在页面组件中使用
+```scss
+// src/pages/example/index.scss
+@use "../../styles/partials/layouts" as layouts;
+@use "../../styles/partials/interactions" as interactions;
+
+.example-page {
+  @include layouts.page-wrapper;
+  
+  &__content {
+    @include layouts.page-content;
+  }
+  
+  &__action-grid {
+    @include layouts.action-grid;
+  }
+  
+  &__action-item {
+    @include interactions.action-item;
+  }
+}
+```
+
+#### 2. 样式迁移最佳实践
+
+**迁移前** (重复代码):
+```scss
+.page-a {
+  background: var(--bg-body);
+  
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    padding: var(--spacing-4);
+    padding-bottom: calc(var(--spacing-6) + 40rpx);
+  }
+}
+
+.page-b {
+  background: var(--bg-body);
+  
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    padding: var(--spacing-4);
+    padding-bottom: calc(var(--spacing-6) + 40rpx);
+  }
+}
+```
+
+**迁移后** (复用partials):
+```scss
+@use "../../styles/partials/layouts" as layouts;
+
+.page-a {
+  @include layouts.page-wrapper;
+  
+  &__content {
+    @include layouts.page-content;
+  }
+}
+
+.page-b {
+  @include layouts.page-wrapper;
+  
+  &__wrapper {
+    @include layouts.page-content;
+  }
+}
+```
+
+#### 3. 已迁移的页面
+以下页面已完成样式partials迁移：
+- ✅ `src/pages/index/index.scss` - 使用 layouts + interactions
+- ✅ `src/pages/help/index.scss` - 使用 layouts 完整套装  
+- ✅ `src/pages/profile/index.scss` - 使用 layouts + mixins
+- 🚧 其他页面逐步迁移中...
+
 ### 计划更新
 - 📊 新增图表组件 (ChartCard)
 - 📱 新增手势操作组件 (SwipeAction)
 - 🔍 新增高级搜索组件 (AdvancedSearch)
 - 📋 新增虚拟列表组件 (VirtualList)
+- 🎨 完成所有页面样式partials迁移
 
 ---
 
 **组件库维护**: 前端开发团队  
 **技术支持**: frontend@easy-erp.com  
-**最后更新**: 2025年1月3日
+**最后更新**: 2025年1月5日 (新增样式partials系统)

@@ -1,8 +1,18 @@
 import React, { useState } from 'react'
-import { View, Text } from '@tarojs/components'
-import { MaterialIcons } from 'taro-icons'
 import Taro from '@tarojs/taro'
+import { View, Text } from '@tarojs/components'
+
+/**
+ * Components
+ */
 import MobileLayout from '@/components/MobileLayout'
+import { SectionCard, StatsGrid, ProgressBar, Icon } from '@/components/common'
+
+/**
+ * Types
+ */
+import type { StatsGridItem } from '@/components/common'
+
 import './index.scss'
 
 interface TaskStats {
@@ -36,8 +46,7 @@ const WarehousePage: React.FC = () => {
     }
   })
 
-  const handleNavigateToPackage = () => {
-    console.log('点击包装任务卡片')
+  const handleNavigateToPackage = (): void => {
     Taro.showToast({
       title: '正在跳转到包装任务',
       icon: 'loading',
@@ -48,8 +57,7 @@ const WarehousePage: React.FC = () => {
     }, 500)
   }
 
-  const handleNavigateToShipment = () => {
-    console.log('点击发货任务卡片')
+  const handleNavigateToShipment = (): void => {
     Taro.showToast({
       title: '正在跳转到发货任务',
       icon: 'loading',
@@ -60,113 +68,73 @@ const WarehousePage: React.FC = () => {
     }, 500)
   }
 
+  const getProgress = (completed: number, total: number) => {
+    if (total === 0) {
+      return 0
+    }
+    return Math.round((completed / total) * 100)
+  }
+
+  const taskCards: Array<{
+    id: 'package' | 'shipment'
+    title: string
+    description: string
+    iconName: string
+    iconColor: string
+    stats: StatsGridItem[]
+    progress: number
+    onClick: () => void
+  }> = [
+    {
+      id: 'package',
+      title: '包装任务',
+      description: '商品包装作业管理',
+      iconName: 'inventory_2',
+      iconColor: '#1890ff',
+      stats: [
+        { key: 'total', label: '总任务', value: stats.packageTasks.total, variant: 'flat' },
+        { key: 'pending', label: '待处理', value: stats.packageTasks.pending, variant: 'flat' },
+        { key: 'progress', label: '进行中', value: stats.packageTasks.inProgress, variant: 'flat' },
+        { key: 'completed', label: '已完成', value: stats.packageTasks.completed, variant: 'flat' }
+      ],
+      progress: getProgress(stats.packageTasks.completed, stats.packageTasks.total),
+      onClick: handleNavigateToPackage
+    },
+    {
+      id: 'shipment',
+      title: '发货任务',
+      description: '物流发货作业管理',
+      iconName: 'local_shipping',
+      iconColor: '#52c41a',
+      stats: [
+        { key: 'total', label: '总任务', value: stats.shipmentTasks.total, variant: 'flat' },
+        { key: 'pending', label: '待发货', value: stats.shipmentTasks.pending, variant: 'flat' },
+        { key: 'transit', label: '在途中', value: stats.shipmentTasks.inTransit, variant: 'flat' },
+        { key: 'completed', label: '已交付', value: stats.shipmentTasks.completed, variant: 'flat' }
+      ],
+      progress: getProgress(stats.shipmentTasks.completed, stats.shipmentTasks.total),
+      onClick: handleNavigateToShipment
+    }
+  ]
+
   return (
     <MobileLayout className='warehouse-page'>
       <View className='warehouse-page__content'>
-        {/* 任务入口卡片 */}
-        <View className='warehouse-page__cards'>
-          {/* 包装任务卡片 */}
-          <View 
-            className='warehouse-page__card warehouse-page__card--package'
-            onClick={handleNavigateToPackage}
-            onTouchStart={() => console.log('触摸开始 - 包装任务')}
+        {taskCards.map(card => (
+          <SectionCard
+            key={card.id}
+            title={card.title}
+            description={card.description}
+            titleIcon={<Icon name={card.iconName} size={40} color={card.iconColor} />}
+            meta={<Text>完成进度：{card.progress}%</Text>}
+            clickable
+            onClick={card.onClick}
+            compact
           >
-            <View className='task-card__header'>
-              <View className='task-card__icon'>
-                <MaterialIcons name='inventory_2' size={48} color='#1890ff' />
-              </View>
-              <View className='task-card__info'>
-                <Text className='task-card__title'>包装任务</Text>
-                <Text className='task-card__desc'>商品包装作业管理</Text>
-              </View>
-              <View className='task-card__arrow'>
-                <MaterialIcons name='chevron_right' size={24} color='#999' />
-              </View>
-            </View>
-            
-            <View className='task-card__stats'>
-              <View className='task-stat'>
-                <Text className='task-stat__value'>{stats.packageTasks.total}</Text>
-                <Text className='task-stat__label'>总任务</Text>
-              </View>
-              <View className='task-stat'>
-                <Text className='task-stat__value task-stat__value--pending'>{stats.packageTasks.pending}</Text>
-                <Text className='task-stat__label'>待处理</Text>
-              </View>
-              <View className='task-stat'>
-                <Text className='task-stat__value task-stat__value--progress'>{stats.packageTasks.inProgress}</Text>
-                <Text className='task-stat__label'>进行中</Text>
-              </View>
-              <View className='task-stat'>
-                <Text className='task-stat__value task-stat__value--completed'>{stats.packageTasks.completed}</Text>
-                <Text className='task-stat__label'>已完成</Text>
-              </View>
-            </View>
-            
-            <View className='task-card__progress'>
-              <Text className='task-card__progress-text'>
-                完成进度: {Math.round((stats.packageTasks.completed / stats.packageTasks.total) * 100)}%
-              </Text>
-              <View className='task-card__progress-bar'>
-                <View 
-                  className='task-card__progress-fill task-card__progress-fill--package'
-                  style={{ width: `${(stats.packageTasks.completed / stats.packageTasks.total) * 100}%` }}
-                />
-              </View>
-            </View>
-          </View>
-
-          {/* 发货任务卡片 */}
-          <View 
-            className='warehouse-page__card warehouse-page__card--shipment'
-            onClick={handleNavigateToShipment}
-            onTouchStart={() => console.log('触摸开始 - 发货任务')}
-          >
-            <View className='task-card__header'>
-              <View className='task-card__icon'>
-                <MaterialIcons name='local_shipping' size={48} color='#52c41a' />
-              </View>
-              <View className='task-card__info'>
-                <Text className='task-card__title'>发货任务</Text>
-                <Text className='task-card__desc'>物流发货作业管理</Text>
-              </View>
-              <View className='task-card__arrow'>
-                <MaterialIcons name='chevron_right' size={24} color='#999' />
-              </View>
-            </View>
-            
-            <View className='task-card__stats'>
-              <View className='task-stat'>
-                <Text className='task-stat__value'>{stats.shipmentTasks.total}</Text>
-                <Text className='task-stat__label'>总任务</Text>
-              </View>
-              <View className='task-stat'>
-                <Text className='task-stat__value task-stat__value--pending'>{stats.shipmentTasks.pending}</Text>
-                <Text className='task-stat__label'>待发货</Text>
-              </View>
-              <View className='task-stat'>
-                <Text className='task-stat__value task-stat__value--transit'>{stats.shipmentTasks.inTransit}</Text>
-                <Text className='task-stat__label'>在途中</Text>
-              </View>
-              <View className='task-stat'>
-                <Text className='task-stat__value task-stat__value--completed'>{stats.shipmentTasks.completed}</Text>
-                <Text className='task-stat__label'>已交付</Text>
-              </View>
-            </View>
-            
-            <View className='task-card__progress'>
-              <Text className='task-card__progress-text'>
-                完成进度: {Math.round((stats.shipmentTasks.completed / stats.shipmentTasks.total) * 100)}%
-              </Text>
-              <View className='task-card__progress-bar'>
-                <View 
-                  className='task-card__progress-fill task-card__progress-fill--shipment'
-                  style={{ width: `${(stats.shipmentTasks.completed / stats.shipmentTasks.total) * 100}%` }}
-                />
-              </View>
-            </View>
-          </View>
-        </View>
+            <StatsGrid items={card.stats} />
+            <ProgressBar value={card.progress} max={100} showLabel={false} color={card.iconColor} />
+          </SectionCard>
+        ))}
       </View>
     </MobileLayout>
   )

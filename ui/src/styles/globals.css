@@ -1,0 +1,577 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 14px;
+  --background: #fafafa;
+  --foreground: #1f2937;
+  --card: #ffffff;
+  --card-foreground: #1f2937;
+  --popover: #ffffff;
+  --popover-foreground: #1f2937;
+  --primary: #07c160;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #1f2937;
+  --muted: #f4f4f5;
+  --muted-foreground: #6b7280;
+  --accent: #e0f2fe;
+  --accent-foreground: #0f172a;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e4e4e7;
+  --input: transparent;
+  --input-background: #f8fafc;
+  --switch-background: #d1d5db;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #3b82f6;
+  
+  /* 微信小程序专用颜色 - 优化后的和谐配色 */
+  --wechat-green: #07c160;
+  --wechat-blue: #576b95;
+  --wechat-orange: #fa9d3b;
+  --wechat-red: #fa5151;
+  --wechat-gray: #888888;
+  --wechat-bg: #f5f5f7;
+  --wechat-card: #ffffff;
+  --wechat-section-bg: #f8fafc;
+  
+  /* 状态颜色 */
+  --status-pending: #f59e0b;
+  --status-progress: #3b82f6;
+  --status-completed: #10b981;
+  --status-rejected: #ef4444;
+  --status-overdue: #dc2626;
+  
+  /* 移动端专用变量 */
+  --mobile-header-height: 44px;
+  --mobile-bottom-nav-height: 60px;
+  --mobile-safe-area-top: constant(safe-area-inset-top);
+  --mobile-safe-area-top: env(safe-area-inset-top);
+  --mobile-safe-area-bottom: constant(safe-area-inset-bottom);
+  --mobile-safe-area-bottom: env(safe-area-inset-bottom);
+  --mobile-touch-target-min: 44px;
+  
+  /* 图表颜色 - 更和谐的配色 */
+  --chart-1: #3b82f6;
+  --chart-2: #10b981;
+  --chart-3: #f59e0b;
+  --chart-4: #ef4444;
+  --chart-5: #8b5cf6;
+  --radius: 0.5rem;
+  --sidebar: #f8fafc;
+  --sidebar-foreground: #1f2937;
+  --sidebar-primary: #07c160;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f1f5f9;
+  --sidebar-accent-foreground: #374151;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #3b82f6;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card: #1e293b;
+  --card-foreground: #f1f5f9;
+  --popover: #1e293b;
+  --popover-foreground: #f1f5f9;
+  --primary: #07c160;
+  --primary-foreground: #ffffff;
+  --secondary: #334155;
+  --secondary-foreground: #f1f5f9;
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  --accent: #1e40af;
+  --accent-foreground: #f1f5f9;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #334155;
+  --input: #334155;
+  --ring: #3b82f6;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: #60a5fa;
+  --chart-2: #34d399;
+  --chart-3: #fbbf24;
+  --chart-4: #f87171;
+  --chart-5: #a78bfa;
+  --sidebar: #1e293b;
+  --sidebar-foreground: #f1f5f9;
+  --sidebar-primary: #07c160;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #334155;
+  --sidebar-accent-foreground: #f1f5f9;
+  --sidebar-border: #334155;
+  --sidebar-ring: #3b82f6;
+  
+  /* 深色模式下的微信配色 */
+  --wechat-bg: #111827;
+  --wechat-card: #1f2937;
+  --wechat-section-bg: #1e293b;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* 微信小程序专用颜色 */
+  --color-wechat-green: var(--wechat-green);
+  --color-wechat-blue: var(--wechat-blue);
+  --color-wechat-orange: var(--wechat-orange);
+  --color-wechat-red: var(--wechat-red);
+  --color-wechat-gray: var(--wechat-gray);
+  --color-wechat-bg: var(--wechat-bg);
+  --color-wechat-card: var(--wechat-card);
+  --color-wechat-section-bg: var(--wechat-section-bg);
+  
+  /* 状态颜色 */
+  --color-status-pending: var(--status-pending);
+  --color-status-progress: var(--status-progress);
+  --color-status-completed: var(--status-completed);
+  --color-status-rejected: var(--status-rejected);
+  --color-status-overdue: var(--status-overdue);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    font-size: var(--font-size);
+    /* 防止iOS Safari缩放 */
+    -webkit-text-size-adjust: 100%;
+    /* 优化触摸滚动 */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+    /* 防止橡皮筋效果 */
+    overscroll-behavior-y: none;
+    /* 优化移动端滚动 */
+    -webkit-overflow-scrolling: touch;
+    /* 防止选择高亮 */
+    -webkit-user-select: none;
+    user-select: none;
+    /* 防止拖拽 */
+    -webkit-user-drag: none;
+    /* 防止长按菜单 */
+    -webkit-touch-callout: none;
+    /* 优化点击延迟 */
+    touch-action: manipulation;
+  }
+
+  /* 允许文本选择的元素 */
+  input, textarea, [contenteditable] {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--color-foreground);
+    }
+
+    h2 {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--color-foreground);
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--color-foreground);
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--color-foreground);
+    }
+
+    p {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--color-foreground);
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--color-foreground);
+    }
+
+    button {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    input {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+  }
+}
+
+/* 微信小程序适配样式 */
+.wechat-container {
+  max-width: 375px;
+  margin: 0 auto;
+  min-height: 100vh;
+  min-height: 100dvh; /* 动态视口高度 */
+  background-color: var(--color-wechat-bg);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.wechat-safe-area {
+  padding-bottom: var(--mobile-safe-area-bottom);
+}
+
+.wechat-safe-area-top {
+  padding-top: var(--mobile-safe-area-top);
+}
+
+.wechat-card {
+  background: var(--color-wechat-card);
+  border-radius: var(--radius-md);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--color-border);
+}
+
+.wechat-section {
+  background: var(--color-wechat-section-bg);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin: 8px 0;
+}
+
+.wechat-button {
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  min-height: var(--mobile-touch-target-min);
+  min-width: var(--mobile-touch-target-min);
+  /* 防止双击缩放 */
+  touch-action: manipulation;
+}
+
+.wechat-button:active {
+  transform: scale(0.98);
+  opacity: 0.8;
+}
+
+.wechat-button:hover {
+  opacity: 0.9;
+}
+
+/* 移动端优化的输入框 */
+.mobile-input {
+  font-size: 16px !important; /* 防止iOS Safari缩放 */
+  min-height: var(--mobile-touch-target-min);
+  background-color: var(--color-input-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.mobile-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* 移动端友好的滚动区域 */
+.mobile-scroll {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+  /* 提升滚动性能 */
+  will-change: scroll-position;
+  /* 硬件加速 */
+  transform: translateZ(0);
+}
+
+/* 固定定位元素的安全区域适配 */
+.fixed-top {
+  top: var(--mobile-safe-area-top);
+  background-color: var(--color-wechat-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.fixed-bottom {
+  bottom: var(--mobile-safe-area-bottom);
+  background-color: var(--color-wechat-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* 键盘弹起时的适配 */
+@supports (-webkit-touch-callout: none) {
+  .keyboard-adjust {
+    padding-bottom: max(var(--mobile-safe-area-bottom), 20px);
+    transition: padding-bottom 0.3s ease;
+  }
+}
+
+/* 长列表优化 */
+.virtual-scroll {
+  contain: layout style paint;
+  content-visibility: auto;
+}
+
+/* 触摸反馈优化 */
+.touch-feedback {
+  -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
+  tap-highlight-color: rgba(59, 130, 246, 0.1);
+}
+
+.touch-feedback:active {
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+/* 防止文本选择的交互元素 */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 手势滑动区域 */
+.swipe-area {
+  touch-action: pan-x pan-y;
+}
+
+/* 弹窗遮罩优化 */
+.modal-overlay {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* 加载状态优化 */
+.loading-shimmer {
+  background: linear-gradient(90deg, 
+    var(--color-muted) 25%, 
+    var(--color-secondary) 50%, 
+    var(--color-muted) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* 状态指示器 */
+.status-pending {
+  color: var(--color-status-pending);
+  background-color: rgba(245, 158, 11, 0.1);
+}
+
+.status-progress {
+  color: var(--color-status-progress);
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.status-completed {
+  color: var(--color-status-completed);
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.status-rejected {
+  color: var(--color-status-rejected);
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* 响应式适配 */
+@media (max-width: 375px) {
+  .wechat-container {
+    max-width: 100%;
+  }
+  
+  html {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 376px) and (max-width: 414px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+/* 横屏适配 */
+@media (orientation: landscape) and (max-height: 500px) {
+  .wechat-container {
+    max-width: 100%;
+  }
+  
+  .mobile-landscape-hide {
+    display: none;
+  }
+}
+
+/* 高分辨率屏幕优化 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .high-dpi-border {
+    border-width: 0.5px;
+  }
+  
+  .wechat-card {
+    box-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.03), 0 0.5px 1px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* iOS特定优化 */
+@supports (-webkit-appearance: none) {
+  .ios-blur {
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+  }
+}
+
+/* 可访问性优化 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 深色模式媒体查询 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .wechat-container {
+    max-width: none;
+    box-shadow: none;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* 工具类 */
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 性能优化类 */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.optimize-scroll {
+  -webkit-overflow-scrolling: touch;
+  contain: layout;
+}
+
+/* 渐变背景 */
+.gradient-bg {
+  background: linear-gradient(135deg, var(--color-wechat-bg) 0%, var(--color-background) 100%);
+}
+
+/* 卡片阴影层级 */
+.card-shadow-sm {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.card-shadow-md {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.card-shadow-lg {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
+}

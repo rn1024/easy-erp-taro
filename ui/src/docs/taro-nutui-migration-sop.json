@@ -1,0 +1,495 @@
+{
+  "name": "Taro+NutUI迁移标准操作程序",
+  "version": "1.0.0",
+  "description": "从React+ShadCN+Tailwind技术栈迁移到Taro+NutUI的完整迁移指南",
+  "lastUpdated": "2025-01-09",
+  "estimatedEffort": "4-6周 (2名开发者)",
+
+  "migrationOverview": {
+    "purpose": "将现有WeChat风格应用迁移到Taro框架，支持多端发布（微信小程序、H5、React Native等）",
+    "benefits": [
+      "原生小程序性能体验",
+      "一码多端发布能力",
+      "更好的微信生态集成",
+      "NutUI组件库与京东设计规范对齐"
+    ],
+    "challenges": [
+      "小程序API限制",
+      "组件库差异适配",
+      "样式系统重构",
+      "开发工具链变更"
+    ]
+  },
+
+  "techStackComparison": {
+    "current": {
+      "framework": "React 18",
+      "language": "TypeScript",
+      "styling": "Tailwind CSS v4.0",
+      "ui": "ShadCN UI",
+      "icons": "Lucide React",
+      "bundler": "Vite/Webpack",
+      "platform": "Web"
+    },
+    "target": {
+      "framework": "Taro 3.x",
+      "language": "TypeScript",
+      "styling": "NutUI内置样式系统",
+      "ui": "NutUI 4.x",
+      "icons": "NutUI Icon",
+      "bundler": "Taro Webpack",
+      "platform": "小程序 + H5 + RN"
+    }
+  },
+
+  "migrationPhases": {
+    "phase1": {
+      "name": "环境准备和项目初始化",
+      "duration": "3-5天",
+      "tasks": [
+        "安装Taro CLI工具",
+        "创建Taro项目脚手架",
+        "配置TypeScript环境",
+        "设置NutUI组件库",
+        "配置多端编译环境"
+      ]
+    },
+    "phase2": {
+      "name": "项目结构调整",
+      "duration": "2-3天",
+      "tasks": [
+        "调整目录结构为Taro规范",
+        "迁移配置文件",
+        "重构路由系统",
+        "调整构建脚本"
+      ]
+    },
+    "phase3": {
+      "name": "组件库迁移",
+      "duration": "10-14天",
+      "tasks": [
+        "ShadCN组件到NutUI组件映射",
+        "自定义组件重构",
+        "样式系统重写",
+        "图标库替换"
+      ]
+    },
+    "phase4": {
+      "name": "页面和业务逻辑迁移",
+      "duration": "7-10天",
+      "tasks": [
+        "页面组件迁移",
+        "状态管理调整",
+        "API调用适配",
+        "事件处理优化"
+      ]
+    },
+    "phase5": {
+      "name": "测试和优化",
+      "duration": "5-7天",
+      "tasks": [
+        "多端测试验证",
+        "性能优化",
+        "小程序审核适配",
+        "用户体验调优"
+      ]
+    }
+  },
+
+  "directoryStructureMapping": {
+    "current": {
+      "structure": {
+        "App.tsx": "应用入口",
+        "components/": "组件目录",
+        "pages/": "页面目录",
+        "styles/": "样式目录",
+        "docs/": "文档目录"
+      }
+    },
+    "target": {
+      "structure": {
+        "src/app.tsx": "应用入口",
+        "src/components/": "组件目录",
+        "src/pages/": "页面目录",
+        "src/styles/": "样式目录",
+        "src/utils/": "工具函数",
+        "config/": "配置目录",
+        "dist/": "构建输出"
+      }
+    }
+  },
+
+  "componentMapping": {
+    "shadcnToNutui": {
+      "button": {
+        "from": "components/ui/button.tsx",
+        "to": "@nutui/nutui-react-taro Button",
+        "changes": [
+          "API属性名称调整",
+          "样式类名变更",
+          "事件处理方法变更"
+        ]
+      },
+      "input": {
+        "from": "components/ui/input.tsx", 
+        "to": "@nutui/nutui-react-taro Input",
+        "changes": [
+          "受控组件模式调整",
+          "验证逻辑重构",
+          "样式主题适配"
+        ]
+      },
+      "card": {
+        "from": "components/ui/card.tsx",
+        "to": "@nutui/nutui-react-taro Card",
+        "changes": [
+          "布局结构调整",
+          "阴影效果重新实现",
+          "响应式行为修改"
+        ]
+      },
+      "dialog": {
+        "from": "components/ui/dialog.tsx",
+        "to": "@nutui/nutui-react-taro Dialog",
+        "changes": [
+          "小程序模态框限制",
+          "层级管理调整",
+          "动画效果差异"
+        ]
+      },
+      "tabs": {
+        "from": "components/ui/tabs.tsx",
+        "to": "@nutui/nutui-react-taro Tabs",
+        "changes": [
+          "标签页切换逻辑",
+          "样式定制方式",
+          "滚动行为调整"
+        ]
+      },
+      "select": {
+        "from": "components/ui/select.tsx",
+        "to": "@nutui/nutui-react-taro Picker",
+        "changes": [
+          "选择器交互模式",
+          "数据结构格式",
+          "多选逻辑重构"
+        ]
+      },
+      "checkbox": {
+        "from": "components/ui/checkbox.tsx",
+        "to": "@nutui/nutui-react-taro Checkbox",
+        "changes": [
+          "状态管理方式",
+          "样式主题切换",
+          "分组逻辑调整"
+        ]
+      },
+      "switch": {
+        "from": "components/ui/switch.tsx",
+        "to": "@nutui/nutui-react-taro Switch",
+        "changes": [
+          "开关状态绑定",
+          "动画效果调整",
+          "尺寸规格变更"
+        ]
+      }
+    },
+    "customComponents": {
+      "BottomNavigation": {
+        "approach": "使用NutUI Tabbar组件",
+        "changes": [
+          "导航数据结构调整",
+          "路由跳转方式变更",
+          "激活状态管理"
+        ]
+      },
+      "TaskCard": {
+        "approach": "基于NutUI Card自定义",
+        "changes": [
+          "卡片布局重构",
+          "交互手势适配",
+          "状态指示器调整"
+        ]
+      },
+      "ProfilePage": {
+        "approach": "页面组件重构",
+        "changes": [
+          "底部抽屉改为NutUI Popup",
+          "头像上传使用NutUI Uploader",
+          "设置项使用NutUI Cell"
+        ]
+      }
+    }
+  },
+
+  "stylingMigration": {
+    "tailwindToNutui": {
+      "approach": "从Tailwind CSS迁移到NutUI主题系统",
+      "strategy": [
+        "保留设计令牌和变量",
+        "使用NutUI的CSS变量系统",
+        "自定义主题配置",
+        "保持WeChat风格一致性"
+      ],
+      "changes": {
+        "colorSystem": {
+          "before": "Tailwind颜色类 (bg-blue-500)",
+          "after": "NutUI主题变量 (--nutui-primary-color)",
+          "migration": "映射颜色值到NutUI主题配置"
+        },
+        "spacing": {
+          "before": "Tailwind间距类 (p-4, m-2)",
+          "after": "NutUI间距变量 (--nutui-spacing-base)",
+          "migration": "转换为NutUI标准间距"
+        },
+        "typography": {
+          "before": "Tailwind文字类 (text-lg, font-bold)",
+          "after": "NutUI文字变量 (--nutui-font-size-large)",
+          "migration": "使用NutUI字体系统"
+        },
+        "responsive": {
+          "before": "Tailwind响应式前缀 (md:, lg:)",
+          "after": "媒体查询或NutUI响应式方案",
+          "migration": "重写响应式逻辑"
+        }
+      }
+    },
+    "scssIntegration": {
+      "compatibility": "Taro支持SCSS预处理器",
+      "migration": [
+        "保留现有SCSS文件结构",
+        "调整导入路径",
+        "适配小程序样式限制",
+        "优化性能和包体积"
+      ]
+    }
+  },
+
+  "routingMigration": {
+    "currentSystem": "React Router或基于组件状态的路由",
+    "taroSystem": "Taro Router (基于小程序路由)",
+    "changes": [
+      "路由配置从代码迁移到app.config.ts",
+      "导航方式从React Router改为Taro.navigateTo",
+      "路由参数传递方式调整",
+      "页面生命周期钩子变更"
+    ],
+    "pageMapping": {
+      "index": {
+        "from": "pages/index/index.tsx",
+        "to": "src/pages/index/index.tsx",
+        "config": "页面配置移至index.config.ts"
+      },
+      "tasks": {
+        "from": "pages/tasks/index.tsx", 
+        "to": "src/pages/tasks/index.tsx",
+        "config": "任务页面配置"
+      },
+      "profile": {
+        "from": "ProfilePage组件",
+        "to": "src/pages/profile/index.tsx",
+        "config": "个人中心页面配置"
+      }
+    }
+  },
+
+  "apiIntegration": {
+    "httpRequests": {
+      "current": "fetch API或axios",
+      "taro": "Taro.request",
+      "changes": [
+        "请求拦截器调整",
+        "错误处理机制变更",
+        "请求头配置差异",
+        "小程序网络限制适配"
+      ]
+    },
+    "localStorage": {
+      "current": "localStorage/sessionStorage",
+      "taro": "Taro.getStorageSync/setStorageSync",
+      "changes": [
+        "同步异步API差异",
+        "存储容量限制",
+        "数据序列化处理"
+      ]
+    },
+    "deviceApis": {
+      "additions": [
+        "Taro.getSystemInfo - 设备信息",
+        "Taro.showToast - 消息提示",
+        "Taro.showModal - 模态确认",
+        "Taro.chooseImage - 图片选择"
+      ]
+    }
+  },
+
+  "migrationSteps": {
+    "setup": {
+      "step1": "安装Taro CLI: npm install -g @tarojs/cli",
+      "step2": "创建项目: taro init myapp",
+      "step3": "选择React + TypeScript + NutUI模板",
+      "step4": "配置开发环境和编辑器插件"
+    },
+    "configuration": {
+      "step1": "配置config/index.js编译选项",
+      "step2": "设置app.config.ts应用配置",
+      "step3": "配置NutUI主题和样式变量",
+      "step4": "设置TypeScript编译选项"
+    },
+    "migration": {
+      "step1": "创建组件映射表和迁移计划",
+      "step2": "按优先级迁移核心组件",
+      "step3": "迁移页面组件和业务逻辑",
+      "step4": "调整样式和交互细节",
+      "step5": "集成测试和性能优化"
+    }
+  },
+
+  "testingStrategy": {
+    "unitTesting": {
+      "framework": "Jest + @testing-library/react",
+      "adaptation": "适配Taro测试环境",
+      "focus": "组件逻辑和状态管理测试"
+    },
+    "integrationTesting": {
+      "approach": "页面级别集成测试",
+      "tools": "Taro测试工具链",
+      "scenarios": "用户交互流程测试"
+    },
+    "multiPlatformTesting": {
+      "platforms": ["微信小程序", "H5", "支付宝小程序"],
+      "devices": ["iOS", "Android", "Desktop"],
+      "focus": "兼容性和性能测试"
+    }
+  },
+
+  "performanceOptimization": {
+    "bundleSize": {
+      "strategy": "按需加载和代码分割",
+      "tools": "Taro webpack优化",
+      "target": "小程序包体积限制"
+    },
+    "runtime": {
+      "optimization": [
+        "避免频繁的setData调用",
+        "优化长列表渲染",
+        "减少不必要的组件重渲染",
+        "合理使用缓存策略"
+      ]
+    },
+    "userExperience": {
+      "loading": "骨架屏和加载状态",
+      "navigation": "页面间流畅切换",
+      "feedback": "及时的用户反馈"
+    }
+  },
+
+  "qualityAssurance": {
+    "codeReview": {
+      "focus": ["API使用规范", "性能优化", "兼容性处理"],
+      "checklist": "Taro最佳实践检查清单"
+    },
+    "testing": {
+      "manual": "多端手动测试",
+      "automated": "自动化回归测试",
+      "performance": "性能基准测试"
+    },
+    "compliance": {
+      "miniprogram": "小程序审核规范",
+      "accessibility": "无障碍访问标准",
+      "security": "数据安全和隐私保护"
+    }
+  },
+
+  "risksMitigation": {
+    "technical": {
+      "componentApi": {
+        "risk": "组件API差异导致功能缺失",
+        "mitigation": "提前验证核心功能，准备替代方案"
+      },
+      "performance": {
+        "risk": "小程序性能不如原生H5",
+        "mitigation": "性能监控和优化，关键路径优化"
+      },
+      "compatibility": {
+        "risk": "多端兼容性问题",
+        "mitigation": "全面测试，平台特定适配"
+      }
+    },
+    "business": {
+      "timeline": {
+        "risk": "迁移时间超出预期",
+        "mitigation": "分阶段发布，关键功能优先"
+      },
+      "userExperience": {
+        "risk": "用户体验下降",
+        "mitigation": "保持设计一致性，渐进式迁移"
+      }
+    }
+  },
+
+  "deliverables": {
+    "phase1": [
+      "Taro项目脚手架",
+      "开发环境配置",
+      "技术栈验证报告"
+    ],
+    "phase2": [
+      "项目结构调整",
+      "路由系统重构",
+      "构建脚本配置"
+    ],
+    "phase3": [
+      "组件库迁移",
+      "样式系统重写",
+      "组件测试用例"
+    ],
+    "phase4": [
+      "页面功能迁移",
+      "业务逻辑适配",
+      "API集成测试"
+    ],
+    "phase5": [
+      "多端测试报告",
+      "性能优化方案",
+      "部署发布指南"
+    ]
+  },
+
+  "toolsAndResources": {
+    "development": [
+      "Taro CLI工具",
+      "微信开发者工具",
+      "NutUI组件库文档",
+      "Taro官方文档"
+    ],
+    "testing": [
+      "小程序测试工具",
+      "真机调试环境",
+      "性能分析工具"
+    ],
+    "deployment": [
+      "小程序发布流程",
+      "H5部署方案",
+      "CI/CD配置"
+    ]
+  },
+
+  "successCriteria": {
+    "functional": [
+      "所有核心功能正常运行",
+      "用户体验保持一致",
+      "多端兼容性良好"
+    ],
+    "performance": [
+      "页面加载时间 < 2秒",
+      "交互响应时间 < 300ms",
+      "内存使用合理"
+    ],
+    "quality": [
+      "代码质量达标",
+      "测试覆盖率 > 80%",
+      "无重大Bug"
+    ]
+  }
+}

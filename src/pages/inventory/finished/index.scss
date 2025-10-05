@@ -1,179 +1,22 @@
-@use "@nutui/nutui-react-taro/dist/styles/variables.scss" as *;
-
 .finished-inventory {
-  background: #f5f6fa;
-  // padding-bottom: calc(env(safe-area-inset-bottom));
+  background-color: var(--bg-body);
 
-  // 搜索框
-  &__search {
-    padding: 20rpx 32rpx;
-    background: #ffffff;
-
-    .search-bar {
-      background: transparent;
-    }
-  }
-
-  // 页面标题
-  .page-header {
+  &__content {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24rpx 32rpx;
-    background: #fff;
-
-    .page-title {
-      font-size: 36rpx;
-      font-weight: 600;
-      color: #1a1a1a;
-    }
-
-    .scan-button {
-      padding: 12rpx;
-    }
+    flex-direction: column;
+    gap: var(--spacing-4);
+    padding: var(--spacing-4);
   }
 
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+}
 
-  // 库存列表
-  .inventory-list {
-    padding: 24rpx 32rpx 0 32rpx;
-
-    .inventory-card {
-      background: #fff;
-      border-radius: 16rpx;
-      padding: 32rpx;
-      margin-bottom: 24rpx;
-
-      // 标题行
-      .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 20rpx;
-
-        .product-name {
-          flex: 1;
-          font-size: 32rpx;
-          color: #1a1a1a;
-          font-weight: 500;
-          line-height: 1.4;
-          margin-right: 16rpx;
-        }
-
-        .status-badge {
-          padding: 8rpx 20rpx;
-          border-radius: 24rpx;
-          flex-shrink: 0;
-
-          .status-text {
-            font-size: 26rpx;
-            font-weight: 500;
-          }
-
-          &.status-normal {
-            background: #e6f7ff;
-
-            .status-text {
-              color: #1890ff;
-            }
-          }
-
-          &.status-low {
-            background: #fff2e8;
-
-            .status-text {
-              color: #fa8c16;
-            }
-          }
-        }
-      }
-
-      // 数量显示
-      .quantity-section {
-        display: flex;
-        align-items: baseline;
-        margin-bottom: 28rpx;
-
-        .quantity-value {
-          font-size: 56rpx;
-          font-weight: bold;
-          color: #1a1a1a;
-          line-height: 1;
-        }
-
-        .quantity-unit {
-          font-size: 32rpx;
-          color: #333;
-          margin-left: 8rpx;
-        }
-      }
-
-      // 详细信息
-      .detail-section {
-        .detail-item {
-          display: flex;
-          align-items: center;
-          margin-bottom: 20rpx;
-
-          &:last-child {
-            margin-bottom: 0;
-          }
-
-          .detail-label {
-            font-size: 30rpx;
-            color: #666;
-            margin: 0 8rpx 0 12rpx;
-          }
-
-          .detail-value {
-            font-size: 30rpx;
-            color: #1a1a1a;
-            font-weight: 500;
-          }
-        }
-      }
-
-      // 操作按钮
-      .action-section {
-        display: flex;
-        gap: 24rpx;
-        margin-top: 32rpx;
-        padding-top: 28rpx;
-        border-top: 1rpx solid #f0f0f0;
-
-        .action-button {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8rpx;
-          height: 72rpx;
-          border: 1rpx solid #d9d9d9;
-          border-radius: 36rpx;
-          background: #fff;
-
-          .action-text {
-            font-size: 30rpx;
-            font-weight: 500;
-          }
-
-          &.edit-button {
-            border-color: #1890ff;
-
-            .action-text {
-              color: #1890ff;
-            }
-          }
-
-          &.delete-button {
-            border-color: #ff4d4f;
-
-            .action-text {
-              color: #ff4d4f;
-            }
-          }
-        }
-      }
-    }
+@media screen and (max-width: 360px) {
+  .finished-inventory__content {
+    padding: var(--spacing-3);
   }
 }

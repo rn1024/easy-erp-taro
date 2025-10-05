@@ -1,8 +1,13 @@
 import React from 'react'
 import { View, Text } from '@tarojs/components'
-import type { ITouchEvent } from '@tarojs/components'
 import { MaterialIcons } from 'taro-icons'
+
+/**
+ * Types
+ */
+import type { ITouchEvent } from '@tarojs/components'
 import type { FinishedInventory, SpareInventory } from '@/types/admin'
+
 import './index.scss'
 
 // 通用库存类型
@@ -16,15 +21,22 @@ interface InventoryCardProps {
   onClick?: (item: InventoryItem) => void
 }
 
-const InventoryCard: React.FC<InventoryCardProps> = ({ 
-  item, 
-  type, 
-  onEdit, 
-  onDelete, 
-  onClick 
+interface StockStatus {
+  text: string
+  color: string
+  bgColor: string
+  icon: React.ReactNode
+}
+
+const InventoryCard: React.FC<InventoryCardProps> = ({
+  item,
+  type,
+  onEdit,
+  onDelete,
+  onClick
 }) => {
   // 库存状态判断
-  const getStockStatus = (quantity: number) => {
+  const getStockStatus = (quantity: number): StockStatus => {
     if (quantity <= 10) {
       return {
         text: '库存不足',
@@ -50,18 +62,18 @@ const InventoryCard: React.FC<InventoryCardProps> = ({
   }
 
   // 处理卡片点击
-  const handleCardClick = () => {
+  const handleCardClick = (): void => {
     onClick?.(item)
   }
 
   // 处理编辑按钮点击
-  const handleEditClick = (e: ITouchEvent) => {
+  const handleEditClick = (e: ITouchEvent): void => {
     e.stopPropagation()
     onEdit?.(item)
   }
 
   // 处理删除按钮点击
-  const handleDeleteClick = (e: ITouchEvent) => {
+  const handleDeleteClick = (e: ITouchEvent): void => {
     e.stopPropagation()
     onDelete?.(item)
   }
@@ -76,7 +88,7 @@ const InventoryCard: React.FC<InventoryCardProps> = ({
       <View className='inventory-card__header'>
         <View className='inventory-card__left'>
           <Text className='inventory-card__title'>
-            {item.product?.specification || item.product?.code || '未知产品'}
+            {item.product?.specification ?? item.product?.code ?? '未知产品'}
           </Text>
           <View className='inventory-card__meta'>
             <View 
@@ -89,7 +101,7 @@ const InventoryCard: React.FC<InventoryCardProps> = ({
               {stockStatus.icon}
               <Text className='inventory-card__status-text'>{stockStatus.text}</Text>
             </View>
-            <Text className='inventory-card__category'>{item.category?.name || '未分类'}</Text>
+            <Text className='inventory-card__category'>{item.category?.name ?? '未分类'}</Text>
           </View>
         </View>
         <View className='inventory-card__right'>
@@ -106,12 +118,12 @@ const InventoryCard: React.FC<InventoryCardProps> = ({
           <View className='inventory-card__info'>
             <MaterialIcons name='store' size={14} color='#6b7280' />
             <Text className='inventory-card__label'>店铺:</Text>
-            <Text className='inventory-card__value'>{item.shop?.nickname || '未知店铺'}</Text>
+            <Text className='inventory-card__value'>{item.shop?.nickname ?? '未知店铺'}</Text>
           </View>
           <View className='inventory-card__info'>
             <MaterialIcons name='location_on' size={14} color='#6b7280' />
             <Text className='inventory-card__label'>货位:</Text>
-            <Text className='inventory-card__value'>{item.location || '未分配'}</Text>
+            <Text className='inventory-card__value'>{item.location ?? '未分配'}</Text>
           </View>
         </View>
 
@@ -121,12 +133,12 @@ const InventoryCard: React.FC<InventoryCardProps> = ({
             <View className='inventory-card__info'>
               <MaterialIcons name='inbox' size={14} color='#6b7280' />
               <Text className='inventory-card__label'>外箱:</Text>
-              <Text className='inventory-card__value'>{(item as FinishedInventory).boxSize || '未设置'}</Text>
+              <Text className='inventory-card__value'>{(item as FinishedInventory).boxSize ?? '未设置'}</Text>
             </View>
             <View className='inventory-card__info'>
               <MaterialIcons name='scale' size={14} color='#6b7280' />
               <Text className='inventory-card__label'>重量:</Text>
-              <Text className='inventory-card__value'>{(item as FinishedInventory).weight || 0}kg</Text>
+              <Text className='inventory-card__value'>{(item as FinishedInventory).weight ?? 0}kg</Text>
             </View>
           </View>
         )}

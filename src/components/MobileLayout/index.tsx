@@ -1,10 +1,20 @@
 import React, { useState, useEffect, createContext } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SafeArea, Loading } from '@nutui/nutui-react-taro'
 import { MaterialIcons } from 'taro-icons'
-import Taro from '@tarojs/taro'
+
+/**
+ * Hooks
+ */
 import { useUserStore } from '@/stores/userStore'
-import useResponsive, { type ResponsiveState } from '@/hooks/useResponsive'
+import useResponsive from '@/hooks/useResponsive'
+
+/**
+ * Types
+ */
+import type { ResponsiveState } from '@/hooks/useResponsive'
+
 import './index.scss'
 
 interface MobileLayoutProps {
@@ -47,13 +57,13 @@ export const ResponsiveContext = createContext<ResponsiveState>({
 
 // 错误边界组件
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  static getDerivedStateFromError(_error: Error): ErrorBoundaryState {
+    return { hasError: true }
+  }
+
   constructor(props: ErrorBoundaryProps) {
     super(props)
     this.state = { hasError: false }
-  }
-
-  static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error }
   }
 
   componentDidCatch(_error: Error, _errorInfo: ErrorInfo) {
@@ -62,7 +72,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback || (
+      return this.props.fallback ?? (
         <View className='error-boundary'>
           <View className='error-boundary__icon'>
             <MaterialIcons name='error' size={48} color='#ef4444' />

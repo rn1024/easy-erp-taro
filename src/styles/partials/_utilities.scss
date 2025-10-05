@@ -1,9 +1,15 @@
 @use './mixins' as mixins;
 
+// Layout utilities
 .safe-content {
   @include mixins.safe-padded-content;
 }
 
+.safe-bottom {
+  @include mixins.safe-area-bottom;
+}
+
+// Scroll utilities
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -13,6 +19,11 @@
   }
 }
 
+.scroll-x {
+  @include mixins.scroll-x;
+}
+
+// Accessibility utilities
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -25,8 +36,24 @@
   border: 0;
 }
 
+// Text utilities
 .text-ellipsis {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  @include mixins.text-ellipsis;
+}
+
+.line-clamp-2 {
+  @include mixins.line-clamp(2);
+}
+
+.line-clamp-3 {
+  @include mixins.line-clamp(3);
+}
+
+// Touch utilities
+.touch-active {
+  @include mixins.touch-active;
+}
+
+.touch-active-scale {
+  @include mixins.touch-active-scale;
 }

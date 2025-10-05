@@ -1,126 +1,101 @@
-import type { FinishedInventory, SpareInventory } from '@/types/admin'
 import type { ApiResponse, PaginatedResponse } from '@/types'
+import type { FinishedInventory, SpareInventory } from '@/types/admin'
 import { ApiService } from './api'
 
-// 成品库存API
-export class FinishedInventoryAPI {
-  // 获取成品库存列表
-  static async getList(params: {
-    page?: number
-    pageSize?: number
-    shop?: string
-    category?: string
-    keyword?: string
-  } = {}): Promise<ApiResponse<PaginatedResponse<FinishedInventory>>> {
-    return ApiService.get('/finished-inventory', params)
-  }
+export type FinishedInventoryParams = Partial<{
+  page: number
+  pageSize: number
+  shop: string
+  category: string
+  keyword: string
+}> & Record<string, unknown>
 
-  // 获取成品库存详情
-  static async getDetail(id: string): Promise<ApiResponse<FinishedInventory>> {
-    return ApiService.get(`/finished-inventory/${id}`)
-  }
+export type FinishedInventoryExportParams = Partial<{
+  shop: string
+  category: string
+  keyword: string
+}> & Record<string, unknown>
 
-  // 新增成品库存
-  static async create(data: Omit<FinishedInventory, 'id'>): Promise<ApiResponse<FinishedInventory>> {
-    return ApiService.post('/finished-inventory', data)
-  }
+export type SpareInventoryParams = Partial<{
+  page: number
+  pageSize: number
+  shop: string
+  category: string
+  keyword: string
+}> & Record<string, unknown>
 
-  // 更新成品库存
-  static async update(id: string, data: Partial<FinishedInventory>): Promise<ApiResponse<FinishedInventory>> {
-    return ApiService.put(`/finished-inventory/${id}`, data)
-  }
-
-  // 删除成品库存
-  static async delete(id: string): Promise<ApiResponse<boolean>> {
-    return ApiService.delete(`/finished-inventory/${id}`)
-  }
-
-  // 批量删除成品库存
-  static async batchDelete(ids: string[]): Promise<ApiResponse<boolean>> {
-    return ApiService.post('/finished-inventory/batch-delete', { ids })
-  }
-
-  // 获取店铺列表
-  static async getShops(): Promise<ApiResponse<string[]>> {
-    return ApiService.get('/shops')
-  }
-
-  // 获取产品分类列表
-  static async getCategories(shop?: string): Promise<ApiResponse<string[]>> {
-    return ApiService.get('/product-categories', { shop })
-  }
-
-  // 获取货位列表
-  static async getLocations(): Promise<ApiResponse<string[]>> {
-    return ApiService.get('/finished-inventory/locations')
-  }
-
-  // 导出数据
-  static async export(params: {
-    shop?: string
-    category?: string
-    keyword?: string
-  } = {}): Promise<ApiResponse<string>> {
-    return ApiService.get('/finished-inventory/export', params)
-  }
+export const getFinishedInventoryList = (params: FinishedInventoryParams = {}): Promise<ApiResponse<PaginatedResponse<FinishedInventory>>> => {
+  return ApiService.get('/finished-inventory', params)
 }
 
-// 散件库存API
-export class SpareInventoryAPI {
-  // 获取散件库存列表
-  static async getList(params: {
-    page?: number
-    pageSize?: number
-    shop?: string
-    category?: string
-    keyword?: string
-  } = {}): Promise<ApiResponse<PaginatedResponse<SpareInventory>>> {
-    return ApiService.get('/spare-inventory', params)
-  }
-
-  // 获取散件库存详情
-  static async getDetail(id: string): Promise<ApiResponse<SpareInventory>> {
-    return ApiService.get(`/spare-inventory/${id}`)
-  }
-
-  // 新增散件库存
-  static async create(data: Omit<SpareInventory, 'id'>): Promise<ApiResponse<SpareInventory>> {
-    return ApiService.post('/spare-inventory', data)
-  }
-
-  // 更新散件库存
-  static async update(id: string, data: Partial<SpareInventory>): Promise<ApiResponse<SpareInventory>> {
-    return ApiService.put(`/spare-inventory/${id}`, data)
-  }
-
-  // 删除散件库存
-  static async delete(id: string): Promise<ApiResponse<boolean>> {
-    return ApiService.delete(`/spare-inventory/${id}`)
-  }
-
-  // 批量删除散件库存
-  static async batchDelete(ids: string[]): Promise<ApiResponse<boolean>> {
-    return ApiService.post('/spare-inventory/batch-delete', { ids })
-  }
-
-  // 获取配件类型列表
-  static async getAccessoryTypes(): Promise<ApiResponse<string[]>> {
-    return ApiService.get('/spare-inventory/accessory-types')
-  }
-
-  // 获取规格列表
-  static async getSpecifications(accessoryType?: string): Promise<ApiResponse<string[]>> {
-    return ApiService.get('/spare-inventory/specifications', { accessoryType })
-  }
-
-  // 获取货位列表
-  static async getLocations(): Promise<ApiResponse<string[]>> {
-    return ApiService.get('/spare-inventory/locations')
-  }
+export const getFinishedInventoryDetail = (id: string): Promise<ApiResponse<FinishedInventory>> => {
+  return ApiService.get(`/finished-inventory/${id}`)
 }
 
-// 库存相关的统一导出
-export const InventoryAPI = {
-  finished: FinishedInventoryAPI,
-  spare: SpareInventoryAPI
-} 
+export const createFinishedInventory = (data: Omit<FinishedInventory, 'id'>): Promise<ApiResponse<FinishedInventory>> => {
+  return ApiService.post('/finished-inventory', data)
+}
+
+export const updateFinishedInventory = (id: string, data: Partial<FinishedInventory>): Promise<ApiResponse<FinishedInventory>> => {
+  return ApiService.put(`/finished-inventory/${id}`, data)
+}
+
+export const deleteFinishedInventory = (id: string): Promise<ApiResponse<boolean>> => {
+  return ApiService.delete(`/finished-inventory/${id}`)
+}
+
+export const batchDeleteFinishedInventory = (ids: string[]): Promise<ApiResponse<boolean>> => {
+  return ApiService.post('/finished-inventory/batch-delete', { ids })
+}
+
+export const getFinishedInventoryShops = (): Promise<ApiResponse<string[]>> => {
+  return ApiService.get('/shops')
+}
+
+export const getFinishedInventoryCategories = (shop?: string): Promise<ApiResponse<string[]>> => {
+  return ApiService.get('/product-categories', shop ? { shop } : undefined)
+}
+
+export const getFinishedInventoryLocations = (): Promise<ApiResponse<string[]>> => {
+  return ApiService.get('/finished-inventory/locations')
+}
+
+export const exportFinishedInventory = (params: FinishedInventoryExportParams = {}): Promise<ApiResponse<string>> => {
+  return ApiService.get('/finished-inventory/export', params)
+}
+
+export const getSpareInventoryList = (params: SpareInventoryParams = {}): Promise<ApiResponse<PaginatedResponse<SpareInventory>>> => {
+  return ApiService.get('/spare-inventory', params)
+}
+
+export const getSpareInventoryDetail = (id: string): Promise<ApiResponse<SpareInventory>> => {
+  return ApiService.get(`/spare-inventory/${id}`)
+}
+
+export const createSpareInventory = (data: Omit<SpareInventory, 'id'>): Promise<ApiResponse<SpareInventory>> => {
+  return ApiService.post('/spare-inventory', data)
+}
+
+export const updateSpareInventory = (id: string, data: Partial<SpareInventory>): Promise<ApiResponse<SpareInventory>> => {
+  return ApiService.put(`/spare-inventory/${id}`, data)
+}
+
+export const deleteSpareInventory = (id: string): Promise<ApiResponse<boolean>> => {
+  return ApiService.delete(`/spare-inventory/${id}`)
+}
+
+export const batchDeleteSpareInventory = (ids: string[]): Promise<ApiResponse<boolean>> => {
+  return ApiService.post('/spare-inventory/batch-delete', { ids })
+}
+
+export const getSpareInventoryAccessoryTypes = (): Promise<ApiResponse<string[]>> => {
+  return ApiService.get('/spare-inventory/accessory-types')
+}
+
+export const getSpareInventorySpecifications = (accessoryType?: string): Promise<ApiResponse<string[]>> => {
+  return ApiService.get('/spare-inventory/specifications', accessoryType ? { accessoryType } : undefined)
+}
+
+export const getSpareInventoryLocations = (): Promise<ApiResponse<string[]>> => {
+  return ApiService.get('/spare-inventory/locations')
+}

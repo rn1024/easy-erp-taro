@@ -1,8 +1,18 @@
 import React, { useState } from 'react'
 import { View, Text } from '@tarojs/components'
 import { PullToRefresh } from '@nutui/nutui-react-taro'
-import { MaterialIcons } from 'taro-icons'
+
+/**
+ * Components
+ */
 import MobileLayout from '@/components/MobileLayout'
+import { PageHeader, SectionCard, StatsGrid, InfoList } from '@/components/common'
+
+/**
+ * Types
+ */
+import type { StatsGridItem, InfoListItem } from '@/components/common'
+
 import './index.scss'
 
 interface Stats {
@@ -70,30 +80,57 @@ const Index: React.FC = () => {
     }
   ]
 
-  const statItems = [
+  const statItems: StatsGridItem[] = [
     {
+      key: 'total',
       label: '总任务',
       value: stats.totalTasks,
-      color: '#3b82f6',
-      iconName: 'assignment'
+      iconName: 'assignment',
+      iconColor: '#3b82f6',
+      valueColor: '#3b82f6'
     },
     {
+      key: 'completed',
       label: '已完成',
       value: stats.completedTasks,
-      color: '#10b981',
-      iconName: 'done'
+      iconName: 'done',
+      iconColor: '#10b981',
+      valueColor: '#10b981'
     },
     {
+      key: 'pending',
       label: '待处理',
       value: stats.pendingTasks,
-      color: '#f59e0b',
-      iconName: 'schedule'
+      iconName: 'schedule',
+      iconColor: '#f59e0b',
+      valueColor: '#f59e0b'
     },
     {
+      key: 'overdue',
       label: '已逾期',
       value: stats.overdueTasks,
-      color: '#ef4444',
-      iconName: 'warning'
+      iconName: 'warning',
+      iconColor: '#ef4444',
+      valueColor: '#ef4444'
+    }
+  ]
+
+  const metricItems: StatsGridItem[] = [
+    {
+      key: 'activeUsers',
+      label: '活跃用户',
+      value: stats.activeUsers,
+      iconName: 'people',
+      iconColor: '#6b7280',
+      variant: 'flat'
+    },
+    {
+      key: 'avgTime',
+      label: '平均完成时间',
+      value: stats.avgCompletionTime,
+      iconName: 'timer',
+      iconColor: '#6b7280',
+      variant: 'flat'
     }
   ]
 
@@ -108,7 +145,7 @@ const Index: React.FC = () => {
     })
   }
 
-  const handleQuickActionClick = (actionId: string) => {
+  const _handleQuickActionClick = (actionId: string) => {
     // 点击快速操作: actionId
     // 这里可以处理不同的快速操作
     switch (actionId) {
@@ -129,112 +166,50 @@ const Index: React.FC = () => {
     }
   }
 
+  const actionItems: InfoListItem[] = actions.map(action => ({
+    key: action.id,
+    label: action.title,
+    value: action.description,
+    iconName: action.iconName,
+    iconColor: action.color
+  }))
+
   return (
     <MobileLayout className='index-page'>
-      <PullToRefresh
-        onRefresh={handleRefresh}
-        className='index-page__refresh'
-      >
-        <View className='index-page__content'>
-          {/* 工作流概览 */}
-          <View className='index-page__workflow-overview'>
-            <View className='index-page__overview-container'>
-              <View className='index-page__overview-card'>
-                <Text className='index-page__overview-title'>工作流概览</Text>
-                
-                {/* 统计卡片 */}
-                <View className='index-page__overview-stats'>
-                  {statItems.map((item, index) => (
-                    <View key={index} className='index-page__stat-item'>
-                      <View className='index-page__stat-header'>
-                        <View className='index-page__stat-icon' style={{ color: item.color }}>
-                          <MaterialIcons 
-                            name={item.iconName} 
-                            size={24} 
-                            color={item.color} 
-                          />
-                        </View>
-                        <Text 
-                          className='index-page__stat-value'
-                          style={{ color: item.color }}
-                        >
-                          {item.value}
-                        </Text>
-                      </View>
-                      <Text className='index-page__stat-label'>{item.label}</Text>
-                    </View>
-                  ))}
-                </View>
+      <PullToRefresh onRefresh={handleRefresh}>
+        <View className='index-page__wrapper'>
+          <PageHeader
+            title='工作流概览'
+            description='实时掌握团队任务进度与整体表现'
+            meta={(
+              <Text>
+                趋势：{stats.trend === 'up' ? '上升' : stats.trend === 'down' ? '下降' : '稳定'}
+              </Text>
+            )}
+            compact
+          >
+            <StatsGrid items={statItems} />
+          </PageHeader>
 
-                {/* 其他指标 */}
-                <View className='index-page__metrics'>
-                  <View className='index-page__metric-item'>
-                    <View className='index-page__metric-header'>
-                      <View className='index-page__metric-icon'>
-                        <MaterialIcons 
-                          name='people' 
-                          size={20} 
-                          color='#6b7280' 
-                        />
-                      </View>
-                      <Text className='index-page__metric-label'>活跃用户</Text>
-                    </View>
-                    <Text className='index-page__metric-value'>{stats.activeUsers}</Text>
-                  </View>
-                  <View className='index-page__metric-item'>
-                    <View className='index-page__metric-header'>
-                      <View className='index-page__metric-icon'>
-                        <MaterialIcons 
-                          name='timer' 
-                          size={20} 
-                          color='#6b7280' 
-                        />
-                      </View>
-                      <Text className='index-page__metric-label'>平均完成时间</Text>
-                    </View>
-                    <Text className='index-page__metric-value'>{stats.avgCompletionTime}</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
+          <SectionCard
+            title='关键指标'
+            description='核心团队运行指标概览'
+            compact
+          >
+            <StatsGrid items={metricItems} singleColumn={metricItems.length < 3} />
+          </SectionCard>
 
-          {/* 快速操作 */}
-          <View className='index-page__quick-actions'>
-            <View className='index-page__actions-container'>
-              <View className='index-page__actions-card'>
-                <Text className='index-page__actions-title'>快速操作</Text>
-                <View className='index-page__actions-grid'>
-                  {actions.map((action) => (
-                    <View
-                      key={action.id}
-                      className='index-page__action-item'
-                      onClick={() => handleQuickActionClick(action.id)}
-                    >
-                      <View 
-                        className='index-page__action-icon'
-                        style={{ backgroundColor: action.bgColor, color: action.color }}
-                      >
-                        <MaterialIcons 
-                          name={action.iconName} 
-                          size={24} 
-                          color={action.color} 
-                        />
-                      </View>
-                      <View className='index-page__action-content'>
-                        <Text className='index-page__action-title'>
-                          {action.title}
-                        </Text>
-                        <Text className='index-page__action-description'>
-                          {action.description}
-                        </Text>
-                      </View>
-                    </View>
-                  ))}
-                </View>
-              </View>
-            </View>
-          </View>
+          <SectionCard
+            title='快速操作'
+            description='常用功能入口'
+            compact
+          >
+            <InfoList
+              items={actionItems}
+              columns={2}
+              itemClassName='index-page__action-item'
+            />
+          </SectionCard>
         </View>
       </PullToRefresh>
     </MobileLayout>

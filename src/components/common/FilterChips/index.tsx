@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text } from '@tarojs/components'
-import { MaterialIcons } from 'taro-icons'
+import Icon from '../Icon'
+import './index.scss'
 
 export interface FilterChipsOption {
   value: string
@@ -69,7 +70,7 @@ const FilterChips: React.FC<FilterChipsProps> = ({
   const renderOption = (option: FilterChipsOption) => {
     const isActive = selectedValues.includes(option.value)
     const iconNode = option.icon || (option.iconName ? (
-      <MaterialIcons
+      <Icon
         name={option.iconName}
         size={16}
         color={option.iconColor || option.color || 'var(--text-secondary)'}
@@ -125,7 +126,7 @@ const FilterChips: React.FC<FilterChipsProps> = ({
           className='filter-chip filter-chip--danger'
           onClick={handleClear}
         >
-          <MaterialIcons name='close' size={16} color='#ffffff' />
+          <Icon name='close' size={16} color='#ffffff' />
           <Text>{clearLabel}</Text>
         </View>
       )}

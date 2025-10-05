@@ -1,6 +1,10 @@
-// 引入设计令牌系统
+// 引入设计令牌系统 - 使用@import确保CSS变量全局可用
 @import './styles/tokens.scss';
 @import './styles/nutui-theme.scss';
+@import './styles/partials/cards';
+@import './styles/partials/stats';
+@import './styles/partials/filters';
+@import './styles/partials/utilities';
 
 /* 全局样式 */
 page {

@@ -1,174 +1,206 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { PullToRefresh } from '@nutui/nutui-react-taro'
-import { MaterialIcons } from 'taro-icons'
+
+/**
+ * Components
+ */
 import MobileLayout from '@/components/MobileLayout'
-import DataTable, { DataTableColumn } from '@/components/DataTable'
+import DataTable from '@/components/DataTable'
 import SearchBar from '@/components/SearchBar'
-import { useUserStore } from '@/stores/userStore'
+import { PageHeader, SectionCard, StatsGrid, FilterChips } from '@/components/common'
+
+/**
+ * APIs
+ */
 import { getProducts } from '@/services/products'
-import type { Product, ProductFilters } from '@/types'
+
+/**
+ * Hooks
+ */
+import useListQuery, { type ListFetcherParams } from '@/hooks/useListQuery'
+import useFilters from '@/hooks/useFilters'
+import { useUserStore } from '@/stores/userStore'
+
+/**
+ * Types
+ */
+import type { DataTableColumn } from '@/components/DataTable'
+import type { StatsGridItem } from '@/components/common'
+import type { Product } from '@/types'
+
 import './index.scss'
 
-interface ProductsState {
-  products: Product[]
-  loading: boolean
-  refreshing: boolean
-  searchQuery: string
-  filters: ProductFilters
-  pagination: {
-    page: number
-    pageSize: number
-    total: number
-    hasMore: boolean
-  }
-  stats: {
+type ProductsResponse = {
+  list: Product[]
+  total: number
+  totalPages: number
+  page: number
+  stats?: {
     total: number
     shops: number
     categories: number
   }
 }
 
+type ProductsQueryFilters = {
+  search?: string
+  shop?: string
+  category?: string
+}
+
+type ProductsStats = {
+  total: number
+  shops: number
+  categories: number
+}
+
+const SHOP_OPTIONS = ['天猫旗舰店', '京东专卖店', '拼多多官店', '独立官网']
+const CATEGORY_OPTIONS = ['电子产品', '服装配饰', '家居用品', '运动户外', '美妆护肤']
+
 const ProductsPage: React.FC = () => {
   const { userInfo } = useUserStore()
-  const [state, setState] = useState<ProductsState>({
-    products: [],
-    loading: false,
-    refreshing: false,
-    searchQuery: '',
-    filters: {
-      shop: '',
-      category: ''
-    },
-    pagination: {
-      page: 1,
-      pageSize: 10,
-      total: 0,
-      hasMore: true
-    },
-    stats: {
-      total: 0,
-      shops: 0,
-      categories: 0
+  const [searchValue, setSearchValue] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
+
+  const filterManager = useFilters<'shop' | 'category'>({
+    config: {
+      shop: { multiple: false, defaultValue: null },
+      category: { multiple: false, defaultValue: null }
     }
   })
+  const { values: filterValues, setValue: setFilterValue, clearAll: clearAllFilters } = filterManager
 
-  // 加载产品数据
-  const loadProducts = useCallback(async (reset = false) => {
-    try {
-      const isRefresh = reset
-      setState(prev => ({ 
-        ...prev, 
-        loading: !isRefresh, 
-        refreshing: isRefresh 
-      }))
-
-      const page = reset ? 1 : state.pagination.page
-      const response = await getProducts({
-        page,
-        pageSize: state.pagination.pageSize,
-        search: state.searchQuery,
-        filters: state.filters
-      })
-
-      if (response.code === 0) {
-        const newProducts: Product[] = reset 
-          ? response.data.list 
-          : [...state.products, ...response.data.list]
-
-        setState(prev => ({
-          ...prev,
-          products: newProducts,
-          loading: false,
-          refreshing: false,
-          pagination: {
-            ...prev.pagination,
-            page: page,
-            total: response.data.total,
-            hasMore: response.data.page < response.data.totalPages
-          },
-          stats: response.data.stats || prev.stats
-        }))
-      } else {
-        throw new Error(response.msg)
-      }
-    } catch (error) {
-      // 加载产品数据失败: error
-      setState(prev => ({ 
-        ...prev, 
-        loading: false, 
-        refreshing: false 
-      }))
-      
-      Taro.showToast({
-        title: '加载失败',
-        icon: 'error'
-      })
-    }
-  }, [state.searchQuery, state.filters, state.pagination.page, state.pagination.pageSize, state.products])
-
-  // 初始化加载
-  useEffect(() => {
-    loadProducts(true)
-  }, [])
-
-  // 搜索处理
-  const handleSearch = useCallback((query: string) => {
-    setState(prev => ({
-      ...prev,
-      searchQuery: query,
-      pagination: { ...prev.pagination, page: 1 }
-    }))
-  }, [])
-
-  // 搜索执行
   useEffect(() => {
     const timer = setTimeout(() => {
-      loadProducts(true)
+      setDebouncedSearch(searchValue.trim())
     }, 300)
     return () => clearTimeout(timer)
-  }, [state.searchQuery])
+  }, [searchValue])
 
-  // 筛选处理
-  const handleFilterChange = useCallback((filterType: keyof ProductFilters, value: string) => {
-    setState(prev => ({
-      ...prev,
-      filters: { ...prev.filters, [filterType]: value },
-      pagination: { ...prev.pagination, page: 1 }
-    }))
+  const list = useListQuery<Product, ProductsResponse, ProductsQueryFilters, ProductsStats>({
+    fetcher: async (params: ListFetcherParams<ProductsQueryFilters>) => {
+      const response = await getProducts({
+        page: params.page,
+        pageSize: params.pageSize,
+        search: params.search ?? '',
+        filters: {
+          shop: params.shop ?? '',
+          category: params.category ?? ''
+        }
+      })
+
+      if (response.code !== 0) {
+        throw new Error(response.msg)
+      }
+
+      return response.data
+    },
+    transform: (data, previousItems, params) => {
+      const items = params.refresh ? data.list : [...previousItems, ...data.list]
+      const stats: ProductsStats = data.stats ?? {
+        total: data.total,
+        shops: data.stats?.shops ?? 0,
+        categories: data.stats?.categories ?? 0
+      }
+
+      return {
+        items,
+        total: data.total,
+        page: data.page,
+        pageSize: params.pageSize,
+        hasMore: data.page < data.totalPages,
+        extra: stats
+      }
+    },
+    initialItems: [],
+    initialFilters: { search: '', shop: '', category: '' },
+    pageSize: 10,
+    autoFetch: false
+  })
+
+  const {
+    items,
+    loading,
+    refreshing,
+    loadingMore,
+    total,
+    page,
+    pageSize,
+    extra,
+    setFilters: applyFilters,
+    load,
+    refresh,
+    setPageSize
+  } = list
+
+  const appliedFilters = useMemo<ProductsQueryFilters>(() => ({
+    search: debouncedSearch || '',
+    shop: typeof filterValues.shop === 'string' ? filterValues.shop : '',
+    category: typeof filterValues.category === 'string' ? filterValues.category : ''
+  }), [debouncedSearch, filterValues])
+
+  useEffect(() => {
+    applyFilters(appliedFilters, { refresh: true })
+  }, [appliedFilters, applyFilters])
+
+  const statsItems = useMemo<StatsGridItem[]>(() => {
+    const stats = extra ?? { total, shops: 0, categories: 0 }
+    return [
+      {
+        key: 'total',
+        label: '总产品',
+        value: stats.total,
+        iconName: 'inventory',
+        iconColor: '#3b82f6'
+      },
+      {
+        key: 'shops',
+        label: '店铺数',
+        value: stats.shops,
+        iconName: 'store',
+        iconColor: '#10b981'
+      },
+      {
+        key: 'categories',
+        label: '分类数',
+        value: stats.categories,
+        iconName: 'category',
+        iconColor: '#f59e0b'
+      }
+    ]
+  }, [extra, total])
+
+  const handleSearchChange = useCallback((value: string) => {
+    setSearchValue(value)
   }, [])
 
-  // 筛选执行
-  useEffect(() => {
-    loadProducts(true)
-  }, [state.filters])
+  const handleShopChange = useCallback((values: string[]) => {
+    setFilterValue('shop', values[0] ?? null)
+  }, [setFilterValue])
 
-  // 下拉刷新
-  const handleRefresh = useCallback(async () => {
-    await loadProducts(true)
-  }, [loadProducts])
+  const handleCategoryChange = useCallback((values: string[]) => {
+    setFilterValue('category', values[0] ?? null)
+  }, [setFilterValue])
 
-
-
-  // 加载更多执行
-  useEffect(() => {
-    if (state.pagination.page > 1) {
-      loadProducts(false)
-    }
-  }, [state.pagination.page])
-
-  // 清除筛选
   const handleClearFilters = useCallback(() => {
-    setState(prev => ({
-      ...prev,
-      searchQuery: '',
-      filters: { shop: '', category: '' },
-      pagination: { ...prev.pagination, page: 1 }
-    }))
-  }, [])
+    setSearchValue('')
+    clearAllFilters()
+    applyFilters({ search: '', shop: '', category: '' }, { refresh: true })
+  }, [applyFilters, clearAllFilters])
 
-  // 查看产品详情
+  const handleRefresh = useCallback(async () => {
+    await refresh()
+  }, [refresh])
+
+  const handlePageChange = useCallback((nextPage: number, nextPageSize: number) => {
+    if (nextPageSize !== pageSize) {
+      setPageSize(nextPageSize)
+    }
+    load({ append: false, page: nextPage })
+  }, [load, pageSize, setPageSize])
+
   const handleViewProduct = useCallback((product: Product) => {
     Taro.showModal({
       title: product.name,
@@ -178,49 +210,32 @@ const ProductsPage: React.FC = () => {
     })
   }, [])
 
-  // 表格列配置
-  const columns = [
+  const columns = useMemo<DataTableColumn[]>(() => [
     {
       key: 'name',
       title: '产品昵称',
       dataIndex: 'name',
       width: 160,
-      fixed: 'left' as const,
-      render: (value: string, record: Product) => (
-        <View 
+      fixed: 'left',
+      render: (value, record) => (
+        <View
           className='data-table__body-cell--highlight'
-          onClick={() => handleViewProduct(record)}
+          onClick={() => handleViewProduct(record as Product)}
         >
-          {value}
+          {value as string}
         </View>
       )
     },
-    {
-      key: 'shop',
-      title: '店铺',
-      dataIndex: 'shop',
-      width: 120
-    },
-    {
-      key: 'category',
-      title: '产品分类',
-      dataIndex: 'category',
-      width: 120
-    },
+    { key: 'shop', title: '店铺', dataIndex: 'shop', width: 120 },
+    { key: 'category', title: '产品分类', dataIndex: 'category', width: 120 },
     {
       key: 'info',
       title: '产品信息',
       dataIndex: 'info',
       width: 200,
-      render: (value: string) => (
-        <View style={{ 
-          maxWidth: '200rpx', 
-          overflow: 'hidden', 
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap'
-        }}
-        >
-          {value || '-'}
+      render: (value) => (
+        <View className='products-page__cell-ellipsis'>
+          {(value as string) ?? '-'}
         </View>
       )
     },
@@ -229,29 +244,23 @@ const ProductsPage: React.FC = () => {
       title: '产品包装',
       dataIndex: 'packaging',
       width: 150,
-      render: (value: string) => value || '-'
+      render: (value) => (value as string) ?? '-'
     },
     {
       key: 'outerBox',
       title: '产品外箱',
       dataIndex: 'outerBox',
       width: 150,
-      render: (value: string) => value || '-'
+      render: (value) => (value as string) ?? '-'
     },
     {
       key: 'accessories',
       title: '配件信息',
       dataIndex: 'accessories',
       width: 200,
-      render: (value: string) => (
-        <View style={{ 
-          maxWidth: '200rpx', 
-          overflow: 'hidden', 
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap'
-        }}
-        >
-          {value || '-'}
+      render: (value) => (
+        <View className='products-page__cell-ellipsis'>
+          {(value as string) ?? '-'}
         </View>
       )
     },
@@ -260,23 +269,31 @@ const ProductsPage: React.FC = () => {
       title: '备注',
       dataIndex: 'remark',
       width: 200,
-      render: (value: string) => (
-        <View style={{ 
-          maxWidth: '200rpx', 
-          overflow: 'hidden', 
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap'
-        }}
-        >
-          {value || '-'}
+      render: (value) => (
+        <View className='products-page__cell-ellipsis'>
+          {(value as string) ?? '-'}
         </View>
       )
     }
-  ]
+  ], [handleViewProduct])
 
-  // 筛选选项
-  const shopOptions = ['全部店铺', '店铺A', '店铺B', '店铺C', '店铺D']
-  const categoryOptions = ['全部分类', '电子产品', '服装配饰', '家居用品', '运动户外', '美妆护肤']
+  const selectedShopValues = useMemo(() => (
+    typeof filterValues.shop === 'string' && filterValues.shop ? [filterValues.shop] : []
+  ), [filterValues.shop])
+
+  const selectedCategoryValues = useMemo(() => (
+    typeof filterValues.category === 'string' && filterValues.category ? [filterValues.category] : []
+  ), [filterValues.category])
+
+  const shopFilterOptions = useMemo(() => (
+    SHOP_OPTIONS.map(shop => ({ value: shop, label: shop }))
+  ), [])
+
+  const categoryFilterOptions = useMemo(() => (
+    CATEGORY_OPTIONS.map(category => ({ value: category, label: category }))
+  ), [])
+
+  const isLoading = loading || refreshing || loadingMore
 
   if (!userInfo) {
     return (
@@ -294,113 +311,64 @@ const ProductsPage: React.FC = () => {
     <MobileLayout>
       <PullToRefresh onRefresh={handleRefresh}>
         <View className='products-page'>
-          {/* 头部统计 */}
-          <View className='products-page__header'>
-            <View className='products-page__header-title'>产品管理</View>
-            <View className='products-page__header-desc'>查看和管理所有产品信息</View>
-            <View className='products-page__header-stats'>
-              <View className='products-page__header-stats-item'>
-                <View className='products-page__header-stats-item-value'>{state.stats.total}</View>
-                <View className='products-page__header-stats-item-label'>总产品</View>
-              </View>
-              <View className='products-page__header-stats-item'>
-                <View className='products-page__header-stats-item-value'>{state.stats.shops}</View>
-                <View className='products-page__header-stats-item-label'>店铺数</View>
-              </View>
-              <View className='products-page__header-stats-item'>
-                <View className='products-page__header-stats-item-value'>{state.stats.categories}</View>
-                <View className='products-page__header-stats-item-label'>分类数</View>
-              </View>
-            </View>
-          </View>
+          <PageHeader
+            title='产品管理'
+            description='查看和管理所有产品信息'
+            compact
+          >
+            <StatsGrid items={statsItems} />
+          </PageHeader>
 
-          {/* 搜索栏 */}
-          <View className='products-page__search'>
-            <SearchBar
-              value={state.searchQuery}
-              placeholder='搜索产品昵称或SKU'
-              onSearch={handleSearch}
-              onChange={handleSearch}
-            />
-          </View>
-
-          {/* 筛选器 */}
-          <View className='products-page__filters'>
-            <View className='products-page__filters-row'>
-              {shopOptions.map(shop => (
-                <View
-                  key={shop}
-                  className={`products-page__filters-chip ${
-                    (shop === '全部店铺' && !state.filters.shop) || state.filters.shop === shop
-                      ? 'products-page__filters-chip--active' 
-                      : ''
-                  }`}
-                  onClick={() => handleFilterChange('shop', shop === '全部店铺' ? '' : shop)}
-                >
-                  {shop}
-                </View>
-              ))}
-            </View>
-            <View className='products-page__filters-row products-page__filters-row--second'>
-              {categoryOptions.map(category => (
-                <View
-                  key={category}
-                  className={`products-page__filters-chip ${
-                    (category === '全部分类' && !state.filters.category) || state.filters.category === category
-                      ? 'products-page__filters-chip--active' 
-                      : ''
-                  }`}
-                  onClick={() => handleFilterChange('category', category === '全部分类' ? '' : category)}
-                >
-                  {category}
-                </View>
-              ))}
-              {(state.filters.shop || state.filters.category || state.searchQuery) && (
-                <View
-                  className='products-page__filters-chip'
-                  onClick={handleClearFilters}
-                  style={{ background: '#ef4444', color: '#ffffff', border: 'none' }}
-                >
-                  <MaterialIcons name='clear' size={16} style={{ marginRight: '4rpx' }} />
-                  清除
-                </View>
-              )}
-            </View>
-          </View>
-
-          {/* 内容区域 */}
-          <View className='products-page__content'>
-            {state.loading && state.products.length === 0 ? (
-              <View className='products-page__loading'>
-                <MaterialIcons name='hourglass_empty' size={40} className='products-page__loading-icon' />
-                <Text className='products-page__loading-text'>加载中...</Text>
+          <SectionCard
+            title='筛选条件'
+            description='通过店铺、分类或关键字快速定位产品'
+            compact
+            footer={(
+              <View className='products-page__filter-actions'>
+                <Text className='products-page__filter-reset' onClick={handleClearFilters}>清除筛选</Text>
               </View>
-            ) : state.products.length === 0 ? (
-              <View className='products-page__empty'>
-                <MaterialIcons name='inventory_2' size={80} className='products-page__empty-icon' />
-                <Text className='products-page__empty-text'>暂无产品数据</Text>
-                <Text className='products-page__empty-desc'>请检查筛选条件或稍后重试</Text>
-              </View>
-            ) : (
-              <DataTable
-                columns={columns as DataTableColumn[]}
-                dataSource={state.products as unknown as Record<string, unknown>[]}
-                loading={state.loading}
-                emptyText='暂无产品数据'
-                pagination={{
-                  current: state.pagination.page,
-                  pageSize: state.pagination.pageSize,
-                  total: state.pagination.total
-                }}
-                onPageChange={(page, pageSize) => {
-                  setState(prev => ({
-                    ...prev,
-                    pagination: { ...prev.pagination, page, pageSize }
-                  }))
-                }}
-              />
             )}
-          </View>
+          >
+            <SearchBar
+              value={searchValue}
+              placeholder='搜索产品昵称或SKU'
+              onChange={handleSearchChange}
+              onSearch={handleSearchChange}
+            />
+            <View className='products-page__filters'>
+              <FilterChips
+                options={shopFilterOptions}
+                selectedValues={selectedShopValues}
+                onChange={handleShopChange}
+                allowClear
+                scrollable
+              />
+              <FilterChips
+                options={categoryFilterOptions}
+                selectedValues={selectedCategoryValues}
+                onChange={handleCategoryChange}
+                allowClear
+                scrollable
+              />
+            </View>
+          </SectionCard>
+
+          <SectionCard title='产品列表' compact flat>
+            <DataTable
+              columns={columns}
+              dataSource={items as unknown as Record<string, unknown>[]}
+              loading={isLoading}
+              emptyText='暂无产品数据'
+              pagination={{
+                current: page,
+                pageSize,
+                total,
+                showSizeChanger: true,
+                pageSizeOptions: [10, 20, 50]
+              }}
+              onPageChange={handlePageChange}
+            />
+          </SectionCard>
         </View>
       </PullToRefresh>
     </MobileLayout>

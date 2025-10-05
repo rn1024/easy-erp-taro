@@ -45,11 +45,21 @@ module.exports = defineConfig((merge, { command, mode }) => {
       data: `@use "@nutui/nutui-react-taro/dist/styles/variables.scss" as *;`
     },
     mini: {
+      miniCssExtractPluginOption: {
+        // Avoid CSS order conflicts in development & mini builds
+        ignoreOrder: true
+      },
       postcss: {
         pxtransform: {
           enable: true,
           config: {
-
+            baseFontSize: 16,
+            unitPrecision: 5,
+            propList: ['*'],
+            selectorBlackList: [],
+            replace: true,
+            mediaQuery: false,
+            minPixelValue: 1
           }
         },
         url: {

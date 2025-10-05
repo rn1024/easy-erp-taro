@@ -1,0 +1,88 @@
+// Common page layout patterns
+@use './mixins' as mixins;
+
+// Standard page wrapper
+@mixin page-wrapper {
+  background: var(--bg-body);
+  min-height: 100vh;
+}
+
+// Standard page content container
+@mixin page-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
+  padding-bottom: calc(var(--spacing-6) + 40rpx); // Safe area for tab bar
+}
+
+// Compact page content (tighter spacing)
+@mixin page-content-compact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  padding-bottom: var(--spacing-20);
+}
+
+// Standard page header (sticky)
+@mixin page-header {
+  background: var(--bg-card);
+  border-bottom: 2rpx solid var(--border-lighter);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+// Page header content layout
+@mixin page-header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+}
+
+// Back button in header
+@mixin header-back-button {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-base);
+  transition: background-color var(--transition-fast) var(--easing-base);
+
+  &:active {
+    background: var(--bg-hover);
+  }
+}
+
+// Page title in header
+@mixin page-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+// Section spacing within pages
+@mixin section-gap {
+  margin-bottom: var(--spacing-6);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Responsive grid for action items/cards
+@mixin action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300rpx, 1fr));
+  gap: var(--spacing-3);
+}
+
+// Two-column responsive grid
+@mixin two-column-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240rpx, 1fr));
+  gap: var(--spacing-3);
+}

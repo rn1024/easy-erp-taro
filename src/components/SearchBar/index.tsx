@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 import { View, Input } from '@tarojs/components'
-import type { BaseEventOrig } from '@tarojs/components'
 import { MaterialIcons } from 'taro-icons'
+
+/**
+ * Types
+ */
+import type { BaseEventOrig } from '@tarojs/components'
+
 import './index.scss'
 
 interface SearchBarProps {

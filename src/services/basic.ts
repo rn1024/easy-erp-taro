@@ -1,8 +1,7 @@
-import type { ApiResponse } from '@/types'
 import { ApiService } from './api'
+import type { ResType } from './types'
 
-// 店铺数据类型
-export interface Shop {
+export type Shop = {
   id: string
   nickname: string
   description?: string
@@ -11,8 +10,7 @@ export interface Shop {
   updatedAt: string
 }
 
-// 产品分类数据类型
-export interface ProductCategory {
+export type ProductCategory = {
   id: string
   name: string
   description?: string
@@ -22,28 +20,18 @@ export interface ProductCategory {
   updatedAt: string
 }
 
-// 基础数据API服务
-export class BasicDataAPI {
-  // 获取店铺列表
-  static async getShops(): Promise<ApiResponse<Shop[]>> {
-    return ApiService.get('/shops')
-  }
+export const getShops = (): Promise<ResType<Shop[]>> => {
+  return ApiService.get<Shop[]>('/shops')
+}
 
-  // 获取产品分类列表
-  static async getProductCategories(params?: {
-    parentId?: string
-    status?: string
-  }): Promise<ApiResponse<ProductCategory[]>> {
-    return ApiService.get('/product-categories', params)
-  }
+export const getProductCategories = (params?: { parentId?: string; status?: string }): Promise<ResType<ProductCategory[]>> => {
+  return ApiService.get<ProductCategory[]>('/product-categories', params)
+}
 
-  // 获取店铺详情
-  static async getShopDetail(id: string): Promise<ApiResponse<Shop>> {
-    return ApiService.get(`/shops/${id}`)
-  }
+export const getShopDetail = (id: string): Promise<ResType<Shop>> => {
+  return ApiService.get<Shop>(`/shops/${id}`)
+}
 
-  // 获取产品分类详情
-  static async getCategoryDetail(id: string): Promise<ApiResponse<ProductCategory>> {
-    return ApiService.get(`/product-categories/${id}`)
-  }
-} 
+export const getCategoryDetail = (id: string): Promise<ResType<ProductCategory>> => {
+  return ApiService.get<ProductCategory>(`/product-categories/${id}`)
+}

@@ -1,0 +1,194 @@
+{
+  "name": "技术架构文档",
+  "version": "1.0.0",
+  "description": "项目的技术栈、架构决策和开发规范",
+
+  "techStack": {
+    "frontend": {
+      "framework": "React 18",
+      "language": "TypeScript",
+      "styling": "Tailwind CSS v4.0",
+      "ui": "ShadCN UI + Custom Components", 
+      "icons": "Lucide React",
+      "build": "Vite/Webpack (根据配置)",
+      "routing": "React Router (如需要)"
+    },
+    "tooling": {
+      "packageManager": "npm/yarn",
+      "linting": "ESLint",
+      "formatting": "Prettier", 
+      "testing": "Jest + React Testing Library",
+      "typeChecking": "TypeScript Compiler"
+    }
+  },
+
+  "projectStructure": {
+    "rootFiles": {
+      "App.tsx": "主应用组件",
+      "app.config.ts": "应用配置",
+      "app.scss": "全局样式",
+      "Guidelines.md": "项目指南",
+      "Attributions.md": "第三方资源归属"
+    },
+    "components": {
+      "structure": "按功能模块组织",
+      "naming": "PascalCase命名",
+      "coLocation": "相关的styles和tests放在同一目录"
+    },
+    "styles": {
+      "globals.css": "全局样式和CSS变量",
+      "componentStyles": "组件级别的SCSS文件",
+      "tailwind": "实用类优先的样式方法"
+    },
+    "docs": {
+      "purpose": "设计文档和技术文档",
+      "format": "JSON格式，便于程序化处理",
+      "maintenance": "随项目演进持续更新"
+    }
+  },
+
+  "componentArchitecture": {
+    "principles": {
+      "singleResponsibility": "每个组件有单一职责",
+      "reusability": "优先创建可复用组件",
+      "composition": "通过组合而非继承构建UI",
+      "immutability": "避免直接修改props和state"
+    },
+    "patterns": {
+      "controlledComponents": "表单使用受控组件",
+      "hooksFirst": "优先使用函数组件和Hooks",
+      "contextApi": "全局状态使用React Context",
+      "customHooks": "逻辑复用通过自定义Hooks"
+    },
+    "fileStructure": {
+      "component": "ComponentName.tsx",
+      "styles": "ComponentName.scss (可选)",
+      "types": "在组件文件内定义接口",
+      "tests": "ComponentName.test.tsx"
+    }
+  },
+
+  "stateManagement": {
+    "local": {
+      "useState": "组件内部状态",
+      "useReducer": "复杂状态逻辑",
+      "useRef": "DOM引用和可变值"
+    },
+    "global": {
+      "contextApi": "主题、用户信息等全局状态",
+      "localStorage": "用户偏好设置持久化",
+      "sessionStorage": "会话期间的临时数据"
+    },
+    "server": {
+      "fetch": "原生fetch API进行数据获取",
+      "caching": "简单的内存缓存策略",
+      "errorHandling": "统一的错误处理机制"
+    }
+  },
+
+  "stylingStrategy": {
+    "tailwindCSS": {
+      "version": "4.0",
+      "configuration": "minimal config, 使用默认值",
+      "customization": "通过CSS变量扩展",
+      "purging": "自动清除未使用的样式"
+    },
+    "limitations": {
+      "typography": "避免使用Tailwind的字体相关类",
+      "reason": "使用globals.css中的默认HTML元素样式",
+      "exceptions": "仅在特殊需求时覆盖"
+    },
+    "scss": {
+      "usage": "复杂组件样式和动画",
+      "organization": "BEM命名方法",
+      "variables": "使用CSS自定义属性"
+    },
+    "responsive": {
+      "approach": "移动优先设计",
+      "breakpoints": "使用Tailwind默认断点",
+      "testing": "多设备测试验证"
+    }
+  },
+
+  "performanceOptimization": {
+    "bundling": {
+      "codesplitting": "路由级别分割",
+      "treeshaking": "移除dead code",
+      "compression": "构建时压缩资源"
+    },
+    "runtime": {
+      "lazyLoading": "组件和图片懒加载",
+      "memoization": "React.memo和useMemo优化",
+      "debouncing": "搜索和输入防抖",
+      "virtualization": "长列表虚拟化(如需要)"
+    },
+    "assets": {
+      "images": "WebP格式优先，响应式图片",
+      "icons": "SVG图标，内联小图标",
+      "fonts": "系统字体减少加载时间"
+    }
+  },
+
+  "developmentWorkflow": {
+    "codeQuality": {
+      "typescript": "严格模式，完整类型定义",
+      "linting": "ESLint + React插件",
+      "formatting": "Prettier自动格式化",
+      "preCommit": "lint-staged检查"
+    },
+    "testing": {
+      "unit": "组件单元测试",
+      "integration": "用户交互测试",
+      "e2e": "关键流程端到端测试",
+      "coverage": "保持合理的测试覆盖率"
+    },
+    "debugging": {
+      "devTools": "React Developer Tools",
+      "sourceMap": "开发环境源码映射",
+      "errorBoundary": "生产环境错误捕获"
+    }
+  },
+
+  "deploymentStrategy": {
+    "build": {
+      "optimization": "生产构建优化",
+      "bundleAnalysis": "包大小分析",
+      "caching": "静态资源版本控制"
+    },
+    "hosting": {
+      "staticSite": "静态网站托管",
+      "cdn": "CDN加速静态资源",
+      "compression": "服务器Gzip压缩"
+    },
+    "monitoring": {
+      "performance": "Core Web Vitals监控",
+      "errors": "错误追踪服务",
+      "analytics": "用户行为分析"
+    }
+  },
+
+  "securityConsiderations": {
+    "xss": "严格的输入验证和输出编码",
+    "csrf": "CSRF令牌保护",
+    "https": "强制HTTPS传输",
+    "dependencies": "定期更新依赖，安全扫描"
+  },
+
+  "futureRoadmap": {
+    "planned": [
+      "PWA支持(Service Worker)",
+      "离线功能",
+      "推送通知",
+      "更多手势操作", 
+      "国际化支持",
+      "主题切换功能",
+      "无障碍功能增强"
+    ],
+    "considerations": [
+      "移动端原生App集成",
+      "实时协作功能",
+      "高级数据可视化",
+      "AI辅助功能"
+    ]
+  }
+}

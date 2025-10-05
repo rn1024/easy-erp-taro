@@ -1,157 +1,62 @@
-@use "@nutui/nutui-react-taro/dist/styles/variables.scss" as *;
-
 .data-table {
-  background-color: #ffffff;
-  border-radius: 16rpx;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
-  box-shadow: 0 2rpx 16rpx rgba(0, 0, 0, 0.06);
 
-  // 搜索框
-  &__search {
-    padding: 24rpx;
-    border-bottom: 1rpx solid #f1f5f9;
-  }
-
-  // 表格容器
-  &__container {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  // 移动端卡片容器默认隐藏
-  &__mobile-cards {
-    display: none;
-  }
-
-  // 横向滚动容器
   &__scroll {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; // Firefox
-    -ms-overflow-style: none; // IE/Edge
-    
-    &::-webkit-scrollbar {
-      display: none; // Chrome/Safari
-    }
   }
 
-  // 表头
-  &__header {
+  &__wrapper {
+    min-width: 100%;
+  }
+
+  &__header-row {
     display: flex;
-    background-color: #f8fafc;
-    border-bottom: 2rpx solid #e2e8f0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    background: var(--bg-hover);
+    border-bottom: 2rpx solid var(--border-lighter);
   }
 
   &__header-cell {
-    display: flex;
-    align-items: center;
-    padding: 24rpx 16rpx;
-    font-size: 26rpx;
-    font-weight: 600;
-    color: #475569;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    min-width: 120rpx;
-    min-height: 88rpx; /* 确保触摸目标足够大 */
-    flex-shrink: 0;
+    padding: var(--spacing-3) var(--spacing-2);
+    min-width: 160rpx;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
 
-    &:hover {
-      background-color: #f1f5f9;
-    }
-
-    &:active {
-      background-color: #e2e8f0;
-    }
-
-    // 固定列
-    &--left {
-      position: sticky;
-      left: 0;
-      background-color: #f8fafc;
-      z-index: 101;
-      box-shadow: 2rpx 0 8rpx rgba(0, 0, 0, 0.1);
+    &--center {
+      text-align: center;
     }
 
     &--right {
-      position: sticky;
-      right: 0;
-      background-color: #f8fafc;
-      z-index: 101;
-      box-shadow: -2rpx 0 8rpx rgba(0, 0, 0, 0.1);
+      text-align: right;
     }
   }
 
-  &__header-content {
-    display: flex;
-    align-items: center;
-    gap: 8rpx;
-    width: 100%;
-  }
-
-  &__header-title {
-    flex: 1;
-  }
-
-  &__sort-icon {
+  &__body {
     display: flex;
     flex-direction: column;
-    margin-left: 8rpx;
-    line-height: 1;
-    
-    .taro-icons {
-      margin: -4rpx 0;
-    }
-  }
-
-  // 表格主体
-  &__body {
-    min-height: 200rpx;
   }
 
   &__row {
     display: flex;
-    border-bottom: 1rpx solid #f1f5f9;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: #f8fafc;
-    }
-
-    &:last-child {
-      border-bottom: none;
-    }
+    border-bottom: 1rpx solid var(--border-lighter);
   }
 
   &__cell {
-    display: flex;
-    align-items: center;
-    padding: 24rpx 16rpx;
-    font-size: 28rpx;
-    color: #1e293b;
-    white-space: nowrap;
-    min-width: 120rpx;
-    min-height: 88rpx; /* 确保触摸目标足够大 */
-    flex-shrink: 0;
+    padding: var(--spacing-3) var(--spacing-2);
+    min-width: 160rpx;
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
 
-    // 固定列
-    &--left {
-      position: sticky;
-      left: 0;
-      background-color: #ffffff;
-      z-index: 10;
-      box-shadow: 2rpx 0 8rpx rgba(0, 0, 0, 0.1);
+    &--center {
+      text-align: center;
     }
 
     &--right {
-      position: sticky;
-      right: 0;
-      background-color: #ffffff;
-      z-index: 10;
-      box-shadow: -2rpx 0 8rpx rgba(0, 0, 0, 0.1);
+      text-align: right;
     }
   }
 
@@ -159,200 +64,34 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 100%;
   }
 
-  // 加载状态
-  &__loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 80rpx 24rpx;
-    color: #6b7280;
-    font-size: 28rpx;
-  }
-
-  // 空状态
+  &__loading,
   &__empty {
-    padding: 80rpx 24rpx;
-    text-align: center;
+    padding: var(--spacing-6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-2);
+    color: var(--text-secondary);
   }
 
-  // 分页
+  &__loading-text,
+  &__empty-text {
+    font-size: var(--font-size-sm);
+  }
+
   &__pagination {
-    padding: 24rpx;
-    border-top: 1rpx solid #f1f5f9;
+    padding: var(--spacing-3);
     display: flex;
     justify-content: center;
   }
 }
 
-// 移动端适配 - 统一使用紧凑模式
-.mobile-layout--compact {
-  .data-table {
-    &__header-cell,
-    &__cell {
-      padding: 16rpx 12rpx;
-      font-size: 24rpx; /* 确保最小字体不低于24rpx */
-      min-width: 100rpx;
-      /* 确保触摸目标足够大 */
-      min-height: 88rpx;
-    }
-
-    &__header-cell {
-      font-size: 24rpx; /* 提升到24rpx */
-    }
-
-    &__search {
-      padding: 16rpx;
-    }
-
-    &__pagination {
-      padding: 16rpx;
-    }
-    
-    /* 移动端卡片式布局替代表格 */
-    &__container {
-      display: none; /* 隐藏表格 */
-    }
-    
-    &__mobile-cards {
-      display: block;
-      padding: 16rpx;
-    }
-  }
-  
-  /* 移动端卡片样式 */
-  .data-table-card {
-    background: #ffffff;
-    border-radius: 16rpx;
-    padding: 24rpx;
-    margin-bottom: 16rpx;
-    box-shadow: 0 2rpx 16rpx rgba(0, 0, 0, 0.06);
-    
-    &__row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8rpx 0;
-      border-bottom: 1rpx solid #f1f5f9;
-      
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-    
-    &__label {
-      font-size: 24rpx;
-      color: #6b7280;
-      font-weight: 500;
-    }
-    
-    &__value {
-      font-size: 26rpx;
-      color: #1e293b;
-      text-align: right;
-      flex: 1;
-      margin-left: 16rpx;
-    }
-  }
-}
-
-// 横屏适配
-.mobile-layout--landscape.mobile-layout--short {
-  .data-table {
-    &__header-cell,
-    &__cell {
-      padding: 12rpx 16rpx;
-      font-size: 24rpx;
-    }
-
-    &__search {
-      padding: 16rpx 24rpx;
-    }
-  }
-}
-
-// 深色模式
-@media (prefers-color-scheme: dark) {
-  .data-table {
-    background-color: #1f2937;
-    color: #f9fafb;
-
-    &__header {
-      background-color: #111827;
-      border-bottom-color: #374151;
-    }
-
-    &__header-cell {
-      color: #d1d5db;
-
-      &:hover {
-        background-color: #1f2937;
-      }
-
-      &:active {
-        background-color: #374151;
-      }
-
-      &--left,
-      &--right {
-        background-color: #111827;
-      }
-    }
-
-    &__row {
-      border-bottom-color: #374151;
-
-      &:hover {
-        background-color: #1f2937;
-      }
-    }
-
-    &__cell {
-      color: #f9fafb;
-
-      &--left,
-      &--right {
-        background-color: #1f2937;
-      }
-    }
-
-    &__search {
-      border-bottom-color: #374151;
-    }
-
-    &__pagination {
-      border-top-color: #374151;
-    }
-  }
-}
-
-// 高分辨率优化
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .data-table {
-    &__header,
-    &__row {
-      border-width: 0.5px;
-    }
-  }
-}
-
-// 可访问性优化
-@media (prefers-reduced-motion: reduce) {
-  .data-table {
-    &__header-cell,
-    &__row {
-      transition: none;
-    }
-  }
-}
-
-// 触摸反馈优化
-.data-table {
-  &__header-cell,
-  &__row {
-    -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
-    tap-highlight-color: rgba(59, 130, 246, 0.1);
+@media screen and (max-width: 360px) {
+  .data-table__header-cell,
+  .data-table__cell {
+    min-width: 120rpx;
+    padding: var(--spacing-2);
   }
 }

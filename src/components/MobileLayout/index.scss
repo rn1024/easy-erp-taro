@@ -309,7 +309,7 @@
 // 输入框样式（防止iOS Safari缩放）
 .mobile-layout {
   input, textarea {
-    font-size: 16px !important;
+    font-size: var(--font-size-base) !important;
     -webkit-user-select: text;
     user-select: text;
   }

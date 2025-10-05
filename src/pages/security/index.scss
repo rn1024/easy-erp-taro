@@ -1,99 +1,328 @@
 .security-page {
-  background-color: #f5f6fa;
-  min-height: 100vh;
+  background: var(--bg-body);
+  padding-bottom: var(--spacing-20);
 
-  .security-container {
-    padding-bottom: calc(env(safe-area-inset-bottom) + 32rpx);
+  // 顶部导航
+  &__header {
+    background: var(--bg-card);
+    border-bottom: 2rpx solid var(--border-lighter);
+    position: sticky;
+    top: 0;
+    z-index: 50;
   }
 
-  // 区块标题
-  .section-header {
-    padding: 32rpx 32rpx 24rpx;
-
-    .section-title {
-      font-size: 32rpx;
-      color: #999;
-      font-weight: 500;
-    }
+  &__header-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    padding: var(--spacing-3) var(--spacing-4);
   }
 
-  // 设置项
-  .setting-item {
-    background: #fff;
-    border-bottom: 2rpx solid #f0f0f0;
+  &__back-button {
+    width: 64rpx;
+    height: 64rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-base);
+    transition: background-color var(--transition-fast) var(--easing-base);
 
-    &:last-child {
-      border-bottom: none;
-    }
-
-    .setting-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 32rpx 32rpx;
-      min-height: 120rpx;
-
-      .setting-info {
-        flex: 1;
-        margin-right: 24rpx;
-
-        .setting-title {
-          display: block;
-          font-size: 34rpx;
-          color: #333;
-          margin-bottom: 12rpx;
-        }
-
-        .setting-desc {
-          display: block;
-          font-size: 28rpx;
-          color: #999;
-          line-height: 1.5;
-        }
-      }
-
-      .setting-value {
-        font-size: 32rpx;
-        color: #666;
-        flex-shrink: 0;
-      }
+    &:active {
+      background: var(--bg-hover);
     }
   }
 
-  // 设备管理区块
-  .device-section {
-    margin-top: 32rpx;
+  &__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+  }
 
-    .section-title {
-      padding: 32rpx 32rpx 24rpx;
-      font-size: 32rpx;
-      color: #999;
-      font-weight: 500;
-    }
+  &__content {
+    padding: var(--spacing-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+  }
 
-    .device-button {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #fff;
-      padding: 32rpx 32rpx;
-      min-height: 100rpx;
-
-      .button-text {
-        font-size: 34rpx;
-        color: #333;
-      }
+  // 通用section样式
+  &__password-section,
+  &__verification-section,
+  &__notification-section,
+  &__devices-section {
+    .section-card__content {
+      padding: 0;
     }
   }
 
-  // Switch组件样式覆盖
-  :global {
-    .nut-switch {
-      transform: scale(0.9);
+  &__section-header {
+    padding: var(--spacing-4) var(--spacing-4) var(--spacing-3);
+    border-bottom: 2rpx solid var(--border-lighter);
+  }
 
-      &.nut-switch-open {
-        background-color: #52c41a;
-      }
+  &__section-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+  }
+
+  &__section-title {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+  }
+
+  // 密码管理
+  &__password-content {
+    padding: var(--spacing-4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-3);
+  }
+
+  &__password-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+    flex: 1;
+  }
+
+  &__password-title {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+  }
+
+  &__password-desc {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+  }
+
+  &__change-password-button {
+    padding: var(--spacing-1) var(--spacing-3) !important;
+    border: 2rpx solid var(--border-base) !important;
+    border-radius: var(--radius-base) !important;
+    background: transparent !important;
+    color: var(--text-primary) !important;
+    font-size: var(--font-size-sm) !important;
+    transition: all var(--transition-fast) var(--easing-base) !important;
+
+    &:active {
+      background: var(--bg-hover) !important;
+    }
+  }
+
+  // 安全验证和安全通知
+  &__verification-list,
+  &__notification-list {
+    padding: var(--spacing-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+  }
+
+  &__verification-item,
+  &__notification-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-3);
+  }
+
+  &__verification-info,
+  &__notification-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+    flex: 1;
+  }
+
+  &__verification-title,
+  &__notification-title {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+  }
+
+  &__verification-desc,
+  &__notification-desc {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+  }
+
+  // 登录设备
+  &__devices-list {
+    padding: var(--spacing-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+
+  &__device-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-3);
+    padding: var(--spacing-3);
+    background: var(--bg-hover);
+    border-radius: var(--radius-lg);
+  }
+
+  &__device-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    flex: 1;
+  }
+
+  &__device-icon {
+    width: 64rpx;
+    height: 64rpx;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__device-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+    flex: 1;
+  }
+
+  &__device-name-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+  }
+
+  &__device-name {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+  }
+
+  &__current-device {
+    font-size: var(--font-size-xs);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    padding: var(--spacing-1) var(--spacing-2);
+    border-radius: var(--radius-base);
+  }
+
+  &__device-location {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+  }
+
+  &__remove-device-button {
+    font-size: var(--font-size-sm) !important;
+    color: var(--color-error) !important;
+    background: transparent !important;
+    border: none !important;
+    padding: var(--spacing-1) var(--spacing-3) !important;
+    border-radius: var(--radius-base) !important;
+    transition: background-color var(--transition-fast) var(--easing-base) !important;
+
+    &:active {
+      background: var(--color-error-bg) !important;
+      color: var(--color-error) !important;
+    }
+  }
+
+  // 修改密码弹窗
+  &__password-dialog {
+    .nut-dialog__content {
+      max-height: 80vh;
+      overflow: hidden;
+    }
+  }
+
+  &__password-form {
+    padding: var(--spacing-4) 0;
+    max-height: 60vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+  }
+
+  &__form-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+
+  &__form-label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+  }
+
+  &__password-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__form-input {
+    width: 100%;
+    padding: var(--spacing-3) 96rpx var(--spacing-3) var(--spacing-4);
+    border: 2rpx solid var(--border-base);
+    border-radius: var(--radius-xl);
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    background: var(--bg-card);
+    transition: all var(--transition-fast) var(--easing-base);
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      background: var(--bg-card);
+      box-shadow: 0 0 0 4rpx var(--color-primary-bg);
+    }
+
+    &::placeholder {
+      color: var(--text-placeholder);
+    }
+  }
+
+  &__password-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 96rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+    transition: background-color var(--transition-fast) var(--easing-base);
+
+    &:active {
+      background: var(--bg-hover);
+    }
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .security-page {
+    &__content {
+      padding: var(--spacing-3);
+    }
+
+    &__device-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--spacing-2);
+    }
+
+    &__device-info {
+      width: 100%;
     }
   }
 }

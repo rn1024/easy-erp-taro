@@ -1,135 +1,56 @@
 .userinfo-page {
-  background-color: #f5f6fa;
-  min-height: 100vh;
+  background: var(--bg-body);
 
-  .userinfo-container {
-    padding: 32rpx;
-    padding-bottom: calc(env(safe-area-inset-bottom) + 32rpx);
-  }
-
-  // 编辑按钮
-  .edit-button-container {
+  &__content {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 24rpx;
-
-    .edit-button {
-      padding: 16rpx 36rpx;
-      font-size: 32rpx;
-      background: transparent;
-      color: #ff4d4f;
-      border: 2rpx solid #ff4d4f;
-      border-radius: 36rpx;
-      line-height: 1.5;
-      min-height: 72rpx;
-      display: flex;
-      align-items: center;
-
-      &::after {
-        display: none;
-      }
-
-      &:active {
-        background: rgba(255, 77, 79, 0.05);
-      }
-    }
+    flex-direction: column;
+    gap: var(--spacing-4);
+    padding: var(--spacing-4);
   }
 
-  // 头像区域
-  .profile-header {
+  &__header {
+    display: flex;
+    gap: var(--spacing-3);
+    align-items: center;
+  }
+
+  &__avatar {
+    position: relative;
+  }
+
+  &__avatar-action {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 40rpx;
+    height: 40rpx;
+    border-radius: var(--radius-full);
+    background: var(--bg-hover);
     display: flex;
     align-items: center;
-    gap: 32rpx;
-    background: #fff;
-    border-radius: 24rpx;
-    padding: 32rpx;
-    margin-bottom: 32rpx;
-    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
-
-    .avatar-container {
-      .user-avatar {
-        border: 4rpx solid #fff;
-        box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
-      }
-    }
-
-    .user-summary {
-      flex: 1;
-
-      .user-name {
-        display: block;
-        font-size: 40rpx;
-        font-weight: 600;
-        color: #1a1a1a;
-        margin-bottom: 16rpx;
-      }
-
-      .user-meta {
-        display: block;
-        font-size: 30rpx;
-        color: #999;
-        margin-bottom: 12rpx;
-        line-height: 1.5;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
-      }
-    }
+    justify-content: center;
   }
 
-  // 信息区块
-  .info-section {
-    margin-bottom: 32rpx;
+  &__summary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+  }
 
-    .section-title {
-      display: block;
-      font-size: 32rpx;
-      color: #999;
-      font-weight: 500;
-      margin-bottom: 20rpx;
-      padding-left: 8rpx;
-    }
+  &__name {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+  }
 
-    .info-list {
-      background: #fff;
-      border-radius: 24rpx;
-      overflow: hidden;
-      box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
-    }
+  &__meta {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+  }
+}
 
-    .info-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 32rpx 32rpx;
-      min-height: 110rpx;
-      border-bottom: 2rpx solid #f0f0f0;
-
-      &:last-child {
-        border-bottom: none;
-      }
-
-      .info-label {
-        font-size: 34rpx;
-        color: #666;
-        flex-shrink: 0;
-        margin-right: 32rpx;
-      }
-
-      .info-value-container {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 16rpx;
-
-        .info-value {
-          font-size: 34rpx;
-          color: #333;
-          text-align: right;
-        }
-      }
-    }
+@media screen and (max-width: 360px) {
+  .userinfo-page__content {
+    padding: var(--spacing-3);
   }
 }

@@ -1,9 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text } from '@tarojs/components'
-import { useUserStore } from '@/stores/userStore'
-import { isLoggedIn as _checkLoginStatus } from '@/utils/auth'
-import { Permission, UserRole } from '@/types/admin'
+
+/**
+ * Components
+ */
 import { Icon } from '@/components/common'
+
+/**
+ * Hooks
+ */
+import { useUserStore } from '@/stores/userStore'
+
+/**
+ * Utils
+ */
+import { isLoggedIn as _checkLoginStatus } from '@/utils/auth'
+
+/**
+ * Types
+ */
+import { Permission, UserRole } from '@/types/admin'
+
 import './index.scss'
 
 // 无权限访问组件
@@ -109,12 +126,12 @@ export const PermissionGuard = ({
 
   // 检查登录状态
   if (!isLoggedIn) {
-    return showFallback ? (fallback || <NotLoggedInComponent />) : null
+    return showFallback ? (fallback ?? <NotLoggedInComponent />) : null
   }
 
   // 检查角色权限
   if (requiredRole && !checkRole(requiredRole)) {
-    return showFallback ? (fallback || <NoPermissionComponent />) : null
+    return showFallback ? (fallback ?? <NoPermissionComponent />) : null
   }
 
   // 检查具体权限
@@ -123,7 +140,7 @@ export const PermissionGuard = ({
       hasPermission(permission)
     )
     if (!hasRequiredPermission) {
-      return showFallback ? (fallback || <NoPermissionComponent />) : null
+      return showFallback ? (fallback ?? <NoPermissionComponent />) : null
     }
   }
 

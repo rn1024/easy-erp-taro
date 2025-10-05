@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text } from '@tarojs/components'
-import { MaterialIcons } from 'taro-icons'
+import Icon from '../Icon'
+import './index.scss'
 
 export type TrendDirection = 'up' | 'down' | 'stable'
 
@@ -32,8 +33,8 @@ export interface StatsGridProps {
 
 const trendIconMap: Record<TrendDirection, string> = {
   up: 'trending_up',
-  down: 'trending_down',
-  stable: 'timeline'
+  down: 'trending_down', 
+  stable: 'remove'
 }
 
 const StatsGrid: React.FC<StatsGridProps> = ({
@@ -88,7 +89,7 @@ const StatsGrid: React.FC<StatsGridProps> = ({
               color: iconColor || 'var(--color-primary)'
             }}
           >
-            <MaterialIcons name={iconName} size={24} color={iconColor || '#478EF2'} />
+            <Icon name={iconName} size={24} color={iconColor || '#478EF2'} />
           </View>
         ) : null)
 
@@ -119,7 +120,7 @@ const StatsGrid: React.FC<StatsGridProps> = ({
                 className='stats-grid__trend'
                 style={{ color: trendColor || 'var(--text-secondary)' }}
               >
-                <MaterialIcons
+                <Icon
                   name={trendIconMap[trendDirection]}
                   size={18}
                   color={trendColor || iconColor || '#6b7280'}

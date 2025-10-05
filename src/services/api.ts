@@ -1,4 +1,8 @@
 import Taro from '@tarojs/taro'
+
+/**
+ * Types
+ */
 import type { ApiResponse, PaginatedResponse } from '@/types'
 
 // 请求配置接口
@@ -34,7 +38,7 @@ function getToken(): string | null {
 }
 
 // 显示错误提示
-function showError(message: string) {
+function showError(message: string): void {
   Taro.showToast({
     title: message,
     icon: 'error',
@@ -43,7 +47,7 @@ function showError(message: string) {
 }
 
 // 显示加载
-function showLoading(title = '加载中...') {
+function showLoading(title = '加载中...'): void {
   Taro.showLoading({
     title,
     mask: true
@@ -51,13 +55,13 @@ function showLoading(title = '加载中...') {
 }
 
 // 隐藏加载
-function hideLoading() {
+function hideLoading(): void {
   Taro.hideLoading()
 }
 
 // API服务类
 export class ApiService {
-  private static baseURL = process.env.API_BASE_URL || '/api/v1'
+  private static baseURL = process.env.API_BASE_URL ?? '/api/v1'
 
   // 基础请求方法
   static async request<T = unknown>(options: RequestOptions): Promise<ApiResponse<T>> {
@@ -226,6 +230,16 @@ export class ApiService {
     })
   }
 
+  // PATCH请求
+  static patch<T = unknown>(url: string, data?: unknown, options?: Partial<RequestOptions>): Promise<ApiResponse<T>> {
+    return this.request<T>({
+      url,
+      method: 'PUT', // Taro不支持PATCH，使用PUT代替
+      data,
+      ...options
+    })
+  }
+
   // DELETE请求
   static delete<T = unknown>(url: string, options?: Partial<RequestOptions>): Promise<ApiResponse<T>> {
     return this.request<T>({
@@ -236,7 +250,7 @@ export class ApiService {
   }
 
   // 上传文件
-  static async uploadFile(filePath: string, url: string, name = 'file', formData?: Record<string, unknown>): Promise<ApiResponse<unknown>> {
+  static async uploadFile<T = unknown>(filePath: string, url: string, name = 'file', formData?: Record<string, unknown>): Promise<ApiResponse<T>> {
     const token = getToken()
     
     try {
@@ -258,7 +272,7 @@ export class ApiService {
         header: {},
         errMsg: 'uploadFile:ok'
       }
-      return this.handleResponse(mockResponse)
+      return this.handleResponse(mockResponse) as ApiResponse<T>
     } catch (error) {
       hideLoading()
       throw this.handleError(error)

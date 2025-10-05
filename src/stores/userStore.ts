@@ -1,9 +1,17 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import Taro from '@tarojs/taro'
+
+/**
+ * APIs
+ */
+import * as AuthAPI from '@/services/auth'
+
+/**
+ * Types
+ */
 import type { AuthUser, LoginForm, UserRole } from '@/types/admin'
 import { Permission } from '@/types/admin'
-import { AuthAPI } from '@/services/auth'
 
 interface UserState {
   // 状态

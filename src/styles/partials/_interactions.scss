@@ -1,0 +1,153 @@
+// Common interactive element patterns
+@use './mixins' as mixins;
+
+// Action card/button with hover states
+@mixin action-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-lg);
+  background: var(--bg-hover);
+  transition: transform var(--transition-fast) var(--easing-base),
+    box-shadow var(--transition-fast) var(--easing-base);
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+// Icon container for action items
+@mixin action-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: var(--radius-lg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+// Avatar with action button overlay
+@mixin avatar-with-action($size: 128rpx) {
+  position: relative;
+  
+  .avatar {
+    width: $size;
+    height: $size;
+    border-radius: var(--radius-full);
+    background: var(--bg-hover);
+  }
+  
+  .action {
+    position: absolute;
+    bottom: -2rpx;
+    right: -2rpx;
+    width: calc($size * 0.375); // ~38% of avatar size
+    height: calc($size * 0.375);
+    border-radius: var(--radius-full);
+    background: var(--bg-card);
+    border: 4rpx solid var(--bg-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+// List item with icon, label, and value
+@mixin info-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) 0;
+  
+  .icon {
+    width: 40rpx;
+    height: 40rpx;
+    flex-shrink: 0;
+    color: var(--text-secondary);
+  }
+  
+  .label {
+    flex: 1;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+  }
+  
+  .value {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-medium);
+  }
+  
+  .action {
+    color: var(--color-primary);
+    margin-left: var(--spacing-2);
+  }
+}
+
+// Clickable list item with hover state
+@mixin clickable-row {
+  @include info-row;
+  
+  padding: var(--spacing-4);
+  margin: 0 calc(-1 * var(--spacing-4));
+  border-radius: var(--radius-lg);
+  transition: background-color var(--transition-fast) var(--easing-base);
+  
+  &:active {
+    background: var(--bg-hover);
+  }
+}
+
+// Tab navigation styles
+@mixin tab-navigation {
+  display: flex;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-1);
+  
+  .tab {
+    flex: 1;
+    padding: var(--spacing-2) var(--spacing-3);
+    border-radius: var(--radius-base);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    transition: all var(--transition-fast) var(--easing-base);
+    
+    &.active {
+      background: var(--bg-body);
+      color: var(--text-primary);
+      font-weight: var(--font-weight-medium);
+    }
+  }
+}
+
+// Search input with icon
+@mixin search-input {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  background: var(--bg-card);
+  border: 2rpx solid var(--border-lighter);
+  border-radius: var(--radius-lg);
+  
+  .icon {
+    color: var(--text-secondary);
+    flex-shrink: 0;
+  }
+  
+  .input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: var(--font-size-base);
+    
+    &::placeholder {
+      color: var(--text-placeholder);
+    }
+  }
+}

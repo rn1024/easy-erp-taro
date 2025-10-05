@@ -1,0 +1,164 @@
+{
+  "name": "移动端优化策略",
+  "version": "1.0.0", 
+  "description": "移动设备优化的完整策略和实现方案",
+
+  "touchInteraction": {
+    "touchTargets": {
+      "minimum": "44px x 44px",
+      "recommended": "48px x 48px", 
+      "implementation": "所有按钮、链接、表单控件",
+      "spacing": "触摸目标之间至少8px间距"
+    },
+    "gestures": {
+      "tap": "所有基本交互",
+      "longPress": "上下文菜单(计划中)",
+      "swipe": "卡片操作(计划中)", 
+      "pinch": "不支持，保持简洁",
+      "drag": "列表排序(计划中)"
+    },
+    "feedback": {
+      "visual": "按钮状态变化、涟漪效果",
+      "haptic": "关键操作的触觉反馈(Web限制)",
+      "audio": "错误提示音(可选)"
+    }
+  },
+
+  "virtualKeyboard": {
+    "handling": {
+      "viewport": "动态调整视窗高度",
+      "scrolling": "自动滚动到焦点元素",
+      "inputs": "优化输入框位置"
+    },
+    "inputTypes": {
+      "email": "type='email'显示@键盘",
+      "tel": "type='tel'显示数字键盘", 
+      "number": "type='number'数字输入",
+      "search": "type='search'搜索键盘"
+    },
+    "attributes": {
+      "autocomplete": "智能填充建议",
+      "autocorrect": "适当的自动更正",
+      "autocapitalize": "合理的大写策略"
+    }
+  },
+
+  "performance": {
+    "loading": {
+      "strategy": "渐进式加载",
+      "critical": "首屏内容优先",
+      "lazy": "图片和非关键组件懒加载",
+      "preload": "预加载关键资源"
+    },
+    "bundleOptimization": {
+      "codesplitting": "路由级别代码分割",
+      "treeShaking": "移除未使用代码",
+      "compression": "Gzip/Brotli压缩",
+      "caching": "强缓存策略"
+    },
+    "runtime": {
+      "memoryManagement": "及时清理事件监听器",
+      "rerendering": "使用React.memo优化",
+      "animations": "使用CSS transform和opacity",
+      "scrolling": "避免scroll事件过度触发"
+    }
+  },
+
+  "networkOptimization": {
+    "offline": {
+      "serviceWorker": "计划支持离线缓存",
+      "fallback": "网络错误降级处理",
+      "sync": "后台同步(计划中)"
+    },
+    "adaptiveLoading": {
+      "connectionAware": "根据网络条件调整资源加载",
+      "imageOptimization": "响应式图片和WebP格式",
+      "prefetching": "智能预获取"
+    },
+    "apiOptimization": {
+      "batching": "批量API请求",
+      "caching": "客户端缓存策略", 
+      "retry": "失败重试机制",
+      "timeout": "合理的超时设置"
+    }
+  },
+
+  "layoutAdaptation": {
+    "safeArea": {
+      "iOS": "支持刘海屏和Home指示器",
+      "Android": "适配状态栏和导航栏",
+      "implementation": "env(safe-area-inset-*)"
+    },
+    "orientation": {
+      "portrait": "主要支持竖屏模式",
+      "landscape": "基本横屏适配",
+      "rotation": "方向变化时重新布局"
+    },
+    "density": {
+      "hdpi": "1.5x密度适配",
+      "xhdpi": "2x密度适配", 
+      "xxhdpi": "3x密度适配",
+      "implementation": "SVG图标和高分辨率图片"
+    }
+  },
+
+  "userExperience": {
+    "navigation": {
+      "pattern": "底部标签导航",
+      "hierarchy": "清晰的信息架构",
+      "breadcrumbs": "面包屑导航辅助"
+    },
+    "feedback": {
+      "loading": "骨架屏和加载指示器",
+      "success": "成功状态反馈",
+      "error": "友好的错误提示",
+      "empty": "空状态页面设计"
+    },
+    "accessibility": {
+      "screenReader": "完整的无障碍支持",
+      "colorBlind": "不仅依赖颜色传达信息",
+      "motor": "适配运动障碍用户",
+      "cognitive": "简化的交互流程"
+    }
+  },
+
+  "testing": {
+    "devices": [
+      "iPhone SE (小屏幕)",
+      "iPhone 12/13 (标准屏幕)",
+      "iPhone 12/13 Pro Max (大屏幕)",
+      "Samsung Galaxy S21 (Android标准)",
+      "iPad (平板适配)"
+    ],
+    "browsers": [
+      "Safari iOS (主要)",
+      "Chrome Android (主要)",
+      "Samsung Internet",
+      "Firefox Mobile"
+    ],
+    "scenarios": [
+      "慢网络条件",
+      "低内存设备",
+      "电量不足模式",
+      "无障碍工具使用"
+    ]
+  },
+
+  "metrics": {
+    "coreWebVitals": {
+      "LCP": "< 2.5s (最大内容绘制)",
+      "FID": "< 100ms (首次输入延迟)",
+      "CLS": "< 0.1 (累积布局偏移)"
+    },
+    "customMetrics": {
+      "timeToInteractive": "< 3s",
+      "appShellLoad": "< 1s",
+      "routeTransition": "< 300ms"
+    },
+    "monitoring": {
+      "realUserMetrics": "生产环境性能监控",
+      "errorTracking": "错误追踪和报告",
+      "usageAnalytics": "用户行为分析"
+    }
+  }
+}

@@ -68,7 +68,7 @@ export const useResponsive = (
   })
 
   useEffect(() => {
-    const handleResize = (res: Taro.onWindowResize.Result) => {
+    const handleResize = (res: Taro.onWindowResize.Result): void => {
       setState(
         getResponsiveState(
           {

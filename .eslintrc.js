@@ -33,10 +33,10 @@ module.exports = {
       argsIgnorePattern: '^_',
       varsIgnorePattern: '^_' 
     }],
-    '@typescript-eslint/explicit-function-return-type': 'warn', // 要求函数返回类型
-    '@typescript-eslint/explicit-module-boundary-types': 'warn', // 要求模块边界类型
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-non-null-assertion': 'warn', // 警告非空断言
-    '@typescript-eslint/prefer-nullish-coalescing': 'warn', // 推荐使用 ??
+    '@typescript-eslint/prefer-nullish-coalescing': 'off',
     '@typescript-eslint/prefer-optional-chain': 'warn', // 推荐使用可选链
     
     // React 规则

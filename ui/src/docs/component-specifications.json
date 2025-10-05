@@ -1,0 +1,204 @@
+{
+  "name": "组件设计规范",
+  "version": "1.0.0",
+  "description": "WeChat风格组件的设计规范和使用指南",
+  
+  "componentCategories": {
+    "navigation": {
+      "BottomNavigation": {
+        "purpose": "主要导航组件，固定在屏幕底部",
+        "specifications": {
+          "height": "auto (约64px)",
+          "position": "fixed bottom",
+          "zIndex": "z-50",
+          "background": "白色背景，顶部边框",
+          "items": "5个导航项目",
+          "touchTarget": "最小44px高度"
+        },
+        "states": {
+          "active": "蓝色图标和文字 (#3b82f6)",
+          "inactive": "灰色图标和文字 (#6b7280)",
+          "badge": "红色圆形徽章显示未读数量"
+        },
+        "accessibility": {
+          "role": "navigation",
+          "keyboard": "支持Tab导航",
+          "screenReader": "提供清晰的标签"
+        }
+      },
+      "TopNavigation": {
+        "purpose": "页面顶部导航，包含筛选和搜索功能",
+        "specifications": {
+          "height": "auto",
+          "background": "白色背景",
+          "padding": "1rem",
+          "elements": ["标题", "筛选按钮", "搜索框"]
+        }
+      }
+    },
+    
+    "cards": {
+      "TaskCard": {
+        "purpose": "显示任务信息的卡片组件",
+        "specifications": {
+          "borderRadius": "0.5rem",
+          "padding": "1rem", 
+          "shadow": "shadow-sm",
+          "background": "白色",
+          "border": "1px solid #e5e7eb"
+        },
+        "elements": {
+          "header": "任务标题和优先级指示器",
+          "content": "任务描述和详细信息", 
+          "footer": "截止日期、分配人、状态"
+        },
+        "interactions": {
+          "hover": "轻微阴影增强",
+          "tap": "active状态反馈",
+          "swipe": "移动端滑动操作(计划中)"
+        }
+      }
+    },
+
+    "forms": {
+      "inputs": {
+        "specifications": {
+          "height": "48px (3rem)",
+          "borderRadius": "0.75rem", 
+          "border": "1px solid #d1d5db",
+          "padding": "0.75rem 1rem",
+          "fontSize": "1rem"
+        },
+        "states": {
+          "default": "灰色边框",
+          "focus": "蓝色边框和外边框 (#3b82f6)",
+          "error": "红色边框 (#ef4444)",
+          "disabled": "灰色背景和文字"
+        }
+      },
+      "buttons": {
+        "primary": {
+          "background": "#3b82f6",
+          "text": "白色",
+          "borderRadius": "0.75rem",
+          "height": "48px",
+          "padding": "0.75rem 1rem"
+        },
+        "secondary": {
+          "background": "透明",
+          "border": "1px solid #d1d5db",
+          "text": "#374151",
+          "borderRadius": "0.75rem",
+          "height": "48px"
+        },
+        "states": {
+          "hover": "背景色加深",
+          "active": "进一步加深",
+          "disabled": "灰色背景，禁用指针事件"
+        }
+      }
+    },
+
+    "modals": {
+      "BottomSheet": {
+        "purpose": "移动端友好的模态框，从底部滑入",
+        "specifications": {
+          "position": "fixed bottom",
+          "zIndex": "z-[60]",
+          "borderRadius": "1rem 1rem 0 0",
+          "background": "白色",
+          "shadow": "向上投射的自定义阴影",
+          "maxHeight": "90vh"
+        },
+        "elements": {
+          "dragIndicator": "顶部10px宽的灰色条",
+          "header": "标题和关闭按钮",
+          "content": "滚动区域，最大高度96",
+          "actions": "底部操作按钮区域"
+        },
+        "animations": {
+          "enter": "从底部滑入",
+          "exit": "滑出到底部",
+          "duration": "300ms ease-out"
+        },
+        "gestures": {
+          "tapOutside": "不关闭(无背景遮罩)",
+          "tapClose": "点击X按钮关闭",
+          "dragDown": "计划支持下拉关闭"
+        }
+      }
+    },
+
+    "feedback": {
+      "StatusIndicators": {
+        "priority": {
+          "high": "红色圆点 (#ef4444)",
+          "medium": "黄色圆点 (#f59e0b)", 
+          "low": "绿色圆点 (#10b981)"
+        },
+        "taskStatus": {
+          "pending": "黄色 (#f59e0b)",
+          "inProgress": "蓝色 (#3b82f6)",
+          "completed": "绿色 (#10b981)",
+          "overdue": "红色 (#ef4444)"
+        }
+      },
+      "LoadingStates": {
+        "spinner": "蓝色旋转指示器",
+        "skeleton": "灰色骨架屏",
+        "progressBar": "蓝色进度条"
+      }
+    }
+  },
+
+  "responsiveBreakpoints": {
+    "mobile": {
+      "range": "< 768px",
+      "optimizations": [
+        "单列布局",
+        "较大的触摸目标",
+        "底部导航",
+        "全屏模态框"
+      ]
+    },
+    "tablet": {
+      "range": "768px - 1024px", 
+      "optimizations": [
+        "两列布局",
+        "侧边导航可选",
+        "更大的卡片"
+      ]
+    },
+    "desktop": {
+      "range": "> 1024px",
+      "optimizations": [
+        "多列布局",
+        "侧边导航",
+        "悬停效果",
+        "更多信息密度"
+      ]
+    }
+  },
+
+  "accessibilityGuidelines": {
+    "colorContrast": {
+      "minimum": "4.5:1 for normal text",
+      "large": "3:1 for large text"
+    },
+    "focusManagement": {
+      "visible": "清晰的焦点指示器",
+      "order": "逻辑的Tab顺序",
+      "trapping": "模态框内焦点陷阱"
+    },
+    "semanticHTML": {
+      "headings": "正确的标题层级",
+      "landmarks": "nav, main, aside等语义标签",
+      "buttons": "使用button而非div"
+    },
+    "screenReader": {
+      "labels": "所有交互元素有标签",
+      "descriptions": "复杂UI提供描述",
+      "announcements": "状态变化的声明"
+    }
+  }
+}

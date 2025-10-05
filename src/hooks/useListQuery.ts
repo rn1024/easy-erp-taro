@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Taro from '@tarojs/taro'
 
-export interface ListFetcherParams<TFilters> extends TFilters {
+export type ListFetcherParams<TFilters extends Record<string, unknown> = Record<string, unknown>> = TFilters & {
   page: number
   pageSize: number
   refresh?: boolean

@@ -1,222 +1,173 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text } from '@tarojs/components'
-import { Form, Input, Button, Toast } from '@nutui/nutui-react-taro'
 import Taro from '@tarojs/taro'
+import { View, Text, Input } from '@tarojs/components'
+import { Button, Loading } from '@nutui/nutui-react-taro'
+
+/**
+ * Components
+ */
+import { Icon } from '@/components/common'
+
+/**
+ * Hooks
+ */
 import { useUserStore } from '@/stores/userStore'
-import { FormItem, Card, Icon } from '@/components/common'
+
+/**
+ * Types
+ */
 import type { LoginForm } from '@/types/admin'
-import useResponsive from '@/hooks/useResponsive'
+
 import './index.scss'
 
 const LoginPage: React.FC = () => {
+  /**
+   * Hooks
+   */
   const { login, loading, error, isLoggedIn } = useUserStore()
-  const responsive = useResponsive()
-  const [formData, setFormData] = useState<LoginForm>({
-    username: '',
-    password: ''
-  })
-  const [showPassword, setShowPassword] = useState(false)
-  const [formErrors, setFormErrors] = useState<{
-    username?: string
-    password?: string
-  }>({})
 
-  // 如果已登录，跳转到首页
+  /**
+   * States
+   */
+  const [formData, setFormData] = useState<LoginForm>({ username: '', password: '' })
+  const [showPassword, setShowPassword] = useState(false)
+  const [formErrors, setFormErrors] = useState<{ username?: string; password?: string }>({})
+
+  /**
+   * Effects
+   */
   useEffect(() => {
     if (isLoggedIn) {
-      Taro.reLaunch({
-        url: '/pages/index/index'
-      })
+      Taro.reLaunch({ url: '/pages/index/index' })
     }
   }, [isLoggedIn])
 
-  // 表单验证
-  const validateForm = (): boolean => {
+  /**
+   * Event Handlers
+   */
+  const validateForm = () => {
     const errors: typeof formErrors = {}
-    
     if (!formData.username.trim()) {
       errors.username = '请输入用户名'
     }
-    
     if (!formData.password) {
       errors.password = '请输入密码'
     } else if (formData.password.length < 6) {
       errors.password = '密码至少6位'
     }
-    
     setFormErrors(errors)
     return Object.keys(errors).length === 0
   }
 
-  // 处理表单输入
   const handleInputChange = (field: keyof LoginForm, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }))
-    
-    // 清除对应字段的错误
+    setFormData(prev => ({ ...prev, [field]: value }))
     if (formErrors[field]) {
-      setFormErrors(prev => ({
-        ...prev,
-        [field]: undefined
-      }))
+      setFormErrors(prev => ({ ...prev, [field]: undefined }))
     }
   }
 
-  // 处理登录
   const handleLogin = async () => {
-    if (!validateForm()) {
-      return
-    }
-
+    if (!validateForm()) return
     try {
       await login(formData)
-      // 登录成功会触发useEffect跳转
-    } catch (err) {
-      // 错误已经在userStore中处理
-      // 登录失败: err
+    } catch (_error) {
+      // 错误处理已在 store 中完成
     }
   }
 
-  // 切换密码显示
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
-  }
-
-  // 快速登录（演示用）
-  const quickLogin = (type: 'admin' | 'operator') => {
-    const credentials = {
-      admin: { username: 'admin', password: '123456' },
-      operator: { username: 'operator', password: '123456' }
-    }
-    
-    setFormData(credentials[type])
-  }
-
-  const pageClass = [
-    'login-page',
-    responsive.isCompact ? 'login-page--compact' : '',
-    responsive.isMedium ? 'login-page--medium' : '',
-    responsive.isShort ? 'login-page--short' : '',
-    responsive.isLandscape ? 'login-page--landscape' : ''
-  ].filter(Boolean).join(' ')
+  /**
+   * Computed Values
+   */
+  const isFormValid = formData.username.trim() && formData.password.trim()
 
   return (
-    <View className={pageClass}>
-      <View className='login-container'>
-        {/* Logo区域 */}
-        <View className='login-header'>
-          <View className='login-logo'>
-            <View className='login-logo-icon'>ERP</View>
+    <View className='login-page'>
+      {/* 安全区域适配 */}
+      <View className='login-page__safe-area' />
+      
+      {/* 主要内容 */}
+      <View className='login-page__container'>
+        {/* 页面标题 */}
+        <View className='login-page__header'>
+          <View className='login-page__logo'>
+            <Icon name='business' size={24} color='#ffffff' />
           </View>
-          <Text className='login-title'>Easy ERP</Text>
-          <Text className='login-subtitle'>企业资源管理系统</Text>
+          <Text className='login-page__title'>Easy ERP</Text>
+          <Text className='login-page__subtitle'>账号登录</Text>
         </View>
 
-        {/* 登录表单卡片 */}
-        <Card className='login-card' shadow='md' noPadding>
-          <View className='login-form'>
-            <Form>
-              <FormItem 
-                error={formErrors.username}
-                layout='vertical'
-              >
-                <View className='login-input-wrapper'>
-                  <Icon name='person' size={20} className='login-input-icon' />
-                  <Input
-                    className='login-input'
-                    placeholder='请输入用户名'
-                    value={formData.username}
-                    onChange={(value) => handleInputChange('username', value)}
-                    maxLength={20}
-                    clearable
-                  />
-                </View>
-              </FormItem>
-
-              <FormItem 
-                error={formErrors.password}
-                layout='vertical'
-              >
-                <View className='login-input-wrapper'>
-                  <Icon name='lock' size={20} className='login-input-icon' />
-                  <Input
-                    className='login-input'
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder='请输入密码'
-                    value={formData.password}
-                    onChange={(value) => handleInputChange('password', value)}
-                    maxLength={20}
-                  />
-                  <View 
-                    className='login-password-toggle touch-target'
-                    onClick={togglePasswordVisibility}
-                  >
-                    <Icon name={showPassword ? 'eye-hide' : 'eye'} size={20} />
-                  </View>
-                </View>
-              </FormItem>
-            </Form>
-
-            {/* 登录按钮 */}
-            <Button
-              className='login-btn'
-              type='primary'
-              size='large'
-              loading={loading}
-              onClick={handleLogin}
+        {/* 登录表单 */}
+        <View className='login-page__form'>
+          {/* 用户名输入 */}
+          <View className='login-page__input-group'>
+            <Input
+              className='login-page__input'
+              value={formData.username}
+              onInput={(e) => handleInputChange('username', e.detail.value)}
+              placeholder='请输入用户名/手机号'
               disabled={loading}
-              block
-            >
-              {loading ? '登录中...' : '登录'}
-            </Button>
+            />
+          </View>
+          {formErrors.username && (
+            <Text className='login-page__error'>{formErrors.username}</Text>
+          )}
 
-            {/* 快速登录 */}
-            <View className='login-quick'>
-              <Text className='login-quick-label'>快速体验</Text>
-              <View className='login-quick-buttons'>
-                <Button
-                  className='login-quick-btn'
-                  fill='outline'
-                  size='small'
-                  onClick={() => quickLogin('admin')}
-                  disabled={loading}
-                >
-                  管理员
-                </Button>
-                <Button
-                  className='login-quick-btn'
-                  fill='outline'
-                  size='small'
-                  onClick={() => quickLogin('operator')}
-                  disabled={loading}
-                >
-                  操作员
-                </Button>
-              </View>
+          {/* 密码输入 */}
+          <View className='login-page__input-group'>
+            <Input
+              className='login-page__input'
+              type={showPassword ? 'text' : 'password'}
+              value={formData.password}
+              onInput={(e) => handleInputChange('password', e.detail.value)}
+              placeholder='请输入密码'
+              disabled={loading}
+            />
+            <View
+              className='login-page__toggle'
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              <Icon name={showPassword ? 'visibility_off' : 'visibility'} size={20} color='#6b7280' />
             </View>
           </View>
-        </Card>
+          {formErrors.password && (
+            <Text className='login-page__error'>{formErrors.password}</Text>
+          )}
 
-        {/* 页脚信息 */}
-        <View className='login-footer'>
-          <Text className='login-footer-text'>
-            © 2024 Easy ERP 仓库管理系统
-          </Text>
-          <Text className='login-footer-version'>v1.0.0</Text>
+          {/* 通用错误 */}
+          {error && (
+            <Text className='login-page__error'>{error}</Text>
+          )}
+
+          {/* 登录按钮 */}
+          <View className='login-page__submit-wrapper'>
+            <Button
+              className='login-page__submit'
+              type='primary'
+              size='large'
+              disabled={!isFormValid || loading}
+              onClick={handleLogin}
+            >
+              {loading ? (
+                <View className='login-page__loading'>
+                  <Loading type='spinner' size='16' />
+                  <Text className='login-page__loading-text'>登录中...</Text>
+                </View>
+              ) : (
+                <View className='login-page__submit-content'>
+                  <Text>登录</Text>
+                  <Icon name='arrow_forward' size={16} color='#ffffff' />
+                </View>
+              )}
+            </Button>
+          </View>
+
+          {/* 辅助链接 */}
+          <View className='login-page__links'>
+            <Text className='login-page__link'>忘记密码？</Text>
+            <Text className='login-page__link'>联系管理员</Text>
+          </View>
         </View>
       </View>
-
-      {/* 错误提示Toast */}
-      {error && (
-        <Toast
-          visible={!!error}
-          msg={error}
-          type='fail'
-          onClose={() => useUserStore.getState().clearError()}
-        />
-      )}
     </View>
   )
 }
