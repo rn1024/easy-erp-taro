@@ -1,0 +1,48 @@
+@use './mixins' as mixins;
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+
+  &--scrollable {
+    @include mixins.scroll-x;
+    padding-bottom: var(--spacing-2);
+
+    .filter-chip {
+      scroll-snap-align: start;
+    }
+  }
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--spacing-3);
+  min-height: var(--btn-height-base);
+  border-radius: var(--radius-full);
+  border: 2rpx solid var(--border-light);
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  @include mixins.touch-active;
+
+  &--active {
+    border-color: transparent;
+    color: var(--text-white);
+    background: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+  }
+
+  &--danger {
+    color: var(--text-white);
+    background: var(--color-error);
+  }
+
+  &--disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+}

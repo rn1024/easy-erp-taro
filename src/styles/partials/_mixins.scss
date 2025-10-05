@@ -1,0 +1,23 @@
+// Shared mixins for mobile-friendly interactions and layout
+
+@mixin touch-active {
+  transition: transform var(--transition-fast) var(--easing-base),
+    opacity var(--transition-fast) var(--easing-base);
+
+  &:active {
+    transform: scale(0.96);
+    opacity: 0.85;
+  }
+}
+
+@mixin scroll-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+
+@mixin safe-padded-content {
+  padding-left: calc(var(--spacing-4) + env(safe-area-inset-left));
+  padding-right: calc(var(--spacing-4) + env(safe-area-inset-right));
+}
