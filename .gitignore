@@ -110,3 +110,10 @@ temp/
 
 # WeChat MiniProgram
 project.private.config.json
+
+# Claude Code MCP config (contains API keys)
+.mcp.json
+.mcp-artifacts/
+.playwright-mcp/
+.claude/settings.local.json
+memory.json
