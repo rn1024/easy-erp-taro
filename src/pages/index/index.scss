@@ -1,4 +1,3 @@
-@use "@nutui/nutui-react-taro/dist/styles/variables.scss" as *;
 @use "../../styles/partials/layouts" as layouts;
 @use "../../styles/partials/interactions" as interactions;
 
@@ -7,45 +6,247 @@
 
   &__wrapper {
     @include layouts.page-content;
-  }
-
-  &__actions-grid {
-    @include layouts.action-grid;
-  }
-
-  &__action {
-    @include interactions.action-item;
-  }
-
-  &__action-icon {
-    @include interactions.action-icon;
-  }
-
-  &__action-text {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-1);
-  }
-
-  &__action-title {
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-medium);
-    color: var(--text-primary);
-  }
-
-  &__action-description {
-    font-size: var(--font-size-sm);
-    color: var(--text-secondary);
+    padding: var(--spacing-4);
+    gap: var(--spacing-6);
   }
 }
 
-@media screen and (max-width: 360px) {
-  .index-page__wrapper {
-    padding: var(--spacing-3);
-    gap: var(--spacing-3);
+// 工作流概览卡片
+.workflow-overview {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-5);
+  box-shadow: var(--shadow-sm);
+
+  &__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-4);
   }
 
-  .index-page__actions-grid {
-    grid-template-columns: 1fr;
+  // 2x2 统计网格
+  &__stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-5);
+  }
+
+  // 完成率部分
+  &__completion {
+    margin-bottom: var(--spacing-5);
+  }
+
+  // 底部指标
+  &__metrics {
+    display: flex;
+    gap: var(--spacing-4);
+  }
+}
+
+// 统计项目
+.stat-item {
+  background: var(--bg-hover);
+  border-radius: var(--radius-base);
+  padding: var(--spacing-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  min-height: 120rpx;
+  box-sizing: border-box;
+
+  &__value {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+  }
+
+  &__label {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    text-align: center;
+  }
+}
+
+// 完成率
+.completion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-2);
+}
+
+.completion-label {
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+}
+
+.completion-percentage {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+.completion-bar {
+  height: 8rpx;
+  background: var(--bg-hover);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.completion-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-base);
+}
+
+// 指标项目
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  flex: 1;
+}
+
+.metric-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.metric-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.metric-value {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+// 快速操作
+.quick-actions {
+  &__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-4);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-3);
+  }
+}
+
+// 操作卡片
+.action-card {
+  @include interactions.action-item;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-5);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+  text-align: center;
+  min-height: 160rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+    width: 100%;
+    overflow: hidden;
+  }
+
+  &__title {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__description {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// 响应式设计
+@media screen and (max-width: 375px) {
+  .index-page {
+    &__wrapper {
+      padding: var(--spacing-3);
+      gap: var(--spacing-4);
+    }
+  }
+
+  .workflow-overview {
+    padding: var(--spacing-4);
+
+    &__stats-grid {
+      gap: var(--spacing-2);
+    }
+
+    &__metrics {
+      flex-direction: column;
+      gap: var(--spacing-3);
+    }
+  }
+
+  .stat-item {
+    padding: var(--spacing-2);
+    min-height: 80rpx;
+
+    &__value {
+      font-size: var(--font-size-lg);
+    }
+
+    &__label {
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  .quick-actions {
+    &__grid {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-2);
+    }
+  }
+
+  .action-card {
+    flex-direction: row;
+    text-align: left;
+    min-height: auto;
+    padding: var(--spacing-3);
+
+    &__content {
+      flex: 1;
+    }
+
+    &__title {
+      font-size: var(--font-size-sm);
+    }
+
+    &__description {
+      font-size: var(--font-size-xs);
+    }
   }
 }

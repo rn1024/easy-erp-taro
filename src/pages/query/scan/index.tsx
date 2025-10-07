@@ -3,20 +3,10 @@ import Taro from '@tarojs/taro'
 import { View, Text, Input, Image } from '@tarojs/components'
 import { Button, Dialog, Loading } from '@nutui/nutui-react-taro'
 
-/**
- * APIs
- */
 import { searchProductsBySku } from '@/services/products'
-
-/**
- * Components
- */
 import MobileLayout from '@/components/MobileLayout'
-import { Icon } from '@/components/common'
-
-/**
- * Types
- */
+import Icon from '@/components/common/Icon'
+import qrCodeScannerIcon from '@/assets/icons/qr_code_scanner.svg'
 import type { Product, ScanResult, ScanHistory } from '@/types/admin'
 
 import './index.scss'
@@ -46,7 +36,7 @@ const ScanPage: React.FC = () => {
 
   const historyItems = useMemo(() => state.scanHistory, [state.scanHistory])
 
-  const loadScanHistory = async () => {
+  const loadScanHistory = async (): Promise<void> => {
     try {
       const history = await Taro.getStorage({ key: 'scan_history' })
       setState(prev => ({ ...prev, scanHistory: history.data || [] }))
@@ -55,7 +45,7 @@ const ScanPage: React.FC = () => {
     }
   }
 
-  const saveScanHistory = async (scanItem: ScanHistory) => {
+  const saveScanHistory = async (scanItem: ScanHistory): Promise<void> => {
     try {
       const newHistory = [scanItem, ...state.scanHistory.slice(0, 19)]
       setState(prev => ({ ...prev, scanHistory: newHistory }))
@@ -65,7 +55,7 @@ const ScanPage: React.FC = () => {
     }
   }
 
-  const handleScanCode = async () => {
+  const handleScanCode = async (): Promise<void> => {
     setState(prev => ({ ...prev, isScanning: true }))
     try {
       const result = await Taro.scanCode({ scanType: ['barCode', 'qrCode'], onlyFromCamera: true })
@@ -81,7 +71,7 @@ const ScanPage: React.FC = () => {
     }
   }
 
-  const handleManualSearch = async () => {
+  const handleManualSearch = async (): Promise<void> => {
     if (!state.manualCode.trim()) {
       Taro.showToast({ title: '请输入条码或SKU', icon: 'error' })
       return
@@ -89,7 +79,7 @@ const ScanPage: React.FC = () => {
     await searchByCode(state.manualCode.trim())
   }
 
-  const searchByCode = async (code: string) => {
+  const searchByCode = async (code: string): Promise<void> => {
     setState(prev => ({ ...prev, isSearching: true }))
     try {
       const response = await searchProductsBySku(code)
@@ -181,7 +171,7 @@ const ScanPage: React.FC = () => {
     if (!state.scanResult) {
       return (
         <View className='scan-page__empty-state'>
-          <Icon name='qr_code_scanner' size={48} color='#d1d5db' />
+          <Icon name='qr_code' size={48} color='#d1d5db' />
           <Text className='scan-page__empty-title'>等待扫描或查询</Text>
           <Text className='scan-page__empty-text'>可以扫描条码或输入SKU手动查询</Text>
         </View>
@@ -261,12 +251,16 @@ const ScanPage: React.FC = () => {
               onClick={handleScanCode}
               size='large'
             >
-              <View className='scan-page__scan-button-content'>
-                <Icon name='qr_code_scanner' size={32} color='#ffffff' />
-                <Text className='scan-page__scan-button-text'>
-                  {state.isScanning ? '扫描中...' : '扫描条码'}
-                </Text>
-              </View>
+              <View className="icon-wrapper">
+                 <Image 
+                   src={qrCodeScannerIcon} 
+                   className='scan-icon'
+                   style={{ width: '24px', height: '24px' }}
+                 />
+               </View>
+              <Text className='scan-page__scan-button-text'>
+                {state.isScanning ? '扫描中...' : '扫描条码'}
+              </Text>
             </Button>
           </View>
           
@@ -294,6 +288,12 @@ const ScanPage: React.FC = () => {
                 loading={state.isSearching}
                 onClick={handleManualSearch}
                 disabled={!state.manualCode.trim()}
+                style={{
+                  height: '88rpx',
+                  minHeight: '88rpx',
+                  minWidth: '160rpx',
+                  padding: 0
+                }}
               >
                 查询
               </Button>
@@ -363,12 +363,22 @@ const ScanPage: React.FC = () => {
                       size='mini' 
                       plain 
                       onClick={() => handleCopyCode(item.code)}
+                      style={{
+                        height: '72rpx',
+                        minHeight: '72rpx',
+                        minWidth: '160rpx'
+                      }}
                     >
                       复制
                     </Button>
                     <Button 
                       size='mini' 
                       onClick={() => searchByCode(item.code)}
+                      style={{
+                        height: '72rpx',
+                        minHeight: '72rpx',
+                        minWidth: '160rpx'
+                      }}
                     >
                       重查
                     </Button>
@@ -385,18 +395,24 @@ const ScanPage: React.FC = () => {
         title='清除历史记录'
         closeOnOverlayClick
         onClose={() => setState(prev => ({ ...prev, showHistoryDialog: false }))}
-        footerButtons={[
-          {
-            text: '取消',
-            plain: true,
-            onClick: () => setState(prev => ({ ...prev, showHistoryDialog: false }))
-          },
-          {
-            text: '清除',
-            color: 'danger',
-            onClick: () => void confirmClearHistory()
-          }
-        ]}
+        footer={
+          <View style={{ display: 'flex', gap: '12px', padding: '16px' }}>
+            <Button
+              plain
+              onClick={() => setState(prev => ({ ...prev, showHistoryDialog: false }))}
+              style={{ flex: 1 }}
+            >
+              取消
+            </Button>
+            <Button
+              type='primary'
+              onClick={() => void confirmClearHistory()}
+              style={{ flex: 1, backgroundColor: '#ff4757' }}
+            >
+              清除
+            </Button>
+          </View>
+        }
       >
         <Text>确认清除全部扫码历史记录？此操作不可恢复。</Text>
       </Dialog>

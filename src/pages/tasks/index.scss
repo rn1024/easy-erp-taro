@@ -1,0 +1,282 @@
+@use "../../styles/partials/layouts" as layouts;
+@use "../../styles/partials/interactions" as interactions;
+
+.tasks-page {
+  @include layouts.page-wrapper;
+
+  &__wrapper {
+    @include layouts.page-content;
+  }
+
+  // 搜索和筛选区域
+  &__search-section {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    padding: var(--spacing-4);
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  &__search-bar {
+    flex: 1;
+  }
+
+  &__filter-button {
+    @include interactions.action-item;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-3) var(--spacing-4);
+    background: var(--bg-hover);
+    border: 1px solid var(--border-lighter);
+    border-radius: var(--radius-lg);
+    min-width: auto;
+  }
+
+  &__filter-text {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    font-weight: var(--font-weight-medium);
+  }
+
+  &__content {
+    flex: 1;
+    padding: var(--spacing-4);
+  }
+
+  &__task-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+}
+
+// 任务卡片
+.task-card {
+  @include interactions.action-item;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-5);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast) var(--easing-base);
+  width: 100%;
+  box-sizing: border-box;
+
+  // 头部：头像 + 信息 + 状态
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+    margin-bottom: var(--spacing-4);
+  }
+
+  &__avatar {
+    width: 88rpx;  // 44px - 触摸友好
+    height: 88rpx;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--bg-hover);
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+  }
+
+  &__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    line-height: var(--line-height-tight);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  &__assignee {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+  }
+
+  &__status {
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    flex-shrink: 0;
+    min-height: 48rpx;  // 触摸友好
+
+    &--progress {
+      background: rgba(59, 130, 246, 0.1);
+      color: #1d4ed8;
+    }
+
+    &--pending {
+      background: rgba(245, 158, 11, 0.1);
+      color: #d97706;
+    }
+
+    &--completed {
+      background: rgba(16, 185, 129, 0.1);
+      color: #059669;
+    }
+
+    &--rejected {
+      background: rgba(239, 68, 68, 0.1);
+      color: #dc2626;
+    }
+  }
+
+  &__status-text {
+    line-height: 1;
+  }
+
+  // 描述
+  &__description {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--spacing-3);
+  }
+
+  // 进度
+  &__progress {
+    margin-bottom: var(--spacing-3);
+  }
+
+  &__progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-2);
+  }
+
+  &__progress-label {
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    font-weight: var(--font-weight-medium);
+  }
+
+  &__progress-text {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+  }
+
+  &__progress-bar {
+    height: 6rpx;
+    background: var(--bg-hover);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+
+  &__progress-fill {
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-base) var(--easing-base);
+  }
+
+  // 底部信息
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-3);
+  }
+
+  &__deadline-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+  }
+
+  &__deadline {
+    font-size: var(--font-size-xs);
+    color: var(--text-tertiary);
+  }
+
+  &__priority {
+    font-size: var(--font-size-xs);
+    color: var(--text-tertiary);
+    background: var(--bg-hover);
+    padding: var(--spacing-1) var(--spacing-2);
+    border-radius: var(--radius-base);
+  }
+}
+
+// 响应式设计
+@media screen and (max-width: 375px) {
+  .tasks-page {
+    &__search-section {
+      padding: var(--spacing-3);
+      gap: var(--spacing-2);
+    }
+
+    &__content {
+      padding: var(--spacing-3);
+    }
+
+    &__filter-button {
+      padding: var(--spacing-2) var(--spacing-3);
+    }
+
+    &__filter-text {
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  .task-card {
+    padding: var(--spacing-3);
+
+    &__header {
+      margin-bottom: var(--spacing-2);
+      gap: var(--spacing-2);
+    }
+
+    &__avatar {
+      width: 32px;
+      height: 32px;
+    }
+
+    &__title {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--spacing-1);
+    }
+
+    &__assignee {
+      font-size: var(--font-size-xs);
+    }
+
+    &__status {
+      padding: var(--spacing-1) var(--spacing-2);
+      font-size: var(--font-size-xs);
+    }
+
+    &__description {
+      font-size: var(--font-size-xs);
+      margin-bottom: var(--spacing-2);
+    }
+
+    &__progress {
+      margin-bottom: var(--spacing-2);
+    }
+
+    &__progress-header {
+      margin-bottom: var(--spacing-1);
+    }
+
+    &__progress-label,
+    &__progress-text {
+      font-size: var(--font-size-xs);
+    }
+
+    &__deadline,
+    &__priority {
+      font-size: var(--font-size-xs);
+    }
+  }
+}

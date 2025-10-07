@@ -5,6 +5,10 @@
 @mixin page-wrapper {
   background: var(--bg-body);
   min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden; // 防止横向溢出
+  box-sizing: border-box;
 }
 
 // Standard page content container
@@ -14,6 +18,10 @@
   gap: var(--spacing-4);
   padding: var(--spacing-4);
   padding-bottom: calc(var(--spacing-6) + 40rpx); // Safe area for tab bar
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden; // 防止内容溢出
 }
 
 // Compact page content (tighter spacing)

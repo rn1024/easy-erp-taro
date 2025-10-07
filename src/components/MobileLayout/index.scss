@@ -2,10 +2,10 @@
 
 .mobile-layout {
   min-height: 100vh;
-  background-color: #f5f5f7; // 微信小程序背景色
+  background-color: var(--bg-body); // 使用设计token
   display: flex;
   flex-direction: column;
-  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+  font-family: var(--font-family-base); // 使用设计token
   
   // 防止橡皮筋效果
   overscroll-behavior-y: none;
@@ -25,8 +25,8 @@
 
   // 自定义导航栏
   &__header {
-    background-color: #ffffff;
-    border-bottom: 1rpx solid #e5e7eb;
+    background-color: var(--bg-card);
+    border-bottom: 2rpx solid var(--border-lighter);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -37,7 +37,7 @@
     align-items: center;
     justify-content: space-between;
     height: 88rpx;
-    padding: 0 32rpx;
+    padding: 0 var(--spacing-4);
     position: relative;
   }
 
@@ -45,12 +45,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48rpx;
-    height: 48rpx;
-    border-radius: 8rpx;
+    min-width: 88rpx;
+    min-height: 88rpx;
+    border-radius: var(--radius-base);
     
     &:active {
-      background-color: rgba(0, 0, 0, 0.05);
+      background-color: var(--bg-hover);
     }
   }
 
@@ -63,9 +63,9 @@
   }
 
   &__nav-title-text {
-    font-size: 32rpx;
-    font-weight: 600;
-    color: #1a1a1a;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -75,27 +75,27 @@
   &__nav-right {
     display: flex;
     align-items: center;
-    gap: 16rpx;
+    gap: var(--spacing-2);
   }
 
   // 用户信息区域
   &__user-info {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-    padding: 32rpx;
-    margin: 16rpx 24rpx;
-    border-radius: 16rpx;
-    box-shadow: 0 4rpx 16rpx rgba(59, 130, 246, 0.2);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    padding: var(--spacing-4);
+    margin: var(--spacing-2) var(--spacing-3);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
   }
 
   &__user-welcome {
-    font-size: 32rpx;
-    font-weight: 600;
-    color: #ffffff;
-    margin-bottom: 8rpx;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-white);
+    margin-bottom: var(--spacing-1);
   }
 
   &__user-role {
-    font-size: 24rpx;
+    font-size: var(--font-size-sm);
     color: rgba(255, 255, 255, 0.8);
   }
 
@@ -116,14 +116,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 80rpx 32rpx;
+    padding: var(--spacing-10) var(--spacing-4);
     min-height: 300rpx;
   }
 
   &__loading-text {
-    font-size: 28rpx;
-    color: #6b7280;
-    margin-top: 24rpx;
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    margin-top: var(--spacing-3);
   }
 }
 
@@ -133,41 +133,42 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 80rpx 32rpx;
+  padding: var(--spacing-10) var(--spacing-4);
   min-height: 100vh;
-  background-color: #f5f5f7;
+  background-color: var(--bg-body);
 
   &__icon {
-    margin-bottom: 32rpx;
+    margin-bottom: var(--spacing-4);
   }
 
   &__title {
-    font-size: 36rpx;
-    font-weight: 600;
-    color: #1a1a1a;
-    margin-bottom: 16rpx;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-2);
     text-align: center;
   }
 
   &__message {
-    font-size: 28rpx;
-    color: #6b7280;
-    margin-bottom: 48rpx;
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-6);
     text-align: center;
-    line-height: 1.5;
+    line-height: var(--line-height-relaxed);
   }
 
   &__button {
-    background-color: #3b82f6;
-    color: #ffffff;
-    font-size: 28rpx;
-    font-weight: 500;
-    padding: 24rpx 48rpx;
-    border-radius: 12rpx;
-    box-shadow: 0 2rpx 8rpx rgba(59, 130, 246, 0.3);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    padding: var(--spacing-3) var(--spacing-6);
+    min-height: 88rpx;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
     
     &:active {
-      background-color: #2563eb;
+      background-color: var(--color-primary-dark);
       transform: scale(0.98);
     }
   }
@@ -197,21 +198,40 @@
 }
 
 // 移动端适配
-.mobile-layout--compact.mobile-layout {
-  font-size: 26rpx;
+@media screen and (max-width: 375px) {
+  .mobile-layout {
+    font-size: var(--font-size-sm);
 
-  .mobile-layout__nav {
-    height: 80rpx;
-    padding: 0 24rpx;
-  }
+    &__nav {
+      height: 80rpx;
+      padding: 0 var(--spacing-3);
+    }
 
-  .mobile-layout__nav-title-text {
-    font-size: 28rpx;
-  }
+    &__nav-left {
+      min-width: 72rpx;
+      min-height: 72rpx;
+    }
 
-  .mobile-layout__user-info {
-    margin: 12rpx 16rpx;
-    padding: 24rpx;
+    &__nav-title-text {
+      font-size: var(--font-size-base);
+    }
+
+    &__user-info {
+      margin: var(--spacing-2) var(--spacing-2);
+      padding: var(--spacing-3);
+    }
+
+    &__user-welcome {
+      font-size: var(--font-size-base);
+    }
+
+    &__user-role {
+      font-size: var(--font-size-xs);
+    }
+
+    &__loading {
+      padding: var(--spacing-8) var(--spacing-3);
+    }
   }
 }
 
@@ -219,27 +239,9 @@
   max-width: 100%;
 }
 
-.mobile-layout--medium:not(.mobile-layout--compact).mobile-layout {
-  font-size: 30rpx;
-}
+// 删除已废弃的自定义布局适配类，使用标准响应式设计
 
-// 横屏适配
-.mobile-layout--landscape.mobile-layout--short.mobile-layout {
-  font-size: 24rpx;
-
-  .mobile-layout__user-info {
-    margin: 8rpx 16rpx;
-    padding: 16rpx 24rpx;
-  }
-
-  .mobile-layout__user-welcome {
-    font-size: 28rpx;
-  }
-
-  .mobile-layout__user-role {
-    font-size: 22rpx;
-  }
-}
+// 已替换为标准响应式设计
 
 .mobile-layout--landscape .wechat-container {
   max-width: 100%;
@@ -257,30 +259,7 @@
   }
 }
 
-// 深色模式适配
-@media (prefers-color-scheme: dark) {
-  .mobile-layout {
-    background-color: #111827;
-    color: #f9fafb;
-    
-    &__header {
-      background-color: #1f2937;
-      border-bottom-color: #374151;
-    }
-    
-    &__nav-title-text {
-      color: #f9fafb;
-    }
-  }
-  
-  .error-boundary {
-    background-color: #111827;
-    
-    &__title {
-      color: #f9fafb;
-    }
-  }
-}
+// 深色模式由设计token自动支持，无需自定义
 
 // 高分辨率屏幕优化
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
@@ -310,6 +289,7 @@
 .mobile-layout {
   input, textarea {
     font-size: var(--font-size-base) !important;
+    min-height: 88rpx;
     -webkit-user-select: text;
     user-select: text;
   }
@@ -318,12 +298,12 @@
 // 触摸反馈优化
 .mobile-layout {
   .touch-feedback {
-    -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
-    tap-highlight-color: rgba(59, 130, 246, 0.1);
+    -webkit-tap-highlight-color: var(--color-primary-bg);
+    tap-highlight-color: var(--color-primary-bg);
   }
   
   .touch-feedback:active {
-    background-color: rgba(59, 130, 246, 0.05);
+    background-color: var(--bg-hover);
   }
 }
 
@@ -340,7 +320,7 @@
   .fixed-top {
     top: constant(safe-area-inset-top);
     top: env(safe-area-inset-top);
-    background-color: #ffffff;
+    background-color: var(--bg-card);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
@@ -348,7 +328,7 @@
   .fixed-bottom {
     bottom: constant(safe-area-inset-bottom);
     bottom: env(safe-area-inset-bottom);
-    background-color: #ffffff;
+    background-color: var(--bg-card);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }

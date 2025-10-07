@@ -1,376 +1,201 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { PullToRefresh } from '@nutui/nutui-react-taro'
 
 /**
  * Components
  */
 import MobileLayout from '@/components/MobileLayout'
-import DataTable from '@/components/DataTable'
 import SearchBar from '@/components/SearchBar'
-import { PageHeader, SectionCard, StatsGrid, FilterChips } from '@/components/common'
-
-/**
- * APIs
- */
-import { getProducts } from '@/services/products'
-
-/**
- * Hooks
- */
-import useListQuery, { type ListFetcherParams } from '@/hooks/useListQuery'
-import useFilters from '@/hooks/useFilters'
-import { useUserStore } from '@/stores/userStore'
-
-/**
- * Types
- */
-import type { DataTableColumn } from '@/components/DataTable'
-import type { StatsGridItem } from '@/components/common'
-import type { Product } from '@/types'
+import { Icon } from '@/components/common'
 
 import './index.scss'
 
-type ProductsResponse = {
-  list: Product[]
-  total: number
-  totalPages: number
-  page: number
-  stats?: {
-    total: number
-    shops: number
-    categories: number
-  }
+interface Product {
+  id: string
+  name: string
+  sku: string
+  category: string
+  stock: number
+  price: number
+  status: 'active' | 'outOfStock'
+  image?: string
 }
 
-type ProductsQueryFilters = {
-  search?: string
-  shop?: string
-  category?: string
+const statusConfig = {
+  active: { label: '在售', color: '#10b981' },
+  outOfStock: { label: '缺货', color: '#ef4444' }
 }
-
-type ProductsStats = {
-  total: number
-  shops: number
-  categories: number
-}
-
-const SHOP_OPTIONS = ['天猫旗舰店', '京东专卖店', '拼多多官店', '独立官网']
-const CATEGORY_OPTIONS = ['电子产品', '服装配饰', '家居用品', '运动户外', '美妆护肤']
 
 const ProductsPage: React.FC = () => {
-  const { userInfo } = useUserStore()
-  const [searchValue, setSearchValue] = useState('')
-  const [debouncedSearch, setDebouncedSearch] = useState('')
-
-  const filterManager = useFilters<'shop' | 'category'>({
-    config: {
-      shop: { multiple: false, defaultValue: null },
-      category: { multiple: false, defaultValue: null }
-    }
-  })
-  const { values: filterValues, setValue: setFilterValue, clearAll: clearAllFilters } = filterManager
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(searchValue.trim())
-    }, 300)
-    return () => clearTimeout(timer)
-  }, [searchValue])
-
-  const list = useListQuery<Product, ProductsResponse, ProductsQueryFilters, ProductsStats>({
-    fetcher: async (params: ListFetcherParams<ProductsQueryFilters>) => {
-      const response = await getProducts({
-        page: params.page,
-        pageSize: params.pageSize,
-        search: params.search ?? '',
-        filters: {
-          shop: params.shop ?? '',
-          category: params.category ?? ''
-        }
-      })
-
-      if (response.code !== 0) {
-        throw new Error(response.msg)
-      }
-
-      return response.data
+  const [searchText, setSearchText] = useState('')
+  const [products] = useState<Product[]>([
+    {
+      id: '1',
+      name: 'iPhone 15 Pro Max',
+      sku: 'IP15PM512BL',
+      category: '手机数码',
+      stock: 156,
+      price: 9999,
+      status: 'active',
+      image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=200&h=200&fit=crop'
     },
-    transform: (data, previousItems, params) => {
-      const items = params.refresh ? data.list : [...previousItems, ...data.list]
-      const stats: ProductsStats = data.stats ?? {
-        total: data.total,
-        shops: data.stats?.shops ?? 0,
-        categories: data.stats?.categories ?? 0
-      }
-
-      return {
-        items,
-        total: data.total,
-        page: data.page,
-        pageSize: params.pageSize,
-        hasMore: data.page < data.totalPages,
-        extra: stats
-      }
+    {
+      id: '2',
+      name: 'MacBook Pro 14英寸',
+      sku: 'MBP14M3512',
+      category: '电脑设备',
+      stock: 23,
+      price: 14999,
+      status: 'active',
+      image: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=200&h=200&fit=crop'
     },
-    initialItems: [],
-    initialFilters: { search: '', shop: '', category: '' },
-    pageSize: 10,
-    autoFetch: false
-  })
-
-  const {
-    items,
-    loading,
-    refreshing,
-    loadingMore,
-    total,
-    page,
-    pageSize,
-    extra,
-    setFilters: applyFilters,
-    load,
-    refresh,
-    setPageSize
-  } = list
-
-  const appliedFilters = useMemo<ProductsQueryFilters>(() => ({
-    search: debouncedSearch || '',
-    shop: typeof filterValues.shop === 'string' ? filterValues.shop : '',
-    category: typeof filterValues.category === 'string' ? filterValues.category : ''
-  }), [debouncedSearch, filterValues])
-
-  useEffect(() => {
-    applyFilters(appliedFilters, { refresh: true })
-  }, [appliedFilters, applyFilters])
-
-  const statsItems = useMemo<StatsGridItem[]>(() => {
-    const stats = extra ?? { total, shops: 0, categories: 0 }
-    return [
-      {
-        key: 'total',
-        label: '总产品',
-        value: stats.total,
-        iconName: 'inventory',
-        iconColor: '#3b82f6'
-      },
-      {
-        key: 'shops',
-        label: '店铺数',
-        value: stats.shops,
-        iconName: 'store',
-        iconColor: '#10b981'
-      },
-      {
-        key: 'categories',
-        label: '分类数',
-        value: stats.categories,
-        iconName: 'category',
-        iconColor: '#f59e0b'
-      }
-    ]
-  }, [extra, total])
-
-  const handleSearchChange = useCallback((value: string) => {
-    setSearchValue(value)
-  }, [])
-
-  const handleShopChange = useCallback((values: string[]) => {
-    setFilterValue('shop', values[0] ?? null)
-  }, [setFilterValue])
-
-  const handleCategoryChange = useCallback((values: string[]) => {
-    setFilterValue('category', values[0] ?? null)
-  }, [setFilterValue])
-
-  const handleClearFilters = useCallback(() => {
-    setSearchValue('')
-    clearAllFilters()
-    applyFilters({ search: '', shop: '', category: '' }, { refresh: true })
-  }, [applyFilters, clearAllFilters])
-
-  const handleRefresh = useCallback(async () => {
-    await refresh()
-  }, [refresh])
-
-  const handlePageChange = useCallback((nextPage: number, nextPageSize: number) => {
-    if (nextPageSize !== pageSize) {
-      setPageSize(nextPageSize)
+    {
+      id: '3',
+      name: 'AirPods Pro 第3代',
+      sku: 'APPRO3WHT',
+      category: '音频设备',
+      stock: 0,
+      price: 1999,
+      status: 'outOfStock',
+      image: 'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=200&h=200&fit=crop'
+    },
+    {
+      id: '4',
+      name: 'iPad Air 第5代',
+      sku: 'IPAIR5256',
+      category: '平板电脑',
+      stock: 67,
+      price: 4399,
+      status: 'active',
+      image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=200&fit=crop'
+    },
+    {
+      id: '5',
+      name: 'Apple Watch Series 9',
+      sku: 'AWS945MN',
+      category: '智能手表',
+      stock: 89,
+      price: 3199,
+      status: 'active',
+      image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=200&h=200&fit=crop'
+    },
+    {
+      id: '6',
+      name: 'Magic Keyboard',
+      sku: 'MGKEY001',
+      category: '配件',
+      stock: 45,
+      price: 799,
+      status: 'active'
     }
-    load({ append: false, page: nextPage })
-  }, [load, pageSize, setPageSize])
+  ])
 
-  const handleViewProduct = useCallback((product: Product) => {
+  const handleRefresh = async () => {
+    await new Promise(resolve => setTimeout(resolve, 1000))
+  }
+
+  const handleProductClick = (product: Product) => {
     Taro.showModal({
       title: product.name,
-      content: `店铺: ${product.shop}\n分类: ${product.category}\n包装: ${product.packaging || '无'}\n备注: ${product.remark || '无'}`,
+      content: `SKU: ${product.sku}\n分类: ${product.category}\n库存: ${product.stock}件\n价格: ¥${product.price.toLocaleString()}`,
       showCancel: false,
       confirmText: '确定'
     })
-  }, [])
-
-  const columns = useMemo<DataTableColumn[]>(() => [
-    {
-      key: 'name',
-      title: '产品昵称',
-      dataIndex: 'name',
-      width: 160,
-      fixed: 'left',
-      render: (value, record) => (
-        <View
-          className='data-table__body-cell--highlight'
-          onClick={() => handleViewProduct(record as Product)}
-        >
-          {value as string}
-        </View>
-      )
-    },
-    { key: 'shop', title: '店铺', dataIndex: 'shop', width: 120 },
-    { key: 'category', title: '产品分类', dataIndex: 'category', width: 120 },
-    {
-      key: 'info',
-      title: '产品信息',
-      dataIndex: 'info',
-      width: 200,
-      render: (value) => (
-        <View className='products-page__cell-ellipsis'>
-          {(value as string) ?? '-'}
-        </View>
-      )
-    },
-    {
-      key: 'packaging',
-      title: '产品包装',
-      dataIndex: 'packaging',
-      width: 150,
-      render: (value) => (value as string) ?? '-'
-    },
-    {
-      key: 'outerBox',
-      title: '产品外箱',
-      dataIndex: 'outerBox',
-      width: 150,
-      render: (value) => (value as string) ?? '-'
-    },
-    {
-      key: 'accessories',
-      title: '配件信息',
-      dataIndex: 'accessories',
-      width: 200,
-      render: (value) => (
-        <View className='products-page__cell-ellipsis'>
-          {(value as string) ?? '-'}
-        </View>
-      )
-    },
-    {
-      key: 'remark',
-      title: '备注',
-      dataIndex: 'remark',
-      width: 200,
-      render: (value) => (
-        <View className='products-page__cell-ellipsis'>
-          {(value as string) ?? '-'}
-        </View>
-      )
-    }
-  ], [handleViewProduct])
-
-  const selectedShopValues = useMemo(() => (
-    typeof filterValues.shop === 'string' && filterValues.shop ? [filterValues.shop] : []
-  ), [filterValues.shop])
-
-  const selectedCategoryValues = useMemo(() => (
-    typeof filterValues.category === 'string' && filterValues.category ? [filterValues.category] : []
-  ), [filterValues.category])
-
-  const shopFilterOptions = useMemo(() => (
-    SHOP_OPTIONS.map(shop => ({ value: shop, label: shop }))
-  ), [])
-
-  const categoryFilterOptions = useMemo(() => (
-    CATEGORY_OPTIONS.map(category => ({ value: category, label: category }))
-  ), [])
-
-  const isLoading = loading || refreshing || loadingMore
-
-  if (!userInfo) {
-    return (
-      <MobileLayout>
-        <View className='products-page'>
-          <View className='products-page__loading'>
-            <Text className='products-page__loading-text'>加载中...</Text>
-          </View>
-        </View>
-      </MobileLayout>
-    )
   }
 
-  return (
-    <MobileLayout>
-      <PullToRefresh onRefresh={handleRefresh}>
-        <View className='products-page'>
-          <PageHeader
-            title='产品管理'
-            description='查看和管理所有产品信息'
-            compact
-          >
-            <StatsGrid items={statsItems} />
-          </PageHeader>
+  const filteredProducts = useMemo(() => {
+    if (!searchText.trim()) return products
+    
+    const searchLower = searchText.toLowerCase()
+    return products.filter(product => 
+      product.name.toLowerCase().includes(searchLower) ||
+      product.sku.toLowerCase().includes(searchLower) ||
+      product.category.toLowerCase().includes(searchLower)
+    )
+  }, [products, searchText])
 
-          <SectionCard
-            title='筛选条件'
-            description='通过店铺、分类或关键字快速定位产品'
-            compact
-            footer={(
-              <View className='products-page__filter-actions'>
-                <Text className='products-page__filter-reset' onClick={handleClearFilters}>清除筛选</Text>
+  return (
+    <MobileLayout className='products-page'>
+      <View className='products-page__wrapper'>
+        {/* 搜索区域 */}
+        <View className='products-page__search-section'>
+          <SearchBar
+            placeholder='搜索产品名称或SKU'
+            value={searchText}
+            onChange={setSearchText}
+            onSearch={setSearchText}
+            className='products-page__search-bar'
+          />
+        </View>
+
+        {/* 产品列表 */}
+        <PullToRefresh onRefresh={handleRefresh}>
+          <View className='products-page__content'>
+            <View className='products-page__product-list'>
+              {filteredProducts.map((product) => (
+                <View
+                  key={product.id}
+                  className='product-card'
+                  onClick={() => handleProductClick(product)}
+                >
+                  {/* 产品头部 */}
+                  <View className='product-card__header'>
+                    {product.image ? (
+                      <Image
+                        className='product-card__image'
+                        src={product.image}
+                        mode='aspectFill'
+                      />
+                    ) : (
+                      <View className='product-card__image product-card__image--placeholder'>
+                        <Icon name='image' size={24} color='var(--text-tertiary)' />
+                      </View>
+                    )}
+                    
+                    <View className='product-card__info'>
+                      <Text className='product-card__name'>{product.name}</Text>
+                      <Text className='product-card__sku'>SKU: {product.sku}</Text>
+                      <Text className='product-card__category'>{product.category}</Text>
+                    </View>
+                    
+                    <View 
+                      className={`product-card__status product-card__status--${product.status}`}
+                    >
+                      <Text className='product-card__status-text'>
+                        {statusConfig[product.status].label}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {/* 产品底部 */}
+                  <View className='product-card__footer'>
+                    <View className='product-card__price-section'>
+                      <Text className='product-card__price'>
+                        ¥{product.price.toLocaleString()}
+                      </Text>
+                    </View>
+                    <View className='product-card__stock-section'>
+                      <Text className='product-card__stock'>
+                        库存 {product.stock === 0 ? '缺货' : `${product.stock}件`}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              ))}
+            </View>
+            
+            {filteredProducts.length === 0 && (
+              <View className='products-page__empty'>
+                <Icon name='inventory' size={48} color='var(--text-tertiary)' />
+                <Text className='products-page__empty-text'>暂无符合条件的产品</Text>
+                <Text className='products-page__empty-hint'>尝试调整搜索条件</Text>
               </View>
             )}
-          >
-            <SearchBar
-              value={searchValue}
-              placeholder='搜索产品昵称或SKU'
-              onChange={handleSearchChange}
-              onSearch={handleSearchChange}
-            />
-            <View className='products-page__filters'>
-              <FilterChips
-                options={shopFilterOptions}
-                selectedValues={selectedShopValues}
-                onChange={handleShopChange}
-                allowClear
-                scrollable
-              />
-              <FilterChips
-                options={categoryFilterOptions}
-                selectedValues={selectedCategoryValues}
-                onChange={handleCategoryChange}
-                allowClear
-                scrollable
-              />
-            </View>
-          </SectionCard>
-
-          <SectionCard title='产品列表' compact flat>
-            <DataTable
-              columns={columns}
-              dataSource={items as unknown as Record<string, unknown>[]}
-              loading={isLoading}
-              emptyText='暂无产品数据'
-              pagination={{
-                current: page,
-                pageSize,
-                total,
-                showSizeChanger: true,
-                pageSizeOptions: [10, 20, 50]
-              }}
-              onPageChange={handlePageChange}
-            />
-          </SectionCard>
-        </View>
-      </PullToRefresh>
+          </View>
+        </PullToRefresh>
+      </View>
     </MobileLayout>
   )
 }

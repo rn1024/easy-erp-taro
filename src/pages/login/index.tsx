@@ -154,7 +154,16 @@ const LoginPage: React.FC = () => {
                 </View>
               ) : (
                 <View className='login-page__submit-content'>
-                  <Text>登录</Text>
+                  <Text 
+                    className='login-page__submit-text'
+                    style={{ 
+                      fontSize: '40rpx', 
+                      fontWeight: '600',
+                      color: '#ffffff'
+                    }}
+                  >
+                    登录
+                  </Text>
                   <Icon name='arrow_forward' size={16} color='#ffffff' />
                 </View>
               )}

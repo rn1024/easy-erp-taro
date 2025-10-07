@@ -2,11 +2,13 @@ export default defineAppConfig({
   pages: [
     'pages/index/index',                    // 首页 - TabBar
     'pages/login/index',                    // 登录页
+    'pages/tasks/index',                    // 任务管理 - 新增专业化任务页面
+    'pages/messages/index',                 // 消息中心 - 新增专业化消息页面
     'pages/query/scan/index',               // 扫描功能 - TabBar
     'pages/query/sku/index',                // SKU搜索
     'pages/inventory/finished/index',       // 成品库存 - TabBar
     'pages/inventory/spare/index',          // 散件库存
-    'pages/warehouse/index',                // 任务管理 - TabBar
+    'pages/warehouse/index',                // 仓库管理 - TabBar
     'pages/warehouse/package/index',        // 包装任务
     'pages/warehouse/shipment/index',       // 发货任务
     'pages/products/index',                 // 产品管理
@@ -41,13 +43,13 @@ export default defineAppConfig({
         selectedIconPath: 'assets/icons/create-active.png'
       },
       {
-        pagePath: 'pages/inventory/finished/index',
-        text: '库存',
+        pagePath: 'pages/messages/index',
+        text: '消息',
         iconPath: 'assets/icons/task.png',          // 临时使用现有图标
         selectedIconPath: 'assets/icons/task-active.png'
       },
       {
-        pagePath: 'pages/warehouse/index',
+        pagePath: 'pages/tasks/index',
         text: '任务',
         iconPath: 'assets/icons/message.png',       // 临时使用现有图标
         selectedIconPath: 'assets/icons/message-active.png'

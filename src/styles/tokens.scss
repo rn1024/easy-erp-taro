@@ -79,15 +79,15 @@ page {
   --font-family-base: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, "Segoe UI", Arial, Roboto, "PingFang SC", "miui", "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
   --font-family-mono: "SF Mono", Monaco, Consolas, "Courier New", monospace;
 
-  // 字号 (移动端优化，使用rpx) - 对齐 ui/ design-system.json
-  --font-size-xs: 24rpx;    // 12px - 0.75rem
-  --font-size-sm: 28rpx;    // 14px - 0.875rem
-  --font-size-base: 32rpx;  // 16px - 1rem (基准字号，对齐 ui/)
-  --font-size-md: 32rpx;    // 16px
-  --font-size-lg: 36rpx;    // 18px - 1.125rem
-  --font-size-xl: 40rpx;    // 20px - 1.25rem
-  --font-size-2xl: 48rpx;   // 24px - 1.5rem
-  --font-size-3xl: 56rpx;   // 28px
+  // 字号 (移动端优化，使用rpx) - 增大字体确保可读性
+  --font-size-xs: 28rpx;    // 14px - 最小字体，确保移动端可读
+  --font-size-sm: 32rpx;    // 16px - 小字体
+  --font-size-base: 36rpx;  // 18px - 基准字号，移动端友好
+  --font-size-md: 36rpx;    // 18px
+  --font-size-lg: 40rpx;    // 20px - 大字体
+  --font-size-xl: 44rpx;    // 22px - 更大字体
+  --font-size-2xl: 52rpx;   // 26px - 标题字体
+  --font-size-3xl: 60rpx;   // 30px - 大标题
 
   // 字重 - 对齐 ui/ design-system.json
   --font-weight-regular: 400;   // normal

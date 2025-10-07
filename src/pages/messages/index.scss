@@ -1,7 +1,7 @@
 @use "../../styles/partials/layouts" as layouts;
 @use "../../styles/partials/interactions" as interactions;
 
-.products-page {
+.messages-page {
   @include layouts.page-wrapper;
 
   &__wrapper {
@@ -24,7 +24,7 @@
     padding: var(--spacing-4);
   }
 
-  &__product-list {
+  &__message-list {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-3);
@@ -53,8 +53,8 @@
   }
 }
 
-// 产品卡片
-.product-card {
+// 消息卡片
+.message-card {
   @include interactions.action-item;
   background: var(--bg-card);
   border-radius: var(--radius-lg);
@@ -62,10 +62,15 @@
   border: 1px solid var(--border-light);
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-fast) var(--easing-base);
+  position: relative;
   width: 100%;
   box-sizing: border-box;
 
-  // 产品头部：图片 + 信息 + 状态
+  &--unread {
+    border-left: 4px solid var(--color-primary);
+  }
+
+  // 消息头部：头像 + 信息 + 未读指示器
   &__header {
     display: flex;
     align-items: center;
@@ -73,19 +78,12 @@
     margin-bottom: var(--spacing-4);
   }
 
-  &__image {
-    width: 120rpx;  // 60px - 更大的图片区域
-    height: 120rpx;
-    border-radius: var(--radius-lg);
+  &__avatar {
+    width: 96rpx;  // 48px - 更大头像
+    height: 96rpx;
+    border-radius: 50%;
     flex-shrink: 0;
     background: var(--bg-hover);
-
-    &--placeholder {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid var(--border-lighter);
-    }
   }
 
   &__info {
@@ -93,82 +91,93 @@
     min-width: 0;
   }
 
-  &__name {
+  &__title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-1);
+  }
+
+  &__title {
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
     color: var(--text-primary);
     line-height: var(--line-height-tight);
-    margin-bottom: var(--spacing-2);
     word-wrap: break-word;
     overflow-wrap: break-word;
   }
 
-  &__sku {
+  &__time {
     font-size: var(--font-size-base);
-    color: var(--text-secondary);
-    font-family: 'SF Mono', 'Monaco', monospace;
-    margin-bottom: var(--spacing-1);
+    color: var(--text-tertiary);
+    flex-shrink: 0;
   }
 
-  &__category {
+  &__meta-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-2);
+  }
+
+  &__sender {
     font-size: var(--font-size-base);
     color: var(--text-secondary);
   }
 
-  &__status {
-    padding: var(--spacing-2) var(--spacing-4);
+  &__type-badge {
+    padding: var(--spacing-2) var(--spacing-3);
     border-radius: var(--radius-full);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
     flex-shrink: 0;
     min-height: 48rpx;
 
-    &--active {
+    &--task {
+      background: rgba(59, 130, 246, 0.1);
+      color: #1d4ed8;
+    }
+
+    &--workflow {
       background: rgba(16, 185, 129, 0.1);
       color: #059669;
     }
 
-    &--outOfStock {
-      background: rgba(239, 68, 68, 0.1);
-      color: #dc2626;
+    &--system {
+      background: rgba(245, 158, 11, 0.1);
+      color: #d97706;
     }
   }
 
-  &__status-text {
+  &__type-text {
     line-height: 1;
   }
 
-  // 产品底部：价格 + 库存
-  &__footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--spacing-3);
-  }
-
-  &__price-section {
-    flex: 1;
-  }
-
-  &__price {
-    font-size: var(--font-size-xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-primary);
-  }
-
-  &__stock-section {
+  &__unread-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-primary);
     flex-shrink: 0;
   }
 
-  &__stock {
+  // 消息内容
+  &__content {
+    padding-left: calc(96rpx + var(--spacing-4));
+  }
+
+  &__message {
     font-size: var(--font-size-base);
     color: var(--text-secondary);
+    line-height: var(--line-height-relaxed);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 }
 
 // 响应式设计
 @media screen and (max-width: 375px) {
-  .products-page {
+  .messages-page {
     &__search-section {
       padding: var(--spacing-3);
     }
@@ -178,7 +187,7 @@
     }
   }
 
-  .product-card {
+  .message-card {
     padding: var(--spacing-3);
 
     &__header {
@@ -186,32 +195,36 @@
       gap: var(--spacing-2);
     }
 
-    &__image {
-      width: 48px;
-      height: 48px;
+    &__avatar {
+      width: 40px;
+      height: 40px;
     }
 
-    &__name {
+    &__title {
       font-size: var(--font-size-sm);
-      margin-bottom: var(--spacing-1);
     }
 
-    &__sku,
-    &__category {
+    &__time,
+    &__sender {
       font-size: var(--font-size-xs);
     }
 
-    &__status {
-      padding: var(--spacing-1) var(--spacing-2);
+    &__type-badge {
+      padding: var(--spacing-1);
       font-size: var(--font-size-xs);
     }
 
-    &__price {
-      font-size: var(--font-size-base);
+    &__content {
+      padding-left: calc(40px + var(--spacing-2));
     }
 
-    &__stock {
+    &__message {
       font-size: var(--font-size-xs);
+    }
+
+    &__unread-dot {
+      width: 6px;
+      height: 6px;
     }
   }
 }

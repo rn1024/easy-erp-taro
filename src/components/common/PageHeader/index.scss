@@ -121,14 +121,20 @@
   }
   
   .page-header__title {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-xl);
   }
   
   .page-header__description {
-    font-size: 30rpx;
+    font-size: var(--font-size-sm);
+  }
+  
+  .page-header__meta {
+    font-size: var(--font-size-xs);
   }
   
   .page-header__actions {
     width: 100%;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
   }
 }

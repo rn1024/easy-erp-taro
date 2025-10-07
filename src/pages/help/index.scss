@@ -359,7 +359,7 @@
   }
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 375px) {
   .help-page {
     &__content {
       padding: var(--spacing-3);
@@ -367,6 +367,25 @@
 
     &__categories {
       grid-template-columns: 1fr;
+      gap: var(--spacing-2);
+    }
+
+    &__category {
+      padding: var(--spacing-3);
+    }
+
+    &__category-icon {
+      width: 64rpx;
+      height: 64rpx;
+      margin-bottom: var(--spacing-2);
+    }
+
+    &__category-title {
+      font-size: var(--font-size-sm);
+    }
+
+    &__category-desc {
+      font-size: var(--font-size-xs);
     }
 
     &__tabs {
@@ -376,6 +395,40 @@
     &__tab {
       padding: var(--spacing-1) var(--spacing-2) !important;
       font-size: var(--font-size-xs) !important;
+    }
+
+    &__support-item {
+      padding: var(--spacing-2);
+      gap: var(--spacing-2);
+    }
+
+    &__support-icon {
+      width: 48rpx;
+      height: 48rpx;
+    }
+
+    &__support-title {
+      font-size: var(--font-size-xs);
+    }
+
+    &__support-desc {
+      font-size: var(--font-size-xs);
+    }
+
+    &__faq-question-row {
+      padding: var(--spacing-3);
+    }
+
+    &__faq-question {
+      font-size: var(--font-size-xs);
+    }
+
+    &__faq-answer-section {
+      padding: 0 var(--spacing-3) var(--spacing-3);
+    }
+
+    &__faq-answer {
+      font-size: var(--font-size-xs);
     }
   }
 }

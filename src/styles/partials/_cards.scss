@@ -95,6 +95,47 @@
   }
 }
 
+@media screen and (max-width: 375px) {
+  .section-card {
+    padding: var(--spacing-3);
+    margin: var(--spacing-3) 0;
+    gap: var(--spacing-3);
+
+    &--compact {
+      padding: var(--spacing-2);
+      gap: var(--spacing-2);
+    }
+
+    &__title {
+      font-size: var(--font-size-base);
+    }
+
+    &__subtitle,
+    &__description {
+      font-size: var(--font-size-xs);
+    }
+
+    &__content {
+      gap: var(--spacing-2);
+    }
+
+    &__actions {
+      gap: var(--spacing-1);
+    }
+  }
+
+  .section-card__action-btn {
+    padding: var(--spacing-1) var(--spacing-2);
+    font-size: var(--font-size-xs);
+    min-height: 72rpx;
+  }
+
+  .section-card__meta {
+    font-size: var(--font-size-xs);
+    gap: var(--spacing-1);
+  }
+}
+
 .section-card__action-btn {
   display: inline-flex;
   align-items: center;

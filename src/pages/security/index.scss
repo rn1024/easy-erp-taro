@@ -19,8 +19,8 @@
   }
 
   &__back-button {
-    width: 64rpx;
-    height: 64rpx;
+    width: 88rpx;
+    height: 88rpx;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -100,7 +100,8 @@
   }
 
   &__change-password-button {
-    padding: var(--spacing-1) var(--spacing-3) !important;
+    padding: var(--spacing-2) var(--spacing-4) !important;
+    min-height: 88rpx !important;
     border: 2rpx solid var(--border-base) !important;
     border-radius: var(--radius-base) !important;
     background: transparent !important;
@@ -177,8 +178,8 @@
   }
 
   &__device-icon {
-    width: 64rpx;
-    height: 64rpx;
+    width: 88rpx;
+    height: 88rpx;
     background: var(--bg-card);
     border-radius: var(--radius-lg);
     display: flex;
@@ -224,7 +225,8 @@
     color: var(--color-error) !important;
     background: transparent !important;
     border: none !important;
-    padding: var(--spacing-1) var(--spacing-3) !important;
+    padding: var(--spacing-2) var(--spacing-4) !important;
+    min-height: 88rpx !important;
     border-radius: var(--radius-base) !important;
     transition: background-color var(--transition-fast) var(--easing-base) !important;
 
@@ -271,6 +273,7 @@
 
   &__form-input {
     width: 100%;
+    min-height: 88rpx;
     padding: var(--spacing-3) 96rpx var(--spacing-3) var(--spacing-4);
     border: 2rpx solid var(--border-base);
     border-radius: var(--radius-xl);
@@ -309,20 +312,103 @@
   }
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 375px) {
   .security-page {
     &__content {
       padding: var(--spacing-3);
+      gap: var(--spacing-3);
+    }
+
+    &__header-content {
+      padding: var(--spacing-2) var(--spacing-3);
+    }
+
+    &__back-button {
+      width: 48rpx;
+      height: 48rpx;
+    }
+
+    &__title {
+      font-size: var(--font-size-base);
+    }
+
+    &__section-title {
+      font-size: var(--font-size-sm);
+    }
+
+    &__password-content,
+    &__verification-list,
+    &__notification-list,
+    &__devices-list {
+      padding: var(--spacing-3);
+    }
+
+    &__password-title,
+    &__verification-title,
+    &__notification-title {
+      font-size: var(--font-size-sm);
+    }
+
+    &__password-desc,
+    &__verification-desc,
+    &__notification-desc {
+      font-size: var(--font-size-xs);
+    }
+
+    &__change-password-button {
+      padding: var(--spacing-1) var(--spacing-2) !important;
+      font-size: var(--font-size-xs) !important;
     }
 
     &__device-item {
       flex-direction: column;
       align-items: flex-start;
       gap: var(--spacing-2);
+      padding: var(--spacing-2);
     }
 
     &__device-info {
       width: 100%;
+      gap: var(--spacing-2);
+    }
+
+    &__device-icon {
+      width: 48rpx;
+      height: 48rpx;
+    }
+
+    &__device-name {
+      font-size: var(--font-size-xs);
+    }
+
+    &__device-location,
+    &__current-device {
+      font-size: var(--font-size-xs);
+    }
+
+    &__remove-device-button {
+      font-size: var(--font-size-xs) !important;
+      padding: var(--spacing-1) var(--spacing-2) !important;
+      align-self: flex-end;
+      margin-top: var(--spacing-1);
+    }
+
+    &__form-label {
+      font-size: var(--font-size-xs);
+    }
+
+    &__form-input {
+      padding: var(--spacing-2) 80rpx var(--spacing-2) var(--spacing-3);
+      font-size: var(--font-size-sm);
+    }
+
+    &__password-toggle {
+      width: 80rpx;
+    }
+
+    &__verification-item,
+    &__notification-item {
+      gap: var(--spacing-2);
     }
   }
 }

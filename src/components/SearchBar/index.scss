@@ -12,17 +12,18 @@
     position: relative;
     display: flex;
     align-items: center;
-    height: 72rpx;
-    background: #f5f5f5;
-    border: 2rpx solid #e5e5e5;
-    border-radius: 20rpx;
-    padding: 0 24rpx;
-    transition: all 0.3s ease;
+    min-height: 88rpx;
+    background: var(--bg-hover);
+    border: 2rpx solid var(--border-base);
+    border-radius: var(--radius-lg);
+    padding: 0 var(--spacing-3);
+    transition: all var(--transition-fast) var(--easing-base);
     width: 100%;
 
     &.focused {
-      border-color: #007aff;
-      background: #ffffff;
+      border-color: var(--color-primary);
+      background: var(--bg-card);
+      box-shadow: 0 0 0 4rpx var(--color-primary-bg);
     }
   }
 
@@ -30,17 +31,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #999999;
-    margin-right: 16rpx;
+    color: var(--text-tertiary);
+    margin-right: var(--spacing-2);
     flex-shrink: 0;
   }
 
   &__input {
     flex: 1;
     height: 100%;
-    font-size: 30rpx;
-    line-height: 40rpx;
-    color: #333333;
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--text-primary);
     background: transparent;
     border: none;
     outline: none;
@@ -49,48 +50,63 @@
     box-sizing: border-box;
 
     &::placeholder {
-      color: #999999;
-      font-size: 30rpx;
+      color: var(--text-placeholder);
+      font-size: var(--font-size-base);
     }
   }
 
   &__placeholder {
-    color: #999999;
-    font-size: 30rpx;
+    color: var(--text-placeholder);
+    font-size: var(--font-size-base);
   }
 
   &__clear-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40rpx;
-    height: 40rpx;
-    color: #999999;
-    margin-left: 16rpx;
+    min-width: 44rpx;
+    min-height: 44rpx;
+    color: var(--text-tertiary);
+    margin-left: var(--spacing-2);
     flex-shrink: 0;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: color var(--transition-fast) var(--easing-base);
 
-    &:hover {
-      color: #666666;
+    &:active {
+      color: var(--text-secondary);
     }
   }
 }
 
 // 小屏幕适配
-.mobile-layout--compact .search-bar,
-.search-bar--compact {
-  &__input-wrapper {
-    height: 64rpx;
-    padding: 0 20rpx;
-    border-radius: 16rpx;
-  }
+@media screen and (max-width: 375px) {
+  .search-bar {
+    &__input-wrapper {
+      min-height: 72rpx;
+      padding: 0 var(--spacing-2);
+      border-radius: var(--radius-base);
+    }
 
-  &__input {
-    font-size: 28rpx;
-  }
+    &__search-icon {
+      margin-right: var(--spacing-1);
+    }
 
-  &__placeholder {
-    font-size: 28rpx;
+    &__input {
+      font-size: var(--font-size-sm);
+
+      &::placeholder {
+        font-size: var(--font-size-sm);
+      }
+    }
+
+    &__placeholder {
+      font-size: var(--font-size-sm);
+    }
+
+    &__clear-icon {
+      min-width: 36rpx;
+      min-height: 36rpx;
+      margin-left: var(--spacing-1);
+    }
   }
 }

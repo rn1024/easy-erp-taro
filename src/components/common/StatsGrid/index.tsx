@@ -100,34 +100,38 @@ const StatsGrid: React.FC<StatsGridProps> = ({
             style={{ background: backgroundColor }}
             onClick={onClick}
           >
-            <View className='stats-grid__meta'>
-              {iconNode}
-              <Text className='stats-grid__label'>{label}</Text>
-            </View>
-            <Text
-              className='stats-grid__value'
-              style={{ color: valueColor }}
-            >
-              {value}
-            </Text>
-            {description && (
-              <Text className='stats-grid__label'>
-                {description}
-              </Text>
-            )}
-            {hasTrend && (
-              <View
-                className='stats-grid__trend'
-                style={{ color: trendColor || 'var(--text-secondary)' }}
-              >
-                <Icon
-                  name={trendIconMap[trendDirection]}
-                  size={18}
-                  color={trendColor || iconColor || '#6b7280'}
-                />
-                <Text>{trendText}</Text>
+            <View className='stats-grid__header'>
+              <View className='stats-grid__content'>
+                <Text
+                  className='stats-grid__value'
+                  style={{ color: valueColor }}
+                >
+                  {value}
+                </Text>
+                <Text className='stats-grid__label'>{label}</Text>
+                {description && (
+                  <Text className='stats-grid__description'>
+                    {description}
+                  </Text>
+                )}
               </View>
-            )}
+              
+              {iconNode}
+              
+              {hasTrend && (
+                <View
+                  className='stats-grid__trend'
+                  style={{ color: trendColor || 'var(--text-secondary)' }}
+                >
+                  <Icon
+                    name={trendIconMap[trendDirection]}
+                    size={16}
+                    color={trendColor || iconColor || '#6b7280'}
+                  />
+                  <Text>{trendText}</Text>
+                </View>
+              )}
+            </View>
           </View>
         )
       })}

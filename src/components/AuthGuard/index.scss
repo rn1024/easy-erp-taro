@@ -6,26 +6,27 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 80rpx 32rpx;
-  min-height: 400rpx;
+  padding: var(--spacing-20) var(--spacing-8);
+  min-height: 800rpx;
   text-align: center;
 
   &__icon {
-    font-size: 80rpx;
-    margin-bottom: 24rpx;
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-6);
+    color: var(--text-secondary);
   }
 
   &__title {
-    font-size: 32rpx;
-    font-weight: 600;
-    color: #1a1a1a;
-    margin-bottom: 16rpx;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-4);
   }
 
   &__message {
-    font-size: 28rpx;
-    color: #6b7280;
-    line-height: 1.5;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-base);
   }
 }
 
@@ -35,26 +36,27 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 80rpx 32rpx;
-  min-height: 400rpx;
+  padding: var(--spacing-20) var(--spacing-8);
+  min-height: 800rpx;
   text-align: center;
 
   &__icon {
-    font-size: 80rpx;
-    margin-bottom: 24rpx;
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-6);
+    color: var(--text-secondary);
   }
 
   &__title {
-    font-size: 32rpx;
-    font-weight: 600;
-    color: #1a1a1a;
-    margin-bottom: 16rpx;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-4);
   }
 
   &__message {
-    font-size: 28rpx;
-    color: #6b7280;
-    line-height: 1.5;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-base);
   }
 }
 
@@ -63,8 +65,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48rpx;
-  min-height: 200rpx;
-  font-size: 28rpx;
-  color: #6b7280;
+  padding: var(--spacing-12);
+  min-height: 400rpx;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
 } 

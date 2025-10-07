@@ -161,18 +161,18 @@
     }
     
     &__suggestion-item {
-      min-height: 44px;
-      font-size: 30rpx;
+      min-height: 88rpx;
+      font-size: var(--font-size-base);
     }
     
     &__history-item {
-      min-height: 48px;
-      font-size: 30rpx;
+      min-height: 96rpx;
+      font-size: var(--font-size-base);
     }
     
     &__hot-search-item {
-      min-height: 40px;
-      font-size: 26rpx;
+      min-height: 80rpx;
+      font-size: var(--font-size-sm);
     }
   }
 }

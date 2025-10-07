@@ -55,8 +55,8 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
           <div className="w-12 h-12 bg-wechat-green rounded-lg flex items-center justify-center mb-4 mx-auto">
             <Building2 className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Easy ERP</h1>
-          <p className="text-sm text-gray-500">账号登录</p>
+          <h1 className="text-3xl font-semibold text-gray-900 mb-2">Easy ERP</h1>
+          <p className="text-base text-gray-500">账号登录</p>
         </div>
 
         {/* 登录表单 */}
@@ -68,7 +68,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
               type="text"
               value={formData.username}
               onChange={(e) => handleInputChange('username', e.target.value)}
-              className="mobile-input w-full px-4 py-4 bg-gray-50 border-0 rounded-lg text-gray-900 placeholder-gray-500 focus:bg-white focus:ring-2 focus:ring-wechat-green transition-all"
+              className="mobile-input w-full px-4 py-4 bg-gray-50 border-0 rounded-lg text-base text-gray-900 placeholder-gray-500 focus:bg-white focus:ring-2 focus:ring-wechat-green transition-all"
               placeholder="请输入用户名/手机号"
               disabled={loading}
               autoComplete="username"
@@ -81,7 +81,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
               type={showPassword ? 'text' : 'password'}
               value={formData.password}
               onChange={(e) => handleInputChange('password', e.target.value)}
-              className="mobile-input w-full px-4 py-4 pr-12 bg-gray-50 border-0 rounded-lg text-gray-900 placeholder-gray-500 focus:bg-white focus:ring-2 focus:ring-wechat-green transition-all"
+              className="mobile-input w-full px-4 py-4 pr-12 bg-gray-50 border-0 rounded-lg text-base text-gray-900 placeholder-gray-500 focus:bg-white focus:ring-2 focus:ring-wechat-green transition-all"
               placeholder="请输入密码"
               disabled={loading}
               autoComplete="current-password"
@@ -105,7 +105,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             <button
               type="submit"
               disabled={!isFormValid || loading}
-              className="w-full py-4 px-4 bg-wechat-green hover:bg-wechat-green/90 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all duration-200 wechat-button relative"
+              className="w-full py-4 px-4 bg-wechat-green hover:bg-wechat-green/90 disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-base font-medium rounded-lg transition-all duration-200 wechat-button relative"
             >
               {loading ? (
                 <div className="flex items-center justify-center">
@@ -125,14 +125,14 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
           <div className="flex justify-between items-center pt-2">
             <button
               type="button"
-              className="text-sm text-wechat-blue hover:text-wechat-blue/80 transition-colors"
+              className="text-base text-wechat-blue hover:text-wechat-blue/80 transition-colors"
               disabled={loading}
             >
               忘记密码？
             </button>
             <button
               type="button"
-              className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+              className="text-base text-gray-500 hover:text-gray-700 transition-colors"
               disabled={loading}
             >
               联系管理员

@@ -75,28 +75,37 @@ const Profile: React.FC = () => {
       key: 'created',
       label: '创建流程',
       value: userStats.createdWorkflows,
-      iconName: 'trending-up',
-      iconColor: '#3b82f6'
+      iconName: 'add_circle',
+      iconColor: '#6366f1',
+      iconBgColor: 'rgba(99, 102, 241, 0.1)',
+      valueColor: '#1f2937'
     },
     {
       key: 'completed',
       label: '完成任务',
       value: userStats.completedTasks,
-      iconName: 'check-circle',
-      iconColor: '#10b981'
+      iconName: 'done',
+      iconColor: '#059669',
+      iconBgColor: 'rgba(5, 150, 105, 0.1)',
+      valueColor: '#1f2937'
     },
     {
       key: 'pending',
       label: '待办任务',
       value: userStats.pendingTasks,
-      iconName: 'pending',
-      iconColor: '#f59e0b'
+      iconName: 'schedule',
+      iconColor: '#d97706',
+      iconBgColor: 'rgba(217, 119, 6, 0.1)',
+      valueColor: '#1f2937'
     },
     {
       key: 'rate',
       label: '完成率',
       value: `${userStats.completionRate}%`,
-      iconColor: '#8b5cf6'
+      iconName: 'trending_up',
+      iconColor: '#7c3aed',
+      iconBgColor: 'rgba(124, 58, 237, 0.1)',
+      valueColor: '#1f2937'
     }
   ]), [userStats])
 
@@ -189,7 +198,7 @@ const Profile: React.FC = () => {
                 mode='aspectFill'
               />
               <View className='profile-page__avatar-action' onClick={() => Taro.showToast({ title: '更换头像', icon: 'none' })}>
-                <Icon name='photo_camera' size={12} color='#6b7280' />
+                <Icon name='photo_camera' size={14} color='#ffffff' />
               </View>
             </View>
             <View className='profile-page__user-info'>
@@ -226,7 +235,7 @@ const Profile: React.FC = () => {
 
         {/* 统计数据 */}
         <SectionCard title='我的统计' className='profile-page__stats'>
-          <StatsGrid items={statsItems} columns={2} />
+          <StatsGrid items={statsItems} />
         </SectionCard>
 
         {/* 工作表现 */}
